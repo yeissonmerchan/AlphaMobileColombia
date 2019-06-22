@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".mvp.activity.FinalActivity"
+    tools:showIn="@layout/activity_final">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="120dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txttitle"
+                android:textAlignment="center"
+                android:text="@string/title_activity_final"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_subtitle"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="60dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtUser"
+                android:textAlignment="center"
+                android:text="@string/info_activity_final"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_subtitle"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

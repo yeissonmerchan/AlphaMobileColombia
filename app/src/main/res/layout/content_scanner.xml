@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".mvp.activity.ScannerActivity"
+    tools:showIn="@layout/activity_scanner">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txv_personal_information"
+                android:text="Información Personal"
+                android:longClickable="true"
+                android:layout_marginTop="120dp"
+                android:layout_marginBottom="15dp"
+                android:layout_below="@+id/nombre_conductor"
+                android:layout_centerHorizontal="true"
+                android:textSize="22dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNombres"
+                android:text="Nombres"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_names"
+                android:hint="Nombres"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtApellidos"
+                android:text="Apellidos"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_lastNames"
+                android:hint="Apellidos"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNumIdent"
+                android:text="Número de identificación"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_numberIdentification"
+                android:hint="Numero identificación"
+                android:maxLength="15"
+                android:inputType="number"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtFechaNac"
+                android:text="Fecha de nacimiento"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_birthDate"
+                android:inputType="date"
+                android:focusable="false"
+                android:hint="Fecha nacimiento"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtGenero"
+                android:text="Género"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_genero"
+                android:inputType="text"
+                android:maxLength="50"
+                android:hint="Género"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtFactor"
+                android:text="Tipo de sangre"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_factor"
+                android:inputType="text"
+                android:maxLength="50"
+                android:hint="Factor"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtDestino"
+                android:text="Destino"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <Spinner
+                android:id="@+id/spinner_destino_credito"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtTipoEmpleado"
+                android:text="Tipo de empleado"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <Spinner
+                android:id="@+id/spinner_tipo_empleado"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtTipoContrato"
+                android:text="Tipo de contrato"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <Spinner
+                android:id="@+id/spinner_tipo_contrato"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/btn_new_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/border_button"
+                android:text="@string/btn_next"
+                android:onClick="onClickBtnNextTerms"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

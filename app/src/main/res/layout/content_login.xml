@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginTop="80dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".mvp.activity.LoginActivity"
+    tools:showIn="@layout/activity_login">
+
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="80dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtInformation"
+                android:textAlignment="center"
+                android:text="Bienvenido señor asesor, por favor ingrese sus datos de acceso para continuar"
+                android:longClickable="true"
+                android:layout_below="@+id/nombre_conductor"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_text"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="60dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtUser"
+                android:textAlignment="center"
+                android:text="Usuario"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_subtitle"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <EditText
+                android:id="@+id/edt_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:hint="Usuario"
+                android:inputType="textEmailAddress"
+                android:selectAllOnFocus="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:inputType="textMultiLine"
+                android:textAlignment="center"
+                android:ems="20"
+                android:id="@+id/txtPassword"
+                android:text="Contraseña"
+                android:longClickable="true"
+                android:layout_marginTop="50dp"
+                android:layout_below="@+id/nombre_conductor"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_subtitle"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Contraseña"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_username" />
+
+            <Button
+                android:id="@+id/btn_Login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/border_button"
+                android:text="@string/action_sign_in"
+                android:onClick="onClickBtn"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "center"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:inputType="textMultiLine"
+                android:textAlignment="center"
+                android:ems="20"
+                android:id="@+id/txt_message"
+                android:text=""
+                android:longClickable="true"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/btn_Login"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/size_subtitle"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
