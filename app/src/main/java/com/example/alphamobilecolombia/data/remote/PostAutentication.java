@@ -1,5 +1,7 @@
 package com.example.alphamobilecolombia.data.remote;
 
+import org.json.JSONObject;
+
 import okhttp3.ResponseBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -12,7 +14,7 @@ public interface PostAutentication {
 
 
     @POST(API_ROUTE)
-    Call<ResponseBody> Login(
+    Call<String> Login(
             @Body RequestBody body
 
 

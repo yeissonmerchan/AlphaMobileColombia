@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp.activity.FinalActivity">
+    tools:context=".mvp.activity.LoginActivity">
+
     <include
         android:id="@+id/include"
-        layout="@layout/app_bar_final"
+        layout="@layout/app_bar_login"
         />
 
-    <include layout="@layout/content_final" />
-
+    <include layout="@layout/content_login"
+        android:layout_marginTop="75dp"/>
+    
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

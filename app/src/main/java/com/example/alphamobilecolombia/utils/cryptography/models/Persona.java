@@ -9,6 +9,7 @@ public class Persona {
     private String fechaNacimiento;
     private String fechaVencimiento;
     private String factorRh;
+    private String celular;
 
     public Persona() {
 
@@ -57,6 +58,8 @@ public class Persona {
         this.fechaVencimiento = _fecV;
     }
 
+    public void setCelular(String _cel) {this.celular = _cel;}
+
     public String getFactorRh() {
         return this.factorRh;
     }
@@ -81,6 +84,8 @@ public class Persona {
     public String getFechaVencimiento() {
         return this.fechaVencimiento;
     }
+    public String getCelular() { return this.celular;}
+
     @Override
     public String toString(){
         return this.cedula +" "+

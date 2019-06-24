@@ -56,6 +56,40 @@
                 android:scrollbars = "vertical"/>
 
 
+            <Button
+                android:id="@+id/btn_list_request"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/border_button"
+                android:text="Subir archivos"
+                android:onClick="onClickBtnUpdFiles"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
+            <Button
+                android:id="@+id/btn_new_request"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="10dp"
+                android:background="#ff9999"
+                android:text="@string/btn_new_request"
+                android:onClick="onClickBtnNewRequest"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
 
         </LinearLayout>
     </ScrollView>

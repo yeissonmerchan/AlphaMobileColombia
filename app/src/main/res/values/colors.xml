@@ -10,5 +10,6 @@
     <color name="colorToolBarLine">#d9dada</color>
     <color name="colorSubtext">#ffffff</color>
     <color name="colorButton">#ffffff</color>
+    <color name="colorCancelButton">#D81B60</color>
     <color name="colorNameUser">#000000</color>
 </resources>

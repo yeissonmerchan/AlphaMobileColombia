@@ -47,7 +47,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Inicia sesión"
+                    android:text="Identifícate"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:textColor="@color/colorHeader" />
 

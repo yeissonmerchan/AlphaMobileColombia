@@ -1,10 +1,13 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.User;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
 import com.example.alphamobilecolombia.R;
 
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Checked;
@@ -33,6 +37,9 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.mobsandgeeks.saripaar.annotation.Url;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 
@@ -42,12 +49,12 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     //**************    VALIDACIÓN DE CAMPOS     *****************//
     //Camilo Lis - 22-06-2019
     @NotEmpty
-    @Length(min = 6, max = 20)
+    @Length(min = 6, max = 20, message = "La longitud no es correcta")
     private EditText editTextUsername;
 
 
     @NotEmpty
-    @Length(min = 6, max = 50)
+    @Length(min = 6, max = 50, message = "La longitud no es correcta")
     private EditText editTextPassword;
 
     //Validator Instance
@@ -127,6 +134,21 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                 HttpResponse model = presenter.PostLogin(userText, passwordText);
 
                 if (model != null) {
+                    Gson gson = new Gson();
+//                    String jsonStr = gson.toJson(model.getData());
+                    try {
+                        User usuario = new User();
+  //                      JSONObject objeto = new JSONObject(jsonStr);
+
+                        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+                        usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
+
+                    }
+                    catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
                     Intent intent = new Intent(view.getContext(), ModuloActivity.class);
                     startActivityForResult(intent, 0);
                     message.setText(model.getMessage());

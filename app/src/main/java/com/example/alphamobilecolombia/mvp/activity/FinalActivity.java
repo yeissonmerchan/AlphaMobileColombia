@@ -1,5 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,9 +20,11 @@ import android.widget.TextView;
 import com.example.alphamobilecolombia.R;
 
 public class FinalActivity extends AppCompatActivity {
+    final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final);
         Window window = this.getWindow();
@@ -33,6 +37,19 @@ public class FinalActivity extends AppCompatActivity {
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Finalización");
 
+
+    }
+    public void onClickBtnNewRequest(View view) {
+        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+    public void onClickBtnUpdFiles(View view) {
+        Intent intent = new Intent(context,WebViewUpdFilesActivity.class);
+        startActivity(intent);
+
+        Intent intentM = new Intent (view.getContext(), ModuloActivity.class);
+        startActivityForResult(intentM, 0);
 
     }
 

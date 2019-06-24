@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ScannerActivity extends AppCompatActivity {
+public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
     private static final String SCAN = "scan";
@@ -44,6 +46,7 @@ public class ScannerActivity extends AppCompatActivity {
     private static final String LOG_TAG = "BarcodeScanner";
     private ArrayList<String> als = new ArrayList<>();
     Collection<String> TYPES = Arrays.asList("PDF417");
+    Spinner spinner_tipo_empleado, spinner_tipo_contrato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +79,21 @@ public class ScannerActivity extends AppCompatActivity {
         spinner_destino_credito.setAdapter(adapter_destino_credito);
 
 
-        Spinner spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
+        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
         ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
                 R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
         adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
 
 
-        Spinner spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-        ArrayAdapter<CharSequence> adapter_tipo_contrato = ArrayAdapter.createFromResource(this,
-                R.array.spinner_tipo_contrato, android.R.layout.simple_spinner_item);
+        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
+/*        ArrayAdapter<CharSequence> adapter_tipo_contrato = ArrayAdapter.createFromResource(this,
+                R.array.spinner_tipo_contrato_empleado, android.R.layout.simple_spinner_item);
         adapter_tipo_contrato.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_tipo_contrato.setAdapter(adapter_tipo_contrato);
+*/
+        spinner_tipo_empleado.setOnItemSelectedListener(this);
+
     }
 
 
@@ -125,8 +131,14 @@ public class ScannerActivity extends AppCompatActivity {
                     EditText edt_names = (EditText) findViewById(R.id.edt_names);
                     edt_names.setText(p.getNombre());
 
+                    EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
+                    edt_names2.setText("");//(p.getNombre());
+
                     EditText edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
-                    edt_lastNames.setText(p.getApellido1()+" "+p.getApellido2());
+                    edt_lastNames.setText(p.getApellido1());
+
+                    EditText edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
+                    edt_lastNames.setText(p.getApellido2());
 
                     EditText edt_numberIdentification = (EditText) findViewById(R.id.edt_numberIdentification);
                     edt_numberIdentification.setText(p.getCedula());
@@ -156,5 +168,27 @@ public class ScannerActivity extends AppCompatActivity {
         Intent intent = new Intent (view.getContext(), TerminosActivity.class);
         startActivityForResult(intent, 0);
 
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position,
+                               long id) {
+        String selected = spinner_tipo_empleado.getSelectedItem().toString();
+        if (spinner_tipo_empleado.getSelectedItem().toString().equals("Empleado")) {
+
+            ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
+                    R.array.spinner_tipo_contrato_empleado, android.R.layout.simple_spinner_item);
+            spinner_tipo_contrato.setAdapter(adapter2);
+        } else {
+            ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
+                    R.array.spinner_tipo_contrato_pensionado, android.R.layout.simple_spinner_item);
+            spinner_tipo_contrato.setAdapter(adapter2);
+        }
+
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
     }
 }

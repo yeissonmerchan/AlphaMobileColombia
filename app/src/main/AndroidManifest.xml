@@ -62,6 +62,9 @@
             android:name=".mvp.activity.DemoActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.activity.WebViewUpdFilesActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
