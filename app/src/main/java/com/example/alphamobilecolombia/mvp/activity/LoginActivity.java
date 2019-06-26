@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.User;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
@@ -82,6 +83,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
 
+        RealmStorage storage = new RealmStorage();
+        storage.initLocalStorage(this);
     }
 
     //**************    VALIDACIÓN DE CAMPOS     *****************//
@@ -95,7 +98,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onValidationSucceeded() {
-        Toast.makeText(this, "We got it right!", Toast.LENGTH_SHORT).show();
         validationResult = true;
 
     }
@@ -125,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             TextView message = findViewById(R.id.txt_message);
             final EditText user = findViewById(R.id.edt_username);
             final EditText password = findViewById(R.id.edt_password);
-            Toast.makeText(view.getContext(), "Button Clicked", Toast.LENGTH_LONG).show();
+            //Toast.makeText(view.getContext(), "Button Clicked", Toast.LENGTH_LONG).show();
             String userText = user.getText().toString();
             String passwordText = password.getText().toString();
 
@@ -135,12 +137,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
                 if (model != null) {
                     Gson gson = new Gson();
-//                    String jsonStr = gson.toJson(model.getData());
                     try {
                         User usuario = new User();
-  //                      JSONObject objeto = new JSONObject(jsonStr);
 
-                        SharedPreferences sharedPref = LoginActivity.this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
                         usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
 
                     }

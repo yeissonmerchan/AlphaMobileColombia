@@ -40,10 +40,18 @@
     <string name="title_activity_final">Finalización</string>
     <string name="info_activity_final">Es hora de que nos compartas las fotos de los documentos del crédito, para continuar ve a la opción \"Subir archivos\" o de lo contrario en \"Nueva solicitud\".</string>
 
+    <string name="licenceKey">"3A7HL_561/8fJSb5nW5k"</string>
+    <string name="userkey">vivecreditos</string>
+    <string name="local_storage_Key">"3A7HL_561/8fJSb5nW5k"</string>
 
     <string-array name="spinner_destino_credito">
         <item id="1">Libre inversión</item>
         <item id="2">Compra cartera</item>
+    </string-array>
+
+    <string-array name="spinner_codigos_destino_credito">
+        <item id="1">1</item>
+        <item id="2">2</item>
     </string-array>
 
     <string-array name="spinner_tipo_empleado">
@@ -51,26 +59,50 @@
         <item id="2">Pensionado</item>
     </string-array>
 
+    <string-array name="spinner_codigos_tipo_empleado">
+        <item id="1">1</item>
+        <item id="2">2</item>
+    </string-array>
+
     <string-array name="spinner_tipo_contrato_empleado">
-        <item idDep="1" id="1">CARRERA ADMINISTRATIVA</item>
-        <item idDep="1" id="2">LIBRE NOMBRAMIENTO Y REMOCION</item>
-        <item idDep="1" id="3">PROVISIONAL</item>
-        <item idDep="1" id="4">OTRO</item>
-        <item idDep="1" id="5">INDEFINIDO</item>
-        <item idDep="1" id="6">EN PROPIEDAD</item>
-        <item idDep="1" id="7">CORRETAJE</item>
-        <item idDep="1" id="8">ORDINARIO-ACTIVO</item>
-        <item idDep="1" id="9">PERIODO DE PRUEBA</item>
-        <item idDep="1" id="10">PLANTA</item>
-        <item idDep="1" id="11">RESOLUCION</item>
-        <item idDep="1" id="12">TEMPORAL</item>
-        <item idDep="1" id="13">PLANTA PERMANENTE</item>
-        <item idDep="1" id="14">FIJO</item>
+        <item id="1" idDep="1">CARRERA ADMINISTRATIVA</item>
+        <item id="2" idDep="1">LIBRE NOMBRAMIENTO Y REMOCION</item>
+        <item id="3" idDep="1">PROVISIONAL</item>
+        <item id="4" idDep="1">OTRO</item>
+        <item id="5" idDep="1">INDEFINIDO</item>
+        <item id="6" idDep="1">EN PROPIEDAD</item>
+        <item id="7" idDep="1">CORRETAJE</item>
+        <item id="8" idDep="1">ORDINARIO-ACTIVO</item>
+        <item id="9" idDep="1">PERIODO DE PRUEBA</item>
+        <item id="10" idDep="1">PLANTA</item>
+        <item id="11" idDep="1">RESOLUCION</item>
+        <item id="12" idDep="1">TEMPORAL</item>
+        <item id="13" idDep="1">PLANTA PERMANENTE</item>
+        <item id="14" idDep="1">FIJO</item>
+    </string-array>
+
+    <string-array name="spinner_codigos_tipo_contrato_empleado">
+        <item id="1" idDep="1">1</item>
+        <item id="2" idDep="1">2</item>
+        <item id="3" idDep="1">3</item>
+        <item id="4" idDep="1">4</item>
+        <item id="5" idDep="1">5</item>
+        <item id="6" idDep="1">6</item>
+        <item id="7" idDep="1">7</item>
+        <item id="8" idDep="1">8</item>
+        <item id="9" idDep="1">9</item>
+        <item id="10" idDep="1">10</item>
+        <item id="11" idDep="1">11</item>
+        <item id="12" idDep="1">12</item>
+        <item id="13" idDep="1">13</item>
+        <item id="14" idDep="1">14</item>
     </string-array>
 
     <string-array name="spinner_tipo_contrato_pensionado">
-        <item idDep="1" id="15">PENSIONADO</item>
+        <item id="15" idDep="1">PENSIONADO</item>
     </string-array>
+    <string name="title_activity_upload_files">UploadFilesActivity</string>
+    <string name="title_activity_camara">CamaraActivity</string>
 
 
 </resources>

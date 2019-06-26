@@ -1,10 +1,13 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.view.View;
@@ -14,14 +17,12 @@ import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
 
-public class ModuloActivity extends AppCompatActivity {
-
-
+public class UploadFilesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modulo);
+        setContentView(R.layout.activity_upload_files);
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -30,20 +31,7 @@ public class ModuloActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
         TextView modulo = findViewById(R.id.txt_modulo);
-        modulo.setText("Módulos");
-
-
-
-
+        modulo.setText("Cargue de archivos");
     }
-
-    public void onClickBtnNewRequest(View view) {
-        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
-        startActivityForResult(intent, 0);
-    }
-
-    public void onClickBtnListRequest(View view) {
-    }
-
 
 }

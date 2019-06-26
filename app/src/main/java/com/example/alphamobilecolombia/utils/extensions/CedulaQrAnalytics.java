@@ -1,6 +1,16 @@
 package com.example.alphamobilecolombia.utils.extensions;
 
-import com.example.alphamobilecolombia.utils.cryptography.models.Persona;
+import android.content.Intent;
+import android.util.Log;
+
+import com.example.alphamobilecolombia.utils.models.Persona;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class CedulaQrAnalytics {
     private static byte[] keysArray = new byte[]{
@@ -23,6 +33,34 @@ public class CedulaQrAnalytics {
             (byte)0x00
     };
 
+    private static final String SCAN = "scan";
+    private static final String CANCELLED = "cancelled";
+    private static final String FORMAT = "format";
+    private static final String TEXT = "text";
+    private static final String LOG_TAG = "BarcodeScanner";
+    private ArrayList<String> als = new ArrayList<>();
+    private short[] data3;
+    Collection<String> TYPES = Arrays.asList("PDF417");
+
+    public static Persona parse(Intent data) throws JSONException {
+        //Implementación anterior
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put(TEXT, data.getStringExtra("SCAN_RESULT"));
+            obj.put(FORMAT, data.getStringExtra("SCAN_RESULT_FORMAT"));
+            obj.put(CANCELLED, false);
+        } catch (JSONException e) {
+            Log.d(LOG_TAG, "JSONException " + e.getMessage());
+        }
+
+        String nuevo = obj.getString("text").replace("\u0000", "|");
+        String cadena = nuevo.replaceAll("\\s", "|");
+        cadena = cadena.replaceAll("\\t", "|");
+        cadena = cadena.replaceAll("\\|{2,}", " ");
+
+        return parse(cadena.getBytes());
+    }
+
     public static Persona parse(byte[] raw){
         String d = new String(raw);
         Persona p = new Persona();
@@ -32,7 +70,7 @@ public class CedulaQrAnalytics {
             p.setApellido1(d.substring(9, 35).trim());
             p.setApellido2(d.substring(35, 61).trim());
             p.setNombre(d.substring(61, 91).trim());
-            p.setGenero(d.charAt(91));
+            p.setGenero(d.substring(91, 92).trim());//(d.charAt(91));
             p.setFechaNacimiento(d.substring(92, 96)+"-"+d.substring(96, 98)+"-"+d.substring(98, 100));
             p.setFechaVencimiento(d.substring(100, 104)+"-"+d.substring(104, 106)+"-"+d.substring(106, 108));
         }
@@ -121,7 +159,7 @@ public class CedulaQrAnalytics {
             p.setApellido1(apellido1);
             p.setApellido2(apellido2);
             p.setNombre(nombre1 + " " + nombre2);
-            p.setGenero(genero.charAt(0));
+            p.setGenero(genero);//.charAt(0)
             p.setFactorRh(factor);
             p.setFechaNacimiento(fechaNaciemiento);
             p.setFechaVencimiento("");

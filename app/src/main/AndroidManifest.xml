@@ -29,9 +29,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".mvp.activity.CamaraActivity"
+            android:label="@string/title_activity_camara"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".mvp.activity.UploadFilesActivity"
+            android:label="@string/title_activity_upload_files"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".mvp.activity.FinalActivity"
             android:label="@string/title_activity_final"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.TerminosActivity"
             android:label="@string/title_activity_terminos"

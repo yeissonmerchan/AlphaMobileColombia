@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 28
@@ -22,6 +24,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -43,12 +46,18 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
 
-
+    //Libreria consumo de servicios (Apis Rest)
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.0'
 
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+    //Libreria para procesar qr cedula colombiana
+    implementation project(path: ':vfqapi3')
+
+    //Libreria de storage nativo
+    implementation "io.realm:realm-gradle-plugin:5.12.0"
 
 }
 repositories {

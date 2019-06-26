@@ -2,10 +2,9 @@ package com.example.alphamobilecolombia.mvp.presenter;
 
 import android.os.StrictMode;
 
-import com.example.alphamobilecolombia.data.local.PostAutenticationRequest;
+import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.PostAutentication;
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
 
 import org.json.JSONObject;
 
@@ -23,15 +22,15 @@ public class LoginPresenter {
     public HttpResponse PostLogin(String txtUsuario, String txtPass) {
         final HttpResponse responseModel = new HttpResponse();
         try {
+            //TODO: Quitar el policy y poner asíncrono
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
                 StrictMode.setThreadPolicy(policy);
 
-                Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.100.22:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+                Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
                 PostAutentication postService = retrofit.create(PostAutentication.class);
 
                 Gson gson = new Gson();
-                String data = gson.toJson(new PostAutenticationRequest("Desarrollo","6d91327bca8251614ee4b0400e3edb67"));
+                String data = gson.toJson(new PostAutenticationRequest("10031460","6d91327bca8251614ee4b0400e3edb67"));
                 //String data = gson.toJson(new PostAutenticationRequest(txtUsuario,MD5Hashing.MD5(txtPass)));
                 RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
