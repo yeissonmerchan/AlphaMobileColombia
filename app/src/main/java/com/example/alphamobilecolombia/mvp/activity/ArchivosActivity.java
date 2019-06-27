@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -209,6 +210,7 @@ public class ArchivosActivity extends AppCompatActivity {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
         builder1.setCancelable(true);
+        UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
         final String nameFile = spinner_tipo_documento.getSelectedItem().toString();
         builder1.setPositiveButton(
                 "Sí",
@@ -216,6 +218,8 @@ public class ArchivosActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         listUpload.add(new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true));
+                        String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
+                        uploadFilesPresenter.uploadFiles(pathFile);
                     }
                 });
 
