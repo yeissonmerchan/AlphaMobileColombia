@@ -8,6 +8,9 @@
     tools:context=".mvp.activity.ArchivosActivity"
     tools:showIn="@layout/activity_archivos">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_main"
@@ -30,7 +33,7 @@
 
         <Button
             android:id="@+id/btn_capture"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/spinner_tipo_documento"
             android:layout_gravity="center"
@@ -61,7 +64,7 @@
 
         <Button
             android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView"
             android:layout_gravity="center"
@@ -76,6 +79,7 @@
             app:layout_constraintStart_toStartOf="parent" />
     </RelativeLayout>
 
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
