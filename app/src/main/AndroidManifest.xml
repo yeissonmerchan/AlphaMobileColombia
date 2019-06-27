@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.DIAL" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,9 +30,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".mvp.activity.CapturarActivity"
+            android:label="@string/title_activity_capturar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".mvp.activity.ArchivosActivity"
+            android:label="@string/title_activity_archivos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".mvp.activity.CamaraActivity"
             android:label="@string/title_activity_camara"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.UploadFilesActivity"
             android:label="@string/title_activity_upload_files"

@@ -55,7 +55,7 @@ public class TerminosActivity extends AppCompatActivity {
 
 
     public void onClickBtnAgree(View view) {
-        Intent intent = new Intent (view.getContext(), FinalActivity.class);
+        Intent intent = new Intent (view.getContext(), ArchivosActivity.class);
         intent.putExtra("PERSONA_Documento", persona.getCedula());
         intent.putExtra("PERSONA_PNombre", persona.getNombre());
         intent.putExtra("PERSONA_SNombre", "");

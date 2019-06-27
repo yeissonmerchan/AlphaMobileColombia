@@ -96,7 +96,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         if(result != null) {
             if(result.getContents() == null) {
                 Log.d("MainActivity", "Scaneo cancelado");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 try {
 
@@ -147,7 +147,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     //Log.d("MainActivity", "Scaneado");
 
 
-                    Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                 }

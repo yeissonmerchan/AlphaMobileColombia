@@ -4,16 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp.activity.LoginActivity">
+    tools:context=".mvp.activity.CapturarActivity">
 
     <include
         android:id="@+id/include"
-        layout="@layout/app_bar_login"
+        layout="@layout/app_bar_final"
         />
 
-    <include layout="@layout/content_login"
-        android:layout_marginTop="75dp"
-        tools:ignore="IncludeLayoutParam" />
-    
+    <include layout="@layout/content_capturar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

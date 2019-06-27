@@ -98,11 +98,41 @@
         <item id="14" idDep="1">14</item>
     </string-array>
 
+    <string-array name="spinner_tipo_documento">
+        <item id="1" idDep="1">SolicitudCreditoCara1</item>
+        <item id="2" idDep="1">SolicitudCreditoCara2</item>
+        <item id="3" idDep="1">CedulaCara1</item>
+        <item id="4" idDep="1">CedulaCara2</item>
+        <item id="5" idDep="1">Desprendible1</item>
+        <item id="6" idDep="1">Desprendible2</item>
+        <item id="7" idDep="1">Desprendible3</item>
+        <item id="8" idDep="1">Desprendible4</item>
+        <item id="9" idDep="1">FormatoFirmaRuego</item>
+        <item id="10" idDep="1">SelloNotariaFirmaRuego</item>
+        <item id="11" idDep="1">CedulaTestigoFirmaRuego</item>
+    </string-array>
+
+    <string-array name="spinner_codigos_tipo_documento">
+        <item id="1" idDep="1">66</item>
+        <item id="2" idDep="1">67</item>
+        <item id="3" idDep="1">68</item>
+        <item id="4" idDep="1">69</item>
+        <item id="5" idDep="1">70</item>
+        <item id="6" idDep="1">71</item>
+        <item id="7" idDep="1">72</item>
+        <item id="8" idDep="1">73</item>
+        <item id="9" idDep="1">74</item>
+        <item id="10" idDep="1">75</item>
+        <item id="11" idDep="1">76</item>
+    </string-array>
+
     <string-array name="spinner_tipo_contrato_pensionado">
         <item id="15" idDep="1">PENSIONADO</item>
     </string-array>
     <string name="title_activity_upload_files">UploadFilesActivity</string>
     <string name="title_activity_camara">CamaraActivity</string>
+    <string name="title_activity_archivos">ArchivosActivity</string>
+    <string name="title_activity_capturar">CapturarActivity</string>
 
 
 </resources>

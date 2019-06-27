@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".mvp.activity.ArchivosActivity"
+    tools:showIn="@layout/activity_archivos">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.tutorialesprogramacionya.proyecto055.MainActivity">
+
+        <Spinner
+            android:id="@+id/spinner_tipo_documento"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_tipo_documento"
+            android:layout_gravity="center"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/border_button"
+            android:onClick="tomarFoto"
+            android:text="Capturar"
+            android:textColor="@color/colorSubtext"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="395dp"
+            android:layout_height="497dp"
+            android:layout_below="@+id/button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="3dp" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
