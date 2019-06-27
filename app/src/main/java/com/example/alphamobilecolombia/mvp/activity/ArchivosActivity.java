@@ -36,7 +36,10 @@ import com.example.alphamobilecolombia.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ArchivosActivity extends AppCompatActivity {
     private ImageView imagen1;
@@ -44,6 +47,7 @@ public class ArchivosActivity extends AppCompatActivity {
     RealmStorage storage = new RealmStorage();
     View view;
     Context context;
+    com.example.alphamobilecolombia.utils.models.File file;
     List<com.example.alphamobilecolombia.utils.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.utils.models.File>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +115,82 @@ public class ArchivosActivity extends AppCompatActivity {
         ConfirmacionImagen(view);
     }
 
+    public static <T> T findByProperty(Collection<T> col, Predicate<T> filter) {
+        return col.stream().filter(filter).findFirst().orElse(null);
+    }
+
     public void finalizacion(View view) {
-        Intent intento1=new Intent(this,FinalActivity.class);
-        startActivity(intento1);
+        boolean result = false;
+        //List<com.example.alphamobilecolombia.utils.models.File> filesRequired = file.getFiles();
+
+
+        result = compareLists(listUpload);
+        if(result){
+            Intent intento1=new Intent(this,FinalActivity.class);
+            startActivity(intento1);
+        }
+        else{
+            NotificacionArchivospendientes(view);
+        }
+    }
+
+    public class ExistFile{
+        public boolean SolicitudCreditoCara1 = false;
+        public boolean SolicitudCreditoCara2 = false;
+        public boolean CedulaCara1 = false;
+        public boolean CedulaCara2 = false;
+        public boolean Desprendible1 = false;
+        public boolean Desprendible2 = false;
+        public boolean TratamientoDatosPersonales = false;
+    }
+
+    public boolean compareLists(List<com.example.alphamobilecolombia.utils.models.File> modelList) {
+        boolean indicator = false;
+
+        List<com.example.alphamobilecolombia.utils.models.File> filesRequired = new ArrayList<com.example.alphamobilecolombia.utils.models.File>();
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(66,"",true,"SolicitudCreditoCara1",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(67,"",true,"SolicitudCreditoCara2",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(68,"",true,"CedulaCara1",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(69,"",true,"CedulaCara2",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(70,"",true,"Desprendible1",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(71,"",true,"Desprendible2",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(77,"",true,"TratamientoDatosPersonales",false));
+
+        ExistFile existFile = new ExistFile();
+
+        for(com.example.alphamobilecolombia.utils.models.File file : modelList) {
+            switch (file.getType()){
+                case "SolicitudCreditoCara1":
+                    existFile.SolicitudCreditoCara1 = true;
+                    break;
+                case "SolicitudCreditoCara2":
+                    existFile.SolicitudCreditoCara2 = true;
+                    break;
+                case "CedulaCara1":
+                    existFile.CedulaCara1 = true;
+                    break;
+                case "CedulaCara2":
+                    existFile.CedulaCara2 = true;
+                    break;
+                case "Desprendible1":
+                    existFile.Desprendible1 = true;
+                    break;
+                case "Desprendible2":
+                    existFile.Desprendible2 = true;
+                    break;
+                case "TratamientoDatosPersonales":
+                    existFile.TratamientoDatosPersonales = true;
+                    break;
+            }
+        }
+
+        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean existDocumentUpload(){
@@ -160,6 +237,22 @@ public class ArchivosActivity extends AppCompatActivity {
     public void NotificacionExistente(final View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Este archivo ya esta cargado, por favor selecione otro.");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    public void NotificacionArchivospendientes(final View view){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+        builder1.setMessage("Aun faltan archivos por cargar..");
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "Ok",
