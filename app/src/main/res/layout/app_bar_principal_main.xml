@@ -24,7 +24,7 @@
                 android:layout_width="55dp"
                 android:layout_height="42dp"
                 android:textColor="#ffffffff"
-                android:background="@mipmap/logo_principal"
+                android:background="@mipmap/logo_principal_vive"
                 android:layout_gravity="top|left"
                 app:elevation="10dp"
                 />
