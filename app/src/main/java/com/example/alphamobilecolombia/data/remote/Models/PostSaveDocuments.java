@@ -4,6 +4,35 @@ public class PostSaveDocuments {
     private int sujetoCreditoID;
     private String rutaArchivo;
     private int tipoArchivoID;
+    private String tipoArchivoNombre;
+    private int usuarioRegistroID;
+    private String archivo;
+    private String nombreArchivo;
+    private String extensionArchivo;
+
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    public String getExtensionArchivo() {
+        return extensionArchivo;
+    }
+
+    public void setExtensionArchivo(String extensionArchivo) {
+        this.extensionArchivo = extensionArchivo;
+    }
 
     public int getSujetoCreditoID() {
         return sujetoCreditoID;
@@ -45,6 +74,5 @@ public class PostSaveDocuments {
         this.usuarioRegistroID = usuarioRegistroID;
     }
 
-    private String tipoArchivoNombre;
-    private int usuarioRegistroID;
+
 }
