@@ -1,0 +1,50 @@
+package com.example.alphamobilecolombia.data.remote.Models;
+
+public class PostSaveDocuments {
+    private int sujetoCreditoID;
+    private String rutaArchivo;
+    private int tipoArchivoID;
+
+    public int getSujetoCreditoID() {
+        return sujetoCreditoID;
+    }
+
+    public void setSujetoCreditoID(int sujetoCreditoID) {
+        this.sujetoCreditoID = sujetoCreditoID;
+    }
+
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+
+    public int getTipoArchivoID() {
+        return tipoArchivoID;
+    }
+
+    public void setTipoArchivoID(int tipoArchivoID) {
+        this.tipoArchivoID = tipoArchivoID;
+    }
+
+    public String getTipoArchivoNombre() {
+        return tipoArchivoNombre;
+    }
+
+    public void setTipoArchivoNombre(String tipoArchivoNombre) {
+        this.tipoArchivoNombre = tipoArchivoNombre;
+    }
+
+    public int getUsuarioRegistroID() {
+        return usuarioRegistroID;
+    }
+
+    public void setUsuarioRegistroID(int usuarioRegistroID) {
+        this.usuarioRegistroID = usuarioRegistroID;
+    }
+
+    private String tipoArchivoNombre;
+    private int usuarioRegistroID;
+}

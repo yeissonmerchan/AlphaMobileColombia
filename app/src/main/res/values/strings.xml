@@ -15,7 +15,7 @@
     <string name="menu_send">Send</string>
 
     <string name="name_company">AlphaCredit</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Check</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Ingresar</string>
@@ -37,8 +37,8 @@
 
     <string name="terminos_title">Autorización</string>
     <string name="terminos_info">A continuación usted aceptara los términos y condiciones del proceso.</string>
-    <string name="title_activity_final">Finalización</string>
-    <string name="info_activity_final">Es hora de que nos compartas las fotos de los documentos del crédito, para continuar ve a la opción \"Subir archivos\" o de lo contrario en \"Nueva solicitud\".</string>
+    <string name="title_activity_final">¡Tu solicitud a cargado satisfactoriamente!</string>
+    <string name="info_activity_final">podrás consultar la respuesta de pre-aprobación en las próximas horas.</string>
 
     <string name="licenceKey">"3A7HL_561/8fJSb5nW5k"</string>
     <string name="userkey">vivecreditos</string>
@@ -98,11 +98,43 @@
         <item id="14" idDep="1">14</item>
     </string-array>
 
+    <string-array name="spinner_tipo_documento">
+        <item id="1" idDep="1">SolicitudCreditoCara1</item>
+        <item id="2" idDep="1">SolicitudCreditoCara2</item>
+        <item id="3" idDep="1">CedulaCara1</item>
+        <item id="4" idDep="1">CedulaCara2</item>
+        <item id="5" idDep="1">Desprendible1</item>
+        <item id="6" idDep="1">Desprendible2</item>
+        <item id="7" idDep="1">Desprendible3</item>
+        <item id="8" idDep="1">Desprendible4</item>
+        <item id="9" idDep="1">FormatoFirmaRuego</item>
+        <item id="10" idDep="1">SelloNotariaFirmaRuego</item>
+        <item id="11" idDep="1">CedulaTestigoFirmaRuego</item>
+        <item id="12" idDep="1">TratamientoDatosPersonales</item>
+    </string-array>
+
+    <string-array name="spinner_codigos_tipo_documento">
+        <item id="1" idDep="1">66</item>
+        <item id="2" idDep="1">67</item>
+        <item id="3" idDep="1">68</item>
+        <item id="4" idDep="1">69</item>
+        <item id="5" idDep="1">70</item>
+        <item id="6" idDep="1">71</item>
+        <item id="7" idDep="1">72</item>
+        <item id="8" idDep="1">73</item>
+        <item id="9" idDep="1">74</item>
+        <item id="10" idDep="1">75</item>
+        <item id="11" idDep="1">76</item>
+        <item id="12" idDep="1">77</item>
+    </string-array>
+
     <string-array name="spinner_tipo_contrato_pensionado">
         <item id="15" idDep="1">PENSIONADO</item>
     </string-array>
     <string name="title_activity_upload_files">UploadFilesActivity</string>
     <string name="title_activity_camara">CamaraActivity</string>
+    <string name="title_activity_archivos">ArchivosActivity</string>
+    <string name="title_activity_capturar">CapturarActivity</string>
 
 
 </resources>

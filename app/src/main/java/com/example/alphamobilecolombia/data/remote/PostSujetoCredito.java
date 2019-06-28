@@ -11,7 +11,5 @@ public interface PostSujetoCredito {
     @POST(API_ROUTE)
     Call<String> Insertar(
             @Body RequestBody body
-
-
     );
 }
