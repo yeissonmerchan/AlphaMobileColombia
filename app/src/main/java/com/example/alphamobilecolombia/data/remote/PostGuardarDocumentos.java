@@ -5,11 +5,12 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public interface PostSujetoCredito {
-    String API_ROUTE = "/api/TM_SujetoCredito/Insertar";
+public interface PostGuardarDocumentos {
+    String API_ROUTE = "/api/TPArchivo/GuardarDocumentos";
 
     @POST(API_ROUTE)
-    Call<String> Insertar(
+    Call<String> Upload(
             @Body RequestBody body
+
     );
 }

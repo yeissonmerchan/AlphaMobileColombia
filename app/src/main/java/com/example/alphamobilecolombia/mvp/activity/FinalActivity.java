@@ -53,6 +53,9 @@ public class FinalActivity extends AppCompatActivity {
 
     public void onClickBtnUpdFiles(View view) {
 
+
+
+        /*
         //////////////      GUARDAR PERSONA
         Persona persona = new Persona();
 
@@ -67,8 +70,6 @@ public class FinalActivity extends AppCompatActivity {
         IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
         IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
         IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
-
-
 
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
@@ -105,48 +106,8 @@ public class FinalActivity extends AppCompatActivity {
 
             }
         }
-
-
-    }
-    public void setData(SharedPreferences sharedPref, JSONObject objeto) throws JSONException {
-
-        String data = objeto.getString("codigoTransaccion");
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("codigoTransaccion", data);
-        editor.commit();
+    */
 
     }
 
-    private String getCodeDestinoCredito(String name) {
-        int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_destino_credito)) {
-            i++;
-            if (cc.equals(name))
-                break;
-        }
-        return getResources().getStringArray(R.array.spinner_codigos_destino_credito)[i];
-    }
-
-
-    private String getCodeTipoContrato(String name) {
-        int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_tipo_contrato_empleado)) {
-            i++;
-            if (cc.equals(name))
-                break;
-        }
-        return getResources().getStringArray(R.array.spinner_codigos_tipo_contrato_empleado)[i];
-    }
-
-
-    private String getCodeTipoEmpleado(String name) {
-        int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_tipo_empleado)) {
-            i++;
-            if (cc.equals(name))
-                break;
-        }
-        return getResources().getStringArray(R.array.spinner_codigos_tipo_empleado)[i];
-    }
 }

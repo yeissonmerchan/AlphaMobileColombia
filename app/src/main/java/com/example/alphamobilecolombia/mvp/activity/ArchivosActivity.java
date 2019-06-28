@@ -127,6 +127,8 @@ public class ArchivosActivity extends AppCompatActivity {
 
         result = compareLists(listUpload);
         if(result){
+            UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
+            uploadFilesPresenter.PostGuardarDocumentos(listUpload,view.getContext());
             Intent intento1=new Intent(this,FinalActivity.class);
             startActivity(intento1);
         }
@@ -151,11 +153,11 @@ public class ArchivosActivity extends AppCompatActivity {
         List<com.example.alphamobilecolombia.utils.models.File> filesRequired = new ArrayList<com.example.alphamobilecolombia.utils.models.File>();
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(66,"",true,"SolicitudCreditoCara1",false));
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(67,"",true,"SolicitudCreditoCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(68,"",true,"CedulaCara1",false));
+        /*filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(68,"",true,"CedulaCara1",false));
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(69,"",true,"CedulaCara2",false));
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(70,"",true,"Desprendible1",false));
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(71,"",true,"Desprendible2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(77,"",true,"TratamientoDatosPersonales",false));
+        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(77,"",true,"TratamientoDatosPersonales",false));*/
 
         ExistFile existFile = new ExistFile();
 
@@ -184,8 +186,8 @@ public class ArchivosActivity extends AppCompatActivity {
                     break;
             }
         }
-
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        //if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         {
             return true;
         }
@@ -219,7 +221,7 @@ public class ArchivosActivity extends AppCompatActivity {
                         dialog.cancel();
                         listUpload.add(new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true));
                         String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
-                        uploadFilesPresenter.uploadFiles(pathFile);
+                        uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
                     }
                 });
 

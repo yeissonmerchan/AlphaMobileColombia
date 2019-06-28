@@ -1,5 +1,7 @@
 package com.example.alphamobilecolombia.mvp.presenter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -10,13 +12,38 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jibble.simpleftp.*;
+import org.json.JSONObject;
+
 import android.graphics.Bitmap.*;
+import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.widget.Switch;
+
+import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
+import com.example.alphamobilecolombia.data.remote.Models.PostPersonaInsertarRequest;
+import com.example.alphamobilecolombia.data.remote.Models.PostSaveDocuments;
+import com.example.alphamobilecolombia.data.remote.PostAutentication;
+import com.example.alphamobilecolombia.data.remote.PostGuardarDocumentos;
+import com.example.alphamobilecolombia.data.remote.PostPersonaInsertar;
+import com.example.alphamobilecolombia.utils.models.Person;
+import com.google.gson.Gson;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class UploadFilesPresenter {
 
-    public void uploadFiles(String pathFile)
+    public void uploadFiles(String pathFile, Context context)
     {
         try
         {
@@ -25,23 +52,6 @@ public class UploadFilesPresenter {
             OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
             bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, os);
             os.close();
-
-            /*File f = new File(pathFile);
-
-
-            f.createNewFile();
-
-            //Convert bitmap to byte array
-            Bitmap bitmap = bitmap1;
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(CompressFormat.PNG, 0, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-            //write the bytes in file
-            FileOutputStream fos = new FileOutputStream(f);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();*/
 
             if(file.exists()) {
                 SimpleFTP ftp = new SimpleFTP();
@@ -68,5 +78,109 @@ public class UploadFilesPresenter {
         {
             e.printStackTrace();
         }
+    }
+
+    public HttpResponse PostGuardarDocumentos(List<com.example.alphamobilecolombia.utils.models.File> filesUpload, Context context) {
+        final HttpResponse responseModel = new HttpResponse();
+        try {
+            //TODO: Quitar el policy y poner asíncrono
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
+
+            RealmStorage storage = new RealmStorage();
+            Gson gson = new Gson();
+            List<PostSaveDocuments> listDocuments = new ArrayList<PostSaveDocuments>();
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String sujetoCredito = preferences.getString("codigoTransaccion", "DEFAULT");
+
+            SharedPreferences sharedPref = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String user = sharedPref.getString("idUser", "");
+
+            Person person = storage.getPerson(context);
+            for(com.example.alphamobilecolombia.utils.models.File file : filesUpload) {
+                String nameFile = file.getName();
+                String pathFile = person.getNumber()+nameFile+".jgp";
+
+                PostSaveDocuments newDocument = new PostSaveDocuments();
+                newDocument.setRutaArchivo(pathFile);
+                newDocument.setSujetoCreditoID(Integer.parseInt(sujetoCredito));
+                newDocument.setTipoArchivoID(GetIdDocument(sujetoCredito));
+                newDocument.setTipoArchivoNombre(pathFile);
+                newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+
+                listDocuments.add(newDocument);
+
+            }
+
+
+            String data = gson.toJson(listDocuments);
+            RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
+
+            Call<String> call = postService.Upload( body1 );
+
+            Response response = call.execute();
+
+            JSONObject jsonObject = new JSONObject(response.body().toString());
+            String value = jsonObject.toString();
+            responseModel.setCode("200");
+            responseModel.setData(jsonObject);
+            responseModel.setMessage("Solicitud de acceso correcta.");
+
+            return responseModel;
+
+        }
+        catch (Exception ex){
+            System.out.println("Ha ocurrido un error! "+ex.getMessage());
+        }
+        return null;
+    }
+
+    public int GetIdDocument(String name){
+        int idDocument = 0;
+
+        switch(name){
+            case "SolicitudCreditoCara1":
+                idDocument = 66;
+                break;
+            case "SolicitudCreditoCara2":
+                idDocument = 67;
+                break;
+            case "CedulaCara1":
+                idDocument = 68;
+                break;
+            case "CedulaCara2":
+                idDocument = 69;
+                break;
+            case "Desprendible1":
+                idDocument = 70;
+                break;
+            case "Desprendible2":
+                idDocument = 71;
+                break;
+            case "Desprendible3":
+                idDocument = 72;
+                break;
+            case "Desprendible4":
+                idDocument = 73;
+                break;
+            case "FormatoFirmaRuego":
+                idDocument = 74;
+                break;
+            case "SelloNotariaFirmaRuego":
+                idDocument = 75;
+                break;
+            case "CedulaTestigoFirmaRuego":
+                idDocument = 76;
+                break;
+            case "TratamientoDatosPersonales":
+                idDocument = 77;
+                break;
+        }
+
+        return idDocument;
     }
 }

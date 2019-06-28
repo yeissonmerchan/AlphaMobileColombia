@@ -118,7 +118,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     EditText edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
                     EditText edt_numberIdentification = (EditText) findViewById(R.id.edt_numberIdentification);
                     EditText edt_birthDate = (EditText) findViewById(R.id.edt_birthDate);
-                    EditText edt_celular = (EditText) findViewById(R.id.edt_celular);
+                    //EditText edt_celular = (EditText) findViewById(R.id.edt_celular);
                     EditText edt_genero = (EditText) findViewById(R.id.edt_genero);
                     EditText edt_factor = (EditText) findViewById(R.id.edt_factor);
 
@@ -141,7 +141,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     edt_birthDate.setText(person.getBirthday());
                     edt_genero.setText(person.getGender());
                     edt_factor.setText(person.getBloodType());
-                    edt_celular.setText(person.getPlaceBirth());
+                    //edt_celular.setText(person.getPlaceBirth());
 
                     //Toast.makeText(getApplicationContext(),p.toString(), Toast.LENGTH_SHORT).show();
                     //Log.d("MainActivity", "Scaneado");
