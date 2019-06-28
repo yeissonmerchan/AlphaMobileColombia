@@ -52,7 +52,8 @@ public class FinalActivity extends AppCompatActivity {
     }
 
     public void onClickBtnUpdFiles(View view) {
-
+        Intent intent = new Intent (view.getContext(), ModuloActivity.class);
+        startActivityForResult(intent, 0);
 
 
         /*

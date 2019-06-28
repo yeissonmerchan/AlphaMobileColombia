@@ -103,8 +103,19 @@ public class TerminosActivity extends AppCompatActivity {
                     JSONObject objeto2 = (JSONObject) modelSujetoCredito.getData();
                     setData(sharedPref, objeto2);
 
-                    Intent intent = new Intent(context, WebViewUpdFilesActivity.class);
-                    startActivity(intent);
+                    Intent intent = new Intent (view.getContext(), ArchivosActivity.class);
+                    intent.putExtra("PERSONA_Documento", persona.getCedula());
+                    intent.putExtra("PERSONA_PNombre", persona.getNombre());
+                    intent.putExtra("PERSONA_SNombre", "");
+                    intent.putExtra("PERSONA_PApellido", persona.getApellido1());
+                    intent.putExtra("PERSONA_SApellido", persona.getApellido2());
+                    intent.putExtra("PERSONA_FechaNac", persona.getFechaNacimiento());
+                    intent.putExtra("PERSONA_Genero", persona.getGenero());
+                    intent.putExtra("PERSONA_Celular", persona.getCelular());
+                    intent.putExtra("IdTipoEmpleado", IdTipoEmpleado);
+                    intent.putExtra("IdTipoContrato", IdTipoContrato);
+                    intent.putExtra("IdDestinoCredito", IdDestinoCredito);
+                    startActivityForResult(intent, 0);
                 }
 
             }
@@ -113,21 +124,6 @@ public class TerminosActivity extends AppCompatActivity {
 
             }
         }
-
-        Intent intent = new Intent (view.getContext(), ArchivosActivity.class);
-        intent.putExtra("PERSONA_Documento", persona.getCedula());
-        intent.putExtra("PERSONA_PNombre", persona.getNombre());
-        intent.putExtra("PERSONA_SNombre", "");
-        intent.putExtra("PERSONA_PApellido", persona.getApellido1());
-        intent.putExtra("PERSONA_SApellido", persona.getApellido2());
-        intent.putExtra("PERSONA_FechaNac", persona.getFechaNacimiento());
-        intent.putExtra("PERSONA_Genero", persona.getGenero());
-        intent.putExtra("PERSONA_Celular", persona.getCelular());
-        intent.putExtra("IdTipoEmpleado", IdTipoEmpleado);
-        intent.putExtra("IdTipoContrato", IdTipoContrato);
-        intent.putExtra("IdDestinoCredito", IdDestinoCredito);
-        startActivityForResult(intent, 0);
-
     }
 
     public void setData(SharedPreferences sharedPref, JSONObject objeto) throws JSONException {
