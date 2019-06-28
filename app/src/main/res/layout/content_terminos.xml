@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="80dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mvp.activity.TerminosActivity"
     tools:showIn="@layout/activity_terminos">
@@ -15,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:orientation="vertical">
 
             <TextView
@@ -70,12 +72,12 @@
 
             <Button
                 android:id="@+id/btn_new_request"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/border_button"
+                android:background="@color/colorHeader"
                 android:text="@string/btn_next"
                 android:onClick="onClickBtnAgree"
                 android:textColor="@color/colorSubtext"

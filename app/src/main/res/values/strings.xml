@@ -37,8 +37,8 @@
 
     <string name="terminos_title">Autorización</string>
     <string name="terminos_info">A continuación usted aceptara los términos y condiciones del proceso.</string>
-    <string name="title_activity_final">Finalización</string>
-    <string name="info_activity_final">Es hora de que nos compartas las fotos de los documentos del crédito, para continuar ve a la opción \"Subir archivos\" o de lo contrario en \"Nueva solicitud\".</string>
+    <string name="title_activity_final">¡Tu solicitud a cargado satisfactoriamente!</string>
+    <string name="info_activity_final">podrás consultar la respuesta de pre-aprobación en las próximas horas.</string>
 
     <string name="licenceKey">"3A7HL_561/8fJSb5nW5k"</string>
     <string name="userkey">vivecreditos</string>

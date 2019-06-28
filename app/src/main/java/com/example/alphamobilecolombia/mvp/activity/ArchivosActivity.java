@@ -116,10 +116,6 @@ public class ArchivosActivity extends AppCompatActivity {
         ConfirmacionImagen(view);
     }
 
-    public static <T> T findByProperty(Collection<T> col, Predicate<T> filter) {
-        return col.stream().filter(filter).findFirst().orElse(null);
-    }
-
     public void finalizacion(View view) {
         boolean result = false;
         //List<com.example.alphamobilecolombia.utils.models.File> filesRequired = file.getFiles();
