@@ -67,11 +67,11 @@ public class File {
         list.add(new File(69,"",true,"CedulaCara2",false));
         list.add(new File(70,"",true,"Desprendible1",false));
         list.add(new File(71,"",true,"Desprendible2",false));
-        list.add(new File(72,"",false,"Desprendible3",false));
+        /*list.add(new File(72,"",false,"Desprendible3",false));
         list.add(new File(73,"",false,"Desprendible4",false));
         list.add(new File(74,"",false,"FormatoFirmaRuego",false));
         list.add(new File(75,"",false,"FormatoFirmaRuego",false));
-        list.add(new File(76,"",false,"CedulaTestigoFirmaRuego",false));
+        list.add(new File(76,"",false,"CedulaTestigoFirmaRuego",false));*/
 
         return list;
     }
