@@ -94,7 +94,8 @@ public class UploadFilesPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:623
             PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();
@@ -177,7 +178,8 @@ public class UploadFilesPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
             PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();
