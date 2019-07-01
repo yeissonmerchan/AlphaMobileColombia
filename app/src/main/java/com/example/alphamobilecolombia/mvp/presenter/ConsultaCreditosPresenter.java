@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.mvp.presenter;
 import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.PostSolicitudes;
 import com.google.gson.Gson;
 
@@ -31,7 +32,7 @@ public class ConsultaCreditosPresenter {
             //String data = gson.toJson(new PostAutenticationRequest(txtUsuario,MD5Hashing.MD5(txtPass)));
             RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
-            Call<String> call = postService.Login( body1 );//True:False?0101
+            Call<String> call = postService.GetListSolicitudes( body1 );//True:False?0101
             //String responseS = call.execute().toString();//.enqueue(callback);
 
             Response response = call.execute();
