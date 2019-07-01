@@ -15,6 +15,7 @@ import com.example.alphamobilecolombia.utils.models.Person;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -48,6 +49,7 @@ public class ArchivosActivity extends AppCompatActivity {
     RealmStorage storage = new RealmStorage();
     View view;
     Context context;
+    String idSujeroCredito;
     com.example.alphamobilecolombia.utils.models.File file;
     List<com.example.alphamobilecolombia.utils.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.utils.models.File>();
     @Override
@@ -64,7 +66,7 @@ public class ArchivosActivity extends AppCompatActivity {
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Cargue de documentos");
 
-
+        idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         //Relacionamos con el XML
         imagen1=(ImageView)findViewById(R.id.imageView);
 
@@ -116,6 +118,7 @@ public class ArchivosActivity extends AppCompatActivity {
         ConfirmacionImagen(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void finalizacion(View view) {
         boolean result = false;
         //List<com.example.alphamobilecolombia.utils.models.File> filesRequired = file.getFiles();
@@ -123,8 +126,8 @@ public class ArchivosActivity extends AppCompatActivity {
 
         result = compareLists(listUpload);
         if(result){
-            UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
-            uploadFilesPresenter.PostGuardarDocumentos(listUpload,view.getContext());
+            //UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
+            //uploadFilesPresenter.PostGuardarDocumentos(listUpload,view.getContext(),idSujeroCredito);
             Intent intento1=new Intent(this,FinalActivity.class);
             startActivity(intento1);
         }
@@ -184,6 +187,7 @@ public class ArchivosActivity extends AppCompatActivity {
         }
         if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
         //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
+        //if(existFile.SolicitudCreditoCara1)
         {
             return true;
         }
@@ -213,11 +217,14 @@ public class ArchivosActivity extends AppCompatActivity {
         builder1.setPositiveButton(
                 "Sí",
                 new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        listUpload.add(new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true));
+                        com.example.alphamobilecolombia.utils.models.File fileUpload = new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true);
+                        listUpload.add(fileUpload);
                         String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
-                        uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
+                        //uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
+                        uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito);
                     }
                 });
 

@@ -102,6 +102,7 @@ public class TerminosActivity extends AppCompatActivity {
                 if (modelSujetoCredito!=null){
                     JSONObject objeto2 = (JSONObject) modelSujetoCredito.getData();
                     setData(sharedPref, objeto2);
+                    String idSujetoCredito = objeto2.getString("codigoTransaccion");
 
                     Intent intent = new Intent (view.getContext(), ArchivosActivity.class);
                     intent.putExtra("PERSONA_Documento", persona.getCedula());
@@ -115,6 +116,7 @@ public class TerminosActivity extends AppCompatActivity {
                     intent.putExtra("IdTipoEmpleado", IdTipoEmpleado);
                     intent.putExtra("IdTipoContrato", IdTipoContrato);
                     intent.putExtra("IdDestinoCredito", IdDestinoCredito);
+                    intent.putExtra("IdSujetoCredito",idSujetoCredito);
                     startActivityForResult(intent, 0);
                 }
 

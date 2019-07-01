@@ -12,16 +12,22 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import android.util.Base64;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.jibble.simpleftp.*;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap.*;
+import android.os.Build;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.widget.Switch;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
@@ -80,14 +86,16 @@ public class UploadFilesPresenter {
         }
     }
 
-    public HttpResponse PostGuardarDocumentos(List<com.example.alphamobilecolombia.utils.models.File> filesUpload, Context context) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public HttpResponse PostGuardarDocumentos(List<com.example.alphamobilecolombia.utils.models.File> filesUpload, Context context, String idSujetoCredito) {
         final HttpResponse responseModel = new HttpResponse();
         try {
             //TODO: Quitar el policy y poner asíncrono
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:623
             PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();
@@ -103,14 +111,36 @@ public class UploadFilesPresenter {
             Person person = storage.getPerson(context);
             for(com.example.alphamobilecolombia.utils.models.File file : filesUpload) {
                 String nameFile = file.getName();
-                String pathFile = person.getNumber()+nameFile+".jgp";
+                //String pathFile = person.getNumber()+nameFile+".jgp";
+
+                String pathFileLocal = context.getExternalFilesDir(null)+"/"+nameFile;
+                File fileLocal = new File(pathFileLocal);
+                Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
+                OutputStream os = new BufferedOutputStream(new FileOutputStream(fileLocal));
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 50, os);
+                os.close();
+
+                String base64 = "";
+                try {
+                    byte[] buffer = new byte[(int) fileLocal.length() + 100];
+                    @SuppressWarnings("resource")
+                    int length = new FileInputStream(fileLocal).read(buffer);
+                    base64 = Base64.encodeToString(buffer, 0, length,
+                            Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 PostSaveDocuments newDocument = new PostSaveDocuments();
-                newDocument.setRutaArchivo(pathFile);
-                newDocument.setSujetoCreditoID(Integer.parseInt(sujetoCredito));
-                newDocument.setTipoArchivoID(GetIdDocument(sujetoCredito));
-                newDocument.setTipoArchivoNombre(pathFile);
+                newDocument.setRutaArchivo(nameFile);
+                newDocument.setSujetoCreditoID(Integer.parseInt(idSujetoCredito));
+                newDocument.setTipoArchivoID(GetIdDocument(file.getType()));
+                newDocument.setTipoArchivoNombre(file.getType());
                 newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+                newDocument.setExtensionArchivo(".jpg");
+                newDocument.setNombreArchivo(nameFile);
+                newDocument.setArchivo(base64);
 
                 listDocuments.add(newDocument);
 
@@ -138,6 +168,91 @@ public class UploadFilesPresenter {
         }
         return null;
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public HttpResponse PostGuardarDocumentos(com.example.alphamobilecolombia.utils.models.File filesUpload, Context context, String idSujetoCredito) {
+        final HttpResponse responseModel = new HttpResponse();
+        try {
+            //TODO: Quitar el policy y poner asíncrono
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
+
+            RealmStorage storage = new RealmStorage();
+            Gson gson = new Gson();
+            List<PostSaveDocuments> listDocuments = new ArrayList<PostSaveDocuments>();
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String sujetoCredito = preferences.getString("codigoTransaccion", "DEFAULT");
+
+            SharedPreferences sharedPref = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String user = sharedPref.getString("idUser", "");
+
+            Person person = storage.getPerson(context);
+
+                String nameFile = filesUpload.getName();
+                //String pathFile = person.getNumber()+nameFile+".jgp";
+
+                String pathFileLocal = context.getExternalFilesDir(null)+"/"+nameFile;
+                File fileLocal = new File(pathFileLocal);
+                Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
+                OutputStream os = new BufferedOutputStream(new FileOutputStream(fileLocal));
+                bitmap1.compress(Bitmap.CompressFormat.JPEG, 50, os);
+                os.close();
+
+                String base64 = "";
+                try {
+                    byte[] buffer = new byte[(int) fileLocal.length() + 100];
+                    @SuppressWarnings("resource")
+                    int length = new FileInputStream(fileLocal).read(buffer);
+                    base64 = Base64.encodeToString(buffer, 0, length,
+                            Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                PostSaveDocuments newDocument = new PostSaveDocuments();
+                newDocument.setRutaArchivo(nameFile);
+                newDocument.setSujetoCreditoID(Integer.parseInt(idSujetoCredito));
+                newDocument.setTipoArchivoID(GetIdDocument(filesUpload.getType()));
+                newDocument.setTipoArchivoNombre(filesUpload.getType());
+                newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+                newDocument.setExtensionArchivo(".jpg");
+                newDocument.setNombreArchivo(nameFile);
+                newDocument.setArchivo(base64);
+
+                listDocuments.add(newDocument);
+
+
+
+
+            String data = gson.toJson(listDocuments);
+            RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
+
+            Call<String> call = postService.Upload( body1 );
+
+            Response response = call.execute();
+
+            JSONObject jsonObject = new JSONObject(response.body().toString());
+            String value = jsonObject.toString();
+            responseModel.setCode("200");
+            responseModel.setData(jsonObject);
+            responseModel.setMessage("Solicitud de acceso correcta.");
+
+            return responseModel;
+
+        }
+        catch (Exception ex){
+            System.out.println("Ha ocurrido un error! "+ex.getMessage());
+        }
+        return null;
+    }
+
 
     public int GetIdDocument(String name){
         int idDocument = 0;
