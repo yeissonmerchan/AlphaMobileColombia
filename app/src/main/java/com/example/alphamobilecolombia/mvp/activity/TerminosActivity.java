@@ -59,10 +59,12 @@ public class TerminosActivity extends AppCompatActivity {
         IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
         IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
 
+
+        btnAgree();
     }
 
 
-    public void onClickBtnAgree(View view) {
+    public void btnAgree() {
 
         Persona persona = new Persona();
 
@@ -104,7 +106,8 @@ public class TerminosActivity extends AppCompatActivity {
                     setData(sharedPref, objeto2);
                     String idSujetoCredito = objeto2.getString("codigoTransaccion");
 
-                    Intent intent = new Intent (view.getContext(), ArchivosActivity.class);
+                    Context ctx = this.context;
+                    Intent intent = new Intent (ctx, ArchivosActivity.class);
                     intent.putExtra("PERSONA_Documento", persona.getCedula());
                     intent.putExtra("PERSONA_PNombre", persona.getNombre());
                     intent.putExtra("PERSONA_SNombre", "");
@@ -126,6 +129,13 @@ public class TerminosActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+
+    public void onClickBtnAgree(View view) {
+
+
     }
 
     public void setData(SharedPreferences sharedPref, JSONObject objeto) throws JSONException {

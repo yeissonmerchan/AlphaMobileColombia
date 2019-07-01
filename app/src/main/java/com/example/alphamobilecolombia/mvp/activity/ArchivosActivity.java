@@ -212,7 +212,7 @@ public class ArchivosActivity extends AppCompatActivity {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
         builder1.setCancelable(true);
-        UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
+        final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
         final String nameFile = spinner_tipo_documento.getSelectedItem().toString();
         builder1.setPositiveButton(
                 "Sí",
