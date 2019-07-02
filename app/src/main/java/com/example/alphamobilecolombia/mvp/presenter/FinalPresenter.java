@@ -30,8 +30,8 @@ public class FinalPresenter {
             StrictMode.setThreadPolicy(policy);
 
 
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
             PostPersonaInsertar postService = retrofit.create(PostPersonaInsertar.class);
 
             Gson gson = new Gson();
