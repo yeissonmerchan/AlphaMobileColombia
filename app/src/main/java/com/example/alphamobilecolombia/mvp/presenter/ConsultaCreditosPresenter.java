@@ -24,7 +24,7 @@ public class ConsultaCreditosPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:8082
             PostSolicitudes postService = retrofit.create(PostSolicitudes.class);
 
             Gson gson = new Gson();
