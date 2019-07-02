@@ -57,7 +57,7 @@ public class FinalPresenter {
         return null;
     }
 
-    public HttpResponse PostInsertSujetoCredito(Persona persona, String codigoTransaccion, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro) {
+    public HttpResponse PostInsertSujetoCredito(Persona persona, String codigoTransaccion, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro, int idPagaduria) {
         final HttpResponse responseModel = new HttpResponse();
         try {
             //TODO: Quitar el policy y poner asíncrono
@@ -69,7 +69,7 @@ public class FinalPresenter {
             PostSujetoCredito postService = retrofit.create(PostSujetoCredito.class);
 
             Gson gson = new Gson();
-            String data = gson.toJson(new PostSujetoInsertarRequest(codigoTransaccion, iD_ts_tipoEmpleado, iD_tp_tipoContrato, iD_ts_destinoCredito,  iD_TP_UsuarioRegistro));
+            String data = gson.toJson(new PostSujetoInsertarRequest(codigoTransaccion, iD_ts_tipoEmpleado, iD_tp_tipoContrato, iD_ts_destinoCredito,  iD_TP_UsuarioRegistro, idPagaduria));
             RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
             Call<String> call = postService.Insertar( body1 );

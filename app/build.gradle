@@ -10,7 +10,7 @@ android {
         applicationId "com.alphacredit.alphamobilecolombia"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 8
+        versionCode 9
         versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

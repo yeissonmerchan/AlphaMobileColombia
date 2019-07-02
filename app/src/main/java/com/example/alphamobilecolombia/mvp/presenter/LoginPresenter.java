@@ -33,11 +33,11 @@ public class LoginPresenter {
                 PostAutentication postService = retrofit.create(PostAutentication.class);
 
                 Gson gson = new Gson();
-                //String data = gson.toJson(new PostAutenticationRequest("10031460","6d91327bca8251614ee4b0400e3edb67"));
-                String data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
+                String data = gson.toJson(new PostAutenticationRequest("10031460","6d91327bca8251614ee4b0400e3edb67"));
+                //String data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
                 RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
-                Call<String> call = postService.Login( body1 );//True:False?0101
+                Call<String> call = postService.Login(body1);//True:False?0101
                 //String responseS = call.execute().toString();//.enqueue(callback);
 
                 Response response = call.execute();

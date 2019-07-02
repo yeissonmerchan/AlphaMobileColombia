@@ -28,6 +28,7 @@ public class TerminosActivity extends AppCompatActivity {
     private String IdTipoEmpleado;
     private String IdTipoContrato;
     private String IdDestinoCredito;
+    private String IdPagaduria;
     final Context context = this;
 
     @Override
@@ -58,6 +59,7 @@ public class TerminosActivity extends AppCompatActivity {
         IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
         IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
         IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
+        IdPagaduria = getIntent().getStringExtra("IdPagaduria");
 
 
         btnAgree();
@@ -79,7 +81,7 @@ public class TerminosActivity extends AppCompatActivity {
         IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
         IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
         IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
-
+        IdPagaduria = getIntent().getStringExtra("IdPagaduria");
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
 
@@ -98,9 +100,9 @@ public class TerminosActivity extends AppCompatActivity {
                 int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
                 int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoEmpleado));
                 int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
+                int idPagaduria = Integer.parseInt(IdPagaduria);
 
-
-                HttpResponse modelSujetoCredito = presenter.PostInsertSujetoCredito(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user);
+                HttpResponse modelSujetoCredito = presenter.PostInsertSujetoCredito(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria);
                 if (modelSujetoCredito!=null){
                     JSONObject objeto2 = (JSONObject) modelSujetoCredito.getData();
                     setData(sharedPref, objeto2);
@@ -110,7 +112,7 @@ public class TerminosActivity extends AppCompatActivity {
                     Intent intent = new Intent (ctx, ArchivosActivity.class);
                     intent.putExtra("PERSONA_Documento", persona.getCedula());
                     intent.putExtra("PERSONA_PNombre", persona.getNombre());
-                    intent.putExtra("PERSONA_SNombre", "");
+                    intent.putExtra("PERSONA_SNombre", persona.getApellido2());
                     intent.putExtra("PERSONA_PApellido", persona.getApellido1());
                     intent.putExtra("PERSONA_SApellido", persona.getApellido2());
                     intent.putExtra("PERSONA_FechaNac", persona.getFechaNacimiento());
@@ -120,6 +122,7 @@ public class TerminosActivity extends AppCompatActivity {
                     intent.putExtra("IdTipoContrato", IdTipoContrato);
                     intent.putExtra("IdDestinoCredito", IdDestinoCredito);
                     intent.putExtra("IdSujetoCredito",idSujetoCredito);
+                    intent.putExtra("IdPagaduria",IdPagaduria);
                     startActivityForResult(intent, 0);
                 }
 
@@ -179,4 +182,5 @@ public class TerminosActivity extends AppCompatActivity {
         }
         return getResources().getStringArray(R.array.spinner_codigos_tipo_empleado)[i];
     }
+
 }
