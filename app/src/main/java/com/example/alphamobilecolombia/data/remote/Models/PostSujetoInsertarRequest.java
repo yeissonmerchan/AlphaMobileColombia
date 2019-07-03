@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PostSujetoInsertarRequest {
     final String iD_TP_Persona;
-    final String iD_TS_Pagaduria;
+    final int iD_TS_Pagaduria;
     final String iD_TP_Sucursal;
     final String iD_TS_Regional;
     final String iD_TP_Asesor;
@@ -40,9 +40,9 @@ public class PostSujetoInsertarRequest {
     final String fechaResolucion;
     final String codigoMesada;
 
-    public PostSujetoInsertarRequest(String iD_tp_persona, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro) {
+    public PostSujetoInsertarRequest(String iD_tp_persona, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro, int idPagaduria) {
         iD_TP_Persona = iD_tp_persona;
-        iD_TS_Pagaduria = "160";
+        iD_TS_Pagaduria = idPagaduria;
         iD_TP_Sucursal = "1";
         iD_TS_Regional = "1";
         iD_TP_Asesor = "1";

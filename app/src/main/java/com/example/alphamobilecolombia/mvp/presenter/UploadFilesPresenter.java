@@ -143,7 +143,7 @@ public class UploadFilesPresenter {
                 newDocument.setArchivo(base64);
 
                 listDocuments.add(newDocument);
-
+                fileLocal.delete();
             }
 
 

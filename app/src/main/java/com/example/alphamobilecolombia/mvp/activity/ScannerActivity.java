@@ -6,6 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.GetPagadurias;
+import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
+import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.ListGetPagaduriasRequest;
+import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
@@ -26,32 +31,51 @@ import android.widget.Toast;
 
 import com.example.alphamobilecolombia.R;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import co.venko.api.android.cedula.DocumentManager;
+import freemarker.template.utility.CollectionUtils;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Person person;
-    Spinner spinner_tipo_empleado, spinner_tipo_contrato, spinner_destino_credito;
+    Spinner spinner_tipo_empleado, spinner_tipo_contrato, spinner_destino_credito, spinner_pagaduria;
     Persona p;
     RealmStorage storage = new RealmStorage();
+    List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
         Window window = this.getWindow();
+        ScannerPresenter scannerPresenter = new ScannerPresenter();
+        HttpResponse response = scannerPresenter.getPagadurias();
+        Gson gson = new Gson();
+
+        JSONObject data = (JSONObject) response.getData();
+        try {
+            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+            GetPagaduriasRequest getPagaduriasRequest;
+            for (int i = 0; i < jSONArray.length(); i++) {
+                getPagaduriasRequest = new GetPagaduriasRequest();
+                JSONObject object = (JSONObject) jSONArray.get(i);
+                getPagaduriasRequest.setId(Integer.parseInt(object.getString("id")));
+                getPagaduriasRequest.setNombre(object.getString("nombre"));
+                pagadurias.add(getPagaduriasRequest);
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -64,7 +88,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         new IntentIntegrator(ScannerActivity.this)
                 .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-                .setPrompt("Scan")
+                .setPrompt("Por favor escanear el código Qr de la cédula.")
                 .setCameraId(0)
                 .setBeepEnabled(false)
                 .setBarcodeImageEnabled(false)
@@ -88,7 +112,34 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
         spinner_tipo_empleado.setOnItemSelectedListener(this);
 
+        List<String> names = new ArrayList<>();
+        for (GetPagaduriasRequest p : pagadurias) {
+            names.add(p.getNombre());
+        }
+
+        ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
+
+        Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
+        userSpinner.setAdapter(userAdapter);
+
+
     }
+
+    private String getCodePagaduria(String name, List<GetPagaduriasRequest> listPagadurias) {
+        int i = -1;
+        for (GetPagaduriasRequest cc: listPagadurias) {
+            i++;
+            if (cc.getNombre().equals(name))
+                break;
+        }
+
+        List<Integer> idPagadurias = new ArrayList<>();
+        for (GetPagaduriasRequest p : listPagadurias) {
+            idPagadurias.add(p.getId());
+        }
+        return idPagadurias.get(i).toString();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -170,6 +221,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("PERSONA_Genero", p.getGenero());
         intent.putExtra("PERSONA_Celular", p.getCelular());
         */
+        String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
+        String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
 
         if(person == null){
             person = storage.getPerson(this);
@@ -189,6 +242,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
         intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
         intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
+        intent.putExtra("IdPagaduria",codePagaduria);
 
         startActivityForResult(intent, 0);
 
