@@ -105,6 +105,8 @@
         <item id="4" idDep="1">CedulaCara2</item>
         <item id="5" idDep="1">Desprendible1</item>
         <item id="6" idDep="1">Desprendible2</item>
+        <item id="7" idDep="1">Desprendible3</item>
+        <item id="8" idDep="1">Desprendible4</item>
         <item id="12" idDep="1">TratamientoDatosPersonales</item>
     </string-array>
 
@@ -115,10 +117,10 @@
         <item id="4" idDep="1">69</item>
         <item id="5" idDep="1">70</item>
         <item id="6" idDep="1">71</item>
+        <item id="7" idDep="1">72</item>
+        <item id="8" idDep="1">73</item>
         <item id="12" idDep="1">77</item>
     </string-array>
-
-
 
 
     <string-array name="spinner_tipo_contrato_pensionado">
@@ -129,6 +131,7 @@
     <string name="title_activity_archivos">ArchivosActivity</string>
     <string name="title_activity_capturar">CapturarActivity</string>
     <string name="title_activity_inicial">InicialActivity</string>
+    <string name="title_activity_archivos_v2">ArchivosV2Activity</string>
 
 
 </resources>

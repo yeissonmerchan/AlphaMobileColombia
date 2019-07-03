@@ -109,7 +109,7 @@ public class TerminosActivity extends AppCompatActivity {
                     String idSujetoCredito = objeto2.getString("codigoTransaccion");
 
                     Context ctx = this.context;
-                    Intent intent = new Intent (ctx, ArchivosActivity.class);
+                    Intent intent = new Intent (ctx, ArchivosV2Activity.class);
                     intent.putExtra("PERSONA_Documento", persona.getCedula());
                     intent.putExtra("PERSONA_PNombre", persona.getNombre());
                     intent.putExtra("PERSONA_SNombre", persona.getApellido2());
