@@ -43,6 +43,8 @@ public class ModuloActivity extends AppCompatActivity {
     }
 
     public void onClickBtnListRequest(View view) {
+        Intent intent = new Intent (view.getContext(), ConsultaCreditosActivity.class);
+        startActivityForResult(intent, 0);
     }
 
 

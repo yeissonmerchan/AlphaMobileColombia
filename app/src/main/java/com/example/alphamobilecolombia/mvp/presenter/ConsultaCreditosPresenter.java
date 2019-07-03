@@ -1,9 +1,11 @@
 package com.example.alphamobilecolombia.mvp.presenter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
+import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoRequest;
 import com.example.alphamobilecolombia.data.remote.PostSolicitudes;
 import com.google.gson.Gson;
 
@@ -24,12 +26,11 @@ public class ConsultaCreditosPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:8082
+            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:8082
             PostSolicitudes postService = retrofit.create(PostSolicitudes.class);
 
             Gson gson = new Gson();
-            String data = gson.toJson(new PostAutenticationRequest("10031460","6d91327bca8251614ee4b0400e3edb67"));
-            //String data = gson.toJson(new PostAutenticationRequest(txtUsuario,MD5Hashing.MD5(txtPass)));
+            String data = gson.toJson(new PostConsultarReporteCreditoRequest("6","3","18",idUsuario,"2019-07-02","2019-07-02"));
             RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
             Call<String> call = postService.GetListSolicitudes( body1 );//True:False?0101
