@@ -99,7 +99,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
         boolean result = false;
         //List<com.example.alphamobilecolombia.utils.models.File> filesRequired = file.getFiles();
 
-
+        this.view = view;
         result = compareLists(listUpload);
         if(result){
             //UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
@@ -127,29 +127,31 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
         ArchivosActivity.ExistFile existFile = new ArchivosActivity.ExistFile();
 
-        for(com.example.alphamobilecolombia.utils.models.File file : modelList) {
-            switch (file.getType()){
-                case "SolicitudCreditoCara1":
-                    existFile.SolicitudCreditoCara1 = true;
-                    break;
-                case "SolicitudCreditoCara2":
-                    existFile.SolicitudCreditoCara2 = true;
-                    break;
-                case "CedulaCara1":
-                    existFile.CedulaCara1 = true;
-                    break;
-                case "CedulaCara2":
-                    existFile.CedulaCara2 = true;
-                    break;
-                case "Desprendible1":
-                    existFile.Desprendible1 = true;
-                    break;
-                case "Desprendible2":
-                    existFile.Desprendible2 = true;
-                    break;
-                case "TratamientoDatosPersonales":
-                    existFile.TratamientoDatosPersonales = true;
-                    break;
+        if(listUpload.size()>0) {
+            for (com.example.alphamobilecolombia.utils.models.File file : modelList) {
+                switch (file.getType()) {
+                    case "SolicitudCreditoCara1":
+                        existFile.SolicitudCreditoCara1 = true;
+                        break;
+                    case "SolicitudCreditoCara2":
+                        existFile.SolicitudCreditoCara2 = true;
+                        break;
+                    case "CedulaCara1":
+                        existFile.CedulaCara1 = true;
+                        break;
+                    case "CedulaCara2":
+                        existFile.CedulaCara2 = true;
+                        break;
+                    case "Desprendible1":
+                        existFile.Desprendible1 = true;
+                        break;
+                    case "Desprendible2":
+                        existFile.Desprendible2 = true;
+                        break;
+                    case "TratamientoDatosPersonales":
+                        existFile.TratamientoDatosPersonales = true;
+                        break;
+                }
             }
         }
         if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
@@ -159,7 +161,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             return true;
         }
         else{
-            validStatusUpload(existFile.CedulaCara1, existFile.CedulaCara2, existFile.SolicitudCreditoCara1, existFile.SolicitudCreditoCara2, existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
+            validStatusUpload(existFile.SolicitudCreditoCara1, existFile.SolicitudCreditoCara2, existFile.CedulaCara1, existFile.CedulaCara2,  existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
             return false;
         }
     }
