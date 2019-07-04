@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+
+import android.graphics.Matrix;
 import android.util.Base64;
 import java.util.List;
 
@@ -196,12 +198,15 @@ public class UploadFilesPresenter {
 
                 String nameFile = filesUpload.getName();
                 //String pathFile = person.getNumber()+nameFile+".jgp";
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
 
                 String pathFileLocal = context.getExternalFilesDir(null)+"/"+nameFile;
                 File fileLocal = new File(pathFileLocal);
                 Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                 OutputStream os = new BufferedOutputStream(new FileOutputStream(fileLocal));
-                bitmap1.compress(Bitmap.CompressFormat.JPEG, 50, os);
+                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
                 os.close();
 
                 String base64 = "";

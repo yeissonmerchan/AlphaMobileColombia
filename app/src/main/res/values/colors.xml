@@ -8,9 +8,13 @@
     <color name="colorFooter">#ed481a</color>
     <color name="colorToolBar">#f5f5f5</color>
     <color name="colorText">#5b5b5b</color>
-    <color name="colorToolBarLine">#d9dada</color>
+    <color name="colorButtonUpdate">#8C9999</color>
+    <color name="colorToolBarLine">#587272</color>
     <color name="colorSubtext">#ffffff</color>
     <color name="colorButton">#ffffff</color>
     <color name="colorCancelButton">#D81B60</color>
     <color name="colorNameUser">#000000</color>
+    <color name="colorSuccess">#4BB543</color>
+    <color name="colorFailed">#FF9494</color>
+    <color name="colorObject">#eeeeee</color>
 </resources>

@@ -1,4 +1,8 @@
 <resources>
+    <string name="ip_api_autentication"></string>
+    <string name="ip_api_storage"></string>
+    <string name="ip_api_"></string>
+
     <string name="app_name">Alpha Mobile Colombia</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -132,6 +136,7 @@
     <string name="title_activity_capturar">CapturarActivity</string>
     <string name="title_activity_inicial">InicialActivity</string>
     <string name="title_activity_archivos_v2">ArchivosV2Activity</string>
+    <string name="title_activity_actualizacion">ActualizacionActivity</string>
 
 
 </resources>
