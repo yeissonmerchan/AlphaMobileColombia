@@ -66,6 +66,12 @@ public class RealmStorage {
         return findPerson.first();
     }
 
+    public void deleteTable(Context context){
+        Realm.init(context);
+        Realm realm = Realm.getDefaultInstance();
+        realm.delete(Person.class);
+    }
+
     public byte[] createNewKeys(Context context) throws KeyStoreException {
 
         try {

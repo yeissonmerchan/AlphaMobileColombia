@@ -88,7 +88,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         new IntentIntegrator(ScannerActivity.this)
                 .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-                .setPrompt("Por favor escanear el código Qr de la cédula.")
+                .setPrompt("Por favor escanear el código de barras de la cédula.")
                 .setCameraId(0)
                 .setBeepEnabled(false)
                 .setBarcodeImageEnabled(false)
