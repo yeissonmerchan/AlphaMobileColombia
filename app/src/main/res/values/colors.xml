@@ -17,4 +17,7 @@
     <color name="colorSuccess">#4BB543</color>
     <color name="colorFailed">#FF9494</color>
     <color name="colorObject">#eeeeee</color>
+    <color name="colorConCreditContainer">#EBEEFF</color>
+    <color name="colorConCreditDetailTitle">#FFFFFF</color>
+    <color name="colorConCreditDetailInfo">#FFFFFF</color>
 </resources>

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.security.KeyPairGeneratorSpec;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.utils.models.Person;
 
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.Calendar;
 
@@ -18,6 +18,7 @@ import io.realm.Realm;
 import io.realm.*;
 import java.math.BigInteger;
 import java.security.*;
+import java.util.List;
 
 public class RealmStorage {
 
@@ -64,6 +65,32 @@ public class RealmStorage {
         final RealmResults<Person> findPerson = realm.where(Person.class).findAll();
 
         return findPerson.first();
+    }
+
+    public void saveConsultaCreditro(Context context, List<PostConsultarReporteCreditoResponse> data){
+        Realm.init(context);
+
+        Realm realm = Realm.getDefaultInstance();
+
+        // final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", data.getNumber()).findAll();
+
+        //if(!(findPerson.size() > 0)){
+            // Persist your data in a transaction
+            realm.beginTransaction();
+            realm.copyToRealm(data); // Persist unmanaged objects
+            realm.commitTransaction();
+        //}
+    }
+
+
+    public RealmResults<PostConsultarReporteCreditoResponse> getConsultaCreditro(Context context){
+        Realm.init(context);
+
+        Realm realm = Realm.getDefaultInstance();
+
+        final RealmResults<PostConsultarReporteCreditoResponse> findPerson = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
+
+        return findPerson;
     }
 
     public void deleteTable(Context context){

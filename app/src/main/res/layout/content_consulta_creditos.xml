@@ -50,7 +50,7 @@
                         android:padding="5px"
                         android:layout_marginLeft="5dp"
                         android:text="Documento"
-                        android:textColor="#FAFBFC"
+                        android:textColor="#FFFFFF"
                         android:textSize="22sp" />
 
                     <TextView
@@ -70,17 +70,17 @@
                         android:layout_gravity="center_horizontal"
                         android:padding="5px"
                         android:text="Estado"
-                        android:textColor="#FBFBFC"
+                        android:textColor="#FFFFFF"
                         android:textSize="22sp" />
 
-                    <!--<TextView
+                    <TextView
                         android:id="@+id/ColumnaBuscar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5px"
                         android:text="Buscar"
-                        android:textColor="#004461"
-                        android:textSize="18sp" />-->
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp" />
                 </TableRow>
 
                 <TableRow

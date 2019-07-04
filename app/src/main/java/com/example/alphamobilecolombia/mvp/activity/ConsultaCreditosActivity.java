@@ -1,16 +1,23 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -20,6 +27,7 @@ import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ConsultaCreditosPresenter;
+import com.example.alphamobilecolombia.utils.models.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,12 +38,15 @@ import java.util.List;
 
 public class ConsultaCreditosActivity extends AppCompatActivity {
 
+    Dialog myDialog;
+    RealmStorage storage = new RealmStorage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consulta_creditos);
 
+        myDialog = new Dialog(this);
 
         Window window = this.getWindow();
 
@@ -94,11 +105,9 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            // Intent intent = new Intent(view.getContext(), ModuloActivity.class);
-            // startActivityForResult(intent, 0);
-            // message.setText(model.getMessage());
         }
     }
+
     public void generateControls(List data){
 
         for (int i = 0; i < data.size(); i++) {
@@ -106,6 +115,8 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
             List<PostConsultarReporteCreditoResponse> ReporteCredito2;
 
             ReporteCredito2 = data;
+
+            storage.saveConsultaCreditro(this,ReporteCredito2);
 
             String Documento = ReporteCredito2.get(i).getDocumentoCliente(); //object.getString("documentoCliente");
             String NombreCliente = ReporteCredito2.get(i).getCliente(); //object.getString("cliente");
@@ -151,13 +162,150 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
             tableRow.addView(TextViewEst, 2);
 
             // Add a button in the third column
-            /*Button button = new Button(context);
-            button.setText("Buscar");
-            tableRow.addView(button, 3);*/
+
+            Button[] my_button = new Button[data.size()];
+            int Index = i;
+
+            my_button[Index] = new Button(context);
+            my_button[Index].setText("Ver");
+            my_button[Index].setId(Index);
+
+            my_button[i].setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("WrongConstant")
+                @Override
+                public void onClick(View v) {
+                    if (my_button[Index].getId() == ((Button) v).getId()){
+                        //Toast.makeText(getBaseContext(), (Integer) data.get(Index), 0).show();
+
+                        TextView txtclose;
+                        Button btnFollow;
+
+                        List<PostConsultarReporteCreditoResponse> ConsultaResponse = storage.getConsultaCreditro(getApplicationContext());
+
+                        TextView numeroSolicitud;
+                        TextView tipoCr;
+                        TextView estadoGeneral;
+                        TextView regional;
+                        TextView oficina;
+                        TextView coordinador;
+                        TextView asesor;
+                        TextView pagaduria;
+                        TextView documentoCliente;
+                        TextView cliente;
+                        TextView fechaEnvioPrevalidacion;
+                        TextView montoSugerido;
+                        TextView cuotaSug;
+                        TextView plazoSugerido;
+                        TextView fechaPrevalidacion;
+                        TextView observacionCredito;
+
+                        myDialog.setContentView(R.layout.consulta_credito_poppup);
+
+                        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+                        txtclose.setText("M");
+                        btnFollow = (Button) myDialog.findViewById(R.id.btnfollow);
+
+                        numeroSolicitud =(TextView) myDialog.findViewById(R.id.numeroSolicitud);
+                        tipoCr =(TextView) myDialog.findViewById(R.id.tipoCr);
+                        estadoGeneral =(TextView) myDialog.findViewById(R.id.estadoGeneral);
+                        regional =(TextView) myDialog.findViewById(R.id.regional);
+                        oficina =(TextView) myDialog.findViewById(R.id.oficina);
+                        coordinador =(TextView) myDialog.findViewById(R.id.coordinador);
+                        asesor =(TextView) myDialog.findViewById(R.id.asesor);
+                        pagaduria =(TextView) myDialog.findViewById(R.id.pagaduria);
+                        documentoCliente =(TextView) myDialog.findViewById(R.id.documentoCliente);
+                        cliente =(TextView) myDialog.findViewById(R.id.cliente);
+                        fechaEnvioPrevalidacion =(TextView) myDialog.findViewById(R.id.fechaEnvioPrevalidacion);
+                        montoSugerido =(TextView) myDialog.findViewById(R.id.montoSugerido);
+                        cuotaSug =(TextView) myDialog.findViewById(R.id.cuotaSug);
+                        plazoSugerido =(TextView) myDialog.findViewById(R.id.plazoSugerido);
+                        fechaPrevalidacion =(TextView) myDialog.findViewById(R.id.fechaPrevalidacion);
+                        observacionCredito =(TextView) myDialog.findViewById(R.id.observacionCredito);
+
+                        numeroSolicitud.setText(ConsultaResponse.get(Index).getNumeroSolicitud());
+                        tipoCr.setText(ConsultaResponse.get(Index).getTipoCr());
+                        estadoGeneral.setText(ConsultaResponse.get(Index).getEstadoGeneral());
+                        regional.setText(ConsultaResponse.get(Index).getRegional());
+                        oficina.setText(ConsultaResponse.get(Index).getOficina());
+                        coordinador.setText(ConsultaResponse.get(Index).getCoordinador());
+                        asesor.setText(ConsultaResponse.get(Index).getAsesor());
+                        pagaduria.setText(ConsultaResponse.get(Index).getPagaduria());
+                        documentoCliente.setText(ConsultaResponse.get(Index).getDocumentoCliente());
+                        cliente.setText(ConsultaResponse.get(Index).getCliente());
+                        fechaEnvioPrevalidacion.setText(ConsultaResponse.get(Index).getFechaEnvioPrevalidacion());
+                        montoSugerido.setText(ConsultaResponse.get(Index).getMontoSugerido());
+                        cuotaSug.setText(ConsultaResponse.get(Index).getCuotaSug());
+                        plazoSugerido.setText(ConsultaResponse.get(Index).getPlazoSugerido());
+                        fechaPrevalidacion.setText(ConsultaResponse.get(Index).getFechaPrevalidacion());
+                        observacionCredito.setText(ConsultaResponse.get(Index).getObservacionCredito());
+
+                        txtclose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                myDialog.dismiss();
+                            }
+                        });
+                        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        myDialog.show();
+
+                    }
+                }
+            });
+            tableRow.addView(my_button[i], 3);
 
             tableLayout.addView(tableRow);
 
         }
+
+        /*final ArrayList<String> Keys = new ArrayList<String>();
+        for(int i = 0; i < 10; i ++){
+            Keys.add("Keys is : " + String.valueOf(i));
+        }
+
+        LinearLayout Row = (LinearLayout)findViewById(R.id.Tabla);
+
+        final Button[] my_button = new Button[Keys.size()];
+
+        for (int bt = 0; bt < Keys.size(); bt ++){
+            final int Index = bt;
+
+            my_button[Index] = new Button(this);
+            my_button[Index].setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT));
+            my_button[Index].setText(Keys.get(Index));
+            my_button[Index].setId(Index);
+
+            my_button[bt].setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("WrongConstant")
+                @Override
+                public void onClick(View v) {
+                    if (my_button[Index].getId() == ((Button) v).getId()){
+                        Toast.makeText(getBaseContext(), Keys.get(Index), 0).show();
+
+
+                        TextView txtclose;
+                        Button btnFollow;
+                        myDialog.setContentView(R.layout.consulta_credito_poppup);
+                        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+                        txtclose.setText("M");
+                        btnFollow = (Button) myDialog.findViewById(R.id.btnfollow);
+                        txtclose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                myDialog.dismiss();
+                            }
+                        });
+                        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        myDialog.show();
+
+
+
+                    }
+                }
+            });
+
+            Row.addView(my_button[Index]);
+        }*/
+
     }
 
 }
