@@ -1,6 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,6 +13,7 @@ import com.example.alphamobilecolombia.data.remote.Models.User;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
 import com.example.alphamobilecolombia.R;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -119,6 +121,22 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     //***********************************************************//
 
+    public void NotificacionErrorDatos(final View view, String menssage){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+        builder1.setMessage(menssage);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
 
     public void onClickBtn(View view) {
         validator.validate();
@@ -136,24 +154,31 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                 HttpResponse model = presenter.PostLogin(userText, passwordText);
 
                 if (model != null) {
-                    Gson gson = new Gson();
-                    try {
-                        User usuario = new User();
+                    if(model.getCode().contains("200")){
+                        try {
+                            User usuario = new User();
 
-                        SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                        usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
+                            SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
+                            usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
+
+                        }
+                        catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        Intent intent = new Intent(view.getContext(), ModuloActivity.class);
+                        startActivityForResult(intent, 0);
+                        message.setText(model.getMessage());
 
                     }
-                    catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    else{
+                        TextView txt_message = findViewById(R.id.txt_message);
+                        txt_message.setText(model.getMessage());
+                        NotificacionErrorDatos(view,model.getMessage());
                     }
-
-                    Intent intent = new Intent(view.getContext(), ModuloActivity.class);
-                    startActivityForResult(intent, 0);
-                    message.setText(model.getMessage());
                 }
-        }
+            }
 
     }
 }
