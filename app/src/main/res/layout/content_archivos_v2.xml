@@ -84,7 +84,7 @@
                     <Button android:id="@+id/btnView1"
                         android:layout_width="30dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
+                        android:background="@drawable/ic_menu_slideshow"
                         android:layout_height="30dp"
                         android:onClick="recuperarFoto"
                         android:text=""></Button>

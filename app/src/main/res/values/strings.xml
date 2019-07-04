@@ -41,8 +41,8 @@
 
     <string name="terminos_title">Autorización</string>
     <string name="terminos_info">A continuación usted aceptara los términos y condiciones del proceso.</string>
-    <string name="title_activity_final">¡Tu solicitud a cargado satisfactoriamente!</string>
-    <string name="info_activity_final">podrás consultar la respuesta de pre-aprobación en las próximas horas.</string>
+    <string name="title_activity_final">¡Tu solicitud ha sido cargada satisfactoriamente!</string>
+    <string name="info_activity_final">En las próximas horas podrás consultar el estado de esta solicitud.</string>
 
     <string name="licenceKey">"3A7HL_561/8fJSb5nW5k"</string>
     <string name="userkey">vivecreditos</string>
