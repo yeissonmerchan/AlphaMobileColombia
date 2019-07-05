@@ -165,13 +165,14 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
             // Add a button in the third column
 
-            ImageButton[] my_button = new ImageButton[data.size()];
+            Button[] my_button = new Button[data.size()];
             int Index = i;
 
-            my_button[Index] = new ImageButton(context);
-            my_button[Index].setBackgroundResource(R.mipmap.logo_lupa);
-            my_button[Index].setMaxHeight(10);
-            my_button[Index].setMaxWidth(10);
+            my_button[Index] = new Button(context);
+            /*my_button[Index].setBackgroundResource(R.mipmap.logo_lupa);
+            my_button[Index].setMaxHeight(35);
+            my_button[Index].setMaxWidth(30);*/
+            my_button[Index].setText("Ver");
             my_button[Index].setId(Index);
 
             my_button[Index].setOnClickListener(new View.OnClickListener() {
