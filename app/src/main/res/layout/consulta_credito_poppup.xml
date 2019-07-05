@@ -7,35 +7,37 @@
     android:padding="5dp"
     android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/txtclose"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:textColor="@color/colorButton"
-        android:text="X"
-        android:textStyle="bold"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:background="@drawable/circular_button_shadow"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        
+        <TextView
+            android:id="@+id/txtclose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textColor="@color/colorButton"
+            android:text="X"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:background="@drawable/circular_button_shadow"/>
+        
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/vista"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"/>
-        <TextView
+            android:layout_marginTop="-10dp"/>
+        <!--<TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Detalle del credito"
             android:textStyle="bold"
+            android:textSize="16sp"
             android:textColor="@color/colorHeader"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"/>-->
     </LinearLayout>
 
 
@@ -43,18 +45,15 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="200sp">
-
+        android:layout_height="wrap_content">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp">
 
                 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,10 +63,25 @@
                     android:stretchColumns="1">
 
                     <TableRow
+                        android:id="@+id/CabeceraTitulo"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5sp"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Detalle del credito"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorToolBar"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
                         android:id="@+id/CabeceraNumeroSolicitud"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -81,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -89,7 +103,7 @@
                         android:id="@+id/CabeceraTipoCr"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -103,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -111,7 +125,7 @@
                         android:id="@+id/CabeceraEstadoGeneral"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -125,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -133,7 +147,7 @@
                         android:id="@+id/CabeceraRegional"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -147,7 +161,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -155,7 +169,7 @@
                         android:id="@+id/CabeceraOficina"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -169,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -177,7 +191,7 @@
                         android:id="@+id/CabeceraCoordinador"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -191,7 +205,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -199,7 +213,7 @@
                         android:id="@+id/CabeceraAsesor"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -213,7 +227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -221,7 +235,7 @@
                         android:id="@+id/CabeceraPagaduria"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -235,7 +249,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -243,7 +257,7 @@
                         android:id="@+id/CabeceraDocumento"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -257,7 +271,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -265,7 +279,7 @@
                         android:id="@+id/CabeceraCliente"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -279,7 +293,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -287,7 +301,7 @@
                         android:id="@+id/CabecerafechaEnvioPrevalidacion"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -301,7 +315,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -309,7 +323,7 @@
                         android:id="@+id/CabeceraMontoSugerido"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -323,7 +337,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -331,7 +345,7 @@
                         android:id="@+id/CabeceraCuotaSug"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -345,7 +359,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -353,7 +367,7 @@
                         android:id="@+id/CabeceraPlazoSugerido"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -367,7 +381,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -375,7 +389,7 @@
                         android:id="@+id/CabeceraFechaPrevalidacion"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -389,7 +403,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 
@@ -397,7 +411,7 @@
                         android:id="@+id/CabeceraObservacionCredito"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorHeader">
+                        android:background="@color/colorConCreditRow">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -411,7 +425,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="data"
-                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textColor="@color/colorConCreditDetailInfo"
                             android:textSize="16sp" />
                     </TableRow>
 

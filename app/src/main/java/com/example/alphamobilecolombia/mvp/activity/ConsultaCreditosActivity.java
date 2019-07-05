@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -164,14 +165,16 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
             // Add a button in the third column
 
-            Button[] my_button = new Button[data.size()];
+            ImageButton[] my_button = new ImageButton[data.size()];
             int Index = i;
 
-            my_button[Index] = new Button(context);
-            my_button[Index].setText("Ver");
+            my_button[Index] = new ImageButton(context);
+            my_button[Index].setBackgroundResource(R.mipmap.logo_lupa);
+            my_button[Index].setMaxHeight(10);
+            my_button[Index].setMaxWidth(10);
             my_button[Index].setId(Index);
 
-            my_button[i].setOnClickListener(new View.OnClickListener() {
+            my_button[Index].setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("WrongConstant")
                 @Override
                 public void onClick(View v) {
@@ -255,7 +258,7 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                     }
                 }
             });
-            tableRow.addView(my_button[i], 3);
+            tableRow.addView(my_button[Index], 3);
 
             tableLayout.addView(tableRow);
 
