@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="375dp"
+    android:background="@color/colorConCreditContainer"
+    android:padding="5dp"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtclose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textColor="@color/colorButton"
+            android:text="X"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:background="@drawable/circular_button_shadow"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/vista"
+            android:layout_gravity="center"
+            android:layout_marginTop="-10dp"/>
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalle del credito"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/colorHeader"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"/>-->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp">
+
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/Tabla"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+
+                    <TableRow
+                        android:id="@+id/CabeceraTitulo"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5sp"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Datos personales"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorToolBar"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraNumeroSolicitud"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Primer nombre: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_primer_nombre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraTipoCr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Segundo nombre: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_segundo_nombre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraEstadoGeneral"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Primer apellido: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_primer_apellido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraRegional"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Segundo apellido: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_segundo_apellido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraOficina"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Número de identificación: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_numero_identificacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraCoordinador"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Fecha de nacimiento: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_fecha_nacimiento"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraAsesor"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Género: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_genero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraPagaduria"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConCreditRow">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Tipo de sangre:"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/txt_tipo_sangre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailInfo"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+
+                </TableLayout>
+
+            </HorizontalScrollView>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

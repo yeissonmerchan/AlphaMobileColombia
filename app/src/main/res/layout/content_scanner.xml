@@ -31,6 +31,34 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtNombres"
+                android:text="Información del cliente:"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <TextView
+                android:id="@+id/btn_some_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_add_contact"
+                android:textAllCaps="false"
+                android:textSize="18dp"
+                android:onClick="showPersonalInfo"
+                android:textColor="#57a0d4"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+            <!--
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNombres"
                 android:text="Nombres"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
@@ -222,6 +250,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
+                -->
+
 
             <TextView
                 android:layout_width="wrap_content"

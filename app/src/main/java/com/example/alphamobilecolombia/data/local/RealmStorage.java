@@ -14,6 +14,8 @@ import java.util.Calendar;
 import javax.security.auth.x500.X500Principal;
 import android.util.Log;
 
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
+
 import io.realm.Realm;
 import io.realm.*;
 import java.math.BigInteger;
@@ -58,13 +60,18 @@ public class RealmStorage {
 
 
     public Person getPerson(Context context){
-        Realm.init(context);
+        try {
+            Realm.init(context);
 
-        Realm realm = Realm.getDefaultInstance();
+            Realm realm = Realm.getDefaultInstance();
 
-        final RealmResults<Person> findPerson = realm.where(Person.class).findAll();
+            final RealmResults<Person> findPerson = realm.where(Person.class).findAll();
 
-        return findPerson.first();
+            return findPerson.first();
+        }
+        catch (Exception ex){
+            return null;
+        }
     }
 
     public void saveConsultaCreditro(Context context, List<PostConsultarReporteCreditoResponse> data){
@@ -105,9 +112,24 @@ public class RealmStorage {
     }
 
     public void deleteTable(Context context){
-        Realm.init(context);
-        Realm realm = Realm.getDefaultInstance();
-        realm.delete(Person.class);
+        try {
+            Realm.init(context);
+            Realm realm = Realm.getDefaultInstance();
+            final RealmResults<Person> findPerson = realm.where(Person.class).findAll();
+            /*for (Person object : findPerson) {
+                object.deleteFromRealm();
+            }*/
+            realm.beginTransaction();
+            realm.delete(Person.class);
+            if (null != findPerson && findPerson.size() > 0) {
+                findPerson.deleteAllFromRealm();
+            }
+            realm.commitTransaction();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public byte[] createNewKeys(Context context) throws KeyStoreException {
