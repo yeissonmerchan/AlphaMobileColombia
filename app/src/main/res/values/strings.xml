@@ -1,7 +1,20 @@
 <resources>
-    <string name="ip_api_autentication"></string>
-    <string name="ip_api_storage"></string>
-    <string name="ip_api_"></string>
+
+    <string name="environment_release">PRE</string>
+    <!-- Ips de preproducion -->
+    <string name="pre_ip_api_autentication">http://181.57.145.20:8082/</string>
+    <string name="pre_ip_api_storage">http://181.57.145.20:8083/</string>
+    <string name="pre_ip_api_generic">http://181.57.145.20:8081/</string>
+
+    <!-- Ips de producción -->
+    <string name="pro_ip_api_autentication">http://apps.vivecreditos.com:8081/</string>
+    <string name="pro_ip_api_storage">http://apps.vivecreditos.com:8083/</string>
+    <string name="pro_ip_api_generic">http://apps.vivecreditos.com:8082/</string>
+
+    <!-- Ips de producción -->
+    <string name="api_autentication">autentication</string>
+    <string name="api_storage">storage</string>
+    <string name="api_generic">generic</string>
 
     <string name="app_name">Alpha Mobile Colombia</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -46,7 +46,7 @@ public class InicialActivity extends AppCompatActivity {
         }
 
         LoginPresenter presenter = new LoginPresenter();
-        HttpResponse model = presenter.GetVersion(version);
+        HttpResponse model = presenter.GetVersion(version,this);
 
         if (model.getCode().contains("200")){
             new Handler().postDelayed(new Runnable() {
