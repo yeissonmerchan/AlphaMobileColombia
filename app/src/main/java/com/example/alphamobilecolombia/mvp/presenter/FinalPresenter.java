@@ -42,11 +42,21 @@ public class FinalPresenter {
 
             Response response = call.execute();
 
-            JSONObject jsonObject = new JSONObject(response.body().toString());
-            String value = jsonObject.toString();
-            responseModel.setCode("200");
-            responseModel.setData(jsonObject);
-            responseModel.setMessage("Solicitud de acceso correcta.");
+            JSONObject jsonObject;
+            if (!(response.code() != 200)) {
+                jsonObject = new JSONObject(response.body().toString());
+                String value = jsonObject.toString();
+                responseModel.setCode(String.valueOf(response.code()));
+                responseModel.setData(jsonObject);
+                responseModel.setMessage(response.message());
+            }
+            else{
+                String errorResponse = response.errorBody().string();
+                JSONObject object = new JSONObject(errorResponse);
+                responseModel.setCode(String.valueOf(response.code()));
+                responseModel.setData(object);
+                responseModel.setMessage(String.valueOf(object.get("mensaje")));
+            }
 
             return responseModel;
 
@@ -76,11 +86,21 @@ public class FinalPresenter {
 
             Response response = call.execute();
 
-            JSONObject jsonObject = new JSONObject(response.body().toString());
-            String value = jsonObject.toString();
-            responseModel.setCode("200");
-            responseModel.setData(jsonObject);
-            responseModel.setMessage("Solicitud de acceso correcta.");
+            JSONObject jsonObject;
+            if (!(response.code() != 200)) {
+                jsonObject = new JSONObject(response.body().toString());
+                String value = jsonObject.toString();
+                responseModel.setCode(String.valueOf(response.code()));
+                responseModel.setData(jsonObject);
+                responseModel.setMessage(response.message());
+            }
+            else{
+                String errorResponse = response.errorBody().string();
+                JSONObject object = new JSONObject(errorResponse);
+                responseModel.setCode(String.valueOf(response.code()));
+                responseModel.setData(object);
+                responseModel.setMessage(String.valueOf(object.get("mensaje")));
+            }
 
             return responseModel;
 
