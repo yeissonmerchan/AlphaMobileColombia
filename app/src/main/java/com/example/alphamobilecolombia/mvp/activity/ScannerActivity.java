@@ -1,7 +1,12 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -15,6 +20,7 @@ import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -52,16 +58,20 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     Persona p;
     RealmStorage storage = new RealmStorage();
     List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
+    Dialog myDialog;
+    Context contextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
+        myDialog = new Dialog(this);
+        storage.deleteTable(this);
         Window window = this.getWindow();
         ScannerPresenter scannerPresenter = new ScannerPresenter();
         HttpResponse response = scannerPresenter.getPagadurias(this);
         Gson gson = new Gson();
-
+        contextView = this;
         JSONObject data = (JSONObject) response.getData();
         try {
             JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
@@ -161,8 +171,21 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     person = new Gson().fromJson(resultScan, Person.class);
                     p = CedulaQrAnalytics.parse(data);
 
-                    storage.savePerson(this,person);
 
+                    if(person != null){
+                        if(person.getNumber().length()>0)
+                        {
+                            storage.savePerson(contextView,person);
+                        }
+                        else{
+                            NotificacionErrorDatos(contextView);
+                        }
+                    }
+                    else{
+                        NotificacionErrorDatos(contextView);
+                    }
+
+                    /*
                     EditText edt_names = (EditText) findViewById(R.id.edt_names);
                     EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
                     EditText edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
@@ -172,6 +195,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     //EditText edt_celular = (EditText) findViewById(R.id.edt_celular);
                     EditText edt_genero = (EditText) findViewById(R.id.edt_genero);
                     EditText edt_factor = (EditText) findViewById(R.id.edt_factor);
+                    */
 
                     /*edt_names.setText((person.getFirstName().length() < 0 ? person.getFirstName() : p.getNombre()));
                     edt_names2.setText((person.getSecondName().length() < 0 ? person.getSecondName() : ""));
@@ -184,6 +208,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     edt_celular.setText((person.getPlaceBirth().length()< 0 ? person.getPlaceBirth() : ""));
                     */
 
+                    /*
                     edt_names.setText(person.getFirstName());
                     edt_names2.setText(person.getSecondName());
                     edt_lastNames.setText(person.getSurename());
@@ -193,6 +218,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     edt_genero.setText(person.getGender());
                     edt_factor.setText(person.getBloodType());
                     //edt_celular.setText(person.getPlaceBirth());
+                    */
 
                     //Toast.makeText(getApplicationContext(),p.toString(), Toast.LENGTH_SHORT).show();
                     //Log.d("MainActivity", "Scaneado");
@@ -201,6 +227,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception e){
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
+                    NotificacionErrorDatos(this);
                 }
             }
         } else {
@@ -228,23 +255,36 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             person = storage.getPerson(this);
         }
 
-        String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
+        if(person != null){
+            if(person.getNumber().length()>0)
+            {
+                String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
 
-        intent.putExtra("PERSONA_Documento", person.getNumber());
-        intent.putExtra("PERSONA_PNombre", person.getFirstName());
-        intent.putExtra("PERSONA_SNombre", person.getSecondName());
-        intent.putExtra("PERSONA_PApellido", person.getSurename());
-        intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
-        intent.putExtra("PERSONA_FechaNac", bithdate);
-        intent.putExtra("PERSONA_Genero", person.getBloodType());
-        intent.putExtra("PERSONA_Celular", person.getPlaceBirth());
+                intent.putExtra("PERSONA_Documento", person.getNumber());
+                intent.putExtra("PERSONA_PNombre", person.getFirstName());
+                intent.putExtra("PERSONA_SNombre", person.getSecondName());
+                intent.putExtra("PERSONA_PApellido", person.getSurename());
+                intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
+                intent.putExtra("PERSONA_FechaNac", bithdate);
+                intent.putExtra("PERSONA_Genero", person.getBloodType());
+                intent.putExtra("PERSONA_Celular", person.getPlaceBirth());
 
-        intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
-        intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
-        intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
-        intent.putExtra("IdPagaduria",codePagaduria);
+                intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
+                intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
+                intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
+                intent.putExtra("IdPagaduria",codePagaduria);
 
-        startActivityForResult(intent, 0);
+                startActivityForResult(intent, 0);
+            }
+            else{
+                NotificacionErrorDatos(this);
+            }
+        }
+        else{
+            NotificacionErrorDatos(this);
+        }
+
+
 
     }
 
@@ -269,4 +309,78 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
+
+    public void showPersonalInfo(View view) {
+        if(person != null){
+            if(person.getNumber().length()>0)
+            {
+                TextView txtclose;
+                TextView txt_primer_nombre;
+                TextView txt_segundo_nombre;
+                TextView txt_primer_apellido;
+                TextView txt_segundo_apellido;
+                TextView txt_numero_identificacion;
+                TextView txt_fecha_nacimiento;
+                TextView txt_genero;
+                TextView txt_tipo_sangre;
+
+                myDialog.setContentView(R.layout.content_scanner_poppup);
+
+                txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+
+                txt_primer_nombre =(TextView) myDialog.findViewById(R.id.txt_primer_nombre);
+                txt_segundo_nombre =(TextView) myDialog.findViewById(R.id.txt_segundo_nombre);
+                txt_primer_apellido =(TextView) myDialog.findViewById(R.id.txt_primer_apellido);
+                txt_segundo_apellido =(TextView) myDialog.findViewById(R.id.txt_segundo_apellido);
+                txt_numero_identificacion =(TextView) myDialog.findViewById(R.id.txt_numero_identificacion);
+                txt_fecha_nacimiento =(TextView) myDialog.findViewById(R.id.txt_fecha_nacimiento);
+                txt_genero =(TextView) myDialog.findViewById(R.id.txt_genero);
+                txt_tipo_sangre =(TextView) myDialog.findViewById(R.id.txt_tipo_sangre);
+
+                txt_primer_nombre.setText(person.getFirstName());
+                txt_segundo_nombre.setText(person.getSecondName());
+                txt_primer_apellido.setText(person.getSurename());
+                txt_segundo_apellido.setText(person.getSecondSurename());
+                txt_numero_identificacion.setText(person.getNumber());
+                txt_fecha_nacimiento.setText(person.getBirthday());
+                txt_genero.setText(person.getGender());
+                txt_tipo_sangre.setText(person.getBloodType());
+
+                txtclose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myDialog.dismiss();
+                    }
+                });
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myDialog.show();
+            }
+            else{
+                NotificacionErrorDatos(this);
+            }
+        }
+        else{
+            NotificacionErrorDatos(this);
+        }
+
+    }
+
+    public void NotificacionErrorDatos(final Context view){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
+        builder1.setMessage("No ha sido posible obtener información de la cédula, por favor inténtelo nuevamente.");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        Intent intent = new Intent(view, ModuloActivity.class);
+                        startActivityForResult(intent, 0);
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
 }

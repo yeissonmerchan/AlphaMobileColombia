@@ -16,6 +16,8 @@
     <string name="api_storage">storage</string>
     <string name="api_generic">generic</string>
 
+
+    <string name="btn_add_contact"><u>Ver más ...</u></string>
     <string name="app_name">Alpha Mobile Colombia</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
