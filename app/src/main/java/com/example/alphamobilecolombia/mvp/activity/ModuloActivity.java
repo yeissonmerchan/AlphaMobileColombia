@@ -1,6 +1,10 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,18 +14,26 @@ import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
 
 public class ModuloActivity extends AppCompatActivity {
 
-
+    Dialog myDialog;
+    //AnimationDrawable LoadingAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modulo);
+
+        myDialog = new Dialog(this);
+        /*ImageView imageView = (ImageView)findViewById(R.id.imageLoading);
+        imageView.setBackgroundResource(R.drawable.loading_animation);
+        LoadingAnimation = (AnimationDrawable) imageView.getBackground();*/
+
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -43,6 +55,14 @@ public class ModuloActivity extends AppCompatActivity {
     }
 
     public void onClickBtnListRequest(View view) {
+
+        myDialog.setContentView(R.layout.loading_page);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //myDialog.show();
+        //myDialog.dismiss();
+
+        //LoadingAnimation.start();
+
         Intent intent = new Intent (view.getContext(), ConsultaCreditosActivity.class);
         startActivityForResult(intent, 0);
     }
