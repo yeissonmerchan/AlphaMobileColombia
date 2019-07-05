@@ -30,7 +30,7 @@ public class ModuloActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
         TextView modulo = findViewById(R.id.txt_modulo);
-        modulo.setText("Módulos");
+        modulo.setText("Módulo de solicitudes");
 
 
 

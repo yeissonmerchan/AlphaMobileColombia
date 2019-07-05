@@ -61,15 +61,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -77,26 +79,35 @@
                         android:text="Cargar Hoja #1"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView1"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_slideshow"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
 
-                    <Button android:id="@+id/btnUpload1"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
+                        <Button android:id="@+id/btnView1"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload1"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -145,42 +156,52 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
                         android:inputType="textMultiLine"
+                        android:paddingTop="5dp"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
                         android:id="@+id/txtCargue2"
                         android:text="Cargar Hoja #2"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView2"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
 
-                    <Button android:id="@+id/btnUpload2"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
+                        <Button android:id="@+id/btnView2"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload2"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -253,17 +274,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -271,26 +293,34 @@
                         android:text="Cargar Cara #1"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView3"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload3"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView3"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload3"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -337,18 +367,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
-
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -356,26 +386,33 @@
                         android:text="Cargar Hoja #2"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView4"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload4"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView4"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload4"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -448,17 +485,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -466,26 +504,33 @@
                         android:text="Cargar Desprendible #1"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView5"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload5"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView5"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload5"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -532,18 +577,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
-
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -551,26 +596,33 @@
                         android:text="Cargar Desprendible #2"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView6"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload6"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView6"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload6"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -617,17 +669,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -635,26 +688,34 @@
                         android:text="Cargar Desprendible #3"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView7"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload7"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView7"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload7"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:layout_marginRight="2dp"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -701,17 +762,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@drawable/border_layout"
                     android:weightSum="3"
-                    android:paddingTop="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
                     >
 
                     <TextView
-                        android:layout_width="210dp"
+                        android:layout_width="190dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity= "left"
                         android:drawSelectorOnTop="true"
                         android:typeface="serif"
+                        android:paddingTop="5dp"
                         android:inputType="textMultiLine"
                         android:layout_marginLeft="20dp"
                         android:ems="20"
@@ -719,26 +781,34 @@
                         android:text="Cargar Desprendible #4"
                         android:longClickable="true"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="@color/colorText"
                         android:scrollbars = "vertical"/>
 
-                    <Button android:id="@+id/btnView8"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_gallery"
-                        android:layout_height="30dp"
-                        android:onClick="recuperarFoto"
-                        android:text=""></Button>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
 
-                    <Button android:id="@+id/btnUpload8"
-                        android:layout_width="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_menu_camera"
-                        android:layout_height="30dp"
-                        android:onClick="tomarFoto"
-                        android:text=""></Button>
+                        <Button android:id="@+id/btnView8"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFoto"
+                            android:text=""></Button>
 
+                        <Button android:id="@+id/btnUpload8"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:layout_marginRight="2dp"
+                            android:text=""></Button>
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout
@@ -813,11 +883,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="3"
-                        android:paddingTop="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
                         >
 
                         <TextView
-                            android:layout_width="210dp"
+                            android:layout_width="190dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity= "left"
                             android:drawSelectorOnTop="true"
@@ -825,30 +896,39 @@
                             android:inputType="textMultiLine"
                             android:layout_marginLeft="20dp"
                             android:ems="20"
+                            android:paddingTop="5dp"
                             android:id="@+id/txtCargueAutorizacion"
                             android:text="Cargar autorización"
                             android:longClickable="true"
                             android:layout_centerHorizontal="true"
-                            android:textSize="18dp"
+                            android:textSize="16dp"
                             android:textColor="@color/colorText"
                             android:scrollbars = "vertical"/>
 
-                        <Button android:id="@+id/btnView9"
-                            android:layout_width="30dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/ic_menu_gallery"
-                            android:layout_height="30dp"
-                            android:onClick="recuperarFoto"
-                            android:text=""></Button>
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
 
-                        <Button android:id="@+id/btnUpload9"
-                            android:layout_width="30dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/ic_menu_camera"
-                            android:layout_height="30dp"
-                            android:onClick="tomarFoto"
-                            android:text=""></Button>
+                            <Button android:id="@+id/btnView9"
+                                android:layout_width="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@mipmap/logo_lupa"
+                                android:layout_height="30dp"
+                                android:onClick="recuperarFoto"
+                                android:text=""></Button>
 
+                            <Button android:id="@+id/btnUpload9"
+                                android:layout_width="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@mipmap/logo_camara"
+                                android:layout_height="30dp"
+                                android:onClick="tomarFoto"
+                                android:layout_marginRight="2dp"
+                                android:text=""></Button>
+                        </LinearLayout>
 
                     </LinearLayout>
                     <LinearLayout
