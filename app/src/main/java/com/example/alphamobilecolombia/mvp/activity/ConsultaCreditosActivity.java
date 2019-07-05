@@ -110,13 +110,14 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
     public void generateControls(List data){
 
+        //Se guarda la data en el Storage
+        storage.saveConsultaCreditro(this,data);
+
         for (int i = 0; i < data.size(); i++) {
 
             List<PostConsultarReporteCreditoResponse> ReporteCredito2;
 
             ReporteCredito2 = data;
-
-            storage.saveConsultaCreditro(this,ReporteCredito2);
 
             String Documento = ReporteCredito2.get(i).getDocumentoCliente(); //object.getString("documentoCliente");
             String NombreCliente = ReporteCredito2.get(i).getCliente(); //object.getString("cliente");
@@ -177,11 +178,16 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                     if (my_button[Index].getId() == ((Button) v).getId()){
                         //Toast.makeText(getBaseContext(), (Integer) data.get(Index), 0).show();
 
-                        TextView txtclose;
-                        Button btnFollow;
-
+                        //Se obtienen los datos almacenados en el storage
                         List<PostConsultarReporteCreditoResponse> ConsultaResponse = storage.getConsultaCreditro(getApplicationContext());
 
+                        if (ConsultaResponse == null)
+                        {
+                            Toast.makeText(getBaseContext(),"Se presento un error al obtener el detalle",1).show();
+                            return;
+                        }
+
+                        TextView txtclose;
                         TextView numeroSolicitud;
                         TextView tipoCr;
                         TextView estadoGeneral;
@@ -202,8 +208,6 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                         myDialog.setContentView(R.layout.consulta_credito_poppup);
 
                         txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-                        txtclose.setText("M");
-                        btnFollow = (Button) myDialog.findViewById(R.id.btnfollow);
 
                         numeroSolicitud =(TextView) myDialog.findViewById(R.id.numeroSolicitud);
                         tipoCr =(TextView) myDialog.findViewById(R.id.tipoCr);
@@ -256,55 +260,6 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
             tableLayout.addView(tableRow);
 
         }
-
-        /*final ArrayList<String> Keys = new ArrayList<String>();
-        for(int i = 0; i < 10; i ++){
-            Keys.add("Keys is : " + String.valueOf(i));
-        }
-
-        LinearLayout Row = (LinearLayout)findViewById(R.id.Tabla);
-
-        final Button[] my_button = new Button[Keys.size()];
-
-        for (int bt = 0; bt < Keys.size(); bt ++){
-            final int Index = bt;
-
-            my_button[Index] = new Button(this);
-            my_button[Index].setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT));
-            my_button[Index].setText(Keys.get(Index));
-            my_button[Index].setId(Index);
-
-            my_button[bt].setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("WrongConstant")
-                @Override
-                public void onClick(View v) {
-                    if (my_button[Index].getId() == ((Button) v).getId()){
-                        Toast.makeText(getBaseContext(), Keys.get(Index), 0).show();
-
-
-                        TextView txtclose;
-                        Button btnFollow;
-                        myDialog.setContentView(R.layout.consulta_credito_poppup);
-                        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-                        txtclose.setText("M");
-                        btnFollow = (Button) myDialog.findViewById(R.id.btnfollow);
-                        txtclose.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                myDialog.dismiss();
-                            }
-                        });
-                        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        myDialog.show();
-
-
-
-                    }
-                }
-            });
-
-            Row.addView(my_button[Index]);
-        }*/
 
     }
 

@@ -68,29 +68,40 @@ public class RealmStorage {
     }
 
     public void saveConsultaCreditro(Context context, List<PostConsultarReporteCreditoResponse> data){
-        Realm.init(context);
+        try {
+            Realm.init(context);
 
-        Realm realm = Realm.getDefaultInstance();
+            Realm realm = Realm.getDefaultInstance();
 
-        // final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", data.getNumber()).findAll();
+            // final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", data.getNumber()).findAll();
 
-        //if(!(findPerson.size() > 0)){
+            //if(!(findPerson.size() > 0)){
             // Persist your data in a transaction
             realm.beginTransaction();
             realm.copyToRealm(data); // Persist unmanaged objects
             realm.commitTransaction();
-        //}
+            //}
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
     public RealmResults<PostConsultarReporteCreditoResponse> getConsultaCreditro(Context context){
-        Realm.init(context);
+        try {
+            Realm.init(context);
 
-        Realm realm = Realm.getDefaultInstance();
+            Realm realm = Realm.getDefaultInstance();
 
-        final RealmResults<PostConsultarReporteCreditoResponse> findPerson = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
+            final RealmResults<PostConsultarReporteCreditoResponse> findPerson = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
 
-        return findPerson;
+            return findPerson;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void deleteTable(Context context){
