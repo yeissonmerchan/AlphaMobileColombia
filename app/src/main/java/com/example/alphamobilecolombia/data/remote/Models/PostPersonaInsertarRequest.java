@@ -37,6 +37,7 @@ public class PostPersonaInsertarRequest {
         this.telefono = "";
         this.celular = celular;
         this.fechaExpedicion = "1900-01-01";
+        //this.fechaExpedicion = "";
         this.iD_TP_MunicipioExpedicion = "918";
         this.iD_TP_UsuarioRegistro = usuarioRegistro;
 
