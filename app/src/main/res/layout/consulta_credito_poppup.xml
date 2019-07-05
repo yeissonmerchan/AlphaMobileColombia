@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="375dp"
+    android:background="@color/colorConCreditContainer"
+    android:padding="5dp"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/txtclose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textColor="@color/colorButton"
+        android:text="X"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:background="@drawable/circular_button_shadow"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/vista"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalle del credito"
+            android:textStyle="bold"
+            android:textColor="@color/colorHeader"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200sp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
+
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/Tabla"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
+
+                    <TableRow
+                        android:id="@+id/CabeceraNumeroSolicitud"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Numero de solicitud: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/numeroSolicitud"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraTipoCr"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Tipo de Credito: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/tipoCr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraEstadoGeneral"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Estado: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/estadoGeneral"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraRegional"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Regional: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/regional"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraOficina"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Oficina: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/oficina"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraCoordinador"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Coordinador: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/coordinador"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraAsesor"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Asesor: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/asesor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraPagaduria"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Pagaduria: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/pagaduria"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraDocumento"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Documento: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/documentoCliente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraCliente"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Cliente: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/cliente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabecerafechaEnvioPrevalidacion"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Fecha envio prevalidacion: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/fechaEnvioPrevalidacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraMontoSugerido"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Monto sugerido: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/montoSugerido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraCuotaSug"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Cuota sugerida: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/cuotaSug"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraPlazoSugerido"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Plazo sugerido: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/plazoSugerido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraFechaPrevalidacion"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Fecha prevalidacion: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/fechaPrevalidacion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/CabeceraObservacionCredito"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorHeader">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Observacion credito: "
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/observacionCredito"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="data"
+                            android:textColor="@color/colorConCreditDetailTitle"
+                            android:textSize="16sp" />
+                    </TableRow>
+
+                </TableLayout>
+
+            </HorizontalScrollView>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnfollow"
+        android:layout_width="160sp"
+        android:layout_height="40sp"
+        android:text="Check !"
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/circular_button_shadow"
+        android:textColor="@color/colorButton"/>
+
+</LinearLayout>

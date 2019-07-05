@@ -1,6 +1,8 @@
 package com.example.alphamobilecolombia.data.remote.Models;
 
-public class PostConsultarReporteCreditoResponse {
+import io.realm.RealmObject;
+
+public class PostConsultarReporteCreditoResponse extends RealmObject {
     private String estadoGeneral;
     private String regional;
     private String oficina;
