@@ -31,7 +31,9 @@ import android.widget.Switch;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.Models.PostPersonaInsertarRequest;
@@ -96,8 +98,11 @@ public class UploadFilesPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:623
+            //TODO: Cambiar a implementación de flavors
+            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_storage),context);//Obtener Ip a partir de configuración
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
             PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();
@@ -180,8 +185,11 @@ public class UploadFilesPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //TODO: Cambiar a implementación de flavors
+            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_storage),context);//Obtener Ip a partir de configuración
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
             PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();

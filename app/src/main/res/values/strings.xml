@@ -11,6 +11,10 @@
     <string name="pro_ip_api_storage">http://apps.vivecreditos.com:8083/</string>
     <string name="pro_ip_api_generic">http://apps.vivecreditos.com:8082/</string>
 
+    <!-- Ips de producción -->
+    <string name="api_autentication">autentication</string>
+    <string name="api_storage">storage</string>
+    <string name="api_generic">generic</string>
 
     <string name="app_name">Alpha Mobile Colombia</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -59,7 +59,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_scanner);
         Window window = this.getWindow();
         ScannerPresenter scannerPresenter = new ScannerPresenter();
-        HttpResponse response = scannerPresenter.getPagadurias();
+        HttpResponse response = scannerPresenter.getPagadurias(this);
         Gson gson = new Gson();
 
         JSONObject data = (JSONObject) response.getData();

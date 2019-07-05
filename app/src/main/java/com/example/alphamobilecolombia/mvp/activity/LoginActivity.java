@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
 
                 LoginPresenter presenter = new LoginPresenter();
-                HttpResponse model = presenter.PostLogin(userText, passwordText);
+                HttpResponse model = presenter.PostLogin(userText, passwordText,view.getContext());
 
                 if (model != null) {
                     if(model.getCode().contains("200")){

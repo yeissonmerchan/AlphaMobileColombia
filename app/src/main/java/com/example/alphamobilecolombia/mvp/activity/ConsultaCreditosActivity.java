@@ -66,7 +66,7 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
         // Consumo
         ConsultaCreditosPresenter presenter = new ConsultaCreditosPresenter();
-        HttpResponse model = presenter.PostConsultarSolicitudes(user);
+        HttpResponse model = presenter.PostConsultarSolicitudes(user,this);
         // HttpResponse model = null;
 
         if (model != null) {

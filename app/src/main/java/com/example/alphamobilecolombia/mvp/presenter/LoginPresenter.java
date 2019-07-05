@@ -1,7 +1,10 @@
 package com.example.alphamobilecolombia.mvp.presenter;
 
+import android.content.Context;
 import android.os.StrictMode;
 
+import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.GetVersion;
 import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
@@ -22,7 +25,7 @@ import com.google.gson.Gson;
 
 public class LoginPresenter {
 
-    public HttpResponse PostLogin(String txtUsuario, String txtPass) {
+    public HttpResponse PostLogin(String txtUsuario, String txtPass, Context context) {
         final HttpResponse responseModel = new HttpResponse();
         Response response;
         try {
@@ -30,14 +33,17 @@ public class LoginPresenter {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
 
-                //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-                Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+                //TODO: Cambiar a implementación de flavors
+                String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_autentication),context);//Obtener Ip a partir de configuración
+                Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
+                //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
+                //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//Produccion
                 PostAutentication postService = retrofit.create(PostAutentication.class);
 
                 Gson gson = new Gson();
                 //String data = gson.toJson(new PostAutenticationRequest("1110449867","188ce4435b977cef83884c051a277cb9"));
-                //String data = gson.toJson(new PostAutenticationRequest("Desarrollo","6d91327bca8251614ee4b0400e3edb67"));
-                String data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
+                String data = gson.toJson(new PostAutenticationRequest("Desarrollo","6d91327bca8251614ee4b0400e3edb67"));
+                //String data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
                 RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
                 Call<String> call = postService.Login(body1);//True:False?0101
@@ -69,7 +75,7 @@ public class LoginPresenter {
     }
 
 
-    public HttpResponse GetVersion(String idversion) {
+    public HttpResponse GetVersion(String idversion, Context context) {
         final HttpResponse responseModel = new HttpResponse();
         Response response;
         try {
@@ -77,8 +83,11 @@ public class LoginPresenter {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //TODO: Cambiar a implementación de flavors
+            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_autentication),context);//Obtener Ip a partir de configuración
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
             GetVersion postService = retrofit.create(GetVersion.class);
 
             Call<String> call = postService.IsValidVersion(idversion);//True:False?0101

@@ -1,7 +1,10 @@
 package com.example.alphamobilecolombia.mvp.presenter;
 
+import android.content.Context;
 import android.os.StrictMode;
 
+import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.GetPagadurias;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
@@ -20,15 +23,18 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ScannerPresenter {
 
-    public HttpResponse getPagadurias() {
+    public HttpResponse getPagadurias(Context context) {
         final HttpResponse responseModel = new HttpResponse();
         try {
             //TODO: Quitar el policy y poner asíncrono
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//181.57.145.20:6235
+            //TODO: Cambiar a implementación de flavors
+            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_generic),context);//Obtener Ip a partir de configuración
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8082/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
+            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8081/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
             GetPagadurias getPagadurias = retrofit.create(GetPagadurias.class);
 
             /*Gson gson = new Gson();

@@ -89,7 +89,7 @@ public class TerminosActivity extends AppCompatActivity {
 
 
         FinalPresenter presenter = new FinalPresenter();
-        HttpResponse model = presenter.PostInsertPerson(persona, user);
+        HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
 
         if (model != null) {
 
@@ -104,7 +104,7 @@ public class TerminosActivity extends AppCompatActivity {
                     int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
                     int idPagaduria = Integer.parseInt(IdPagaduria);
 
-                    HttpResponse modelSujetoCredito = presenter.PostInsertSujetoCredito(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria);
+                    HttpResponse modelSujetoCredito = presenter.PostInsertSujetoCredito(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria,this.context);
                     if (modelSujetoCredito!=null){
 
                         if(modelSujetoCredito.getCode().contains("200")) {
