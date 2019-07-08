@@ -71,14 +71,23 @@ public class TerminosActivity extends AppCompatActivity {
     public void btnAgree() {
 
         Persona persona = new Persona();
-
+        String genero = getIntent().getStringExtra("PERSONA_Genero");
+        int generoId = 0;
+        switch (genero){
+            case "M":
+                    generoId = 1;
+                break;
+            case "F":
+                    generoId = 2;
+                break;
+        }
 
         persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
         persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
         persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
         persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
         persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));
-        persona.setGenero(getIntent().getStringExtra("PERSONA_Genero"));
+        persona.setGenero(String.valueOf(generoId));
         persona.setCelular(getIntent().getStringExtra("PERSONA_Celular"));
         IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
         IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");

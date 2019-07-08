@@ -40,7 +40,7 @@ public class FinalPresenter {
             PostPersonaInsertar postService = retrofit.create(PostPersonaInsertar.class);
 
             Gson gson = new Gson();
-            String data = gson.toJson(new PostPersonaInsertarRequest(persona.getCedula(), persona.getNombre(), persona.getApellido1(), persona.getApellido2(), persona.getGeneroId(), persona.getFechaNacimiento(), persona.getCelular(), user));
+            String data = gson.toJson(new PostPersonaInsertarRequest(persona.getCedula(), persona.getNombre(), persona.getApellido1(), persona.getApellido2(), persona.getGenero(), persona.getFechaNacimiento(), persona.getCelular(), user));
             RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
             Call<String> call = postService.Insertar( body1 );
