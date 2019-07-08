@@ -57,12 +57,14 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
 
-        RealmStorage storage = new RealmStorage();
-        storage.initLocalStorage(this);
-
-
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
+
+        /*
+        myDialog.setContentView(R.layout.loading_page);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+        */
 
         // Consumo
         ConsultaCreditosPresenter presenter = new ConsultaCreditosPresenter();
