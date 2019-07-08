@@ -68,6 +68,9 @@ dependencies {
     //Libreria para soportar lilipop
     implementation 'com.android.support:multidex:1.0.3'
 
+    //Libreria para poner imagenes con extencion .gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+
 }
 repositories {
     mavenCentral()

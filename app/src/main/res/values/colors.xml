@@ -21,4 +21,5 @@
     <color name="colorConCreditRow">#EBEEFF</color>
     <color name="colorConCreditDetailTitle">#5B5B5B</color>
     <color name="colorConCreditDetailInfo">#5B5B5B</color>
+    <color name="colorTransparente">#005B5B5B</color>
 </resources>
