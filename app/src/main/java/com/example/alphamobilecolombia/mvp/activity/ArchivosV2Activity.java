@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,8 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -49,6 +52,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
     ProgressDialog mDialog;
     String idSujeroCredito;
     String idElement;
+    Dialog myDialog;
+    com.example.alphamobilecolombia.utils.models.File fileUpload;
+    final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
         }
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Nueva solicitud");
+        myDialog = new Dialog(this);
 
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
 
@@ -560,7 +567,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
         builder1.setCancelable(true);
-        final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
+
         final String nameFile = idElement;
         builder1.setPositiveButton(
                 "Sí",
@@ -568,12 +575,13 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        changeStatusUpload(true);
-                        com.example.alphamobilecolombia.utils.models.File fileUpload = new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true);
+                        fileUpload = new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true);
                         listUpload.add(fileUpload);
-                        String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
+                        //String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
+                        LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
+                        loadinAsyncTask.execute();
                         //uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
-                        uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito);
+                        changeStatusUpload(true);
                     }
                 });
 
@@ -623,4 +631,59 @@ public class ArchivosV2Activity extends AppCompatActivity {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
+
+    private class LoadinAsyncTask extends AsyncTask<Void,Integer,Boolean> {
+        public LoadinAsyncTask() {
+            super();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progressBar.setMax(100);
+            //progressBar.setProgress(0);
+            myDialog.setContentView(R.layout.loading_page);
+            myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myDialog.show();
+            // Hilo principal
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito);
+
+            return true;
+            // Ejecutar en segundo plano
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            //progressBar.setProgress(values[0].intValue());
+            // Hilo principal
+            // Se conecta con hilo principal
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aVoid) {
+            // super.onPostExecute(aVoid);
+            if (aVoid){
+                //Toast.makeText(getBaseContext(),"Tarea larga finalizada AsynTask1111.",Toast.LENGTH_LONG).show();
+                myDialog.dismiss();
+            }
+            // Puede ser un mensaje de que el hilo a finalizado
+            // Lo que se ejecute despues de terminar el hilo
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            //Toast.makeText(getBaseContext(),"Tarea larga ha sido cancelada111.",Toast.LENGTH_LONG).show();
+            // Para cancelar el hilo mientras esta haciendo loading
+        }
+    }
+
 }
