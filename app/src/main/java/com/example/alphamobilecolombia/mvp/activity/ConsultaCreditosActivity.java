@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.mvp.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -66,49 +67,65 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
         myDialog.show();
         */
 
-        // Consumo
-        ConsultaCreditosPresenter presenter = new ConsultaCreditosPresenter();
-        HttpResponse model = presenter.PostConsultarSolicitudes(user,this);
-        // HttpResponse model = null;
+        myDialog.setContentView(R.layout.loading_page);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
 
-        if (model != null) {
+        List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
 
-            JSONObject data = (JSONObject) model.getData();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Consumo
+                ConsultaCreditosPresenter presenter = new ConsultaCreditosPresenter();
+                HttpResponse model = presenter.PostConsultarSolicitudes(user,getBaseContext());
+                // HttpResponse model = null;
 
-            try {
+                if (model != null) {
 
-                List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
+                    JSONObject data = (JSONObject) model.getData();
 
-                JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                PostConsultarReporteCreditoResponse ReporteCreditoResponse;
-                for (int i = 0; i < jSONArray.length(); i++) {
-                    ReporteCreditoResponse = new PostConsultarReporteCreditoResponse();
-                    JSONObject object = (JSONObject) jSONArray.get(i);
-                    ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
-                    ReporteCreditoResponse.setRegional(object.getString("regional"));
-                    ReporteCreditoResponse.setOficina(object.getString("oficina"));
-                    ReporteCreditoResponse.setCoordinador(object.getString("coordinador"));
-                    ReporteCreditoResponse.setAsesor(object.getString("asesor"));
-                    ReporteCreditoResponse.setPagaduria(object.getString("pagaduria"));
-                    ReporteCreditoResponse.setDocumentoCliente(object.getString("documentoCliente"));
-                    ReporteCreditoResponse.setCliente(object.getString("cliente"));
-                    ReporteCreditoResponse.setFechaEnvioPrevalidacion(object.getString("fechaEnvioPrevalidacion"));
-                    ReporteCreditoResponse.setMontoSugerido(object.getString("montoSugerido"));
-                    ReporteCreditoResponse.setCuotaSug(object.getString("cuotaSug"));
-                    ReporteCreditoResponse.setPlazoSugerido(object.getString("plazoSugerido"));
-                    ReporteCreditoResponse.setFechaPrevalidacion(object.getString("fechaPrevalidacion"));
-                    ReporteCreditoResponse.setObservacionCredito(object.getString("observacionCredito"));
-                    ReporteCreditoResponse.setNumeroSolicitud(object.getString("numeroSolicitud"));
-                    ReporteCreditoResponse.setTipoCr(object.getString("tipoCr"));
-                    ReporteCredito.add(ReporteCreditoResponse);
+                    try {
+
+                        JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+                        PostConsultarReporteCreditoResponse ReporteCreditoResponse;
+                        for (int i = 0; i < jSONArray.length(); i++) {
+                            ReporteCreditoResponse = new PostConsultarReporteCreditoResponse();
+                            JSONObject object = (JSONObject) jSONArray.get(i);
+                            ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
+                            ReporteCreditoResponse.setRegional(object.getString("regional"));
+                            ReporteCreditoResponse.setOficina(object.getString("oficina"));
+                            ReporteCreditoResponse.setCoordinador(object.getString("coordinador"));
+                            ReporteCreditoResponse.setAsesor(object.getString("asesor"));
+                            ReporteCreditoResponse.setPagaduria(object.getString("pagaduria"));
+                            ReporteCreditoResponse.setDocumentoCliente(object.getString("documentoCliente"));
+                            ReporteCreditoResponse.setCliente(object.getString("cliente"));
+                            ReporteCreditoResponse.setFechaEnvioPrevalidacion(object.getString("fechaEnvioPrevalidacion"));
+                            ReporteCreditoResponse.setMontoSugerido(object.getString("montoSugerido"));
+                            ReporteCreditoResponse.setCuotaSug(object.getString("cuotaSug"));
+                            ReporteCreditoResponse.setPlazoSugerido(object.getString("plazoSugerido"));
+                            ReporteCreditoResponse.setFechaPrevalidacion(object.getString("fechaPrevalidacion"));
+                            ReporteCreditoResponse.setObservacionCredito(object.getString("observacionCredito"));
+                            ReporteCreditoResponse.setNumeroSolicitud(object.getString("numeroSolicitud"));
+                            ReporteCreditoResponse.setTipoCr(object.getString("tipoCr"));
+                            ReporteCredito.add(ReporteCreditoResponse);
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                generateControls(ReporteCredito);
+                                myDialog.dismiss();
+                            }
+                        });
+                    }
+                    catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
-                generateControls(ReporteCredito);
+                myDialog.show();
             }
-            catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+        }).start();
     }
 
     public void generateControls(List data){
