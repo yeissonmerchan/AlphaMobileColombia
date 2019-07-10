@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
@@ -88,5 +89,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
     }
 }

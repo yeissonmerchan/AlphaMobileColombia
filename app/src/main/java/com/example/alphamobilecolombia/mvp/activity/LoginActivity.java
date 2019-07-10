@@ -137,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         alert11.show();
     }
 
-
     public void onClickBtn(View view) {
         validator.validate();
 

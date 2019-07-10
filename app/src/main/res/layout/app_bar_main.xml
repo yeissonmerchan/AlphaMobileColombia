@@ -72,6 +72,7 @@
                         android:layout_marginRight="15dp"
                         android:id ="@+id/user"
                         android:layout_width="35dp"
+                        android:onClick="onclickExit"
                         android:layout_height="35dp"
                         android:textColor="#ffffffff"
                         android:background="@mipmap/usuario"

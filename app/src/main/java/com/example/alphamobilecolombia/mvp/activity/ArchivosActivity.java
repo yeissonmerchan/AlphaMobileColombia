@@ -77,6 +77,10 @@ public class ArchivosActivity extends AppCompatActivity {
         spinner_tipo_documento.setAdapter(adapter_destino_credito);
     }
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
 
     public void tomarFoto(View v) {
         boolean existFile = existDocumentUpload();

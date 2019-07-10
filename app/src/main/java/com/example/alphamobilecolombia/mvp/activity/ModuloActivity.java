@@ -55,6 +55,11 @@ public class ModuloActivity extends AppCompatActivity {
 
     }
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
     public void onClickBtnNewRequest(View view) {
         Intent intent = new Intent (view.getContext(), ScannerActivity.class);
         startActivityForResult(intent, 0);

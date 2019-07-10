@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.mvp.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -267,6 +268,11 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
     }
 
 }
