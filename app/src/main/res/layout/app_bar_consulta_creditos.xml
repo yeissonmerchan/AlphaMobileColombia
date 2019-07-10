@@ -21,8 +21,8 @@
                 android:layout_marginTop="27dp"
                 android:layout_marginLeft="15dp"
                 android:id ="@+id/vive"
-                android:layout_width="60dp"
-                android:layout_height="16dp"
+                android:layout_width="75dp"
+                android:layout_height="20dp"
                 android:textColor="#ffffffff"
                 android:background="@mipmap/logo_principal"
                 android:layout_gravity="top|left"
@@ -43,16 +43,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="20dp"
                     android:text="Mis solicitudes"
+                    android:textSize="18dp"
                     app:autoSizeTextType="uniform"
                     android:id="@+id/txt_modulo"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
@@ -61,17 +61,18 @@
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="13dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
 
 
                     <Button
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="15dp"
                         android:id ="@+id/user"
                         android:layout_width="35dp"
+                        android:onClick="onclickExit"
                         android:layout_height="35dp"
                         android:textColor="#ffffffff"
                         android:background="@mipmap/usuario"
@@ -80,21 +81,21 @@
                         />
                     <TextView
                         android:id="@+id/txt_name"
-                        android:textSize="12dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="35dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="right"
-                        android:textColor="@color/colorNameUser"
-                        android:text="" />
+                        android:textColor="@color/colorButtonUpdate"
+                        android:text="Salir" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-
-
         </LinearLayout>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
