@@ -7,7 +7,7 @@ android:layout_height="match_parent"
 tools:context=".mvp.activity.ConsultaCreditosActivity">
 <include
     android:id="@+id/include"
-    layout="@layout/app_bar_consulta_creditos"
+    layout="@layout/app_bar_main"
     />
 
 <include layout="@layout/content_consulta_creditos" />
