@@ -6,28 +6,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import android.graphics.Matrix;
 import android.util.Base64;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-import org.apache.commons.io.FileUtils;
 import org.jibble.simpleftp.*;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap.*;
 import android.os.Build;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.widget.Switch;
 
 import androidx.annotation.RequiresApi;
 
@@ -35,12 +31,8 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
-import com.example.alphamobilecolombia.data.remote.Models.PostPersonaInsertarRequest;
 import com.example.alphamobilecolombia.data.remote.Models.PostSaveDocuments;
-import com.example.alphamobilecolombia.data.remote.PostAutentication;
 import com.example.alphamobilecolombia.data.remote.PostGuardarDocumentos;
-import com.example.alphamobilecolombia.data.remote.PostPersonaInsertar;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.google.gson.Gson;
 
@@ -89,6 +81,8 @@ public class UploadFilesPresenter {
             e.printStackTrace();
         }
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public HttpResponse PostGuardarDocumentos(List<com.example.alphamobilecolombia.utils.models.File> filesUpload, Context context, String idSujetoCredito) {
@@ -178,7 +172,7 @@ public class UploadFilesPresenter {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public HttpResponse PostGuardarDocumentos(com.example.alphamobilecolombia.utils.models.File filesUpload, Context context, String idSujetoCredito) {
+    public static HttpResponse PostGuardarDocumentos(com.example.alphamobilecolombia.utils.models.File filesUpload, Context context, String idSujetoCredito) {
         final HttpResponse responseModel = new HttpResponse();
         try {
             //TODO: Quitar el policy y poner asíncrono
@@ -240,7 +234,7 @@ public class UploadFilesPresenter {
                 newDocument.setArchivo(base64);
 
                 listDocuments.add(newDocument);
-
+            fileLocal.delete();
 
 
 
@@ -267,7 +261,7 @@ public class UploadFilesPresenter {
     }
 
 
-    public int GetIdDocument(String name){
+    public static int GetIdDocument(String name){
         int idDocument = 0;
 
         switch(name){
@@ -311,4 +305,6 @@ public class UploadFilesPresenter {
 
         return idDocument;
     }
+
+
 }

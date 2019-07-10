@@ -68,7 +68,10 @@ public class InicialActivity extends AppCompatActivity {
             },2000);
         }
     }
-
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
 
 
 }

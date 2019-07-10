@@ -135,6 +135,11 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
     private String getCodePagaduria(String name, List<GetPagaduriasRequest> listPagadurias) {
         int i = -1;
         for (GetPagaduriasRequest cc: listPagadurias) {
@@ -238,7 +243,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
 
     public void onClickBtnNextTerms(View view) {
-        Intent intent = new Intent (view.getContext(), TerminosActivity.class);
+        Intent intent = new Intent (view.getContext(), ArchivosV2Activity.class);
         /*intent.putExtra("PERSONA_Documento", p.getCedula());
         intent.putExtra("PERSONA_PNombre", p.getNombre());
         intent.putExtra("PERSONA_SNombre", "");

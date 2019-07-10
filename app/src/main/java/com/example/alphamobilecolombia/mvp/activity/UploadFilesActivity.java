@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -34,4 +35,9 @@ public class UploadFilesActivity extends AppCompatActivity {
         modulo.setText("Cargue de archivos");
     }
 
+
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
 }

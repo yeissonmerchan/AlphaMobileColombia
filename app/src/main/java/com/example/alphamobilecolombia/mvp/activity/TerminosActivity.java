@@ -67,6 +67,11 @@ public class TerminosActivity extends AppCompatActivity {
         btnAgree();
     }
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 
     public void btnAgree() {
 

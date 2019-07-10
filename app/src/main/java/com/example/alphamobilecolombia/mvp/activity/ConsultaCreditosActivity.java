@@ -286,4 +286,9 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
     }
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 }
