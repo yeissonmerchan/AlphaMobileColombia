@@ -692,8 +692,18 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        fileUpload = new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true);
-                        listUpload.add(fileUpload);
+                        boolean isExist = false;
+
+                        for(com.example.alphamobilecolombia.utils.models.File file : listUpload) {
+                            if(file.getType().equals(nameFile)) {
+                                isExist = true;
+                            }
+                        }
+
+                        if (!isExist){
+                            fileUpload = new com.example.alphamobilecolombia.utils.models.File(0, getNameFile(view),false, nameFile,true);
+                            listUpload.add(fileUpload);
+                        }
 
                         //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
                         //loadinAsyncTask.execute();
