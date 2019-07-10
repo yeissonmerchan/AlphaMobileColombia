@@ -676,7 +676,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        recuperarFotoCargada(view);
+        //recuperarFotoCargada(view);
         ConfirmacionImagen(view);
     }
 
