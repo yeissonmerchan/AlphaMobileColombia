@@ -19,13 +19,13 @@ public class PostPersonaInsertarRequest {
     final String iD_TP_MunicipioExpedicion;
     final String iD_TP_UsuarioRegistro;
 
-    public PostPersonaInsertarRequest(String cedula, String pNombre, String pApellido, String sApellido, String genero, String fechaNacimiento, String celular, String usuarioRegistro)
+    public PostPersonaInsertarRequest(String cedula, String pNombre, String sNombre, String pApellido, String sApellido, String genero, String fechaNacimiento, String celular, String usuarioRegistro)
     {
 
         this.iD_TS_TipoDocumento = "1";
         this.documento = cedula;
         this.primerNombre = pNombre;
-        this.segundoNombre = "";
+        this.segundoNombre = sNombre;
         this.primerApellido = pApellido;
         this.segundoApellido = sApellido;
         this.iD_TS_Genero = genero;

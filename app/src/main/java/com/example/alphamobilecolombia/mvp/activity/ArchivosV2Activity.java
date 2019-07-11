@@ -778,6 +778,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
         persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
         persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
+        persona.setNombre2(getIntent().getStringExtra("PERSONA_SNombre"));
         persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
         persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
         persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));

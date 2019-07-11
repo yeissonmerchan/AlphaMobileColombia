@@ -8,6 +8,16 @@ public class Persona extends RealmObject {
     @PrimaryKey
     private String cedula;
     private String nombre;
+
+    public String getNombre2() {
+        return nombre2;
+    }
+
+    public void setNombre2(String nombre2) {
+        this.nombre2 = nombre2;
+    }
+
+    private String nombre2;
     private String apellido1;
     private String apellido2;
     private String genero;
