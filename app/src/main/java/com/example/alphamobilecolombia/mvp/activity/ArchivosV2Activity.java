@@ -98,12 +98,14 @@ public class ArchivosV2Activity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void finalizacion(View view) throws InterruptedException, ExecutionException {
         this.view = view;
-        boolean result = compareLists(listUpload);;
-
+        boolean result = compareLists(listUpload);
+        List<HttpResponse> listResponses = new ArrayList<>();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("¿ Deseas guardar este sujeto ?");
         builder1.setCancelable(true);
-
+        myDialog.setContentView(R.layout.loading_page);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
         final String nameFile = idElement;
         builder1.setPositiveButton(
                 "Sí",
@@ -111,6 +113,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
+                        //loadinAsyncTask.execute();
+
                         if(result){
                             SavePersonAndSubject();
                             executionCompleted = new CountDownLatch(listUpload.size());
@@ -124,27 +129,41 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                         System.out.println("I am executed by :" + Thread.currentThread().getName());
                                         try
                                         {
-                                            //Thread.sleep(3000);
-                                            uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito);
+                                            HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito);
                                             // One thread has completed its job
                                             executionCompleted.countDown();
+                                            listResponses.add(httpResponse);
                                         }
                                         catch (Exception e)
                                         {
                                             // TODO Auto-generated catch block
                                             e.printStackTrace();
                                         }
+
+
                                     }
 
                                 }.start();
                             }
 
+                            try
+                            {
+                                myDialog.setContentView(R.layout.loading_page);
+                                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                myDialog.show();
+                                // Wait till the count down latch opens.In the given case till five
+                                // times countDown method is invoked
+                                executionCompleted.await();
+                                System.out.println("All over");
 
-                            LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
-                            loadinAsyncTask.execute();
+                                Intent intento1=new Intent(view.getContext(),FinalActivity.class);
+                                startActivity(intento1);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
 
-                            Intent intento1=new Intent(view.getContext(),FinalActivity.class);
-                            startActivity(intento1);
                         }
                         else{
                             NotificacionArchivospendientes(view);
@@ -172,11 +191,11 @@ public class ArchivosV2Activity extends AppCompatActivity {
         List<com.example.alphamobilecolombia.utils.models.File> filesRequired = new ArrayList<File>();
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(66,"",true,"SolicitudCreditoCara1",false));
         filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(67,"",true,"SolicitudCreditoCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(68,"",true,"CedulaCara1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(69,"",true,"CedulaCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(70,"",true,"Desprendible1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(71,"",true,"Desprendible2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(77,"",true,"TratamientoDatosPersonales",false));
+        //filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(68,"",true,"CedulaCara1",false));
+        //filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(69,"",true,"CedulaCara2",false));
+        //filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(70,"",true,"Desprendible1",false));
+        //filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(71,"",true,"Desprendible2",false));
+        //filesRequired.add(new com.example.alphamobilecolombia.utils.models.File(77,"",true,"TratamientoDatosPersonales",false));
 
         ArchivosActivity.ExistFile existFile = new ArchivosActivity.ExistFile();
 
@@ -207,8 +226,8 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 }
             }
         }
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
-        //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
+        //if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         //if(existFile.SolicitudCreditoCara1)
         {
             return true;

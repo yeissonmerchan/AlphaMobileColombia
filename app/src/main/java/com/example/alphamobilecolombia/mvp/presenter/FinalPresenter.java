@@ -43,7 +43,7 @@ public class FinalPresenter {
             String data = gson.toJson(new PostPersonaInsertarRequest(persona.getCedula(), persona.getNombre(), persona.getNombre2(), persona.getApellido1(), persona.getApellido2(), persona.getGenero(), persona.getFechaNacimiento(), persona.getCelular(), user));
             RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
-            Call<String> call = postService.Insertar( body1 );
+            Call<String> call = postService.Insertar(body1);
 
             Response response = call.execute();
 
