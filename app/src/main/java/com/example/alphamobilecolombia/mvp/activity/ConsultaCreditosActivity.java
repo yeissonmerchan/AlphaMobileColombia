@@ -133,6 +133,8 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
 
     public void generateControls(List data){
 
+        //Se elimina la data anterior
+        storage.deleteInfoConsultaCreditro(this);
         //Se guarda la data en el Storage
         storage.saveConsultaCreditro(this,data);
 
