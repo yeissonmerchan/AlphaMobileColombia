@@ -101,14 +101,35 @@ public class RealmStorage {
 
             Realm realm = Realm.getDefaultInstance();
 
-            final RealmResults<PostConsultarReporteCreditoResponse> findPerson = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
+            final RealmResults<PostConsultarReporteCreditoResponse> data = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
 
-            return findPerson;
+            return data;
         }
         catch (Exception e){
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void deleteInfoConsultaCreditro(Context context){
+        try {
+            Realm.init(context);
+            Realm realm = Realm.getDefaultInstance();
+            final RealmResults<PostConsultarReporteCreditoResponse> data = realm.where(PostConsultarReporteCreditoResponse.class).findAll();
+            /*for (Person object : findPerson) {
+                object.deleteFromRealm();
+            }*/
+            realm.beginTransaction();
+            realm.delete(PostConsultarReporteCreditoResponse.class);
+            if (null != data && data.size() > 0) {
+                data.deleteAllFromRealm();
+            }
+            realm.commitTransaction();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public void deleteTable(Context context){
