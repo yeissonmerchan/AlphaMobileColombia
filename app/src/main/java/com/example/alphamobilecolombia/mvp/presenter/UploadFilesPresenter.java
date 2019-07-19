@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,9 +15,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.graphics.Matrix;
+import android.os.Environment;
 import android.util.Base64;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import org.jibble.simpleftp.*;
 import org.json.JSONObject;
@@ -24,6 +27,7 @@ import org.json.JSONObject;
 import android.os.Build;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -36,7 +40,9 @@ import com.example.alphamobilecolombia.data.remote.PostGuardarDocumentos;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.google.gson.Gson;
 
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -172,19 +178,12 @@ public class UploadFilesPresenter {
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static HttpResponse PostGuardarDocumentos(com.example.alphamobilecolombia.utils.models.File filesUpload, Context context, String idSujetoCredito) {
+    public static HttpResponse PostGuardarDocumentos(com.example.alphamobilecolombia.utils.models.File filesUpload, Context context, String idSujetoCredito, String pathFile) {
         final HttpResponse responseModel = new HttpResponse();
         try {
             //TODO: Quitar el policy y poner asíncrono
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-
-            //TODO: Cambiar a implementación de flavors
-            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_storage),context);//Obtener Ip a partir de configuración
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
-            //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
-            PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
             RealmStorage storage = new RealmStorage();
             Gson gson = new Gson();
@@ -200,72 +199,126 @@ public class UploadFilesPresenter {
 
                 String nameFile = filesUpload.getName();
                 //String pathFile = person.getNumber()+nameFile+".jgp";
-                Matrix matrix = new Matrix();
-                matrix.postRotate(90);
+                /*Matrix matrix = new Matrix();
+                matrix.postRotate(90);*/
+                //String pathFileLocal = context.getExternalFilesDir(null)+"/"+nameFile;
+                //String pathFileLocalCompress = context.getExternalFilesDir(null)+"/"+"C"+nameFile;
+                File fileLocal;
+                /*Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);*/
 
-                String pathFileLocal = context.getExternalFilesDir(null)+"/"+nameFile;
-                File fileLocal = new File(pathFileLocal);
-                Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
-                OutputStream os = new BufferedOutputStream(new FileOutputStream(fileLocal));
-                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, os);
-                os.close();
+                /*ByteArrayOutputStream stream = new ByteArrayO utputStream();
+                rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                byte[] byteArray = stream.toByteArray();
+                rotatedBitmap.recycle();
+                bitmap1.recycle();*/
 
+                boolean isValidUpload = false;
+                String pathFileLocal = pathFile+"/"+nameFile;
                 String base64 = "";
                 try {
+                    fileLocal = new File(pathFileLocal);
+
+                    /*File compressedImage = new Compressor(context)
+                            .setMaxWidth(640)
+                            .setMaxHeight(480)
+                            .setQuality(75)
+                            .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                            .setDestinationDirectoryPath(pathFileLocalCompress)
+                            .compressToFile(fileLocal);*/
+
+                    /*File compressedImage = new Compressor(context)
+                            .setQuality(60)
+                            .setCompressFormat(Bitmap.CompressFormat.PNG)
+                            .setDestinationDirectoryPath(pathFileLocalCompress)
+                            .compressToFile(fileLocal);
+
+                    int lenar1 = (int) fileLocal.length();
+                    int lenar2 = (int) compressedImage.length();*/
+
                     byte[] buffer = new byte[(int) fileLocal.length() + 100];
                     @SuppressWarnings("resource")
                     int length = new FileInputStream(fileLocal).read(buffer);
                     base64 = Base64.encodeToString(buffer, 0, length,
                             Base64.DEFAULT);
-                } catch (IOException e) {
+                    isValidUpload = true;
+                } catch (Exception e) {
+                    System.out.println("Ha ocurrido un error en la lectura del archivo! "+e.getMessage());
                     e.printStackTrace();
                 }
 
+                if(isValidUpload) {
+                    PostSaveDocuments newDocument = new PostSaveDocuments();
+                    newDocument.setRutaArchivo(nameFile);
+                    newDocument.setSujetoCreditoID(Integer.parseInt(idSujetoCredito));
+                    newDocument.setTipoArchivoID(GetIdDocument(filesUpload.getType()));
+                    newDocument.setTipoArchivoNombre(filesUpload.getType());
+                    newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+                    newDocument.setExtensionArchivo(".jpg");
+                    newDocument.setNombreArchivo(nameFile);
+                    newDocument.setArchivo(base64);
 
-                PostSaveDocuments newDocument = new PostSaveDocuments();
-                newDocument.setRutaArchivo(nameFile);
-                newDocument.setSujetoCreditoID(Integer.parseInt(idSujetoCredito));
-                newDocument.setTipoArchivoID(GetIdDocument(filesUpload.getType()));
-                newDocument.setTipoArchivoNombre(filesUpload.getType());
-                newDocument.setUsuarioRegistroID(Integer.parseInt(user));
-                newDocument.setExtensionArchivo(".jpg");
-                newDocument.setNombreArchivo(nameFile);
-                newDocument.setArchivo(base64);
+                    listDocuments.add(newDocument);
+                    //fileLocal.delete();
 
-                listDocuments.add(newDocument);
-            fileLocal.delete();
+                    String data = gson.toJson(listDocuments);
+                    RequestBody body1 = RequestBody.create(MediaType.parse("application/json"), data);
+                    OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                            .connectTimeout(60, TimeUnit.SECONDS)
+                            .readTimeout(60, TimeUnit.SECONDS)
+                            .writeTimeout(60, TimeUnit.SECONDS)
+                            .build();
 
+                    //TODO: Cambiar a implementación de flavors
+                    String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_storage),context);//Obtener Ip a partir de configuración
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).client(okHttpClient).addConverterFactory(ScalarsConverterFactory.create()).build();
+                    //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://181.57.145.20:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
+                    //Retrofit retrofit = new Retrofit.Builder().baseUrl("http://apps.vivecreditos.com:8083/").addConverterFactory(ScalarsConverterFactory.create()).build();//Producción
+                    PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
 
+                    Call<String> call = postService.Upload(body1);
+                    Response response = null;
 
-            String data = gson.toJson(listDocuments);
-            RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
+                    try{
+                        response = call.execute();
+                    }
+                    catch (Exception ex){
+                        System.out.println("Ha ocurrido un error en la ejecución! "+ex.getMessage());
+                        System.out.println("Ha ocurrido un error! Traza: "+ex.getStackTrace());
+                        System.out.println("Ha ocurrido un error! "+ ex);
+                        ex.printStackTrace();
+                    }
 
-            Call<String> call = postService.Upload( body1 );
+                    JSONObject jsonObject;
+                    if (response != null) {
+                        if (!(response.code() != 200)) {
+                            jsonObject = new JSONObject(response.body().toString());
+                            String value = jsonObject.toString();
+                            responseModel.setCode(String.valueOf(response.code()));
+                            responseModel.setData(jsonObject);
+                            responseModel.setMessage(response.message());
+                            responseModel.setSendData(data);
+                        } else {
+                            String errorResponse = response.errorBody().string();
+                            System.out.println("Trama de error! "+ errorResponse);
+                            JSONObject object = new JSONObject(errorResponse);
+                            responseModel.setCode(String.valueOf(response.code()));
+                            responseModel.setData(object);
+                            responseModel.setMessage(String.valueOf(object.get("mensaje")));
+                            responseModel.setSendData(data);
+                        }
+                    }
 
-            Response response = call.execute();
-
-            JSONObject jsonObject;
-            if (!(response.code() != 200)) {
-                jsonObject = new JSONObject(response.body().toString());
-                String value = jsonObject.toString();
-                responseModel.setCode(String.valueOf(response.code()));
-                responseModel.setData(jsonObject);
-                responseModel.setMessage(response.message());
-            }
-            else{
-                String errorResponse = response.errorBody().string();
-                JSONObject object = new JSONObject(errorResponse);
-                responseModel.setCode(String.valueOf(response.code()));
-                responseModel.setData(object);
-                responseModel.setMessage(String.valueOf(object.get("mensaje")));
-            }
-
-            return responseModel;
+                    return responseModel;
+                }
 
         }
         catch (Exception ex){
-            System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            System.out.println("Ha ocurrido un error! "+ ex.getMessage());
+            System.out.println("Ha ocurrido un error! Traza: "+ex.getStackTrace());
+            System.out.println("Ha ocurrido un error! "+ ex);
+            ex.printStackTrace();
+            Log.d("Error servicio", String.valueOf(ex.getStackTrace()));
         }
         return null;
     }

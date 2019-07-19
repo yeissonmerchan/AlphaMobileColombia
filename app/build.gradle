@@ -70,7 +70,10 @@ dependencies {
 
     //Libreria para poner imagenes con extencion .gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.3.1'
 
+    //Libreria compresión de archivos
+    implementation 'id.zelory:compressor:2.1.0'
 }
 repositories {
     mavenCentral()

@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -45,16 +46,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+
+import id.zelory.compressor.Compressor;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class ArchivosV2Activity extends AppCompatActivity {
@@ -62,6 +73,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     RealmStorage storage = new RealmStorage();
     View view;
     ProgressDialog mDialog;
+    Boolean isCreateUserAndSubject = false;
     String idSujeroCredito;
     String idElement;
     Dialog myDialog;
@@ -71,6 +83,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     private String IdTipoContrato;
     private String IdDestinoCredito;
     private String IdPagaduria;
+    private String pathNewFile1;
     final Context context = this;
     CountDownLatch executionCompleted;
 
@@ -91,92 +104,181 @@ public class ArchivosV2Activity extends AppCompatActivity {
         myDialog = new Dialog(this);
 
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
+        isCreateUserAndSubject = false;
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("Lifecycle", "onDestroy()");
 
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void finalizacion(View view) throws InterruptedException, ExecutionException {
-        this.view = view;
-        boolean result = compareLists(listUpload);
+        try {
+
+            this.view = view;
+            boolean result = compareLists(listUpload);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+            builder1.setMessage("¿ Deseas guardar este sujeto ?");
+            builder1.setCancelable(true);
+            myDialog.setContentView(R.layout.loading_page);
+            myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myDialog.show();
+            final String nameFile = idElement;
+            builder1.setPositiveButton(
+                    "Sí",
+                    new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+
+                            if(result){
+                                if(!isCreateUserAndSubject){
+                                    SavePersonAndSubject();
+                                }
+                                saveFiles(view);
+                            }
+                            else{
+                                NotificacionArchivospendientes(view);
+                            }
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void saveFiles(View view){
         List<HttpResponse> listResponses = new ArrayList<>();
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-        builder1.setMessage("¿ Deseas guardar este sujeto ?");
-        builder1.setCancelable(true);
-        myDialog.setContentView(R.layout.loading_page);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
-        final String nameFile = idElement;
-        builder1.setPositiveButton(
-                "Sí",
-                new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-
-                        if(result){
-                            SavePersonAndSubject();
-                            executionCompleted = new CountDownLatch(listUpload.size());
-                            for(com.example.alphamobilecolombia.utils.models.File file : listUpload)
-                            {
-                                new Thread()
-                                {
-                                    @Override
-                                    public void run ()
-                                    {
-                                        System.out.println("I am executed by :" + Thread.currentThread().getName());
-                                        try
-                                        {
-                                            HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito);
-                                            // One thread has completed its job
-                                            executionCompleted.countDown();
-                                            listResponses.add(httpResponse);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            // TODO Auto-generated catch block
-                                            e.printStackTrace();
-                                        }
-
-
-                                    }
-
-                                }.start();
-                            }
-
-                            try
-                            {
-                                // Wait till the count down latch opens.In the given case till five
-                                // times countDown method is invoked
-                                executionCompleted.await();
-                                System.out.println("All over");
-
-                                Intent intento1=new Intent(getBaseContext(),FinalActivity.class);
-                                startActivity(intento1);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();
-                            }
-
-                        }
-                        else{
-                            NotificacionArchivospendientes(view);
+        boolean isValidSendFiles = false;
+        executionCompleted = new CountDownLatch(listUpload.size());
+        for(com.example.alphamobilecolombia.utils.models.File file : listUpload)
+        {
+            new Thread()
+            {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                @Override
+                public void run ()
+                {
+                    System.out.println("I am executed by :" + Thread.currentThread().getName());
+                    try
+                    {
+                        HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito,pathNewFile1);
+                        // One thread has completed its job
+                        executionCompleted.countDown();
+                        if (httpResponse != null) {
+                            listResponses.add(httpResponse);
                         }
                     }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-
+                    catch (Exception e)
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                });
+                }
+            }.start();
+        }
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+        try
+        {
+            executionCompleted.await();
+            // Wait till the count down latch opens.In the given case till five
+            // times countDown method is invoked
+            System.out.println("All over");
+            System.out.println("Cantidad de respuestas "+listResponses.size());
+            //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
+            //if (listResponses.size() == listUpload.size()){
+            if (listResponses.size() > 0){
+                for(HttpResponse httpResponse : listResponses){
+                    System.out.println("Proceso de envio de archivo " + httpResponse);
+                    if(httpResponse != null) {
+                        System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
+                        System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
+                        System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
+                        System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
+                        if(!httpResponse.getCode().contains("200")) {
+                            isValidSendFiles = true;
+                        }
+                    }
+                }
+
+                if (listResponses.size() != listUpload.size()) {
+                    if (listResponses.size() != listUpload.size() - 1) {
+                        ValidacionCargueDocumentos(view);
+                    }
+                }
+
+                if(isValidSendFiles){
+                    ValidacionCargueDocumentos(view);
+                }
+                else{
+                    deleteFiles();
+                    Intent intento1=new Intent(view.getContext(),FinalActivity.class);
+                    startActivity(intento1);
+                }
+            }
+            else{
+                //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
+                ValidacionCargueDocumentos(view);
+            }
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFiles() {
+        for (com.example.alphamobilecolombia.utils.models.File file : listUpload){
+            try {
+                String nameFile = file.getName();
+                String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
+                String pathFileLocalCompress =pathNewFile1 + nameFile;
+                java.io.File fileLocal = new java.io.File(pathFileLocal);
+                java.io.File fileLocalCompress = new java.io.File(pathFileLocalCompress);
+                fileLocal.delete();
+                fileLocalCompress.delete();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }
 
 
@@ -269,9 +371,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
         mDialog.show();
     }
 
-    public void hideLoading(){
+    /*public void hideLoading(){
         mDialog.dismiss();
-    }
+    }*/
 
     public void recuperarFotoCargada(View v) {
         try {
@@ -284,17 +386,31 @@ public class ArchivosV2Activity extends AppCompatActivity {
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v, rotatedBitmap, true);
-            hideLoading();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    public void recuperarImagen(View v,boolean isfetch) {
+    public void recuperarImagen(View v, boolean isfetch) {
         try {
             //showLoading(v);
             //idElement = getIdElementView(v);
+            String pathFileLocal = getExternalFilesDir(null)+"/"+getNameFile(v);
+            String pathFileLocalCompress = getExternalFilesDir(null)+"";
+            java.io.File fileLocal;
+            fileLocal = new java.io.File(pathFileLocal);
+
+            java.io.File file = new Compressor(context)
+                    .setQuality(60)
+                    .setCompressFormat(Bitmap.CompressFormat.PNG)
+                    .compressToFile(fileLocal);
+
+            fileLocal.delete();
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+            pathNewFile1 = file.getParent();
+
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
 
@@ -302,7 +418,6 @@ public class ArchivosV2Activity extends AppCompatActivity {
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v,rotatedBitmap,isfetch);
-            hideLoading();
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -315,7 +430,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
         Person person = storage.getPerson(this);
         String nameFile = idElement;
 
-        return person.getNumber()+nameFile+".jgp";
+        return person.getNumber()+nameFile+".jpg";
     }
 
     public void changeStatusUpload(boolean status){
@@ -697,7 +812,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     public void ConfirmacionImagen(final View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
 
         final String nameFile = idElement;
         builder1.setPositiveButton(
@@ -739,14 +854,38 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 });
 
         AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
         alert11.show();
+    }
+
+
+    public void ValidacionCargueDocumentos(final View view){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+        builder1.setMessage("Hubo un problema al cargar los archivos. Por favor inténtalo de nuevo");
+        builder1.setCancelable(false);
+        this.view = view;
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        saveFiles(view);
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
+        alert11.show();
+        myDialog.setContentView(R.layout.loading_page);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
     }
 
 
     public void NotificacionExistente(final View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Este archivo ya esta cargado, por favor selecione otro.");
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
         builder1.setPositiveButton(
                 "Ok",
                 new DialogInterface.OnClickListener() {
@@ -756,13 +895,14 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 });
 
         AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
         alert11.show();
     }
 
     public void NotificacionArchivospendientes(final View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Aun faltan archivos por cargar..");
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
         builder1.setPositiveButton(
                 "Ok",
                 new DialogInterface.OnClickListener() {
@@ -772,6 +912,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 });
 
         AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
         alert11.show();
     }
 
@@ -831,7 +972,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                             setData(sharedPref, objeto2);
                             String idSujetoCredito = objeto2.getString("codigoTransaccion");
                             idSujeroCredito = idSujetoCredito;
-
+                            isCreateUserAndSubject = true;
                         }
                         else{
                             NotificacionErrorDatos(this.context);
@@ -856,7 +997,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     public void NotificacionErrorDatos(final Context view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
         builder1.setMessage("Ha ocurrido un error inesperado. Intentalo mas tarde.");
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
         builder1.setPositiveButton(
                 "Ok",
                 new DialogInterface.OnClickListener() {
@@ -868,6 +1009,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 });
 
         AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
         alert11.show();
     }
 
