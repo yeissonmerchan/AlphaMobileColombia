@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="80dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alphamobilecolombia.mvp.activity.CapturaInformacionActivity"
+    tools:showIn="@layout/activity_captura_informacion">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="80dp"
+            android:layout_marginBottom="100dp"
+            android:id="@+id/lyt_controls"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtInfoActivity"
+                android:text="Información del cliente:"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNombres"
+                android:text="Nombres"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_names"
+                android:hint="Primer nombre"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_names2"
+                android:hint="Segundo nombre"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtApellidos"
+                android:text="Apellidos"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_lastNames"
+                android:hint="Primer apellido"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_lastNames2"
+                android:hint="Segundo apellido"
+                android:maxLength="50"
+                android:inputType="text"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNumIdent"
+                android:text="Número de identificación"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_numberIdentification"
+                android:hint="Numero identificación"
+                android:maxLength="15"
+                android:inputType="number"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtFechaNac"
+                android:text="Fecha de nacimiento"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_birthDate"
+                android:inputType="date"
+                android:focusable="false"
+                android:hint="Fecha nacimiento"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtGenero"
+                android:text="Género"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_genero"
+                android:inputType="text"
+                android:maxLength="50"
+                android:hint="Género"
+                android:textSize="@dimen/size_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+
+            <Button
+                android:id="@+id/btn_new_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="30dp"
+                android:background="@color/colorHeader"
+                android:text="@string/btn_next"
+                android:onClick="onClickSaveInformation"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

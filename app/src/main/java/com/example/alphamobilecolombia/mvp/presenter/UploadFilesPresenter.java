@@ -301,11 +301,20 @@ public class UploadFilesPresenter {
                         } else {
                             String errorResponse = response.errorBody().string();
                             System.out.println("Trama de error! "+ errorResponse);
-                            JSONObject object = new JSONObject(errorResponse);
-                            responseModel.setCode(String.valueOf(response.code()));
-                            responseModel.setData(object);
-                            responseModel.setMessage(String.valueOf(object.get("mensaje")));
-                            responseModel.setSendData(data);
+                            try {
+                                JSONObject object = new JSONObject(errorResponse);
+                                responseModel.setCode(String.valueOf(response.code()));
+                                responseModel.setData(object);
+                                responseModel.setMessage(String.valueOf(object.get("mensaje")));
+                                responseModel.setSendData(data);
+                            }
+                            catch (Exception ex){
+                                responseModel.setCode(String.valueOf(response.code()));
+                                responseModel.setData(errorResponse);
+                                responseModel.setMessage("Error mapeo a json de error");
+                                responseModel.setSendData(data);
+                            }
+
                         }
                     }
 

@@ -48,6 +48,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -139,7 +140,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             boolean result = compareLists(listUpload);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
             builder1.setMessage("¿ Deseas guardar este sujeto ?");
-            builder1.setCancelable(true);
+            builder1.setCancelable(false);
             myDialog.setContentView(R.layout.loading_page);
             myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myDialog.show();
@@ -172,6 +173,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     });
 
             AlertDialog alert11 = builder1.create();
+            alert11.setCanceledOnTouchOutside(false);
             alert11.show();
 
         }
@@ -229,6 +231,20 @@ public class ArchivosV2Activity extends AppCompatActivity {
                         System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
                         System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
                         if(!httpResponse.getCode().contains("200")) {
+                            isValidSendFiles = true;
+                        }
+
+                        try {
+                            JSONObject objeto2 = (JSONObject) httpResponse.getData();
+                            JSONArray objeto3 = objeto2.getJSONArray("data");
+                            JSONObject objeto4 = new JSONObject(objeto3.getString(0));
+                            String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
+                            System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
+                            if (!codigoRespuesta3.contains("200")) {
+                                isValidSendFiles = true;
+                            }
+                        }catch (Exception ex){
+                            ex.printStackTrace();
                             isValidSendFiles = true;
                         }
                     }
@@ -382,7 +398,8 @@ public class ArchivosV2Activity extends AppCompatActivity {
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
 
-            Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+            //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v, rotatedBitmap, true);
@@ -414,7 +431,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
 
-            Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null)+"/"+getNameFile(v));
+            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v,rotatedBitmap,isfetch);
