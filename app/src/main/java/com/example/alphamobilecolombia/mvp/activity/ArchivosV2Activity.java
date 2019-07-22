@@ -959,7 +959,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     setData(sharedPref, objeto);
                     String codigoTransaccion = objeto.getString("codigoTransaccion");
                     int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
-                    int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoEmpleado));
+                    int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoContrato));
                     int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
                     int idPagaduria = Integer.parseInt(IdPagaduria);
 
@@ -1036,12 +1036,12 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     private String getCodeTipoContrato(String name) {
         int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_tipo_contrato_empleado)) {
+        for (String cc: getResources().getStringArray(R.array.spinner_tipo_contrato_empleado_Todos)) {
             i++;
             if (cc.equals(name))
                 break;
         }
-        return getResources().getStringArray(R.array.spinner_codigos_tipo_contrato_empleado)[i];
+        return getResources().getStringArray(R.array.spinner_codigos_tipo_contrato_empleado_Todos)[i];
     }
 
 
