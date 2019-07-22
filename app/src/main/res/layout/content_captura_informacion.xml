@@ -50,7 +50,7 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtNombres"
-                android:text="Nombres"
+                android:text="Primer nombre *"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="18dp"
@@ -69,6 +69,23 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtNombres2"
+                android:text="Segundo nombre"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -93,12 +110,13 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtApellidos"
-                android:text="Apellidos"
+                android:text="Primer apellido *"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="18dp"
                 android:textColor="@color/colorHeader"
                 android:scrollbars = "vertical"/>
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,6 +129,24 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtApellidos2"
+                android:text="Segundo apellido"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,7 +171,7 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtNumIdent"
-                android:text="Número de identificación"
+                android:text="Número de identificación *"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="18dp"
@@ -145,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_numberIdentification"
-                android:hint="Numero identificación"
+                android:hint="Número identificación"
                 android:maxLength="15"
                 android:inputType="number"
                 android:textSize="@dimen/size_text"
@@ -165,12 +201,13 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtFechaNac"
-                android:text="Fecha de nacimiento"
+                android:text="Fecha de nacimiento *"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="18dp"
                 android:textColor="@color/colorHeader"
                 android:scrollbars = "vertical"/>
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,25 +231,114 @@
                 android:inputType="textMultiLine"
                 android:ems="20"
                 android:id="@+id/txtGenero"
-                android:text="Género"
+                android:text="Género *"
                 android:longClickable="true"
                 android:layout_centerHorizontal="true"
                 android:textSize="18dp"
                 android:textColor="@color/colorHeader"
                 android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_genero"
-                android:inputType="text"
-                android:maxLength="50"
-                android:hint="Género"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
 
+            <Spinner
+                android:id="@+id/spinner_genero"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtPagaduria"
+                android:text="Pagaduria *"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <Spinner
+                android:id="@+id/spinner_pagaduria"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtDestino"
+                android:text="Destino del crédito *"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <Spinner
+                android:id="@+id/spinner_destino_credito"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtTipoEmpleado"
+                android:text="Tipo de empleado *"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <Spinner
+                android:id="@+id/spinner_tipo_empleado"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtTipoContrato"
+                android:text="Tipo de contrato *"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+            <Spinner
+                android:id="@+id/spinner_tipo_contrato"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btn_new_request"
