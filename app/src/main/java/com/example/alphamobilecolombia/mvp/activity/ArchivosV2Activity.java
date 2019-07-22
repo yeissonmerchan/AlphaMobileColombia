@@ -269,7 +269,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             try {
                 String nameFile = file.getName();
                 String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
-                String pathFileLocalCompress =pathNewFile1 + nameFile;
+                String pathFileLocalCompress = pathNewFile1 + nameFile;
                 java.io.File fileLocal = new java.io.File(pathFileLocal);
                 java.io.File fileLocalCompress = new java.io.File(pathFileLocalCompress);
                 fileLocal.delete();
