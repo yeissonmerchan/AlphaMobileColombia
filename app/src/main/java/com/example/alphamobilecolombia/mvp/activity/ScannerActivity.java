@@ -242,7 +242,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    public void ValidarPrevalidacionesActivas(String Documento) throws JSONException {
+    public void ValidarPrevalidacionesActivas(String Documento,Person person) throws JSONException {
 
         ConsultarPrevalidacionActivaPresenter presenter = new ConsultarPrevalidacionActivaPresenter();
         HttpResponse model = presenter.GetConsultarPrevalidacionActiva(Documento,getBaseContext());
@@ -261,10 +261,60 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 accion = Boolean.parseBoolean(object.getString("accion"));
 
                 if(accion){
-                    Toast.makeText(getBaseContext(),object.getString("mensaje"),Toast.LENGTH_SHORT).show();
+
+                    try{
+
+                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+                        Alert.setTitle("IMPORTANTE");
+                        Alert.setMessage(object.getString("mensaje"));
+                        Alert.setCancelable(false);
+
+                        Alert.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        EnvioDataCambioPagina(person);
+                                    }
+                                });
+
+
+                        AlertDialog AlertMsg = Alert.create();
+                        AlertMsg.setCanceledOnTouchOutside(false);
+                        AlertMsg.show();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
         }
+    }
+
+    public void  EnvioDataCambioPagina(Person person){
+        Intent intent = new Intent (getBaseContext(), ArchivosV2Activity.class);
+
+        String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
+        String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
+
+        String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
+
+        intent.putExtra("PERSONA_Documento", person.getNumber());
+        intent.putExtra("PERSONA_PNombre", person.getFirstName());
+        intent.putExtra("PERSONA_SNombre", person.getSecondName());
+        intent.putExtra("PERSONA_PApellido", person.getSurename());
+        intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
+        intent.putExtra("PERSONA_FechaNac", bithdate);
+        intent.putExtra("PERSONA_Genero", person.getGender());
+        intent.putExtra("PERSONA_Celular", person.getPlaceBirth());
+
+        intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
+        intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
+        intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
+        intent.putExtra("IdPagaduria",codePagaduria);
+
+        startActivityForResult(intent, 0);
     }
 
     public void onClickBtnNextTerms(View view) throws JSONException {
@@ -289,11 +339,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         if(person != null){
             if(person.getNumber().length()>0)
             {
-                // Inicio: Prevalidacion
-                ValidarPrevalidacionesActivas(person.getNumber());
-                // Fin: Prevalidacion
+                ValidarPrevalidacionesActivas(person.getNumber(),person);
 
-                String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
+                /*String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
 
                 intent.putExtra("PERSONA_Documento", person.getNumber());
                 intent.putExtra("PERSONA_PNombre", person.getFirstName());
@@ -309,7 +357,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
                 intent.putExtra("IdPagaduria",codePagaduria);
 
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, 0);*/
             }
             else{
                 NotificacionErrorDatos(this);
