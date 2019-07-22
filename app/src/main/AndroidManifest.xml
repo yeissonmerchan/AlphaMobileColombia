@@ -25,21 +25,26 @@
         android:hasCode="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:persistent="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:persistent="true"
         android:targetSandboxVersion="2"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
         <activity
+            android:name=".mvp.activity.CapturaInformacionActivity"
+            android:label="@string/title_activity_captura_informacion"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".mvp.activity.ActualizacionActivity"
             android:label="@string/title_activity_actualizacion"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ArchivosV2Activity"
             android:label="@string/title_activity_archivos_v2"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".mvp.activity.InicialActivity"
             android:label="@string/title_activity_login"

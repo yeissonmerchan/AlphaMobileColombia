@@ -455,10 +455,19 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     public void NotificacionErrorDatos(final Context view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
-        builder1.setMessage("No ha sido posible obtener información de la cédula, por favor inténtelo nuevamente.");
+        builder1.setMessage("No ha sido posible obtener información del código de barras de la cédula. ¿ Desea realizar la captura de datos manual ?");
         builder1.setCancelable(true);
         builder1.setPositiveButton(
-                "Ok",
+                "Sí",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        Intent intent = new Intent(view, CapturaInformacionActivity.class);
+                        startActivityForResult(intent, 0);
+                    }
+                });
+        builder1.setNegativeButton(
+                "No",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
