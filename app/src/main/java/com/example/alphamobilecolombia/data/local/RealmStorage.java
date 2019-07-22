@@ -137,9 +137,6 @@ public class RealmStorage {
             Realm.init(context);
             Realm realm = Realm.getDefaultInstance();
             final RealmResults<Person> findPerson = realm.where(Person.class).findAll();
-            /*for (Person object : findPerson) {
-                object.deleteFromRealm();
-            }*/
             realm.beginTransaction();
             realm.delete(Person.class);
             if (null != findPerson && findPerson.size() > 0) {

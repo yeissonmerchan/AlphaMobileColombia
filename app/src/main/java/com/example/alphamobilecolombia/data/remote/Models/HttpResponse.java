@@ -29,4 +29,14 @@ public class HttpResponse {
 
     private String Message;
     private Object Data;
+
+    public String getSendData() {
+        return SendData;
+    }
+
+    public void setSendData(String sendData) {
+        SendData = sendData;
+    }
+
+    private String SendData;
 }

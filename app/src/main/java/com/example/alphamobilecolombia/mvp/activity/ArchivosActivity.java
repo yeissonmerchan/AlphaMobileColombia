@@ -244,7 +244,7 @@ public class ArchivosActivity extends AppCompatActivity {
                         listUpload.add(fileUpload);
                         String pathFile = getExternalFilesDir(null)+"/"+getNameFile(view);
                         //uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
-                        uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito);
+                        uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito,pathFile);
                     }
                 });
 
