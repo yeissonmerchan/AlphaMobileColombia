@@ -49,6 +49,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
     List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
     Dialog myDialog;
     Context contextView;
+    String msgError = "Faltan campos obligatorios por completar.";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,13 +130,25 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
 
         if (!(edt_names.getText().toString().length() > 1)){
             isValidForm = false;
+            msgError = "Faltan campos obligatorios por completar.";
         }
         if (!(edt_lastNames.getText().toString().length() > 1)){
             isValidForm = false;
+            msgError = "Faltan campos obligatorios por completar.";
         }
-        if (!(edt_numberIdentification.getText().toString().length() > 1)){
+
+        try {
+            int isNumbre = Integer.parseInt(edt_numberIdentification.getText().toString());
+
+            if (!(isNumbre > 0)){
+                isValidForm = false;
+                msgError = "Faltan campos obligatorios por completar.";
+            }
+        } catch (NumberFormatException excepcion) {
             isValidForm = false;
+            msgError = "Ingrese un número de identificación valido.";
         }
+
 
         if(isValidForm) {
             Intent intent = new Intent(getBaseContext(), ArchivosV2Activity.class);
@@ -183,7 +196,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
         }
         else{
             AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-            builder1.setMessage("Faltan campos obligatorios por completar.");
+            builder1.setMessage(msgError);
             builder1.setCancelable(false);
             builder1.setPositiveButton(
                     "Ok",

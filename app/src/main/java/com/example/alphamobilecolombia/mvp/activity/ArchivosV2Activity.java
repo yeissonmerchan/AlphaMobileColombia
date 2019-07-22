@@ -20,6 +20,7 @@ import android.os.Bundle;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.ModelReintentos;
 import com.example.alphamobilecolombia.mvp.presenter.FinalPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.models.File;
@@ -87,6 +88,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     private String pathNewFile1;
     final Context context = this;
     CountDownLatch executionCompleted;
+    List<ModelReintentos> lisReintentos = new ArrayList<>();
 
     final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
     @Override
@@ -239,8 +241,13 @@ public class ArchivosV2Activity extends AppCompatActivity {
                             JSONArray objeto3 = objeto2.getJSONArray("data");
                             JSONObject objeto4 = new JSONObject(objeto3.getString(0));
                             String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
+                            String nombreAnterior = objeto4.getString("nombreAnterior").split(".")[0];
                             System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
                             if (!codigoRespuesta3.contains("200")) {
+                                ModelReintentos modelReintentos = new ModelReintentos();
+                                modelReintentos.setModelResponse(httpResponse);
+                                modelReintentos.setNameFile(nombreAnterior);
+                                lisReintentos.add(modelReintentos);
                                 isValidSendFiles = true;
                             }
                         }catch (Exception ex){
