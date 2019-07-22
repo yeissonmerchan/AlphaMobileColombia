@@ -15,6 +15,7 @@ import com.example.alphamobilecolombia.data.remote.GetPagadurias;
 import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.ListGetPagaduriasRequest;
+import com.example.alphamobilecolombia.mvp.presenter.ConsultarPrevalidacionActivaPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
 import com.example.alphamobilecolombia.utils.models.Person;
@@ -241,8 +242,32 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
+    public void ValidarPrevalidacionesActivas(String Documento) throws JSONException {
 
-    public void onClickBtnNextTerms(View view) {
+        ConsultarPrevalidacionActivaPresenter presenter = new ConsultarPrevalidacionActivaPresenter();
+        HttpResponse model = presenter.GetConsultarPrevalidacionActiva(Documento,getBaseContext());
+
+        if (model != null) {
+
+            JSONObject data = (JSONObject) model.getData();
+
+            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+
+            if (jSONArray.length()>0){
+
+                JSONObject object = (JSONObject) jSONArray.get(0);
+
+                boolean accion;
+                accion = Boolean.parseBoolean(object.getString("accion"));
+
+                if(accion){
+                    Toast.makeText(getBaseContext(),object.getString("mensaje"),Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    public void onClickBtnNextTerms(View view) throws JSONException {
         Intent intent = new Intent (view.getContext(), ArchivosV2Activity.class);
         /*intent.putExtra("PERSONA_Documento", p.getCedula());
         intent.putExtra("PERSONA_PNombre", p.getNombre());
@@ -253,6 +278,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("PERSONA_Genero", p.getGenero());
         intent.putExtra("PERSONA_Celular", p.getCelular());
         */
+
         String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
         String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
 
@@ -263,6 +289,10 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         if(person != null){
             if(person.getNumber().length()>0)
             {
+                // Inicio: Prevalidacion
+                ValidarPrevalidacionesActivas(person.getNumber());
+                // Fin: Prevalidacion
+
                 String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
 
                 intent.putExtra("PERSONA_Documento", person.getNumber());
