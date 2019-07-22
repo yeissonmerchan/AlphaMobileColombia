@@ -286,9 +286,14 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     catch (Exception e){
                         e.printStackTrace();
                     }
-
+                }else {
+                    EnvioDataCambioPagina(person);
                 }
+            }else {
+                EnvioDataCambioPagina(person);
             }
+        }else {
+            EnvioDataCambioPagina(person);
         }
     }
 
