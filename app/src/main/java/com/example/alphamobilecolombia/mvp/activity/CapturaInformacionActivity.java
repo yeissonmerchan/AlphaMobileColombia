@@ -222,7 +222,8 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
             String pagaduria = (String) ((Spinner) findViewById(R.id.spinner_pagaduria)).getSelectedItem();
             String codePagaduria = getCodePagaduria(pagaduria, pagadurias);
             //String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
-            String bithdate = "1996-08-09";
+            //String bithdate = "1996-08-09";
+            String bithdate = edt_birthDate.getText().toString();
             //String bithdate = edt_birthDate.getText().toString();
 
             if (edt_genero.equals("Femenino")){
