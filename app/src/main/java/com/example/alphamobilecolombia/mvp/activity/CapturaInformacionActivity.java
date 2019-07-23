@@ -143,6 +143,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                         mDateSetListener,
                         year,month,day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()-(5.682e+11)));
                 dialog.show();
             }
         });
@@ -151,8 +152,20 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
+                String monthS;
+                String dayS;
 
-                String date = year + "/" + month + "/" + day;
+                monthS = String.valueOf(month);
+                dayS = String.valueOf(day);
+
+                if (monthS.length()==1){
+                    monthS = "0"+monthS;
+                }
+                if (dayS.length()==1){
+                    dayS = "0"+dayS;
+                }
+
+                String date = year + "/" + monthS + "/" + dayS;
                 mDisplayDate.setText(date);
             }
         };
@@ -193,6 +206,15 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
             msgError = "Ingrese un número de identificación valido.";
         }
 
+        try {
+            if (edt_birthDate == null || edt_birthDate.toString() == ""){
+                isValidForm = false;
+                msgError = "Faltan campos obligatorios por completar.";
+            }
+        } catch (NumberFormatException excepcion) {
+            isValidForm = false;
+            msgError = "Ingrese una fecha de nacimiento valida.";
+        }
 
         if(isValidForm) {
             Intent intent = new Intent(getBaseContext(), ArchivosV2Activity.class);
