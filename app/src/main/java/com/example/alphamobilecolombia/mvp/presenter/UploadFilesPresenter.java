@@ -298,6 +298,7 @@ public class UploadFilesPresenter {
                             responseModel.setData(jsonObject);
                             responseModel.setMessage(response.message());
                             responseModel.setSendData(data);
+                            responseModel.setNameFile(filesUpload.getName());
                         } else {
                             String errorResponse = response.errorBody().string();
                             System.out.println("Trama de error! "+ errorResponse);
@@ -307,12 +308,14 @@ public class UploadFilesPresenter {
                                 responseModel.setData(object);
                                 responseModel.setMessage(String.valueOf(object.get("mensaje")));
                                 responseModel.setSendData(data);
+                                responseModel.setNameFile(filesUpload.getName());
                             }
                             catch (Exception ex){
                                 responseModel.setCode(String.valueOf(response.code()));
                                 responseModel.setData(errorResponse);
                                 responseModel.setMessage("Error mapeo a json de error");
                                 responseModel.setSendData(data);
+                                responseModel.setNameFile(filesUpload.getName());
                             }
 
                         }

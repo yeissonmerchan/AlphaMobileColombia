@@ -34,6 +34,16 @@ public class HttpResponse {
         return SendData;
     }
 
+    public String getNameFile() {
+        return NameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        NameFile = nameFile;
+    }
+
+    private String NameFile;
+
     public void setSendData(String sendData) {
         SendData = sendData;
     }
