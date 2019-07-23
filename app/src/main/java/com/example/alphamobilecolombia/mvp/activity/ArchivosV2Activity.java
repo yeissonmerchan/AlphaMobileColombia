@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -163,6 +164,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                             }
                             else{
                                 NotificacionArchivospendientes(view);
+                                myDialog.dismiss();
                             }
                         }
                     });
@@ -172,6 +174,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
+                            myDialog.dismiss();
                         }
                     });
 
@@ -519,6 +522,8 @@ public class ArchivosV2Activity extends AppCompatActivity {
         switch (idElement) {
             case "SolicitudCreditoCara1":
                 LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
+                //int colorSucces = R.drawable.success_bar;
+                //int colorFail = R.drawable.failed_bar;
                 if(status){
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
                 }
@@ -887,7 +892,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //recuperarFotoCargada(view);
-        ConfirmacionImagen(view);
+        if (resultCode != 0){
+            ConfirmacionImagen(view);
+        }
     }
 
     public void ConfirmacionImagen(final View view){
