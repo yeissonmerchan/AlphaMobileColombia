@@ -65,6 +65,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import id.zelory.compressor.Compressor;
 import io.reactivex.schedulers.Schedulers;
@@ -187,7 +188,14 @@ public class ArchivosV2Activity extends AppCompatActivity {
     public void saveFiles(View view){
         List<HttpResponse> listResponses = new ArrayList<>();
         boolean isValidSendFiles = false;
-        executionCompleted = new CountDownLatch(listUpload.size());
+
+        if(lisReintentos.size()>0){
+            executionCompleted = new CountDownLatch(lisReintentos.size());
+        }
+        else{
+            executionCompleted = new CountDownLatch(listUpload.size());
+        }
+
         for(com.example.alphamobilecolombia.utils.models.File file : listUpload)
         {
             new Thread()
@@ -197,19 +205,43 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 public void run ()
                 {
                     System.out.println("I am executed by :" + Thread.currentThread().getName());
-                    try
-                    {
-                        HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito,pathNewFile1);
-                        // One thread has completed its job
-                        executionCompleted.countDown();
-                        if (httpResponse != null) {
-                            listResponses.add(httpResponse);
+                    if(lisReintentos.size()>0){
+                        boolean isNewSend = false;
+                        for (ModelReintentos modelReintentos : lisReintentos){
+                            if (modelReintentos.getNameFile().equals(file.getName())){
+                                isNewSend = true;
+                            }
+                        }
+
+                        if(isNewSend) {
+                            try {
+                                HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file, view.getContext(), idSujeroCredito, pathNewFile1);
+                                // One thread has completed its job
+                                executionCompleted.countDown();
+                                if (httpResponse != null) {
+                                    listResponses.add(httpResponse);
+                                }
+                            } catch (Exception e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    else{
+                        try
+                        {
+                            HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito,pathNewFile1);
+                            // One thread has completed its job
+                            executionCompleted.countDown();
+                            if (httpResponse != null) {
+                                listResponses.add(httpResponse);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }
             }.start();
@@ -225,6 +257,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
             //if (listResponses.size() == listUpload.size()){
             if (listResponses.size() > 0){
+                lisReintentos = new ArrayList<>();
                 for(HttpResponse httpResponse : listResponses){
                     System.out.println("Proceso de envio de archivo " + httpResponse);
                     if(httpResponse != null) {
@@ -232,45 +265,39 @@ public class ArchivosV2Activity extends AppCompatActivity {
                         System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
                         System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
                         System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
-                        if(!httpResponse.getCode().contains("200")) {
-                            isValidSendFiles = true;
-                        }
 
-                        try {
-                            JSONObject objeto2 = (JSONObject) httpResponse.getData();
-                            JSONArray objeto3 = objeto2.getJSONArray("data");
-                            JSONObject objeto4 = new JSONObject(objeto3.getString(0));
-                            String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
-                            String nombreAnterior = objeto4.getString("nombreAnterior").split(".")[0];
-                            System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
-                            if (!codigoRespuesta3.contains("200")) {
-                                ModelReintentos modelReintentos = new ModelReintentos();
-                                modelReintentos.setModelResponse(httpResponse);
-                                modelReintentos.setNameFile(nombreAnterior);
-                                lisReintentos.add(modelReintentos);
+                        if(httpResponse.getCode() != null) {
+                            if (!httpResponse.getCode().contains("200")) {
                                 isValidSendFiles = true;
                             }
-                        }catch (Exception ex){
-                            ex.printStackTrace();
-                            isValidSendFiles = true;
+
+                            try {
+                                JSONObject objeto2 = (JSONObject) httpResponse.getData();
+                                JSONArray objeto3 = objeto2.getJSONArray("data");
+                                JSONObject objeto4 = new JSONObject(objeto3.getString(0));
+                                String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
+                                String nombreAnterior = objeto4.getString("nombreAnterior");
+                                System.out.println("nombreAnterior:  " + nombreAnterior);
+                                String[] parts = nombreAnterior.split(Pattern.quote("."));
+                                String nombreAnterior2 = parts[0];
+                                System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
+                                if (!codigoRespuesta3.contains("200")) {
+                                    System.out.println("Paso error 400:  " + nombreAnterior2);
+                                    ModelReintentos modelReintentos = new ModelReintentos();
+                                    modelReintentos.setModelResponse(httpResponse);
+                                    modelReintentos.setNameFile(nombreAnterior2);
+                                    lisReintentos.add(modelReintentos);
+                                    isValidSendFiles = true;
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                isValidSendFiles = true;
+                            }
                         }
                     }
                 }
 
-                if (listResponses.size() != listUpload.size()) {
-                    if (listResponses.size() != listUpload.size() - 1) {
-                        ValidacionCargueDocumentos(view);
-                    }
-                }
 
-                if(isValidSendFiles){
-                    ValidacionCargueDocumentos(view);
-                }
-                else{
-                    deleteFiles();
-                    Intent intento1=new Intent(view.getContext(),FinalActivity.class);
-                    startActivity(intento1);
-                }
             }
             else{
                 //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
@@ -284,6 +311,21 @@ public class ArchivosV2Activity extends AppCompatActivity {
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+
+        if (listResponses.size() != listUpload.size()) {
+            if (listResponses.size() != listUpload.size() - 1) {
+                ValidacionCargueDocumentos(view);
+            }
+        }
+
+        if(isValidSendFiles){
+            ValidacionCargueDocumentos(view);
+        }
+        else{
+            deleteFiles();
+            Intent intento1=new Intent(view.getContext(),FinalActivity.class);
+            startActivity(intento1);
         }
     }
 

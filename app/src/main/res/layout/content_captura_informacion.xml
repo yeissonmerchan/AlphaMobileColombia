@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_numberIdentification"
                 android:hint="Número identificación"
-                android:maxLength="15"
+                android:maxLength="11"
                 android:inputType="number"
                 android:textSize="@dimen/size_text"
                 android:layout_marginTop="10dp"

@@ -195,7 +195,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
         }
 
         try {
-            int isNumbre = Integer.parseInt(edt_numberIdentification.getText().toString());
+            long isNumbre = Long.parseLong(edt_numberIdentification.getText().toString());
 
             if (!(isNumbre > 0)){
                 isValidForm = false;
