@@ -164,6 +164,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                             }
                             else{
                                 NotificacionArchivospendientes(view);
+                                myDialog.dismiss();
                             }
                         }
                     });
@@ -173,6 +174,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
+                            myDialog.dismiss();
                         }
                     });
 
