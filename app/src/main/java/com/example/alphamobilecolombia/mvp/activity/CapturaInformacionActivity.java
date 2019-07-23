@@ -207,7 +207,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
         }
 
         try {
-            if (edt_birthDate == null || edt_birthDate.toString() == ""){
+            if (!(edt_birthDate.getText().toString().length() > 1)){
                 isValidForm = false;
                 msgError = "Faltan campos obligatorios por completar.";
             }
