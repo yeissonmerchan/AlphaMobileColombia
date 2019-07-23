@@ -199,38 +199,47 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
         for(com.example.alphamobilecolombia.utils.models.File file : listUpload)
         {
-            new Thread()
-            {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                @Override
-                public void run ()
-                {
-                    System.out.println("I am executed by :" + Thread.currentThread().getName());
-                    if(lisReintentos.size()>0){
-                        boolean isNewSend = false;
-                        for (ModelReintentos modelReintentos : lisReintentos){
-                            if (modelReintentos.getNameFile().equals(file.getName())){
-                                isNewSend = true;
-                            }
-                        }
+            if(lisReintentos.size()>0){
+                boolean isNewSend = false;
+                for (ModelReintentos modelReintentos : lisReintentos){
+                    if (modelReintentos.getNameFile().equals(file.getName())){
+                        isNewSend = true;
+                    }
+                }
 
-                        if(isNewSend) {
-                            try {
+                if(isNewSend) {
+                    try {
+                        new Thread()
+                        {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void run ()
+                            {
+                                System.out.println("I am executed by :" + Thread.currentThread().getName());
                                 HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file, view.getContext(), idSujeroCredito, pathNewFile1);
                                 // One thread has completed its job
                                 executionCompleted.countDown();
                                 if (httpResponse != null) {
                                     listResponses.add(httpResponse);
                                 }
-                            } catch (Exception e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
                             }
-                        }
+                        }.start();
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                    else{
-                        try
+                }
+            }
+            else{
+                try
+                {
+                    new Thread()
+                    {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void run ()
                         {
+                            System.out.println("I am executed by 2:" + Thread.currentThread().getName());
                             HttpResponse httpResponse = uploadFilesPresenter.PostGuardarDocumentos(file,view.getContext(),idSujeroCredito,pathNewFile1);
                             // One thread has completed its job
                             executionCompleted.countDown();
@@ -238,14 +247,15 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                 listResponses.add(httpResponse);
                             }
                         }
-                        catch (Exception e)
-                        {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
+                    }.start();
+
                 }
-            }.start();
+                catch (Exception e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
 
         try
@@ -265,34 +275,39 @@ public class ArchivosV2Activity extends AppCompatActivity {
                         System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
                         System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
                         System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
-                        System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
+                        //System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
 
                         if(httpResponse.getCode() != null) {
                             if (!httpResponse.getCode().contains("200")) {
                                 isValidSendFiles = true;
+                                System.out.println("Paso error 400:  " + httpResponse.getCode());
+                                ModelReintentos modelReintentos = new ModelReintentos();
+                                modelReintentos.setModelResponse(httpResponse);
+                                modelReintentos.setNameFile(httpResponse.getNameFile());
+                                lisReintentos.add(modelReintentos);
                             }
-
-                            try {
-                                JSONObject objeto2 = (JSONObject) httpResponse.getData();
-                                JSONArray objeto3 = objeto2.getJSONArray("data");
-                                JSONObject objeto4 = new JSONObject(objeto3.getString(0));
-                                String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
-                                String nombreAnterior = objeto4.getString("nombreAnterior");
-                                System.out.println("nombreAnterior:  " + nombreAnterior);
-                                String[] parts = nombreAnterior.split(Pattern.quote("."));
-                                String nombreAnterior2 = parts[0];
-                                System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
-                                if (!codigoRespuesta3.contains("200")) {
-                                    System.out.println("Paso error 400:  " + nombreAnterior2);
-                                    ModelReintentos modelReintentos = new ModelReintentos();
-                                    modelReintentos.setModelResponse(httpResponse);
-                                    modelReintentos.setNameFile(nombreAnterior2);
-                                    lisReintentos.add(modelReintentos);
+                            else {
+                                try {
+                                    JSONObject objeto2 = (JSONObject) httpResponse.getData();
+                                    //JSONObject objetoNew =  new JSONObject(objeto2.getString("result"));
+                                    JSONArray objeto3 = objeto2.getJSONArray("data");
+                                    JSONObject objeto4 = new JSONObject(objeto3.getString(0));
+                                    String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
+                                    String nombreAnterior = objeto4.getString("nombreAnterior");
+                                    System.out.println("nombreAnterior:  " + nombreAnterior);
+                                    System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
+                                    if (!codigoRespuesta3.contains("200")) {
+                                        System.out.println("Paso error 400:  " + nombreAnterior);
+                                        ModelReintentos modelReintentos = new ModelReintentos();
+                                        modelReintentos.setModelResponse(httpResponse);
+                                        modelReintentos.setNameFile(nombreAnterior);
+                                        lisReintentos.add(modelReintentos);
+                                        isValidSendFiles = true;
+                                    }
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
                                     isValidSendFiles = true;
                                 }
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                                isValidSendFiles = true;
                             }
                         }
                     }
@@ -314,11 +329,11 @@ public class ArchivosV2Activity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (listResponses.size() != listUpload.size()) {
+        /*if (listResponses.size() != listUpload.size()) {
             if (listResponses.size() != listUpload.size() - 1) {
                 ValidacionCargueDocumentos(view);
             }
-        }
+        }*/
 
         if(isValidSendFiles){
             ValidacionCargueDocumentos(view);
