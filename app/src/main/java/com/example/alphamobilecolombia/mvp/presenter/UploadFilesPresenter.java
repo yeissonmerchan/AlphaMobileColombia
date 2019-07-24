@@ -37,6 +37,7 @@ import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostSaveDocuments;
 import com.example.alphamobilecolombia.data.remote.PostGuardarDocumentos;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.google.gson.Gson;
 
@@ -242,9 +243,10 @@ public class UploadFilesPresenter {
                     base64 = Base64.encodeToString(buffer, 0, length,
                             Base64.DEFAULT);
                     isValidUpload = true;
-                } catch (Exception e) {
-                    System.out.println("Ha ocurrido un error en la lectura del archivo! "+e.getMessage());
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),idSujetoCredito,ex,context);
+                    System.out.println("Ha ocurrido un error en la lectura del archivo! "+ex.getMessage());
+                    ex.printStackTrace();
                 }
 
                 if(isValidUpload) {
@@ -287,6 +289,7 @@ public class UploadFilesPresenter {
                         System.out.println("Ha ocurrido un error! Traza: "+ex.getStackTrace());
                         System.out.println("Ha ocurrido un error! "+ ex);
                         ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),idSujetoCredito,ex,context);
                     }
 
                     JSONObject jsonObject;
@@ -316,6 +319,7 @@ public class UploadFilesPresenter {
                                 responseModel.setMessage("Error mapeo a json de error");
                                 responseModel.setSendData(data);
                                 responseModel.setNameFile(filesUpload.getName());
+                                LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),idSujetoCredito,ex,context);
                             }
 
                         }
@@ -331,6 +335,7 @@ public class UploadFilesPresenter {
             System.out.println("Ha ocurrido un error! "+ ex);
             ex.printStackTrace();
             Log.d("Error servicio", String.valueOf(ex.getStackTrace()));
+            LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),idSujetoCredito,ex,context);
         }
         return null;
     }

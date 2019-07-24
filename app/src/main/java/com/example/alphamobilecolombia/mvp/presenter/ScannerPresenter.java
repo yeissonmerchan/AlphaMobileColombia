@@ -9,6 +9,7 @@ import com.example.alphamobilecolombia.data.remote.GetPagadurias;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.PostAutentication;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
 import com.google.gson.Gson;
 
@@ -55,6 +56,7 @@ public class ScannerPresenter {
 
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagaduría",ex,context);
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
         }
         return null;

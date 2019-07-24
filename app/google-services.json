@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1036926097203",
+    "firebase_url": "https://appalphacredit-2019.firebaseio.com",
+    "project_id": "appalphacredit-2019",
+    "storage_bucket": "appalphacredit-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036926097203:android:29b33d5ec2f4f788",
+        "android_client_info": {
+          "package_name": "com.alphacredit.alphamobilecolombia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036926097203-buaqo19esng4vnpcd6lb2co3d9visimb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeyHpUxpv1Auz9mA869L09nvKUEI4lo0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036926097203-buaqo19esng4vnpcd6lb2co3d9visimb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

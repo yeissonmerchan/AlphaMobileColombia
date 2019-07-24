@@ -9,6 +9,7 @@ import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoRequest;
 import com.example.alphamobilecolombia.data.remote.PostSolicitudes;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -55,6 +56,7 @@ public class ConsultaCreditosPresenter {
         }
         catch (Exception ex){
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),idUsuario,ex,context);
         }
         return null;
     }

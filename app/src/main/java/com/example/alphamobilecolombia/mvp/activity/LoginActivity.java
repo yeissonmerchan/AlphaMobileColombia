@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.crashlytics.android.Crashlytics;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.User;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -159,11 +162,14 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
                             SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
                             usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
-
+                            //throw new Exception("Error scanner");
                         }
                         catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
+                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
                         }
 
                         Intent intent = new Intent(view.getContext(), ModuloActivity.class);

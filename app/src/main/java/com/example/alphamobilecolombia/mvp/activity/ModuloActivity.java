@@ -51,9 +51,6 @@ public class ModuloActivity extends AppCompatActivity {
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Módulo de solicitudes");
 
-
-
-
     }
 
     public void onclickExit(View view) {
@@ -69,36 +66,6 @@ public class ModuloActivity extends AppCompatActivity {
     public void onClickBtnListRequest(View view) {
         Intent intent = new Intent (view.getContext(), ConsultaCreditosActivity.class);
         startActivityForResult(intent, 0);
-
-
-        /*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                myDialog.setContentView(R.layout.loading_page);
-                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        myDialog.show();
-
-                    }
-                });
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent (view.getContext(), ConsultaCreditosActivity.class);
-                        startActivityForResult(intent, 0);
-                        myDialog.dismiss();
-                    }
-                });
-
-            }
-        }).start();
-        */
     }
 
 

@@ -17,6 +17,7 @@ import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.ListGetPagaduriasRequest;
 import com.example.alphamobilecolombia.mvp.presenter.ConsultarPrevalidacionActivaPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
@@ -84,8 +85,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 getPagaduriasRequest.setNombre(object.getString("nombre"));
                 pagadurias.add(getPagaduriasRequest);
             }
-        }catch (JSONException e) {
-            e.printStackTrace();
+        }catch (JSONException ex) {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Inicio",ex,this);
+            ex.printStackTrace();
         }
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -229,11 +231,12 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     //Toast.makeText(getApplicationContext(),p.toString(), Toast.LENGTH_SHORT).show();
                     //Log.d("MainActivity", "Scaneado");
 
-
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
-                }catch (Exception e){
+                }catch (Exception ex){
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo",ex,this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
+
                 }
             }
         } else {
@@ -283,8 +286,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         AlertMsg.setCanceledOnTouchOutside(false);
                         AlertMsg.show();
                     }
-                    catch (Exception e){
-                        e.printStackTrace();
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
                     }
                 }else {
                     EnvioDataCambioPagina(person);

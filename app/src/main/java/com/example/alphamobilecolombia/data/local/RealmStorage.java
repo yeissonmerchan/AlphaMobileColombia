@@ -6,6 +6,7 @@ import android.security.KeyPairGeneratorSpec;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
 
 import java.security.KeyStoreException;
@@ -70,6 +71,7 @@ public class RealmStorage {
             return findPerson.first();
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Obtener persona",ex,context);
             return null;
         }
     }
@@ -89,8 +91,9 @@ public class RealmStorage {
             realm.commitTransaction();
             //}
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,context);
+            ex.printStackTrace();
         }
     }
 
@@ -105,8 +108,9 @@ public class RealmStorage {
 
             return data;
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista creditos",ex,context);
+            ex.printStackTrace();
         }
         return null;
     }
@@ -128,6 +132,7 @@ public class RealmStorage {
         }
         catch (Exception ex)
         {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Delete credito",ex,context);
             ex.printStackTrace();
         }
     }
@@ -146,6 +151,7 @@ public class RealmStorage {
         }
         catch (Exception ex)
         {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminar persona ",ex,context);
             ex.printStackTrace();
         }
     }
@@ -179,8 +185,9 @@ public class RealmStorage {
 
                 return bytes;
 
-        } catch (Exception e) {
-            Log.e("Key Realm", Log.getStackTraceString(e));
+        } catch (Exception ex) {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Crear llaves",ex,context);
+            Log.e("Key Realm", Log.getStackTraceString(ex));
         }
         return null;
     }

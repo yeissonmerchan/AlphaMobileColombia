@@ -10,6 +10,7 @@ import com.example.alphamobilecolombia.data.remote.Models.PostSujetoInsertarRequ
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.PostSujetoCredito;
 import com.example.alphamobilecolombia.data.remote.PostPersonaInsertar;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Persona;
 import com.google.gson.Gson;
 
@@ -68,6 +69,7 @@ public class FinalPresenter {
         }
         catch (Exception ex){
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),persona.getCedula(),ex,context);
         }
         return null;
     }
@@ -115,6 +117,7 @@ public class FinalPresenter {
         }
         catch (Exception ex){
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),persona.getCedula(),ex,context);
         }
         return null;
     }

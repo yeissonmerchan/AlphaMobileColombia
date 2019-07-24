@@ -20,6 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
 import com.google.gson.Gson;
 
@@ -70,6 +71,7 @@ public class LoginPresenter {
             }
             catch (Exception ex){
                 System.out.println("Ha ocurrido un error! "+ex.getMessage());
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),txtUsuario,ex,context);
             }
         return null;
     }
@@ -105,6 +107,7 @@ public class LoginPresenter {
 
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),idversion,ex,context);
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
             responseModel.setCode("409");
             responseModel.setData("");

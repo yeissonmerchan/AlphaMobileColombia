@@ -10,8 +10,8 @@ android {
         applicationId "com.alphacredit.alphamobilecolombia"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.1.4"
+        versionCode 13
+        versionName "1.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -74,7 +74,13 @@ dependencies {
 
     //Libreria compresión de archivos
     implementation 'id.zelory:compressor:2.1.0'
+
+    //Libreria de crashlitys
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
 }
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 repositories {
     mavenCentral()
 }

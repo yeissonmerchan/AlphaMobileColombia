@@ -5,13 +5,24 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
         
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
         //Libreria de storage nativo
         classpath "io.realm:realm-gradle-plugin:5.12.0"
+
+        //Libreria para crashlytics
+        classpath 'com.google.gms:google-services:4.2.0'
+
+        // Add dependency
+        classpath 'io.fabric.tools:gradle:1.28.1'
+
         /*classpath (
                 'org.bouncycastle:bcprov-jdk15on:'  + bouncycastleVersion,
                 'org.bouncycastle:bcprov-ext-jdk15on:' + bouncycastleVersion,
@@ -29,7 +40,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 

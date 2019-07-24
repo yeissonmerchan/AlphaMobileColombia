@@ -15,6 +15,7 @@ import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -89,8 +90,9 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                 getPagaduriasRequest.setNombre(object.getString("nombre"));
                 pagadurias.add(getPagaduriasRequest);
             }
-        }catch (JSONException e) {
-            e.printStackTrace();
+        }catch (JSONException ex) {
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagadurías",ex,this);
         }
 
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);

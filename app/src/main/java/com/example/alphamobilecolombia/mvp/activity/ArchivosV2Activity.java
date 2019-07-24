@@ -24,6 +24,7 @@ import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.ModelReintentos;
 import com.example.alphamobilecolombia.mvp.presenter.FinalPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.File;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
@@ -226,9 +227,10 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                 }
                             }
                         }.start();
-                    } catch (Exception e) {
+                    } catch (Exception ex) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Hilo almacenamiento "+file.getName(),ex,this);
                     }
                 }
             }
@@ -252,10 +254,11 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     }.start();
 
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Hilo almacenamiento "+file.getName(),ex,this);
                 }
             }
         }
@@ -309,6 +312,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
                                     isValidSendFiles = true;
+                                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando respuesta "+httpResponse.getNameFile(),ex,this);
                                 }
                             }
                         }
@@ -322,13 +326,15 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 ValidacionCargueDocumentos(view);
             }
         }
-        catch (InterruptedException e)
+        catch (InterruptedException ex)
         {
-            e.printStackTrace();
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando peticiones ",ex,this);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            e.printStackTrace();
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando peticiones ",ex,this);
         }
 
         /*if (listResponses.size() != listUpload.size()) {
@@ -351,14 +357,15 @@ public class ArchivosV2Activity extends AppCompatActivity {
         for (com.example.alphamobilecolombia.utils.models.File file : listUpload){
             try {
                 String nameFile = file.getName();
-                String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
+                //String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
                 String pathFileLocalCompress = pathNewFile1 + nameFile;
-                java.io.File fileLocal = new java.io.File(pathFileLocal);
+                //java.io.File fileLocal = new java.io.File(pathFileLocal);
                 java.io.File fileLocalCompress = new java.io.File(pathFileLocalCompress);
-                fileLocal.delete();
+                //fileLocal.delete();
                 fileLocalCompress.delete();
             }
             catch (Exception ex){
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminando archivo "+file.getName(),ex,this);
                 ex.printStackTrace();
             }
         }
@@ -472,6 +479,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             getViewImage(v, rotatedBitmap, true);
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
             ex.printStackTrace();
         }
     }
@@ -505,6 +513,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
         }
         catch (Exception ex){
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
         }
     }
 
@@ -1074,6 +1083,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
             catch (JSONException ex)
             {
                 System.out.println("Ha ocurrido un error! "+ex.getMessage());
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona "+persona.getCedula(),ex,this);
             }
         }
         else{

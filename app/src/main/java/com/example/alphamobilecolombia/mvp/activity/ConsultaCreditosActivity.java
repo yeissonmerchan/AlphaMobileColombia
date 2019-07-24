@@ -29,6 +29,7 @@ import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ConsultaCreditosPresenter;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
 
 import org.json.JSONArray;
@@ -121,9 +122,10 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                             }
                         });
                     }
-                    catch (JSONException e) {
+                    catch (JSONException ex) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Mapeo consultas",ex,getBaseContext());
                     }
                 }
                 myDialog.show();
