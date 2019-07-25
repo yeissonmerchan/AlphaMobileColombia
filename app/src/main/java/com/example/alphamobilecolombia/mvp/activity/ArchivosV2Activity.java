@@ -528,11 +528,16 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     public void changeStatusUpload(boolean status){
 
+        // Se obtiene el bitmap1 para saber si ya hay una imagen cargada, si no encuentra ninguna imagen la variable queda nula
+        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(null));
+        if (bitmap1 != null){
+            status = true;
+            bitmap1 = null;
+        }
+
         switch (idElement) {
             case "SolicitudCreditoCara1":
                 LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
-                //int colorSucces = R.drawable.success_bar;
-                //int colorFail = R.drawable.failed_bar;
                 if(status){
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
                 }
@@ -591,7 +596,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     rl7.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
                 }
                 else{
-                    rl7.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+                    //rl7.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "Desprendible4":
@@ -600,7 +605,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                     rl8.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
                 }
                 else{
-                    rl8.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+                    //rl8.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
 
