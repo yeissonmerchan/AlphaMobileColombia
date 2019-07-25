@@ -54,12 +54,12 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     //**************    VALIDACIÓN DE CAMPOS     *****************//
     //Camilo Lis - 22-06-2019
-    @NotEmpty
+    @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 20, message = "La longitud no es correcta")
     private EditText editTextUsername;
 
 
-    @NotEmpty
+    @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 50, message = "La longitud no es correcta")
     private EditText editTextPassword;
 
