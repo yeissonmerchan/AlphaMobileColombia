@@ -14,6 +14,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.mvp.presenter.ConsultarPrevalidacionActivaPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
@@ -177,7 +178,113 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
     }
 
 
-    public void onClickSaveInformation(View view) {
+    public void ValidarPrevalidacionesActivas(String Documento,Person person) throws JSONException {
+
+        ConsultarPrevalidacionActivaPresenter presenter = new ConsultarPrevalidacionActivaPresenter();
+        HttpResponse model = presenter.GetConsultarPrevalidacionActiva(Documento,getBaseContext());
+
+        if (model != null) {
+
+            JSONObject data = (JSONObject) model.getData();
+
+            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+
+            if (jSONArray.length()>0){
+
+                JSONObject object = (JSONObject) jSONArray.get(0);
+
+                boolean accion;
+                accion = Boolean.parseBoolean(object.getString("accion"));
+
+                if(accion){
+
+                    try{
+
+                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+                        Alert.setTitle("IMPORTANTE");
+                        Alert.setMessage(object.getString("mensaje"));
+                        Alert.setCancelable(false);
+
+                        Alert.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        EnvioDataCambioPagina(person);
+                                    }
+                                });
+
+
+                        AlertDialog AlertMsg = Alert.create();
+                        AlertMsg.setCanceledOnTouchOutside(false);
+                        AlertMsg.show();
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
+                    }
+                }else {
+                    EnvioDataCambioPagina(person);
+                }
+            }else {
+                EnvioDataCambioPagina(person);
+            }
+        }else {
+            EnvioDataCambioPagina(person);
+        }
+    }
+
+    public void  EnvioDataCambioPagina(Person person){
+        Intent intent = new Intent (getBaseContext(), ArchivosV2Activity.class);
+
+        EditText edt_names = (EditText) findViewById(R.id.edt_names);
+        EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
+        EditText edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
+        EditText edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
+        EditText edt_numberIdentification = (EditText) findViewById(R.id.edt_numberIdentification);
+        EditText edt_birthDate = (EditText) findViewById(R.id.edt_birthDate);
+        String edt_genero = spinner_genero.getSelectedItem().toString();
+
+        String pagaduria = (String) ((Spinner) findViewById(R.id.spinner_pagaduria)).getSelectedItem();
+        String codePagaduria = getCodePagaduria(pagaduria, pagadurias);
+        String bithdate = edt_birthDate.getText().toString();
+
+        if (edt_genero.equals("Femenino")){
+            edt_genero = "F";
+        }
+        else{
+            edt_genero = "M";
+        }
+
+        person.setFirstName(edt_names.getText().toString());
+        person.setSecondName(edt_names2.getText().toString());
+        person.setSurename(edt_lastNames.getText().toString());
+        person.setSecondSurename(edt_lastNames2.getText().toString());
+        person.setGender(edt_genero);
+        person.setNumber(edt_numberIdentification.getText().toString());
+
+
+        intent.putExtra("PERSONA_Documento", edt_numberIdentification.getText().toString());
+        intent.putExtra("PERSONA_PNombre", edt_names.getText().toString());
+        intent.putExtra("PERSONA_SNombre", edt_names2.getText().toString());
+        intent.putExtra("PERSONA_PApellido", edt_lastNames.getText().toString());
+        intent.putExtra("PERSONA_SApellido", edt_lastNames2.getText().toString());
+        intent.putExtra("PERSONA_FechaNac", bithdate);
+        intent.putExtra("PERSONA_Genero", edt_genero);
+        intent.putExtra("PERSONA_Celular", "0");
+
+        intent.putExtra("IdTipoEmpleado", spinner_tipo_empleado.getSelectedItem().toString());
+        intent.putExtra("IdTipoContrato", spinner_tipo_contrato.getSelectedItem().toString());
+        intent.putExtra("IdDestinoCredito", spinner_destino_credito.getSelectedItem().toString());
+        intent.putExtra("IdPagaduria", codePagaduria);
+
+        storage.savePerson(contextView,person);
+
+        startActivityForResult(intent, 0);
+    }
+
+
+    public void onClickSaveInformation(View view) throws JSONException {
         boolean isValidForm = true;
         EditText edt_names = (EditText) findViewById(R.id.edt_names);
         EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
@@ -219,14 +326,16 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
         }
 
         if(isValidForm) {
-            Intent intent = new Intent(getBaseContext(), ArchivosV2Activity.class);
+
+            ValidarPrevalidacionesActivas(edt_numberIdentification.getText().toString(),person);
+
+            /*Intent intent = new Intent(getBaseContext(), ArchivosV2Activity.class);
 
             String pagaduria = (String) ((Spinner) findViewById(R.id.spinner_pagaduria)).getSelectedItem();
             String codePagaduria = getCodePagaduria(pagaduria, pagadurias);
             //String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
             //String bithdate = "1996-08-09";
             String bithdate = edt_birthDate.getText().toString();
-            //String bithdate = edt_birthDate.getText().toString();
 
             if (edt_genero.equals("Femenino")){
                 edt_genero = "F";
@@ -235,8 +344,6 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                 edt_genero = "M";
             }
 
-            /*person.setBirthday(" ");
-            person.setBloodType(" ");*/
             person.setFirstName(edt_names.getText().toString());
             person.setSecondName(edt_names2.getText().toString());
             person.setSurename(edt_lastNames.getText().toString());
@@ -261,7 +368,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
 
             storage.savePerson(contextView,person);
 
-            startActivityForResult(intent, 0);
+            //startActivityForResult(intent, 0);*/
         }
         else{
             AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
