@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import android.os.Handler;
 import android.os.SystemClock;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -76,5 +77,26 @@ public class InicialActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
 
 }

@@ -71,5 +71,25 @@ public class ModuloActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
 
 }

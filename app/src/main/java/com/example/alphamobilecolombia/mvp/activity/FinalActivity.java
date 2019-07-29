@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -76,6 +77,27 @@ public class FinalActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             showDialog(DIALOG_REALLY_EXIT_ID);
@@ -96,61 +118,6 @@ public class FinalActivity extends AppCompatActivity {
     public void onClickBtnUpdFiles(View view) {
         Intent intent = new Intent (view.getContext(), ModuloActivity.class);
         startActivityForResult(intent, 0);
-
-
-        /*
-        //////////////      GUARDAR PERSONA
-        Persona persona = new Persona();
-
-
-        persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
-        persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
-        persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
-        persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
-        persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));
-        persona.setGenero(getIntent().getStringExtra("PERSONA_Genero"));
-        persona.setCelular(getIntent().getStringExtra("PERSONA_Celular"));
-        IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
-        IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
-        IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
-
-        SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        String user = sharedPref.getString("idUser", "");
-
-
-        FinalPresenter presenter = new FinalPresenter();
-        HttpResponse model = presenter.PostInsertPerson(persona, user);
-
-        if (model != null) {
-
-            try {
-
-
-                JSONObject objeto = (JSONObject) model.getData();
-                setData(sharedPref, objeto);
-                String codigoTransaccion = objeto.getString("codigoTransaccion");
-                int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
-                int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoEmpleado));
-                int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
-
-
-                HttpResponse modelSujetoCredito = presenter.PostInsertSujetoCredito(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user);
-                if (modelSujetoCredito!=null){
-                    JSONObject objeto2 = (JSONObject) modelSujetoCredito.getData();
-                    setData(sharedPref, objeto2);
-
-                    Intent intent = new Intent(context, WebViewUpdFilesActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-            catch (JSONException ex)
-            {
-
-            }
-        }
-    */
-
     }
 
 }

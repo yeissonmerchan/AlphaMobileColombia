@@ -92,6 +92,27 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         storage.initLocalStorage(this);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
+
     //**************    VALIDACIÓN DE CAMPOS     *****************//
 
     //Mapeo del campos del layout a las variables del activity

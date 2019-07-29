@@ -34,6 +34,7 @@
         tools:replace="android:hasCode">
         <activity
             android:name=".mvp.activity.CapturaInformacionActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_captura_informacion"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
@@ -42,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ArchivosV2Activity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_archivos_v2"
             android:theme="@style/AppTheme.NoActionBar" />
 
