@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                         }
 
                         Intent intent = new Intent(view.getContext(), ModuloActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivityForResult(intent, 0);
                         message.setText(model.getMessage());
 

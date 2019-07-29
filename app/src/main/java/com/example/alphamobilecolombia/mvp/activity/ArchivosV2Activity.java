@@ -41,6 +41,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -56,6 +57,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -92,6 +95,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     final Context context = this;
     CountDownLatch executionCompleted;
     List<ModelReintentos> lisReintentos = new ArrayList<>();
+    private static final int DIALOG_REALLY_EXIT_ID = 0;
 
     final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
     @Override
@@ -111,6 +115,8 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         isCreateUserAndSubject = false;
+
+        cleanInitImages();
     }
 
 
@@ -280,7 +286,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                         System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
                         System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
                         System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
-                        //System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
+                        System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
 
                         if(httpResponse.getCode() != null) {
                             if (!httpResponse.getCode().contains("200")) {
@@ -469,14 +475,25 @@ public class ArchivosV2Activity extends AppCompatActivity {
         try {
             //showLoading(v);
             idElement = getIdElementView(v);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
 
-            //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+            boolean isExist = false;
 
-            getViewImage(v, rotatedBitmap, true);
+            for(com.example.alphamobilecolombia.utils.models.File file : listUpload) {
+                if(file.getType().equals(idElement)) {
+                    isExist = true;
+                }
+            }
+
+            if(isExist) {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+
+                //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+                Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+
+                getViewImage(v, rotatedBitmap, true);
+            }
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
@@ -489,19 +506,41 @@ public class ArchivosV2Activity extends AppCompatActivity {
             //showLoading(v);
             //idElement = getIdElementView(v);
             String pathFileLocal = getExternalFilesDir(null)+"/"+getNameFile(v);
-            String pathFileLocalCompress = getExternalFilesDir(null)+"";
-            java.io.File fileLocal;
-            fileLocal = new java.io.File(pathFileLocal);
 
+            java.io.File fileLocal = new java.io.File(pathFileLocal);
+            int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length()/1024));
+            System.out.println("file_size_original " + file_size_original);
             java.io.File file = new Compressor(context)
                     .setQuality(60)
-                    .setCompressFormat(Bitmap.CompressFormat.PNG)
+                    .setCompressFormat(Bitmap.CompressFormat.WEBP)
                     .compressToFile(fileLocal);
 
             fileLocal.delete();
             file.getParentFile().mkdirs();
             file.createNewFile();
+            int file_size_compress = Integer.parseInt(String.valueOf(file.length()/1024));
+            System.out.println("file_size_compress " + file_size_compress);
             pathNewFile1 = file.getParent();
+            String pathFileLocalCompress = pathNewFile1+"/"+getNameFile(v);
+
+            java.io.File f = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+            f.createNewFile();
+            Bitmap bitmap = BitmapFactory.decodeFile(pathFileLocalCompress);
+            //Convert bitmap to byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            //write the bytes in file
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            int file_size_final = Integer.parseInt(String.valueOf(file.length()/1024));
+            System.out.println("file_size_final " + file_size_final);
+            file.delete();
+
+            pathNewFile1 = getExternalFilesDir(null).getAbsolutePath();
 
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
@@ -678,6 +717,35 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     }
 
+    public void cleanInitImages(){
+        ImageView imagen1 = findViewById(R.id.imageView1);
+        imagen1.setImageBitmap(null);
+
+        ImageView imagen2 = findViewById(R.id.imageView2);
+        imagen2.setImageBitmap(null);
+
+        ImageView imagen3 = findViewById(R.id.imageView3);
+        imagen3.setImageBitmap(null);
+
+        ImageView imagen4 = findViewById(R.id.imageView4);
+        imagen4.setImageBitmap(null);
+
+        ImageView imagen5 = findViewById(R.id.imageView5);
+        imagen5.setImageBitmap(null);
+
+        ImageView imagen6 = findViewById(R.id.imageView6);
+        imagen6.setImageBitmap(null);
+
+        ImageView imagen7 = findViewById(R.id.imageView7);
+        imagen7.setImageBitmap(null);
+
+        ImageView imagen8 = findViewById(R.id.imageView8);
+        imagen8.setImageBitmap(null);
+
+        ImageView imagen9 = findViewById(R.id.imageView9);
+        imagen9.setImageBitmap(null);
+    }
+
     public void getViewImage(View v, Bitmap bitmap, boolean isFetch){
         int idButton = v.getId();
         if (!isFetch)
@@ -828,6 +896,74 @@ public class ArchivosV2Activity extends AppCompatActivity {
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         startActivityForResult(intent, 0);
+    }
+
+    public void notificationEndProcess(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getBaseContext());
+        builder1.setMessage("¿ Desea terminar el proceso ?");
+        builder1.setCancelable(false);
+
+        final String nameFile = idElement;
+        builder1.setPositiveButton(
+                "Sí",
+                new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(a);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
+        alert11.show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
     }
 
     public int getIdViewImage(String typeFile){

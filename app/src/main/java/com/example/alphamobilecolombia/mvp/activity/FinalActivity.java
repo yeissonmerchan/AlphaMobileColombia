@@ -1,6 +1,8 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -10,9 +12,11 @@ import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.FinalPresenter;
 import com.example.alphamobilecolombia.utils.models.Persona;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,6 +32,7 @@ public class FinalActivity extends AppCompatActivity {
     private String IdTipoEmpleado;
     private String IdTipoContrato;
     private String IdDestinoCredito;
+    private static final int DIALOG_REALLY_EXIT_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,37 @@ public class FinalActivity extends AppCompatActivity {
         modulo.setText("Finalización");
 
 
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¡Tu solicitud ha sido cargada satisfactoriamente!")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
     }
 
     public void onclickExit(View view) {

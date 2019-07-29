@@ -73,6 +73,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.FinalActivity"
+            android:noHistory="true"
             android:label="@string/title_activity_final"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -81,6 +82,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ScannerActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_scanner"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

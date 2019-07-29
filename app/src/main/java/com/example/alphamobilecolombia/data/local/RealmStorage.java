@@ -9,6 +9,7 @@ import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCr
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.Person;
 
+import java.io.File;
 import java.security.KeyStoreException;
 import java.util.Calendar;
 
@@ -28,8 +29,12 @@ public class RealmStorage {
     public Realm initLocalStorage(Context context){
         try {
 
+            File file = new File(context.getFilesDir(), "alphaStorage.realm");
+            if(file.exists()){
+                file.delete();
+            }
+
             Realm.init(context);
-            String license = context.getResources().getString(R.string.local_storage_Key);
             RealmConfiguration config = new RealmConfiguration.Builder()
                     .name("alphaStorage.realm")
                     .encryptionKey(createNewKeys(context))
@@ -40,22 +45,27 @@ public class RealmStorage {
             return myRealm;
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,context);
             return null;
         }
     }
 
     public void savePerson(Context context, Person person){
-        Realm.init(context);
+        try {
+            Realm.init(context);
+            Realm realm = Realm.getDefaultInstance();
 
-        Realm realm = Realm.getDefaultInstance();
+            final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", person.getNumber()).findAll();
 
-        final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", person.getNumber()).findAll();
-
-        if(!(findPerson.size() > 0)){
-            // Persist your data in a transaction
-            realm.beginTransaction();
-            final Person managedDog = realm.copyToRealm(person); // Persist unmanaged objects
-            realm.commitTransaction();
+            if (!(findPerson.size() > 0)) {
+                // Persist your data in a transaction
+                realm.beginTransaction();
+                final Person managedDog = realm.copyToRealm(person); // Persist unmanaged objects
+                realm.commitTransaction();
+            }
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona",ex,context);
         }
     }
 

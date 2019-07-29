@@ -53,6 +53,7 @@ public class InicialActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Intent intent = new Intent(InicialActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivityForResult(intent, 0);
                 }
             },2000);
@@ -63,6 +64,7 @@ public class InicialActivity extends AppCompatActivity {
                 public void run() {
                     Intent intent = new Intent(InicialActivity.this, ActualizacionActivity.class);
                     intent.putExtra("MessageError", model.getMessage());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivityForResult(intent, 0);
                 }
             },2000);
@@ -70,6 +72,7 @@ public class InicialActivity extends AppCompatActivity {
     }
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }
 

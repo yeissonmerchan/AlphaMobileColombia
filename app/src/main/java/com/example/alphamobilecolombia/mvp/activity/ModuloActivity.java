@@ -55,16 +55,19 @@ public class ModuloActivity extends AppCompatActivity {
 
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }
 
     public void onClickBtnNewRequest(View view) {
         Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }
 
     public void onClickBtnListRequest(View view) {
         Intent intent = new Intent (view.getContext(), ConsultaCreditosActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }
 
