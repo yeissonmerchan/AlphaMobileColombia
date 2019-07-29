@@ -357,7 +357,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
         intent.putExtra("PERSONA_FechaNac", bithdate);
         intent.putExtra("PERSONA_Genero", person.getGender());
-        intent.putExtra("PERSONA_Celular", person.getPlaceBirth());
+        intent.putExtra("PERSONA_Celular", "0");
 
         intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
         intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
