@@ -473,11 +473,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     public void recuperarFotoCargada(View v) {
         try {
-            //showLoading(v);
             idElement = getIdElementView(v);
 
             boolean isExist = false;
-
             for(com.example.alphamobilecolombia.utils.models.File file : listUpload) {
                 if(file.getType().equals(idElement)) {
                     isExist = true;
