@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -64,6 +65,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_captura_informacion);
         Window window = this.getWindow();
@@ -175,6 +177,27 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
 
         // Fin Datepicker
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
     }
 
 

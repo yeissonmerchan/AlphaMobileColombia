@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -131,6 +132,27 @@ public class ConsultaCreditosActivity extends AppCompatActivity {
                 myDialog.show();
             }
         }).start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
     }
 
     public void generateControls(List data){

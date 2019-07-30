@@ -142,6 +142,27 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
+
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         startActivityForResult(intent, 0);
@@ -261,7 +282,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         Intent a = new Intent(getBaseContext(),ModuloActivity.class);
-                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(a);
                                     }
                                 })

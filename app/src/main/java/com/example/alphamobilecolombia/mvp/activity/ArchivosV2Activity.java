@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -100,6 +101,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archivos_v2);
         Window window = this.getWindow();
@@ -137,11 +139,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
-
     }
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void finalizacion(View view) throws InterruptedException, ExecutionException {
@@ -286,7 +286,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
                         System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
                         System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
                         System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
-                        System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
+                        //System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
 
                         if(httpResponse.getCode() != null) {
                             if (!httpResponse.getCode().contains("200")) {
@@ -445,7 +445,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     public void tomarFoto(View v) {
         idElement = getIdElementUpload(v);
-        boolean existFile = existDocumentUpload();
+        //boolean existFile = existDocumentUpload();
         view = v;
         //if (!existFile){
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
