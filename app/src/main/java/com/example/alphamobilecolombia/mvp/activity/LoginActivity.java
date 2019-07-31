@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -71,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private boolean validationResult = false;
 
     //***********************************************************//
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         RealmStorage storage = new RealmStorage();
         storage.initLocalStorage(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        EditText edt_names = (EditText) findViewById(R.id.edt_username);
+        edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
 
     @Override
@@ -194,6 +200,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
                             SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
                             usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
+                            mFirebaseAnalytics.setUserProperty("user_success", userText);
                             //throw new Exception("Error scanner");
                         }
                         catch (JSONException e) {
@@ -201,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
+                            mFirebaseAnalytics.setUserProperty("user_failed", userText);
                             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
                         }
 

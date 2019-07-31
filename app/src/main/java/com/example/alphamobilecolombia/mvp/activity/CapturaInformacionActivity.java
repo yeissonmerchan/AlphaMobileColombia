@@ -30,7 +30,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -58,6 +62,7 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
     List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
     Dialog myDialog;
     Context contextView;
+    private static final int DIALOG_REALLY_EXIT_ID = 0;
     String msgError = "Faltan campos obligatorios por completar.";
 
     private TextView mDisplayDate;
@@ -120,6 +125,82 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
 
         spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
         spinner_tipo_empleado.setOnItemSelectedListener(this);
+
+        EditText edt_names = (EditText) findViewById(R.id.edt_names);
+        edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_names.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("[a-zA-Z ]+")){
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                    }
+                }
+        });
+
+        EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
+        edt_names2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_names2.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("[a-zA-Z ]+")){
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                    }
+                }
+        });
+
+        EditText edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
+        edt_lastNames.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_lastNames.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("[a-zA-Z ]+")){
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                    }
+                }
+        });
+
+        EditText edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
+        edt_lastNames2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_lastNames2.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if(cs.equals("")){ // for backspace
+                            return cs;
+                        }
+                        if(cs.toString().matches("[a-zA-Z ]+")){
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                    }
+                }
+        });
 
         List<String> names = new ArrayList<>();
         for (GetPagaduriasRequest p : pagadurias) {
@@ -200,6 +281,43 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
         Log.d("Lifecycle", "onDestroy()");
     }
 
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
 
     public void ValidarPrevalidacionesActivas(String Documento,Person person) throws JSONException {
 

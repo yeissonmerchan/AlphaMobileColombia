@@ -55,13 +55,14 @@ public class ModuloActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivityForResult(intent, 0);
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+            this.moveTaskToBack(true);
+            return true;
         }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
     public void onclickExit(View view) {
