@@ -137,10 +137,10 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                         if(cs.equals("")){ // for backspace
                             return cs;
                         }
-                        if(cs.toString().matches("[a-zA-Z ]+")){
+                        if(cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")){
                             return cs;
                         }
-                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
                 }
         });
@@ -156,10 +156,10 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                         if(cs.equals("")){ // for backspace
                             return cs;
                         }
-                        if(cs.toString().matches("[a-zA-Z ]+")){
+                        if(cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")){
                             return cs;
                         }
-                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
                 }
         });
@@ -175,10 +175,10 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                         if(cs.equals("")){ // for backspace
                             return cs;
                         }
-                        if(cs.toString().matches("[a-zA-Z ]+")){
+                        if(cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")){
                             return cs;
                         }
-                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
                 }
         });
@@ -194,10 +194,10 @@ public class CapturaInformacionActivity extends AppCompatActivity implements Ada
                         if(cs.equals("")){ // for backspace
                             return cs;
                         }
-                        if(cs.toString().matches("[a-zA-Z ]+")){
+                        if(cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")){
                             return cs;
                         }
-                        return cs.toString().replaceAll("[^a-zA-Z ]", "");
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
                 }
         });
