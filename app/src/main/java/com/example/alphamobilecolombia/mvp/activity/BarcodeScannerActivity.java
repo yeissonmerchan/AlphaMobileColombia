@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,28 +46,11 @@ public class BarcodeScannerActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barcode_scanner);
-
-
-
-        BarcodeView barcodeView = findViewById(R.id.barcodeView);
-
-
         if(isVibrateOn)
             levelVibrate = 500;
         else levelVibrate = 0;
-
-        /*barcodeView
-                .setManualIsOperationalCheck ()
-                //.drawOverlay(null)
-                .setBeepSound(true)
-                .setVibration(levelVibrate)
-                .setAutoFocus(true)
-                .setBarcodeFormats(Barcode.PDF417)
-                .setFlash(isFlashOn)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .getObservable()
-                .observeOn(AndroidSchedulers.mainThread())*/
-        mDisposable = barcodeView
+        BarcodeView barcodeView = findViewById(R.id.barcodeView);
+        this.mDisposable = barcodeView
                 .drawOverlay(new BarcodeRectOverlay(this))
                 .setBeepSound(true)
                 .setVibration(levelVibrate)
@@ -92,6 +76,33 @@ public class BarcodeScannerActivity extends AppCompatActivity {
                                 startActivityForResult(intent, 0);
                             }
                         }));
+
     }
 
+    public void btnFlash(View view) {
+        BarcodeView barcodeView = findViewById(R.id.barcodeView);
+        isFlashOn = !isFlashOn;
+        barcodeView.setFlash(isFlashOn);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+        mDisposable.dispose();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
 }

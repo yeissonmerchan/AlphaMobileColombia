@@ -115,6 +115,33 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     .setBarcodeImageEnabled(false)
                     .initiateScan();
 
+            spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
+            ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
+                    R.array.spinner_destino_credito, android.R.layout.simple_spinner_item);
+            adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_destino_credito.setAdapter(adapter_destino_credito);
+
+
+            spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
+            ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
+                    R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
+            adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
+
+
+            spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
+            spinner_tipo_empleado.setOnItemSelectedListener(this);
+
+            List<String> names = new ArrayList<>();
+            for (GetPagaduriasRequest p : pagadurias) {
+                names.add(p.getNombre());
+            }
+
+            ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
+
+            Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
+            userSpinner.setAdapter(userAdapter);
+
         }
         else{
             strDataScan = getIntent().getStringExtra("strDataScan");
@@ -134,35 +161,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 getReadBarCode(result2);
             }
         }
-
-        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
-        ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
-                R.array.spinner_destino_credito, android.R.layout.simple_spinner_item);
-        adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_destino_credito.setAdapter(adapter_destino_credito);
-
-
-        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
-        ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
-                R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
-        adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
-
-
-        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-        spinner_tipo_empleado.setOnItemSelectedListener(this);
-
-        List<String> names = new ArrayList<>();
-        for (GetPagaduriasRequest p : pagadurias) {
-            names.add(p.getNombre());
-        }
-
-        ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
-
-        Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
-        userSpinner.setAdapter(userAdapter);
-
-
     }
 
     @Override

@@ -34,6 +34,7 @@
 
             <FrameLayout
                 android:id="@+id/ok_button"
+                android:onClick="btnFlash"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
