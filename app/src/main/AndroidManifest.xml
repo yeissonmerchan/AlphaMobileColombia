@@ -33,20 +33,25 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
         <activity
+            android:name=".mvp.activity.BarcodeScannerActivity"
+            android:label="@string/title_activity_barcode_scanner"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
             android:name=".mvp.activity.CapturaInformacionActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_captura_informacion"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ActualizacionActivity"
             android:label="@string/title_activity_actualizacion"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ArchivosV2Activity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_archivos_v2"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".mvp.activity.InicialActivity"
             android:label="@string/title_activity_login"
@@ -76,9 +81,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.FinalActivity"
+            android:label="@string/title_activity_final"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_final"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.TerminosActivity"
@@ -86,8 +91,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ScannerActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_scanner"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ModuloActivity"

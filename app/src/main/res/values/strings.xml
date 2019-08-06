@@ -1,6 +1,8 @@
 <resources>
 
     <string name="environment_release">PRE</string>
+    <string name="environment_development">DEV</string>
+    <bool name="isNextVersion">true</bool>
     <!-- Ips de preproducion -->
     <string name="pre_ip_api_autentication">http://181.57.145.20:8082/</string>
     <string name="pre_ip_api_storage">http://181.57.145.20:8083/</string>
@@ -195,6 +197,7 @@
     <string name="title_activity_archivos_v2">ArchivosV2Activity</string>
     <string name="title_activity_actualizacion">ActualizacionActivity</string>
     <string name="title_activity_captura_informacion">CapturaInformacionActivity</string>
+    <string name="title_activity_barcode_scanner">BarcodeScannerActivity</string>
 
 
 </resources>

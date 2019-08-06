@@ -49,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     Dialog myDialog;
     Context contextView;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
+    boolean isLoadNextVersion = false;
+    String strDataScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,16 +104,36 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         }
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Datos personales");
+        isLoadNextVersion = getIntent().getBooleanExtra("isLoadNextVersion",isLoadNextVersion);
 
+        if (!isLoadNextVersion){
+            new IntentIntegrator(ScannerActivity.this)
+                    .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
+                    .setPrompt("Por favor escanear el código de barras de la cédula.")
+                    .setCameraId(0)
+                    .setBeepEnabled(false)
+                    .setBarcodeImageEnabled(false)
+                    .initiateScan();
 
-        new IntentIntegrator(ScannerActivity.this)
-                .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-                .setPrompt("Por favor escanear el código de barras de la cédula.")
-                .setCameraId(0)
-                .setBeepEnabled(false)
-                .setBarcodeImageEnabled(false)
-                .initiateScan();
+        }
+        else{
+            strDataScan = getIntent().getStringExtra("strDataScan");
 
+            if(strDataScan.length()==0){
+                Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
+                startActivityForResult(intent, 0);
+            }
+            else{
+                byte[] result2 = new byte[0];
+                try {
+                    result2 = strDataScan.getBytes("ISO-8859-1");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
+                }
+                getReadBarCode(result2);
+            }
+        }
 
         spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
         ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
@@ -193,65 +216,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 try {
-
-                    DocumentManager documentManager = new DocumentManager();
-                    byte[] rawdata = result.getContents().getBytes();
+                    //byte[] rawdata = result.getContents().getBytes();
                     byte[] result2 = data.getStringExtra("SCAN_RESULT").getBytes("ISO-8859-1");
-                    String user = getResources().getString(R.string.userkey);
-                    String license = getResources().getString(R.string.licenceKey);
-
-                    String resultScan = documentManager.parse(user, license, result2);
-                    person = new Gson().fromJson(resultScan, Person.class);
-                    p = CedulaQrAnalytics.parse(data);
-
-
-                    if(person != null){
-                        if(person.getNumber().length()>0)
-                        {
-                            storage.savePerson(contextView,person);
-                        }
-                        else{
-                            NotificacionErrorDatos(contextView);
-                        }
-                    }
-                    else{
-                        NotificacionErrorDatos(contextView);
-                    }
-
-                    /*
-                    EditText edt_names = (EditText) findViewById(R.id.edt_names);
-                    EditText edt_names2 = (EditText) findViewById(R.id.edt_names2);
-                    EditText edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
-                    EditText edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
-                    EditText edt_numberIdentification = (EditText) findViewById(R.id.edt_numberIdentification);
-                    EditText edt_birthDate = (EditText) findViewById(R.id.edt_birthDate);
-                    //EditText edt_celular = (EditText) findViewById(R.id.edt_celular);
-                    EditText edt_genero = (EditText) findViewById(R.id.edt_genero);
-                    EditText edt_factor = (EditText) findViewById(R.id.edt_factor);
-                    */
-
-                    /*edt_names.setText((person.getFirstName().length() < 0 ? person.getFirstName() : p.getNombre()));
-                    edt_names2.setText((person.getSecondName().length() < 0 ? person.getSecondName() : ""));
-                    edt_lastNames.setText((person.getSurename().length() < 0 ? person.getSurename() : p.getApellido1()));
-                    edt_lastNames2.setText((person.getSecondSurename().length() < 0 ? person.getSecondSurename() : p.getApellido2()));
-                    edt_numberIdentification.setText((person.getNumber().length()< 0 ? person.getNumber() : p.getCedula()));
-                    edt_birthDate.setText((person.getBirthday().length()< 0 ? person.getBirthday() : p.getFechaNacimiento()));
-                    edt_genero.setText((person.getGender().length()< 0 ? person.getGender() : p.getGenero()));
-                    edt_factor.setText((person.getBloodType().length()< 0 ? person.getBloodType() : p.getFactorRh()));
-                    edt_celular.setText((person.getPlaceBirth().length()< 0 ? person.getPlaceBirth() : ""));
-                    */
-
-                    /*
-                    edt_names.setText(person.getFirstName());
-                    edt_names2.setText(person.getSecondName());
-                    edt_lastNames.setText(person.getSurename());
-                    edt_lastNames2.setText(person.getSecondSurename());
-                    edt_numberIdentification.setText(person.getNumber());
-                    edt_birthDate.setText(person.getBirthday());
-                    edt_genero.setText(person.getGender());
-                    edt_factor.setText(person.getBloodType());
-                    //edt_celular.setText(person.getPlaceBirth());
-                    */
+                    getReadBarCode(result2);
 
                     //Toast.makeText(getApplicationContext(),p.toString(), Toast.LENGTH_SHORT).show();
                     //Log.d("MainActivity", "Scaneado");
@@ -267,6 +234,37 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } else {
             // This is important, otherwise the result will not be passed to the fragment
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void getReadBarCode(byte[] arrayData){
+
+        try{
+            String user = getResources().getString(R.string.userkey);
+            String license = getResources().getString(R.string.licenceKey);
+            DocumentManager documentManager = new DocumentManager();
+            String resultScan = documentManager.parse(user, license, arrayData);
+            person = new Gson().fromJson(resultScan, Person.class);
+            //p = CedulaQrAnalytics.parse(data);
+
+            if(person != null){
+                if(person.getNumber().length()>0)
+                {
+                    storage.savePerson(contextView,person);
+                }
+                else{
+                    NotificacionErrorDatos(contextView);
+                }
+            }
+            else{
+                NotificacionErrorDatos(contextView);
+            }
+
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo",ex,this);
+            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
+            NotificacionErrorDatos(this);
         }
     }
 

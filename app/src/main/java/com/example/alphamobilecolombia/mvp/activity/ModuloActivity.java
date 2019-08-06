@@ -73,6 +73,9 @@ public class ModuloActivity extends AppCompatActivity {
 
     public void onClickBtnNewRequest(View view) {
         Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+        boolean currentlyEnviroment = getBaseContext().getResources().getBoolean(R.bool.isNextVersion);
+        intent.putExtra("isLoadNextVersion", currentlyEnviroment);
+        intent.putExtra("strDataScan","");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }

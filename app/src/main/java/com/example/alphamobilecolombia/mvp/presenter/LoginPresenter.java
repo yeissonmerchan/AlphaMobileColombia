@@ -43,8 +43,14 @@ public class LoginPresenter {
 
                 Gson gson = new Gson();
                 //String data = gson.toJson(new PostAutenticationRequest("1110449867","188ce4435b977cef83884c051a277cb9"));
-                //String data = gson.toJson(new PostAutenticationRequest("Desarrollo","6d91327bca8251614ee4b0400e3edb67"));
-                String data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
+                String currentlyEnviroment = context.getResources().getString(R.string.environment_development);
+                String data;
+                if(currentlyEnviroment.contains("DEV")) {
+                    data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67"));
+                }
+                else{
+                    data = gson.toJson(new PostAutenticationRequest(txtUsuario, MD5Hashing.MD5(txtPass)));
+                }
                 RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
 
                 Call<String> call = postService.Login(body1);//True:False?0101
