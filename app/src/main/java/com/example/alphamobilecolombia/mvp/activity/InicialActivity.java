@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
+import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mobsandgeeks.saripaar.Validator;
@@ -54,6 +55,8 @@ public class InicialActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    ApplicationData applicationData = new ApplicationData();
+                    applicationData.Clear(getApplicationContext());
                     Intent intent = new Intent(InicialActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivityForResult(intent, 0);
