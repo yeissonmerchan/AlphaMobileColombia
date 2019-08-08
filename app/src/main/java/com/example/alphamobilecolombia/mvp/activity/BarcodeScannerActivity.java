@@ -1,8 +1,13 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import com.example.alphamobilecolombia.utils.BarcodeRectOverlay.BarcodeRectOverlay;
 
@@ -14,11 +19,14 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,10 +42,12 @@ import io.reactivex.functions.Consumer;
 public class BarcodeScannerActivity extends AppCompatActivity {
 
     private Disposable mDisposable = null;
-    private boolean isFlashOn = false;
+    private boolean isFlashOn = true;
     private boolean isBeepOn = false;
     private boolean isVibrateOn = false;
     private int levelVibrate = 0;
+    private static final int DIALOG_REALLY_EXIT_ID = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,7 @@ public class BarcodeScannerActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_barcode_scanner);
+
         if(isVibrateOn)
             levelVibrate = 500;
         else levelVibrate = 0;
@@ -104,5 +115,41 @@ public class BarcodeScannerActivity extends AppCompatActivity {
         super.onDestroy();
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
     }
 }

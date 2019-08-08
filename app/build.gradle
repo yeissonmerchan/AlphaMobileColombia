@@ -83,7 +83,7 @@ dependencies {
     implementation 'com.github.bobekos:SimpleBarcodeScanner:1.0.23'
 
     //Botones flotantes
-    implementation 'com.github.JediBurrell:customFloatingActionButton:-SNAPSHOT'
+    //implementation 'com.github.JediBurrell:customFloatingActionButton:-SNAPSHOT'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

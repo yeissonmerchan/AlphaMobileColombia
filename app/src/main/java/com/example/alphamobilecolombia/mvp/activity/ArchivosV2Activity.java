@@ -557,7 +557,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
 
     public String getNameFile(View view){
-        Person person = storage.getPerson(this);
+        Person person = storage.getPerson(view.getContext());
         String nameFile = idElement;
 
         return person.getNumber()+nameFile+".jpg";
@@ -566,7 +566,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     public void changeStatusUpload(boolean status){
 
         // Se obtiene el bitmap1 para saber si ya hay una imagen cargada, si no encuentra ninguna imagen la variable queda nula
-        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(null));
+        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(view));
         if (bitmap1 != null){
             status = true;
             bitmap1 = null;
@@ -1040,7 +1040,8 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //recuperarFotoCargada(view);
-        if (resultCode != 0){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != 0) {
             ConfirmacionImagen(view);
         }
     }

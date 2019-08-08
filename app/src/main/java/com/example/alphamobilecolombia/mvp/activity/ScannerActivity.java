@@ -1,11 +1,13 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -23,6 +25,7 @@ import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
 import com.example.alphamobilecolombia.utils.models.Person;
 import com.example.alphamobilecolombia.utils.models.Persona;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -68,6 +71,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     private static final int DIALOG_REALLY_EXIT_ID = 0;
     boolean isLoadNextVersion = false;
     String strDataScan;
+    private final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,52 +118,101 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     .setBeepEnabled(false)
                     .setBarcodeImageEnabled(false)
                     .initiateScan();
-
-            spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
-            ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_destino_credito, android.R.layout.simple_spinner_item);
-            adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner_destino_credito.setAdapter(adapter_destino_credito);
-
-
-            spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
-            ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
-            adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
-
-
-            spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-            spinner_tipo_empleado.setOnItemSelectedListener(this);
-
-            List<String> names = new ArrayList<>();
-            for (GetPagaduriasRequest p : pagadurias) {
-                names.add(p.getNombre());
-            }
-
-            ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
-
-            Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
-            userSpinner.setAdapter(userAdapter);
-
         }
         else{
-            strDataScan = getIntent().getStringExtra("strDataScan");
-
-            if(strDataScan.length()==0){
-                Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
-                startActivityForResult(intent, 0);
+            int hasWriteContactsPermission = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                hasWriteContactsPermission = checkSelfPermission(Manifest.permission.CAMERA);
             }
-            else{
-                byte[] result2 = new byte[0];
-                try {
-                    result2 = strDataScan.getBytes("ISO-8859-1");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[] {Manifest.permission.CAMERA},
+                            REQUEST_CODE_ASK_PERMISSIONS);
                 }
-                getReadBarCode(result2);
+                //Toast.makeText(this, "Requesting permissions", Toast.LENGTH_LONG).show();
+            }else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED){
+                //Toast.makeText(this, "The permissions are already granted ", Toast.LENGTH_LONG).show();
+                strDataScan = getIntent().getStringExtra("strDataScan");
+                if(strDataScan.length()==0){
+                    Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
+                    startActivityForResult(intent, 0);
+                }
+                else{
+                    byte[] result2 = new byte[0];
+                    try {
+                        if (!isLoadNextVersion){
+                            result2 = strDataScan.getBytes("ISO-8859-1");
+                        }
+                        else{
+                            result2 = strDataScan.getBytes();
+                        }
+
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
+                    }
+                    getReadBarCode(result2);
+                }
             }
+        }
+
+        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
+        ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
+                R.array.spinner_destino_credito, android.R.layout.simple_spinner_item);
+        adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_destino_credito.setAdapter(adapter_destino_credito);
+
+
+        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
+        ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
+                R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
+        adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
+
+
+        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
+        spinner_tipo_empleado.setOnItemSelectedListener(this);
+
+        List<String> names = new ArrayList<>();
+        for (GetPagaduriasRequest p : pagadurias) {
+            names.add(p.getNombre());
+        }
+
+        ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
+
+        Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
+        userSpinner.setAdapter(userAdapter);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(REQUEST_CODE_ASK_PERMISSIONS == requestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                strDataScan = getIntent().getStringExtra("strDataScan");
+                if(strDataScan.length()==0){
+                    Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
+                    startActivityForResult(intent, 0);
+                }
+                else{
+                    byte[] result2 = new byte[0];
+                    try {
+                        if (!isLoadNextVersion){
+                            result2 = strDataScan.getBytes("ISO-8859-1");
+                        }
+                        else{
+                            result2 = strDataScan.getBytes();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
+                    }
+                    getReadBarCode(result2);
+                }
+            } else {
+                Toast.makeText(this, "No es posible continuar con el proceso.! " + Build.VERSION.SDK_INT, Toast.LENGTH_LONG).show();
+            }
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

@@ -93,6 +93,7 @@
         <activity
             android:name=".mvp.activity.ScannerActivity"
             android:label="@string/title_activity_scanner"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

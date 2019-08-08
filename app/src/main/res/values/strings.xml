@@ -1,7 +1,7 @@
 <resources>
 
     <string name="environment_release">PRE</string>
-    <string name="environment_development">DEV</string>
+    <string name="environment_development">QA</string>
     <bool name="isNextVersion">true</bool>
     <!-- Ips de preproducion -->
     <string name="pre_ip_api_autentication">http://181.57.145.20:8082/</string>
@@ -18,7 +18,6 @@
     <string name="api_autentication">autentication</string>
     <string name="api_storage">storage</string>
     <string name="api_generic">generic</string>
-
 
     <string name="btn_add_contact"><u>Ver más ...</u></string>
     <string name="app_name">Alpha Mobile Colombia</string>
