@@ -7,11 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
 import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mobsandgeeks.saripaar.Validator;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import android.os.Handler;
 import android.os.SystemClock;
 
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +32,7 @@ import android.view.WindowManager;
 
 public class InicialActivity extends AppCompatActivity {
     String version;
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +52,21 @@ public class InicialActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
         LoginPresenter presenter = new LoginPresenter();
         HttpResponse model = presenter.GetVersion(version,this);
+
+        ApplicationData applicationData = new ApplicationData();
+        applicationData.Clear(getApplicationContext());
+        applicationData.ClearData(getApplicationContext());
 
         if (model.getCode().contains("200")){
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ApplicationData applicationData = new ApplicationData();
-                    applicationData.Clear(getApplicationContext());
+                    RealmStorage storage = new RealmStorage();
+                    storage.initLocalStorage(getApplicationContext());
+                    mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
                     Intent intent = new Intent(InicialActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivityForResult(intent, 0);
@@ -67,6 +77,8 @@ public class InicialActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
+
                     Intent intent = new Intent(InicialActivity.this, ActualizacionActivity.class);
                     intent.putExtra("MessageError", model.getMessage());
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

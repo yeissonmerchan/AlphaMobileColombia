@@ -28,12 +28,10 @@ public class RealmStorage {
 
     public Realm initLocalStorage(Context context){
         try {
-
             File file = new File(context.getFilesDir(), "alphaStorage.realm");
             if(file.exists()){
                 file.delete();
             }
-
             Realm.init(context);
             RealmConfiguration config = new RealmConfiguration.Builder()
                     .name("alphaStorage.realm")
@@ -42,6 +40,7 @@ public class RealmStorage {
                     .build();
 
             Realm myRealm = Realm.getInstance(config);
+
             return myRealm;
         }
         catch (Exception ex){

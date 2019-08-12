@@ -73,8 +73,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private boolean validationResult = false;
 
     //***********************************************************//
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +88,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
-
-        RealmStorage storage = new RealmStorage();
-        storage.initLocalStorage(this);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -200,15 +194,12 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
                             SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
                             usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
-                            mFirebaseAnalytics.setUserProperty("user_success", userText);
-                            //throw new Exception("Error scanner");
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
-                            mFirebaseAnalytics.setUserProperty("user_failed", userText);
                             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
                         }
 
