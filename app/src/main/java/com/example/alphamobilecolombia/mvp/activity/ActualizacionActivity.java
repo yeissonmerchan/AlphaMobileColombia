@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -40,6 +41,8 @@ public class ActualizacionActivity extends AppCompatActivity {
     }
 
     public void actualizacion(View view) {
+        ApplicationData applicationData = new ApplicationData();
+        applicationData.RestartNewVersionApp(getApplicationContext());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.alphacredit.alphamobilecolombia"));
         startActivity(intent);
     }

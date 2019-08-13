@@ -29,19 +29,24 @@ public class RealmStorage {
     public Realm initLocalStorage(Context context){
         try {
             File file = new File(context.getFilesDir(), "alphaStorage.realm");
-            if(file.exists()){
+            /*if(file.exists()){
                 file.delete();
+            }*/
+            if(!file.exists()) {
+                Realm.init(context);
+                RealmConfiguration config = new RealmConfiguration.Builder()
+                        .name("alphaStorage.realm")
+                        .encryptionKey(createNewKeys(context))
+                        .schemaVersion(42)
+                        .build();
+
+                Realm myRealm = Realm.getInstance(config);
+
+                return myRealm;
             }
-            Realm.init(context);
-            RealmConfiguration config = new RealmConfiguration.Builder()
-                    .name("alphaStorage.realm")
-                    .encryptionKey(createNewKeys(context))
-                    .schemaVersion(42)
-                    .build();
-
-            Realm myRealm = Realm.getInstance(config);
-
-            return myRealm;
+            else{
+                return null;
+            }
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,context);
@@ -62,6 +67,8 @@ public class RealmStorage {
                 final Person managedDog = realm.copyToRealm(person); // Persist unmanaged objects
                 realm.commitTransaction();
             }
+
+            realm.close();
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona",ex,context);
@@ -91,14 +98,11 @@ public class RealmStorage {
 
             Realm realm = Realm.getDefaultInstance();
 
-            // final RealmResults<Person> findPerson = realm.where(Person.class).equalTo("number", data.getNumber()).findAll();
-
-            //if(!(findPerson.size() > 0)){
-            // Persist your data in a transaction
             realm.beginTransaction();
-            realm.copyToRealm(data); // Persist unmanaged objects
+            realm.copyToRealm(data);
             realm.commitTransaction();
-            //}
+
+            realm.close();
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,context);

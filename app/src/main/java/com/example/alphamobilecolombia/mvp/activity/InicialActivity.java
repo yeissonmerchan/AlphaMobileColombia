@@ -56,10 +56,6 @@ public class InicialActivity extends AppCompatActivity {
         LoginPresenter presenter = new LoginPresenter();
         HttpResponse model = presenter.GetVersion(version,this);
 
-        ApplicationData applicationData = new ApplicationData();
-        applicationData.Clear(getApplicationContext());
-        applicationData.ClearData(getApplicationContext());
-
         if (model.getCode().contains("200")){
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -77,7 +73,8 @@ public class InicialActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
+                    ApplicationData applicationData = new ApplicationData();
+                    applicationData.RestartNewVersionApp(getApplicationContext());
 
                     Intent intent = new Intent(InicialActivity.this, ActualizacionActivity.class);
                     intent.putExtra("MessageError", model.getMessage());

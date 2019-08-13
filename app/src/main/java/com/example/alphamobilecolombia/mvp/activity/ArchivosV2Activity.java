@@ -25,6 +25,7 @@ import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.ModelReintentos;
 import com.example.alphamobilecolombia.mvp.presenter.FinalPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
+import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.models.File;
 import com.example.alphamobilecolombia.utils.models.Person;
@@ -360,7 +361,7 @@ public class ArchivosV2Activity extends AppCompatActivity {
     }
 
     public void deleteFiles() {
-        for (com.example.alphamobilecolombia.utils.models.File file : listUpload){
+        /*for (com.example.alphamobilecolombia.utils.models.File file : listUpload){
             try {
                 String nameFile = file.getName();
                 //String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
@@ -374,7 +375,9 @@ public class ArchivosV2Activity extends AppCompatActivity {
                 LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminando archivo "+file.getName(),ex,this);
                 ex.printStackTrace();
             }
-        }
+        }*/
+        ApplicationData applicationData = new ApplicationData();
+        applicationData.ClearDirectoryTemp(getApplicationContext());
     }
 
 
@@ -459,17 +462,6 @@ public class ArchivosV2Activity extends AppCompatActivity {
         //    NotificacionExistente(v);
         //}
     }
-
-    public void showLoading(View v){
-        mDialog = new ProgressDialog(v.getContext());
-        mDialog.setMessage("Espere...");
-        mDialog.setCancelable(false);
-        mDialog.show();
-    }
-
-    /*public void hideLoading(){
-        mDialog.dismiss();
-    }*/
 
     public void recuperarFotoCargada(View v) {
         try {
@@ -557,10 +549,19 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
 
     public String getNameFile(View view){
-        Person person = storage.getPerson(view.getContext());
+        String documentNumber;
         String nameFile = idElement;
+        try {
+            Person person = storage.getPerson(view.getContext());
+            documentNumber = person.getNumber();
+        }
+        catch (Exception ex){
+            documentNumber = getIntent().getStringExtra("PERSONA_Documento");
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"nombre archivo "+documentNumber,ex,this);
+        }
 
-        return person.getNumber()+nameFile+".jpg";
+        return documentNumber+nameFile+".jpg";
     }
 
     public void changeStatusUpload(boolean status){
