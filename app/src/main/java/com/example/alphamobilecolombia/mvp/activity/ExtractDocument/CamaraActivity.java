@@ -1,4 +1,4 @@
-package com.example.alphamobilecolombia.mvp.activity;
+package com.example.alphamobilecolombia.mvp.activity.ExtractDocument;
 
 import android.app.Activity;
 import android.content.Context;

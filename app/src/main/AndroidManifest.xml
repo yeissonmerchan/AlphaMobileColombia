@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mvp.activity.CapturarActivity"
+            android:name=".mvp.activity.ExtractDocument.CapturarActivity"
             android:label="@string/title_activity_capturar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -73,7 +73,7 @@
             android:label="@string/title_activity_archivos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.CamaraActivity"
+            android:name=".mvp.activity.ExtractDocument.CamaraActivity"
             android:label="@string/title_activity_camara"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

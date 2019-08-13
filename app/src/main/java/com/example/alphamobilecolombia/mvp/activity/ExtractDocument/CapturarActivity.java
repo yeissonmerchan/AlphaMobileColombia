@@ -1,4 +1,4 @@
-package com.example.alphamobilecolombia.mvp.activity;
+package com.example.alphamobilecolombia.mvp.activity.ExtractDocument;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

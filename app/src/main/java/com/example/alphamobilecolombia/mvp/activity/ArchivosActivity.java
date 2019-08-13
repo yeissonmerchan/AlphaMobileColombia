@@ -10,26 +10,21 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.mvp.activity.ExtractDocument.CapturarActivity;
 import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.models.Person;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
-import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,10 +33,7 @@ import com.example.alphamobilecolombia.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class ArchivosActivity extends AppCompatActivity {
     private ImageView imagen1;
@@ -106,7 +98,7 @@ public class ArchivosActivity extends AppCompatActivity {
     public void ver(View v) {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        Intent intento1=new Intent(this,CapturarActivity.class);
+        Intent intento1=new Intent(this, CapturarActivity.class);
         startActivity(intento1);
     }
 
