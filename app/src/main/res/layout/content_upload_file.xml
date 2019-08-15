@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="80dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alphamobilecolombia.mvp.activity.UploadFileActivity"
+    tools:showIn="@layout/activity_upload_file">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:layout_marginTop="30dp"
+            android:paddingBottom="80dp"
+            android:layout_marginBottom="100dp"
+            android:id="@+id/lyt_controls"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                app:autoSizeTextType="uniform"
+                android:textStyle="bold"
+                android:id="@+id/txtSolicitudCredito"
+                android:text="Solicitud de cupo de crédito"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue1"
+                        android:text="Cargar Hoja #1"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView1"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload1"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue1"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue2"
+                        android:text="Cargar Hoja #2"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView2"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload2"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue2"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtCedulaCiudadania"
+                android:text="Cédula de ciudadanía"
+                android:longClickable="true"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                app:autoSizeTextType="uniform"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue3"
+                        android:text="Cargar Cara #1"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView3"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload3"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue3"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue4"
+                        android:text="Cargar Hoja #2"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView4"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload4"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue4"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity= "left"
+                android:drawSelectorOnTop="true"
+                android:typeface="serif"
+                android:layout_marginTop="10dp"
+                android:inputType="textMultiLine"
+                android:ems="20"
+                android:id="@+id/txtDesprendible"
+                android:text="Desprendible de nómina"
+                android:longClickable="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="18dp"
+                app:autoSizeTextType="uniform"
+                android:textStyle="bold"
+                android:textColor="@color/colorHeader"
+                android:scrollbars = "vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue5"
+                        android:text="Cargar Desprendible #1"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView5"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload5"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue5"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue6"
+                        android:text="Cargar Desprendible #2"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView6"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload6"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue6"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue7"
+                        android:text="Cargar Desprendible #3"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView7"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload7"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:layout_marginRight="2dp"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue7"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border_layout"
+                android:orientation="vertical">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    >
+
+                    <TextView
+                        android:layout_width="190dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:paddingTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:layout_marginLeft="20dp"
+                        android:ems="20"
+                        android:id="@+id/txtCargue8"
+                        android:text="Cargar Desprendible #4"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorText"
+                        android:scrollbars = "vertical"/>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal" >
+
+                        <Button android:id="@+id/btnView8"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_lupa"
+                            android:layout_height="30dp"
+                            android:onClick="recuperarFotoCargada"
+                            android:text=""></Button>
+
+                        <Button android:id="@+id/btnUpload8"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@mipmap/logo_camara"
+                            android:layout_height="30dp"
+                            android:onClick="tomarFoto"
+                            android:layout_marginRight="2dp"
+                            android:text=""></Button>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lyt_cargue8"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:orientation="horizontal" />
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/btn_capture"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="0dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="40dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity= "left"
+                    android:drawSelectorOnTop="true"
+                    android:typeface="serif"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textMultiLine"
+                    android:ems="20"
+                    app:autoSizeTextType="uniform"
+                    android:textStyle="bold"
+                    android:id="@+id/txtDatospersonales"
+                    android:text="Solicitud de tratamiento de datos"
+                    android:longClickable="true"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorHeader"
+                    android:scrollbars = "vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/border_layout"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        >
+
+                        <TextView
+                            android:layout_width="190dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity= "left"
+                            android:drawSelectorOnTop="true"
+                            android:typeface="serif"
+                            android:inputType="textMultiLine"
+                            android:layout_marginLeft="20dp"
+                            android:ems="20"
+                            android:paddingTop="5dp"
+                            android:id="@+id/txtCargueAutorizacion"
+                            android:text="Cargar autorización"
+                            android:longClickable="true"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorText"
+                            android:scrollbars = "vertical"/>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+
+                            <Button android:id="@+id/btnView9"
+                                android:layout_width="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@mipmap/logo_lupa"
+                                android:layout_height="30dp"
+                                android:onClick="recuperarFotoCargada"
+                                android:text=""></Button>
+
+                            <Button android:id="@+id/btnUpload9"
+                                android:layout_width="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@mipmap/logo_camara"
+                                android:layout_height="30dp"
+                                android:onClick="tomarFoto"
+                                android:layout_marginRight="2dp"
+                                android:text=""></Button>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lyt_cargue9"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:orientation="horizontal" />
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        >
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="350dp"
+                            android:layout_height="400dp"
+                            android:layout_below="@+id/btn_capture"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="false"
+                            android:layout_marginEnd="0dp"
+                            android:visibility="gone"
+                            android:layout_marginTop="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginBottom="40dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorHeader"
+                android:layout_centerInParent="true"
+                android:onClick="finalizacion"
+                android:text="Enviar"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

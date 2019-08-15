@@ -3,8 +3,7 @@ package com.example.alphamobilecolombia.utils.extensions;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.models.Persona;
+import com.example.alphamobilecolombia.mvp.models.Persona;
 
 import org.json.JSONException;
 import org.json.JSONObject;

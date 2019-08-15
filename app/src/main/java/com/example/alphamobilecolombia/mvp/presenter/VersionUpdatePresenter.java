@@ -5,43 +5,36 @@ import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.GetPagadurias;
+import com.example.alphamobilecolombia.data.remote.GetVersion;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
-import com.example.alphamobilecolombia.data.remote.PostAutentication;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class ScannerPresenter {
+public class VersionUpdatePresenter {
 
-    public HttpResponse getPaying(Context context) {
+    public HttpResponse GetVersion(String idVersion, Context context) {
         final HttpResponse responseModel = new HttpResponse();
+        Response response;
         try {
             //TODO: Quitar el policy y poner asíncrono
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
             //TODO: Cambiar a implementación de flavors
-            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_generic),context);//Obtener Ip a partir de configuración
+            String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_authentication),context);//Obtener Ip a partir de configuración
             Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
-            GetPagadurias getPagadurias = retrofit.create(GetPagadurias.class);
+            GetVersion postService = retrofit.create(GetVersion.class);
 
-            Call<String> call = getPagadurias.GetList();
-
-            Response response = call.execute();
-
+            Call<String> call = postService.IsValidVersion(idVersion);
             JSONObject jsonObject;
-            if (response.code() == 200) {
+            response = call.execute();
+            if (!(response.code() != 200)) {
                 jsonObject = new JSONObject(response.body().toString());
                 responseModel.setCode(String.valueOf(response.code()));
                 responseModel.setData(jsonObject);
@@ -59,9 +52,12 @@ public class ScannerPresenter {
 
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagaduría",ex,context);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),idVersion,ex,context);
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            responseModel.setCode("409");
+            responseModel.setData("");
+            responseModel.setMessage("Hemos detectado una versión más reciente de la aplicación, por favor debes actualizarla.");
+            return responseModel;
         }
-        return null;
     }
 }

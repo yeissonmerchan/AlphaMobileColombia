@@ -33,28 +33,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
         <activity
-            android:name=".mvp.activity.BarcodeScannerActivity"
-            android:label="@string/title_activity_barcode_scanner"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".mvp.activity.CapturaInformacionActivity"
-            android:label="@string/title_activity_captura_informacion"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ActualizacionActivity"
-            android:label="@string/title_activity_actualizacion"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ArchivosV2Activity"
-            android:label="@string/title_activity_archivos_v2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.InicialActivity"
+            android:name=".mvp.activity.BrandingActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -65,30 +44,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mvp.activity.ExtractDocument.CapturarActivity"
-            android:label="@string/title_activity_capturar"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ArchivosActivity"
-            android:label="@string/title_activity_archivos"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ExtractDocument.CamaraActivity"
-            android:label="@string/title_activity_camara"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.UploadFilesActivity"
-            android:label="@string/title_activity_upload_files"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.FinalActivity"
-            android:label="@string/title_activity_final"
-            android:noHistory="true"
+            android:name=".mvp.activity.PersonalInformationActivity"
+            android:label="@string/title_activity_personal_information"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.TerminosActivity"
-            android:label="@string/title_activity_terminos"
+            android:name=".mvp.activity.VersionUpdateActivity"
+            android:label="@string/title_activity_version_update"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.activity.UploadFileActivity"
+            android:label="@string/title_activity_upload_files"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.activity.ProcessCompletedActivity"
+            android:label="@string/title_activity_process_completed"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mvp.activity.ScannerActivity"
@@ -97,7 +69,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.ModuloActivity"
+            android:name=".mvp.activity.ModuleActivity"
             android:label="@string/title_activity_modulo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -107,18 +79,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.DemoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.WebViewUpdFilesActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".mvp.activity.ConsultaCreditosActivity"
+            android:name=".mvp.activity.QueryCreditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

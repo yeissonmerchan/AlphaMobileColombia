@@ -7,7 +7,7 @@ import android.security.KeyPairGeneratorSpec;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.models.Person;
+import com.example.alphamobilecolombia.mvp.models.Person;
 
 import java.io.File;
 import java.security.KeyStoreException;
@@ -15,8 +15,6 @@ import java.util.Calendar;
 
 import javax.security.auth.x500.X500Principal;
 import android.util.Log;
-
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 
 import io.realm.Realm;
 import io.realm.*;

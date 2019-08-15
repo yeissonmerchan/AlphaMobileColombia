@@ -1,31 +1,24 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.GetPagadurias;
 import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.ListGetPagaduriasRequest;
-import com.example.alphamobilecolombia.mvp.presenter.ConsultarPrevalidacionActivaPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.QueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.extensions.CedulaQrAnalytics;
-import com.example.alphamobilecolombia.utils.models.Person;
-import com.example.alphamobilecolombia.utils.models.Persona;
+import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.mvp.models.Persona;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -37,14 +30,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.alphamobilecolombia.R;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -52,12 +42,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import co.venko.api.android.cedula.DocumentManager;
-import freemarker.template.utility.CollectionUtils;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -82,7 +70,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         storage.deleteTable(this);
         Window window = this.getWindow();
         ScannerPresenter scannerPresenter = new ScannerPresenter();
-        HttpResponse response = scannerPresenter.getPagadurias(this);
+        HttpResponse response = scannerPresenter.getPaying(this);
         Gson gson = new Gson();
         contextView = this;
         JSONObject data = (JSONObject) response.getData();
@@ -110,62 +98,25 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         modulo.setText("Datos personales");
         isLoadNextVersion = getIntent().getBooleanExtra("isLoadNextVersion",isLoadNextVersion);
 
-        if (!isLoadNextVersion){
-            new IntentIntegrator(ScannerActivity.this)
-                    .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-                    .setPrompt("Por favor escanear el código de barras de la cédula.")
-                    .setCameraId(0)
-                    .setBeepEnabled(false)
-                    .setBarcodeImageEnabled(false)
-                    .initiateScan();
-        }
-        else{
-            int hasWriteContactsPermission = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                hasWriteContactsPermission = checkSelfPermission(Manifest.permission.CAMERA);
-            }
-            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[] {Manifest.permission.CAMERA},
-                            REQUEST_CODE_ASK_PERMISSIONS);
-                }
-                //Toast.makeText(this, "Requesting permissions", Toast.LENGTH_LONG).show();
-            }else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED){
-                //Toast.makeText(this, "The permissions are already granted ", Toast.LENGTH_LONG).show();
-                strDataScan = getIntent().getStringExtra("strDataScan");
-                if(strDataScan.length()==0){
-                    Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
-                    startActivityForResult(intent, 0);
-                }
-                else{
-                    byte[] result2 = new byte[0];
-                    try {
-                        if (!isLoadNextVersion){
-                            result2 = strDataScan.getBytes("ISO-8859-1");
-                        }
-                        else{
-                            result2 = strDataScan.getBytes();
-                        }
+        new IntentIntegrator(ScannerActivity.this)
+                .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
+                .setPrompt("Por favor escanear el código de barras de la cédula.")
+                .setCameraId(0)
+                .setBeepEnabled(false)
+                .setBarcodeImageEnabled(false)
+                .initiateScan();
 
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
-                    }
-                    getReadBarCode(result2);
-                }
-            }
-        }
 
         spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
         ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
-                R.array.spinner_destino_credito, android.R.layout.simple_spinner_item);
+                R.array.spinner_credit_destination, android.R.layout.simple_spinner_item);
         adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_destino_credito.setAdapter(adapter_destino_credito);
 
 
         spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
         ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
-                R.array.spinner_tipo_empleado, android.R.layout.simple_spinner_item);
+                R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
         adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
 
@@ -182,38 +133,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
         userSpinner.setAdapter(userAdapter);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(REQUEST_CODE_ASK_PERMISSIONS == requestCode) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                strDataScan = getIntent().getStringExtra("strDataScan");
-                if(strDataScan.length()==0){
-                    Intent intent = new Intent(getBaseContext(), BarcodeScannerActivity.class);
-                    startActivityForResult(intent, 0);
-                }
-                else{
-                    byte[] result2 = new byte[0];
-                    try {
-                        if (!isLoadNextVersion){
-                            result2 = strDataScan.getBytes("ISO-8859-1");
-                        }
-                        else{
-                            result2 = strDataScan.getBytes();
-                        }
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo Nuevo",e,this);
-                    }
-                    getReadBarCode(result2);
-                }
-            } else {
-                Toast.makeText(this, "No es posible continuar con el proceso.! " + Build.VERSION.SDK_INT, Toast.LENGTH_LONG).show();
-            }
-        }else{
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     @Override
@@ -263,16 +182,13 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         if(result != null) {
             if(result.getContents() == null) {
-                Log.d("MainActivity", "Scaneo cancelado");
+                Log.d("ScannerActivity", "Scaneo cancelado");
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 try {
                     //byte[] rawdata = result.getContents().getBytes();
                     byte[] result2 = data.getStringExtra("SCAN_RESULT").getBytes("ISO-8859-1");
                     getReadBarCode(result2);
-
-                    //Toast.makeText(getApplicationContext(),p.toString(), Toast.LENGTH_SHORT).show();
-                    //Log.d("MainActivity", "Scaneado");
 
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 }catch (Exception ex){
@@ -291,7 +207,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     public void getReadBarCode(byte[] arrayData){
 
         try{
-            String user = getResources().getString(R.string.userkey);
+            String user = getResources().getString(R.string.user_key);
             String license = getResources().getString(R.string.licenceKey);
             DocumentManager documentManager = new DocumentManager();
             String resultScan = documentManager.parse(user, license, arrayData);
@@ -330,7 +246,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         .setPositiveButton("Sí",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        Intent a = new Intent(getBaseContext(),ModuloActivity.class);
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
                                         startActivity(a);
                                     }
                                 })
@@ -357,8 +273,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     public void ValidarPrevalidacionesActivas(String Documento,Person person) throws JSONException {
 
-        ConsultarPrevalidacionActivaPresenter presenter = new ConsultarPrevalidacionActivaPresenter();
-        HttpResponse model = presenter.GetConsultarPrevalidacionActiva(Documento,getBaseContext());
+        QueryActiveValidationPresenter queryActiveValidationPresenter = new QueryActiveValidationPresenter();
+        HttpResponse model = queryActiveValidationPresenter.Get(Documento,getBaseContext());
 
         if (model != null) {
 
@@ -412,7 +328,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void  EnvioDataCambioPagina(Person person){
-        Intent intent = new Intent (getBaseContext(), ArchivosV2Activity.class);
+        Intent intent = new Intent (getBaseContext(), UploadFileActivity.class);
 
         String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
         String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
@@ -437,7 +353,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void onClickBtnNextTerms(View view) throws JSONException {
-        Intent intent = new Intent (view.getContext(), ArchivosV2Activity.class);
+        Intent intent = new Intent (view.getContext(), UploadFileActivity.class);
         /*intent.putExtra("PERSONA_Documento", p.getCedula());
         intent.putExtra("PERSONA_PNombre", p.getNombre());
         intent.putExtra("PERSONA_SNombre", "");
@@ -490,23 +406,21 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position,
-                               long id) {
-        String selected = spinner_tipo_empleado.getSelectedItem().toString();
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (spinner_tipo_empleado.getSelectedItem().toString().equals("Empleado")) {
 
             ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_tipo_contrato_empleado, android.R.layout.simple_spinner_item);
+                    R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
             spinner_tipo_contrato.setAdapter(adapter2);
         } else {
             ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_tipo_contrato_pensionado, android.R.layout.simple_spinner_item);
+                    R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
             spinner_tipo_contrato.setAdapter(adapter2);
         }
 
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
@@ -576,7 +490,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        Intent intent = new Intent(view, CapturaInformacionActivity.class);
+                        Intent intent = new Intent(view, PersonalInformationActivity.class);
                         startActivityForResult(intent, 0);
                     }
                 });
@@ -585,7 +499,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        Intent intent = new Intent(view, ModuloActivity.class);
+                        Intent intent = new Intent(view, ModuleActivity.class);
                         startActivityForResult(intent, 0);
                     }
                 });

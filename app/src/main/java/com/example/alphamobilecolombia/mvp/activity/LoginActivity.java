@@ -6,45 +6,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.crashlytics.android.Crashlytics;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.User;
-import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
-import com.example.alphamobilecolombia.R;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.User;
+import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
+import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.gson.Gson;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Checked;
-import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.Max;
-import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
-import com.mobsandgeeks.saripaar.annotation.Url;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,26 +38,16 @@ import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
-    private Button loginButton = null;
-
-    //**************    VALIDACIÓN DE CAMPOS     *****************//
-    //Camilo Lis - 22-06-2019
     @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 20, message = "La longitud no es correcta")
-    private EditText editTextUsername;
-
+    EditText editTextUsername;
 
     @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 50, message = "La longitud no es correcta")
-    private EditText editTextPassword;
-
-    //Validator Instance
+    EditText editTextPassword;
     private Validator validator;
-
-
     private boolean validationResult = false;
 
-    //***********************************************************//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +66,9 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+        VersionUpdate versionUpdate = new VersionUpdate();
+        versionUpdate.Check(this);
     }
 
     @Override
@@ -114,19 +92,14 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         Log.d("Lifecycle", "onDestroy()");
     }
 
-    //**************    VALIDACIÓN DE CAMPOS     *****************//
-
-    //Mapeo del campos del layout a las variables del activity
-    //Camilo Lis - 22-06-2019
     private void initView() {
         editTextUsername = findViewById(R.id.edt_username);
         editTextPassword = findViewById(R.id.edt_password);
-        }
+    }
 
     @Override
     public void onValidationSucceeded() {
         validationResult = true;
-
     }
 
     @Override
@@ -144,24 +117,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validationResult = false;
     }
 
-    //***********************************************************//
-
-    public void NotificacionErrorDatos(final View view, String menssage){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-        builder1.setMessage(menssage);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
-
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
@@ -177,33 +132,29 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         if(validationResult) {
             TextView message = findViewById(R.id.txt_message);
-            final EditText user = findViewById(R.id.edt_username);
-            final EditText password = findViewById(R.id.edt_password);
-            //Toast.makeText(view.getContext(), "Button Clicked", Toast.LENGTH_LONG).show();
-            String userText = user.getText().toString();
-            String passwordText = password.getText().toString();
+            String userText = editTextUsername.getText().toString();
+            String passwordText = editTextPassword.getText().toString();
 
-
-                LoginPresenter presenter = new LoginPresenter();
-                HttpResponse model = presenter.PostLogin(userText, passwordText,view.getContext());
+                LoginPresenter loginPresenter = new LoginPresenter();
+                HttpResponse model = loginPresenter.Post(userText, passwordText,view.getContext());
 
                 if (model != null) {
                     if(model.getCode().contains("200")){
                         try {
-                            User usuario = new User();
+                            User user = new User();
 
                             SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                            usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
+                            user.setData(sharedPref, (JSONObject) model.getData(), userText);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
+                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
                         } catch (Exception e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
                         }
 
-                        Intent intent = new Intent(view.getContext(), ModuloActivity.class);
+                        Intent intent = new Intent(view.getContext(), ModuleActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivityForResult(intent, 0);
                         message.setText(model.getMessage());
@@ -212,10 +163,26 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                     else{
                         TextView txt_message = findViewById(R.id.txt_message);
                         txt_message.setText(model.getMessage());
-                        NotificacionErrorDatos(view,model.getMessage());
+                        errorNotification(view,model.getMessage());
                     }
                 }
             }
 
+    }
+
+    public void errorNotification(final View view, String message){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

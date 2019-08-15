@@ -14,7 +14,7 @@ public class ApiEnviroment {
         if(currentlyEnviroment.contains("PRO")){
             switch (ApiType){
                 case "autentication":
-                    ipAddress = context.getResources().getString(R.string.pro_ip_api_autentication);;
+                    ipAddress = context.getResources().getString(R.string.pro_ip_api_authentication);;
                     break;
                 case "storage":
                     ipAddress = context.getResources().getString(R.string.pro_ip_api_storage);;
@@ -30,7 +30,7 @@ public class ApiEnviroment {
         else{
             switch (ApiType){
                 case "autentication":
-                    ipAddress = context.getResources().getString(R.string.pre_ip_api_autentication);;
+                    ipAddress = context.getResources().getString(R.string.pre_ip_api_authentication);;
                     break;
                 case "storage":
                     ipAddress = context.getResources().getString(R.string.pre_ip_api_storage);;

@@ -1,11 +1,6 @@
 package com.example.alphamobilecolombia.data.remote.Models;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.example.alphamobilecolombia.mvp.activity.LoginActivity;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
