@@ -50,8 +50,6 @@
     <string name="login_failed">Usuario o contraseña invalido</string>
     <string name="login_incorrect">Usuario o contraseña son obligatorios</string>
 
-
-
     <string name="btn_new_request">Nueva solicitud</string>
     <string name="btn_next">Continuar</string>
     <string name="btn_list_request">Ver estado solicitudes</string>

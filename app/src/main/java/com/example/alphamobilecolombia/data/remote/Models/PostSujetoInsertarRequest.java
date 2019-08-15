@@ -59,8 +59,8 @@ public class PostSujetoInsertarRequest {
         iD_TS_TipoCredito = "1";
         iD_TS_DestinoCredito = iD_ts_destinoCredito;
         this.montoSolicitado = "0";
-        this.plazoSolicitado = "0";
-        this.corretajeComercial = "0";
+        this.plazoSolicitado = "0";//Plazo
+        this.corretajeComercial = "0"; //Pago a Terceros
         this.puntajeDataCredito = "0";
         this.tasaAprobada = "0";
         this.observacionOperativa = "";
@@ -70,8 +70,8 @@ public class PostSujetoInsertarRequest {
         iD_TP_Analista = "1";
         this.fechaEnvio = "1999/01/01";
         this.montoSugerido = "0";
-        this.cuotaSugerida = "0";
-        this.plazoSugerido = "0";
+        this.cuotaSugerida = "0";//cuota
+        this.plazoSugerido = "0";//Plazo
         this.whatsApp = false;
         this.fechaRegistro = "1999/01/01";
         this.fechaResolucion = "1999/01/01";
