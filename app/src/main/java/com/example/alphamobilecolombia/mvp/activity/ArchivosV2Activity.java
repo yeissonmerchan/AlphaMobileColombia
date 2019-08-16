@@ -291,6 +291,13 @@ public class ArchivosV2Activity extends AppCompatActivity {
 
                         if(httpResponse.getCode() != null) {
                             if (!httpResponse.getCode().contains("200")) {
+                                try {
+                                    throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
+                                }
+                                catch (Exception ex){
+                                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización  "+httpResponse.getNameFile(),ex,this);
+                                }
+
                                 isValidSendFiles = true;
                                 System.out.println("Paso error 400:  " + httpResponse.getCode());
                                 ModelReintentos modelReintentos = new ModelReintentos();
@@ -309,6 +316,13 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                     System.out.println("nombreAnterior:  " + nombreAnterior);
                                     System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
                                     if (!codigoRespuesta3.contains("200")) {
+                                        try {
+                                            throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
+                                        }
+                                        catch (Exception ex){
+                                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización "+httpResponse.getNameFile(),ex,this);
+                                        }
+
                                         System.out.println("Paso error 400:  " + nombreAnterior);
                                         ModelReintentos modelReintentos = new ModelReintentos();
                                         modelReintentos.setModelResponse(httpResponse);
@@ -319,7 +333,13 @@ public class ArchivosV2Activity extends AppCompatActivity {
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
                                     isValidSendFiles = true;
-                                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando respuesta "+httpResponse.getNameFile(),ex,this);
+                                    try {
+                                        throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
+                                    }
+                                    catch (Exception exe){
+                                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización "+httpResponse.getNameFile(),exe,this);
+                                    }
+                                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización  "+httpResponse.getNameFile(),ex,this);
                                 }
                             }
                         }

@@ -336,6 +336,11 @@ public class UploadFilesPresenter {
             ex.printStackTrace();
             Log.d("Error servicio", String.valueOf(ex.getStackTrace()));
             LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),idSujetoCredito,ex,context);
+
+            responseModel.setCode("400");
+            responseModel.setData("");
+            responseModel.setMessage(ex.getMessage());
+            return responseModel;
         }
         return null;
     }
