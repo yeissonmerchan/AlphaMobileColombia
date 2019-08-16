@@ -7,7 +7,6 @@
     <!-- Ips de pre-produccion -->
     <string name="pre_ip_api_authentication">http://181.57.145.20:8082/</string>
     <string name="pre_ip_api_storage">http://181.57.145.20:8083/</string>
-    <!--<string name="pre_ip_api_storage">http://192.168.103.193:8083/swagger/</string>-->
     <string name="pre_ip_api_generic">http://181.57.145.20:8081/</string>
 
     <!-- Ips de produccion -->
