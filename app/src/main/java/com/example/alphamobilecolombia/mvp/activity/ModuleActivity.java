@@ -40,8 +40,8 @@ public class ModuleActivity extends AppCompatActivity {
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
-        VersionUpdate versionUpdate = new VersionUpdate();
-        versionUpdate.Check(this);
+        //VersionUpdate versionUpdate = new VersionUpdate();
+        //versionUpdate.Check(this);
     }
 
     @Override
