@@ -1,13 +1,17 @@
 package com.example.alphamobilecolombia.mvp.presenter;
 
 import android.content.Context;
-import android.os.StrictMode;
+
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
-import com.example.alphamobilecolombia.data.remote.PostAutentication;
+import com.example.alphamobilecolombia.data.remote.EndPoint.PostAutentication;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostAutenticationRequest;
+import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.implement.LoginAdapter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
 import com.google.gson.Gson;
@@ -23,13 +27,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class LoginPresenter {
 
+
+
     public HttpResponse Post(String txtUser, String txtPassword, Context context) {
         final HttpResponse responseModel = new HttpResponse();
         Response response;
         try {
                 //TODO: Quitar el policy y poner asíncrono
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
+                //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                //StrictMode.setThreadPolicy(policy);
 
                 //TODO: Cambiar a implementación de flavors
                 String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_authentication),context);//Obtener Ip a partir de configuración
@@ -46,6 +52,11 @@ public class LoginPresenter {
                     data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword)));
                 }
                 RequestBody body1 = RequestBody.create( MediaType.parse("application/json"), data);
+
+                RetrofitInstance _RetrofitInstance = new RetrofitInstance();
+                MapRequest _MapRequest = new MapRequest();
+                LoginAdapter loginAdapter = new LoginAdapter(_RetrofitInstance,_MapRequest,context);
+                ApiResponse responseModel2222 = loginAdapter.Post(txtUser,MD5Hashing.MD5(txtPassword));
 
                 Call<String> call = postService.Login(body1);
                 JSONObject jsonObject;

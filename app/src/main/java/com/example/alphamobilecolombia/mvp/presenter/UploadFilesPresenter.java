@@ -20,10 +20,10 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostSaveDocuments;
-import com.example.alphamobilecolombia.data.remote.PostGuardarDocumentos;
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocumentRequest;
+import com.example.alphamobilecolombia.data.remote.EndPoint.PostGuardarDocumentos;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 
@@ -46,7 +46,7 @@ public class UploadFilesPresenter {
             StrictMode.setThreadPolicy(policy);
 
             Gson gson = new Gson();
-            List<PostSaveDocuments> listDocuments = new ArrayList<PostSaveDocuments>();
+            List<PostSaveDocumentRequest> listDocuments = new ArrayList<PostSaveDocumentRequest>();
 
             SharedPreferences sharedPref = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             String user = sharedPref.getString("idUser", "");
@@ -71,7 +71,7 @@ public class UploadFilesPresenter {
                 }
 
                 if(isValidUpload) {
-                    PostSaveDocuments newDocument = new PostSaveDocuments();
+                    PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
                     newDocument.setRutaArchivo(nameFile);
                     newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
                     newDocument.setTipoArchivoID(GetIdDocument(filesUpload.getType()));

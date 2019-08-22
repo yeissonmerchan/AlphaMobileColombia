@@ -1,8 +1,12 @@
 <resources>
 
-    <string name="environment_release">PRE</string>
-    <string name="environment_development">DEV</string>
+    <string name="environment_release">DEV</string>
+    <string name="environment_development">QA</string>
 
+    <!-- Ips de dev -->
+    <string name="dev_ip_api_authentication">http://192.168.100.22:8089/</string>
+    <string name="dev_ip_api_storage">http://181.57.145.20:8083/</string>
+    <string name="dev_ip_api_generic">http://181.57.145.20:8081/</string>
 
     <!-- Ips de pre-produccion -->
     <string name="pre_ip_api_authentication">http://181.57.145.20:8082/</string>

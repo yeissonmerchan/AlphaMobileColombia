@@ -1,0 +1,52 @@
+package com.example.alphamobilecolombia.data.remote.Models.Response;
+
+public class HttpResponse {
+    private String Code;
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
+    }
+
+    public Object getData() {
+        return Data;
+    }
+
+    public void setData(Object data) {
+        Data = data;
+    }
+
+    private String Message;
+    private Object Data;
+
+    public String getSendData() {
+        return SendData;
+    }
+
+    public String getNameFile() {
+        return NameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        NameFile = nameFile;
+    }
+
+    private String NameFile;
+
+    public void setSendData(String sendData) {
+        SendData = sendData;
+    }
+
+    private String SendData;
+}

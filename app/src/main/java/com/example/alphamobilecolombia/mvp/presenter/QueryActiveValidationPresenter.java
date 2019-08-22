@@ -3,9 +3,9 @@ package com.example.alphamobilecolombia.mvp.presenter;
 import android.content.Context;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.GetPrevalidacionActiva;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.EndPoint.GetPrevalidacionActiva;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 
 import org.json.JSONObject;
 

@@ -4,19 +4,13 @@ import android.content.Context;
 import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.GetPagadurias;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.PostAutenticationRequest;
-import com.example.alphamobilecolombia.data.remote.PostAutentication;
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.EndPoint.GetPaying;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -34,9 +28,9 @@ public class ScannerPresenter {
             //TODO: Cambiar a implementación de flavors
             String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_generic),context);//Obtener Ip a partir de configuración
             Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
-            GetPagadurias getPagadurias = retrofit.create(GetPagadurias.class);
+            GetPaying getPaying = retrofit.create(GetPaying.class);
 
-            Call<String> call = getPagadurias.GetList();
+            Call<String> call = getPaying.GetList();
 
             Response response = call.execute();
 

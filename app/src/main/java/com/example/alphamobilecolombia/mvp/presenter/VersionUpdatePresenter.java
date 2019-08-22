@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.GetVersion;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.EndPoint.GetVersion;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import org.json.JSONObject;
@@ -27,6 +27,7 @@ public class VersionUpdatePresenter {
             StrictMode.setThreadPolicy(policy);
 
             //TODO: Cambiar a implementación de flavors
+            //String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_authentication),context);//Obtener Ip a partir de configuración
             String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_authentication),context);//Obtener Ip a partir de configuración
             Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
             GetVersion postService = retrofit.create(GetVersion.class);

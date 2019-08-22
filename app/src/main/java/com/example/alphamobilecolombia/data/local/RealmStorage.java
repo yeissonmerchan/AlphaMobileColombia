@@ -5,7 +5,7 @@ import android.content.Context;
 import android.security.KeyPairGeneratorSpec;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Models.PostConsultarReporteCreditoResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.Person;
 

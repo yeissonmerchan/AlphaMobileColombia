@@ -4,12 +4,12 @@ import android.content.Context;
 import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Enviroment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.Models.PostPersonaInsertarRequest;
-import com.example.alphamobilecolombia.data.remote.Models.PostSujetoInsertarRequest;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.PostSujetoCredito;
-import com.example.alphamobilecolombia.data.remote.PostPersonaInsertar;
+import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostPersonaInsertarRequest;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostSujetoInsertarRequest;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.EndPoint.PostSujetoCredito;
+import com.example.alphamobilecolombia.data.remote.EndPoint.PostPersonaInsertar;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.google.gson.Gson;

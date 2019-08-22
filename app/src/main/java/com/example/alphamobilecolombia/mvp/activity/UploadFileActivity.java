@@ -19,8 +19,8 @@ import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.ModelReintentos;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.UploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
@@ -77,7 +77,7 @@ public class UploadFileActivity extends AppCompatActivity {
     private String pathNewFile1;
     final Context context = this;
     CountDownLatch executionCompleted;
-    List<ModelReintentos> lisReintentos = new ArrayList<>();
+    List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();
     private static final int DIALOG_REALLY_EXIT_ID = 0;
 
     final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
@@ -192,8 +192,8 @@ public class UploadFileActivity extends AppCompatActivity {
         {
             if(lisReintentos.size()>0){
                 boolean isNewSend = false;
-                for (ModelReintentos modelReintentos : lisReintentos){
-                    if (modelReintentos.getNameFile().equals(file.getName())){
+                for (PostRetriesModelResponse postRetriesModelResponse : lisReintentos){
+                    if (postRetriesModelResponse.getNameFile().equals(file.getName())){
                         isNewSend = true;
                     }
                 }
@@ -274,10 +274,10 @@ public class UploadFileActivity extends AppCompatActivity {
                             if (!httpResponse.getCode().contains("200")) {
                                 isValidSendFiles = true;
                                 System.out.println("Paso error 400:  " + httpResponse.getCode());
-                                ModelReintentos modelReintentos = new ModelReintentos();
-                                modelReintentos.setModelResponse(httpResponse);
-                                modelReintentos.setNameFile(httpResponse.getNameFile());
-                                lisReintentos.add(modelReintentos);
+                                PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
+                                postRetriesModelResponse.setModelResponse(httpResponse);
+                                postRetriesModelResponse.setNameFile(httpResponse.getNameFile());
+                                lisReintentos.add(postRetriesModelResponse);
                             }
                             else {
                                 try {
@@ -291,10 +291,10 @@ public class UploadFileActivity extends AppCompatActivity {
                                     System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
                                     if (!codigoRespuesta3.contains("200")) {
                                         System.out.println("Paso error 400:  " + nombreAnterior);
-                                        ModelReintentos modelReintentos = new ModelReintentos();
-                                        modelReintentos.setModelResponse(httpResponse);
-                                        modelReintentos.setNameFile(nombreAnterior);
-                                        lisReintentos.add(modelReintentos);
+                                        PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
+                                        postRetriesModelResponse.setModelResponse(httpResponse);
+                                        postRetriesModelResponse.setNameFile(nombreAnterior);
+                                        lisReintentos.add(postRetriesModelResponse);
                                         isValidSendFiles = true;
                                     }
                                 } catch (Exception ex) {

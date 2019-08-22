@@ -13,8 +13,8 @@ import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.GetPagaduriasRequest;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.QueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;

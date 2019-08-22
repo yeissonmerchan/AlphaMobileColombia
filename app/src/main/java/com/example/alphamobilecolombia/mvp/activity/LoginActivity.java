@@ -21,10 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.User;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostUserRequest;
 import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
-import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -141,10 +140,10 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
                 if (model != null) {
                     if(model.getCode().contains("200")){
                         try {
-                            User user = new User();
+                            PostUserRequest postUserRequest = new PostUserRequest();
 
                             SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                            user.setData(sharedPref, (JSONObject) model.getData(), userText);
+                            postUserRequest.setData(sharedPref, (JSONObject) model.getData(), userText);
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
