@@ -20,10 +20,7 @@ public class MapRequest implements IMapRequest {
     public <T> ApiResponse SynchronousRequest(Call<T> call){
         ApiResponse httpResponse = new ApiResponse();
         try {
-            JSONObject jsonObject;
             Response response = call.execute();
-
-
             if (!(response.code() != 200)) {
                 httpResponse = new Gson().fromJson(response.body().toString(), ApiResponse.class);
             }
@@ -36,8 +33,12 @@ public class MapRequest implements IMapRequest {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            httpResponse.setCodigoRespuesta(Integer.parseInt("500"));
+            httpResponse.setMensaje(e.getMessage());
         } catch (JSONException e) {
             e.printStackTrace();
+            httpResponse.setCodigoRespuesta(Integer.parseInt("500"));
+            httpResponse.setMensaje(e.getMessage());
         }
         return httpResponse;
     }

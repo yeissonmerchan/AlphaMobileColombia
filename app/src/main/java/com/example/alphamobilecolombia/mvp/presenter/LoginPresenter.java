@@ -26,8 +26,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class LoginPresenter {
+    LoginAdapter _loginAdapter;
+    public LoginPresenter(Context context, LoginAdapter loginAdapter){
+        _loginAdapter = loginAdapter;
+    }
 
-
+    public void LoginCheck(String txtUser, String txtPassword){
+        //_loginAdapter.Post();
+    }
 
     public HttpResponse Post(String txtUser, String txtPassword, Context context) {
         final HttpResponse responseModel = new HttpResponse();
