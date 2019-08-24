@@ -1,13 +1,11 @@
-package com.example.alphamobilecolombia.mvp.presenter;
+package com.example.alphamobilecolombia.mvp.presenter.implement;
 
 import android.content.Context;
-import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.EndPoint.GetPaying;
+import com.example.alphamobilecolombia.data.remote.EndPoint.GetPrevalidacionActiva;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import org.json.JSONObject;
 
@@ -16,21 +14,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class ScannerPresenter {
-
-    public HttpResponse getPaying(Context context) {
+public class QueryActiveValidationPresenter {
+    public HttpResponse Get(String documentNumber, Context context){
         final HttpResponse responseModel = new HttpResponse();
         try {
-            //TODO: Quitar el policy y poner asíncrono
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
             //TODO: Cambiar a implementación de flavors
             String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_generic),context);//Obtener Ip a partir de configuración
-            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();
-            GetPaying getPaying = retrofit.create(GetPaying.class);
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).addConverterFactory(ScalarsConverterFactory.create()).build();//Pruebas
+            GetPrevalidacionActiva postService = retrofit.create(GetPrevalidacionActiva.class);
 
-            Call<String> call = getPaying.GetList();
+            Call<String> call = postService.GetList(documentNumber);
 
             Response response = call.execute();
 
@@ -53,7 +46,6 @@ public class ScannerPresenter {
 
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagaduría",ex,context);
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
         }
         return null;

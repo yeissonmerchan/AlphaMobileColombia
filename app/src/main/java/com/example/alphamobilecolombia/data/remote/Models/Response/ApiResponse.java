@@ -1,5 +1,7 @@
 package com.example.alphamobilecolombia.data.remote.Models.Response;
 
+import com.example.alphamobilecolombia.data.remote.Models.entity.Token;
+
 public class ApiResponse {
     private Integer codigoRespuesta;
     private String mensaje;
@@ -38,4 +40,16 @@ public class ApiResponse {
 
     private Long codigoTransaccion;
     private Object data;
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    private Token token;
+
+
 }

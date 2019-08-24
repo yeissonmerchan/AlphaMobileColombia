@@ -16,12 +16,12 @@ public class PostUserRequest {
 
     public void setData(SharedPreferences sharedPref, JSONObject objeto, String usuario) throws JSONException {
 
-        JSONArray data = objeto.optJSONArray("data");
+        //JSONArray data = objeto.optJSONArray("data");
 
         this.usuario = usuario;
-        this.idUsuario = data.getJSONObject(0).getString("idUsuario");
-        this.idRol = data.getJSONObject(0).getString("idRol");
-        this.nombre = data.getJSONObject(0).getString("nombreCompleto");
+        this.idUsuario = objeto.getString("idUsuario");
+        this.idRol = objeto.getString("idRol");
+        this.nombre = objeto.getString("nombreCompleto");
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("user", this.usuario);

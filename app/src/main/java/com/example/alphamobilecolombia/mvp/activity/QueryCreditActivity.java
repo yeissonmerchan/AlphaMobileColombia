@@ -27,7 +27,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
-import com.example.alphamobilecolombia.mvp.presenter.QueryCreditPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import org.json.JSONArray;

@@ -5,15 +5,12 @@ import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.EndPoint.PostAutentication;
 import com.example.alphamobilecolombia.data.remote.EndPoint.PostSolicitudes;
-import com.example.alphamobilecolombia.data.remote.Models.Request.PostAutenticationRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostConsultarReporteCreditoRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.mvp.adapter.IQueryCreditAdapter;
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
 import com.google.gson.Gson;
 
 import okhttp3.MediaType;

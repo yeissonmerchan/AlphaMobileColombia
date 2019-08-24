@@ -10,7 +10,7 @@ import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.LoginActivity;
 import com.example.alphamobilecolombia.mvp.activity.VersionUpdateActivity;
-import com.example.alphamobilecolombia.mvp.presenter.VersionUpdatePresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.firebase.analytics.FirebaseAnalytics;
 

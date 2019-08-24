@@ -5,6 +5,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +23,10 @@ public class MapRequest implements IMapRequest {
         try {
             Response response = call.execute();
             if (!(response.code() != 200)) {
+                JSONObject jsonObject = new JSONObject(response.body().toString());
+                JSONArray jSONArray = (JSONArray) jsonObject.getJSONArray("data");
                 httpResponse = new Gson().fromJson(response.body().toString(), ApiResponse.class);
+                httpResponse.setData(jSONArray);
             }
             else{
                 String errorResponse = response.errorBody().string();

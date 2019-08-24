@@ -11,7 +11,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.mvp.adapter.ILoginAdapter;
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
+import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 import com.google.gson.Gson;
 
 import okhttp3.MediaType;

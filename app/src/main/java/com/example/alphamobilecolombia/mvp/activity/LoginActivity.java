@@ -1,9 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -21,22 +19,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Request.PostUserRequest;
-import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    ILoginPresenter _iLoginPresenter;
+    public LoginActivity(){
+        _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
+    }
+
     @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 20, message = "La longitud no es correcta")
     EditText editTextUsername;
@@ -65,9 +64,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-
-        //VersionUpdate versionUpdate = new VersionUpdate();
-        //versionUpdate.Check(this);
     }
 
     @Override
@@ -130,43 +126,20 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validator.validate();
 
         if(validationResult) {
-            TextView message = findViewById(R.id.txt_message);
             String userText = editTextUsername.getText().toString();
             String passwordText = editTextPassword.getText().toString();
-
-                LoginPresenter loginPresenter = new LoginPresenter();
-                HttpResponse model = loginPresenter.Post(userText, passwordText,view.getContext());
-
-                if (model != null) {
-                    if(model.getCode().contains("200")){
-                        try {
-                            PostUserRequest postUserRequest = new PostUserRequest();
-
-                            SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                            postUserRequest.setData(sharedPref, (JSONObject) model.getData(), userText);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
-                        }
-
-                        Intent intent = new Intent(view.getContext(), ModuleActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivityForResult(intent, 0);
-                        message.setText(model.getMessage());
-
-                    }
-                    else{
-                        TextView txt_message = findViewById(R.id.txt_message);
-                        txt_message.setText(model.getMessage());
-                        errorNotification(view,model.getMessage());
-                    }
-                }
+            Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
+            if (isValid){
+                Intent intent = new Intent(view.getContext(), ModuleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivityForResult(intent, 0);
             }
-
+            else{
+                TextView txt_message = findViewById(R.id.txt_message);
+                txt_message.setText(_iLoginPresenter.MessageError());
+                errorNotification(view,_iLoginPresenter.MessageError());
+            }
+        }
     }
 
     public void errorNotification(final View view, String message){
