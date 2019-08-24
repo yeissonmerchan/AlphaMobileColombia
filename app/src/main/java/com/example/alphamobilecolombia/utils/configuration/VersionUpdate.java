@@ -10,6 +10,7 @@ import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.LoginActivity;
 import com.example.alphamobilecolombia.mvp.activity.VersionUpdateActivity;
+import com.example.alphamobilecolombia.mvp.adapter.implement.VersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -26,8 +27,9 @@ public class VersionUpdate {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),version,ex,context);
         }
 
-        VersionUpdatePresenter presenter = new VersionUpdatePresenter();
-        HttpResponse model = presenter.GetVersion(version,context);
+        VersionUpdatePresenter presenter = new VersionUpdatePresenter(context, null);
+        //HttpResponse model = presenter.GetVersion(version,context);
+        HttpResponse model = new HttpResponse();
 
         if (model.getCode().contains("200")){
             new Handler().postDelayed(new Runnable() {

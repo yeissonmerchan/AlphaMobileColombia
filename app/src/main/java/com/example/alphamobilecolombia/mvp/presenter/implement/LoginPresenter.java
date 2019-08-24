@@ -36,7 +36,6 @@ public class LoginPresenter implements ILoginPresenter {
             try {
                 String data = apiResponse.getData().toString();
                 JSONArray jsonObject = new JSONArray(data);
-                //LoginResponse httpResponse2 = new Gson().fromJson(jsonObject.toString(), LoginResponse.class);
                 UserRoleInformation[] httpResponse = new Gson().fromJson(jsonObject.toString(), UserRoleInformation[].class);
 
                 PostUserRequest postUserRequest = new PostUserRequest();

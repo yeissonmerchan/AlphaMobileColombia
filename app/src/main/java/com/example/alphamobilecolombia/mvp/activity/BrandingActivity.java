@@ -5,11 +5,18 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.util.Log;
@@ -18,6 +25,13 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class BrandingActivity extends AppCompatActivity {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IVersionUpdatePresenter _iVersionUpdatePresenter;
+
+    public BrandingActivity(){
+        _iVersionUpdatePresenter = diContainer.injectDIIVersionUpdatePresenter(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +46,22 @@ public class BrandingActivity extends AppCompatActivity {
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
-        VersionUpdate versionUpdate = new VersionUpdate();
-        versionUpdate.Check(this);
-
+        boolean isValidVersion = _iVersionUpdatePresenter.IsValidVersion();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(isValidVersion){
+                    Intent intentSuccess = new Intent(getBaseContext(), LoginActivity.class);
+                    intentSuccess.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentSuccess);
+                }
+                else{
+                    Intent intentFailed = new Intent(getBaseContext(), VersionUpdateActivity.class);
+                    intentFailed.putExtra("MessageError", _iVersionUpdatePresenter.MessageError());
+                    intentFailed.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentFailed);
+                }
+            }},2000);
     }
 
     @Override
