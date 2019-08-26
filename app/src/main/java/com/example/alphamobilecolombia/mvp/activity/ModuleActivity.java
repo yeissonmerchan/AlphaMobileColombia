@@ -39,23 +39,18 @@ public class ModuleActivity extends AppCompatActivity {
         modulo.setText("Módulo de solicitudes");
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
-
-        //VersionUpdate versionUpdate = new VersionUpdate();
-        //versionUpdate.Check(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d("Lifecycle", "onPause()");
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Log.d("Lifecycle", "onStop()");
-
     }
 
     @Override

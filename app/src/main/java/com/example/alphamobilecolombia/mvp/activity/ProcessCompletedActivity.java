@@ -21,10 +21,6 @@ import android.widget.TextView;
 import com.example.alphamobilecolombia.R;
 
 public class ProcessCompletedActivity extends AppCompatActivity {
-    final Context context = this;
-    private String IdTipoEmpleado;
-    private String IdTipoContrato;
-    private String IdDestinoCredito;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
 
     @Override
@@ -41,7 +37,6 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         }
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Finalización");
-
 
     }
 

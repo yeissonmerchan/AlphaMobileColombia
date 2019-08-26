@@ -11,6 +11,7 @@ import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,6 +36,25 @@ public class VersionUpdateActivity extends AppCompatActivity {
         MessageError = getIntent().getStringExtra("MessageError");
         TextView txtSolicitudCredito = findViewById(R.id.txtSolicitudCredito);
         txtSolicitudCredito.setText(MessageError);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
     }
 
     public void updateStore(View view) {

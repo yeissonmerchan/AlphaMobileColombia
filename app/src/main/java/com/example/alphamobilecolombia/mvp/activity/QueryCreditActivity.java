@@ -63,12 +63,6 @@ public class QueryCreditActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
 
-        /*
-        myDialog.setContentView(R.layout.loading_page);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
-        */
-
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
