@@ -40,8 +40,8 @@ public class ModuleActivity extends AppCompatActivity {
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
-        VersionUpdate versionUpdate = new VersionUpdate();
-        versionUpdate.Check(this);
+        //VersionUpdate versionUpdate = new VersionUpdate();
+        //versionUpdate.Check(this);
     }
 
     @Override
@@ -84,6 +84,7 @@ public class ModuleActivity extends AppCompatActivity {
 
     public void onClickBtnNewRequest(View view) {
         Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+/*        Intent intent = new Intent (view.getContext(), AdditionalDataActivity.class);*/
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent, 0);
     }

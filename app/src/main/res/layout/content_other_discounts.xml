@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="80dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alphamobilecolombia.mvp.activity.OtherDiscountsActivity"
+    tools:showIn="@layout/activity_other_discounts">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtInfoActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Otros descuentos"
+                android:textColor="@color/colorHeader"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:typeface="serif" />
+
+            <TextView
+                android:id="@+id/txtmedicina_prepagada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Medicina prepagada *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+<!--            <EditText
+                android:id="@+id/edt_medicina_prepagada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:hint="$0"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:textSize="@dimen/size_text" />-->
+
+            <com.example.alphamobilecolombia.mvp.activity.EditTextCurrency
+                android:id="@+id/edt_medicina_prepagada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="$0"
+                android:maxLength="12"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/txtfondo_pension_voluntario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Fondo pensión voluntario *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+<!--            <EditText
+                android:id="@+id/edt_fondo_pension_voluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:hint="$0"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:textSize="@dimen/size_text" />-->
+
+            <com.example.alphamobilecolombia.mvp.activity.EditTextCurrency
+                android:id="@+id/edt_fondo_pension_voluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="$0"
+                android:maxLength="12"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/txtahorro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Ahorro *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+<!--            <EditText
+                android:id="@+id/edt_ahorro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:hint="$0"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:textSize="@dimen/size_text" />-->
+
+            <com.example.alphamobilecolombia.mvp.activity.EditTextCurrency
+                android:id="@+id/edt_ahorro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="$0"
+                android:maxLength="12"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/txtotros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Otros *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+<!--            <EditText
+                android:id="@+id/edt_otros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:hint="$0"
+                android:inputType="numberDecimal"
+                android:maxLength="7"
+                android:textSize="@dimen/size_text" />-->
+
+            <com.example.alphamobilecolombia.mvp.activity.EditTextCurrency
+                android:id="@+id/edt_otros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="$0"
+                android:maxLength="12"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_new_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorHeader"
+                android:onClick="onClickBtnNewRequest"
+                android:text="@string/btn_next"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_password"
+                app:layout_constraintVertical_bias="0.2" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

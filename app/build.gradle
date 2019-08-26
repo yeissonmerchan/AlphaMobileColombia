@@ -84,8 +84,10 @@ dependencies {
 
     //Botones flotantes
     //implementation 'com.github.JediBurrell:customFloatingActionButton:-SNAPSHOT'
-
     implementation 'commons-io:commons-io:2.4'
+
+    //Input money
+    implementation 'me.abhinay.input:currency-edittext:1.1'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

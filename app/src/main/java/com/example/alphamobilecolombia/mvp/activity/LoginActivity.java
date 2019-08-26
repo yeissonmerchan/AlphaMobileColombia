@@ -67,8 +67,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
-        VersionUpdate versionUpdate = new VersionUpdate();
-        versionUpdate.Check(this);
+        //VersionUpdate versionUpdate = new VersionUpdate();
+        //versionUpdate.Check(this);
     }
 
     @Override

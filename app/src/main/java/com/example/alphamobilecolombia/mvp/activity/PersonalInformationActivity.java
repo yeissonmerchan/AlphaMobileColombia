@@ -80,7 +80,7 @@ public class PersonalInformationActivity extends AppCompatActivity implements Ad
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Nueva solicitud");
 
-        ScannerPresenter scannerPresenter = new ScannerPresenter();
+/*        ScannerPresenter scannerPresenter = new ScannerPresenter();
         HttpResponse response = scannerPresenter.getPaying(this);
         Gson gson = new Gson();
         contextView = this;
@@ -98,32 +98,32 @@ public class PersonalInformationActivity extends AppCompatActivity implements Ad
         }catch (JSONException ex) {
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagadurías",ex,this);
-        }
+        }*/
 
-        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
+/*        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         ArrayAdapter<CharSequence> adapter_genero = ArrayAdapter.createFromResource(this,
                 R.array.spinner_gender, android.R.layout.simple_spinner_item);
         adapter_genero.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_genero.setAdapter(adapter_genero);
+        spinner_genero.setAdapter(adapter_genero);*/
 
-        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
+/*        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
         ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
                 R.array.spinner_credit_destination, android.R.layout.simple_spinner_item);
         adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_destino_credito.setAdapter(adapter_destino_credito);
+        spinner_destino_credito.setAdapter(adapter_destino_credito);*/
 
 
-        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
+/*        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
         ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
                 R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
         adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
+        spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);*/
 
 
-        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-        spinner_tipo_empleado.setOnItemSelectedListener(this);
+/*        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
+        spinner_tipo_empleado.setOnItemSelectedListener(this);*/
 
-        EditText edt_names = (EditText) findViewById(R.id.edt_names);
+/*        EditText edt_names = (EditText) findViewById(R.id.edt_names);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         edt_names.setFilters(new InputFilter[] {
                 new InputFilter() {
@@ -197,9 +197,9 @@ public class PersonalInformationActivity extends AppCompatActivity implements Ad
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
                 }
-        });
+        });*/
 
-        List<String> names = new ArrayList<>();
+/*        List<String> names = new ArrayList<>();
         for (GetPagaduriasRequest p : pagadurias) {
             names.add(p.getNombre());
         }
@@ -207,9 +207,9 @@ public class PersonalInformationActivity extends AppCompatActivity implements Ad
         ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
 
         Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
-        userSpinner.setAdapter(userAdapter);
+        userSpinner.setAdapter(userAdapter);*/
 
-        // Inicio Datepicker
+/*        // Inicio Datepicker
         mDisplayDate = (TextView) findViewById(R.id.edt_birthDate);
 
         mDisplayDate.setOnClickListener(new View.OnClickListener(){
@@ -253,7 +253,7 @@ public class PersonalInformationActivity extends AppCompatActivity implements Ad
             }
         };
 
-        // Fin Datepicker
+        // Fin Datepicker*/
 
     }
 
