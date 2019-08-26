@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.alphamobilecolombia.mvp.activity.PersonalInformationActivity">
+    tools:context="com.example.alphamobilecolombia.mvp.activity.ConditionsSummaryActivity">
 
     <include
         android:id="@+id/include"
         layout="@layout/app_bar_main"
         />
 
-    <include layout="@layout/content_personal_information" />
-
+    <include layout="@layout/content_conditions_summary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

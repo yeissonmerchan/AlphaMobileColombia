@@ -1,102 +1,223 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
-import android.app.Dialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
-
-import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.mvp.presenter.implement.QueryActiveValidationPresenter;
-import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.mvp.models.Person;
-import com.example.alphamobilecolombia.mvp.models.Persona;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 import co.venko.api.android.cedula.DocumentManager;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private Person person;
-    Spinner spinner_tipo_empleado, spinner_tipo_contrato, spinner_destino_credito, spinner_pagaduria;
-    Persona p;
-    RealmStorage storage = new RealmStorage();
-    List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
-    Dialog myDialog;
-    Context contextView;
-    private static final int DIALOG_REALLY_EXIT_ID = 0;
-    boolean isLoadNextVersion = false;
-    String strDataScan;
-    private final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    //Define los campos
+    private EditText edt_names, edt_names2, edt_lastNames, edt_lastNames2, edt_numberIdentification;
 
+    //************************** GENERO
+
+    //Define el control combobox genero
+    private Spinner spinner_genero;
+
+    ArrayAdapter<CharSequence> adapter_genero;
+
+    //************************** FECHA NACIMIENTO
+
+    //Define el control fecha de nacimiento
+    private TextView textview_fecha_nacimiento;
+
+    //Define el evento del control fecha nacimiento
+    private DatePickerDialog.OnDateSetListener evento_fecha_nacimiento;
+
+    //**************************
+
+    //Se produce cuando se inicia esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanner);
-        myDialog = new Dialog(this);
-        storage.deleteTable(this);
-        Window window = this.getWindow();
-        ScannerPresenter scannerPresenter = new ScannerPresenter();
-        HttpResponse response = scannerPresenter.getPaying(this);
-        Gson gson = new Gson();
-        contextView = this;
-        JSONObject data = (JSONObject) response.getData();
-        try {
-            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-            GetPagaduriasRequest getPagaduriasRequest;
-            for (int i = 0; i < jSONArray.length(); i++) {
-                getPagaduriasRequest = new GetPagaduriasRequest();
-                JSONObject object = (JSONObject) jSONArray.get(i);
-                getPagaduriasRequest.setId(Integer.parseInt(object.getString("id")));
-                getPagaduriasRequest.setNombre(object.getString("nombre"));
-                pagadurias.add(getPagaduriasRequest);
-            }
-        }catch (JSONException ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Inicio",ex,this);
-            ex.printStackTrace();
-        }
 
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
-        }
-        TextView modulo = findViewById(R.id.txt_modulo);
-        modulo.setText("Datos personales");
-        isLoadNextVersion = getIntent().getBooleanExtra("isLoadNextVersion",isLoadNextVersion);
+        //Define la orientación de la pagina
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //Llama al padre
+        super.onCreate(savedInstanceState);
+
+        //Establece la vista de la pagina
+        setContentView(R.layout.activity_scanner);
+
+        /********************************************************************** PRIMER NOMBRE */
+
+        edt_names = (EditText) findViewById(R.id.edt_names);
+        edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_names.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if (cs.equals("")) { // for backspace
+                            return cs;
+                        }
+                        if (cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")) {
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
+                    }
+                }
+        });
+
+        /********************************************************************** SEGUNDO NOMBRE */
+
+        edt_names2 = (EditText) findViewById(R.id.edt_names2);
+        edt_names2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_names2.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if (cs.equals("")) { // for backspace
+                            return cs;
+                        }
+                        if (cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")) {
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
+                    }
+                }
+        });
+
+        /********************************************************************** PRIMER APELLIDO */
+
+        edt_lastNames = (EditText) findViewById(R.id.edt_lastNames);
+        edt_lastNames.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_lastNames.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if (cs.equals("")) { // for backspace
+                            return cs;
+                        }
+                        if (cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")) {
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
+                    }
+                }
+        });
+
+        /********************************************************************** SEGUNDO APELLIDO */
+
+        edt_lastNames2 = (EditText) findViewById(R.id.edt_lastNames2);
+        edt_lastNames2.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edt_lastNames2.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence cs, int start,
+                                               int end, Spanned spanned, int dStart, int dEnd) {
+                        // TODO Auto-generated method stub
+                        if (cs.equals("")) { // for backspace
+                            return cs;
+                        }
+                        if (cs.toString().matches("[A-Za-zñÑáéíóúÁÉÍÓÚ ]+")) {
+                            return cs;
+                        }
+                        return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
+                    }
+                }
+        });
+
+        /********************************************************************** NUMERO IDENTIFICACIÓN */
+
+        edt_numberIdentification = (EditText) findViewById(R.id.edt_numberIdentification);
+
+        /********************************************************************** GENERO */
+
+        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
+        adapter_genero = ArrayAdapter.createFromResource(this,
+                R.array.spinner_gender, android.R.layout.simple_spinner_item);
+        adapter_genero.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_genero.setAdapter(adapter_genero);
+
+        /********************************************************************** FECHA NACIMIENTO */
+
+        textview_fecha_nacimiento = (TextView) findViewById(R.id.edt_birthDate);
+
+        textview_fecha_nacimiento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        ScannerActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        evento_fecha_nacimiento,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));
+                dialog.show();
+            }
+        });
+
+        evento_fecha_nacimiento = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String monthS;
+                String dayS;
+
+                monthS = String.valueOf(month);
+                dayS = String.valueOf(day);
+
+                if (monthS.length() == 1) {
+                    monthS = "0" + monthS;
+                }
+                if (dayS.length() == 1) {
+                    dayS = "0" + dayS;
+                }
+
+                String date = year + "/" + monthS + "/" + dayS;
+                textview_fecha_nacimiento.setText(date);
+            }
+        };
+
+        /***********************************************************************/
+
+        contextView = this;
 
         new IntentIntegrator(ScannerActivity.this)
                 .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
@@ -106,47 +227,58 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 .setBarcodeImageEnabled(false)
                 .initiateScan();
 
+    }
 
-        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
-        ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
-                R.array.spinner_credit_destination, android.R.layout.simple_spinner_item);
-        adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_destino_credito.setAdapter(adapter_destino_credito);
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
 
+    public void onClickBtnNextTerms(View view) throws JSONException {
 
-        spinner_tipo_empleado = (Spinner) findViewById(R.id.spinner_tipo_empleado);
-        ArrayAdapter<CharSequence> adapter_tipo_empleado = ArrayAdapter.createFromResource(this,
-                R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
-        adapter_tipo_empleado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_tipo_empleado.setAdapter(adapter_tipo_empleado);
-
-
-        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-        spinner_tipo_empleado.setOnItemSelectedListener(this);
-
-        List<String> names = new ArrayList<>();
-        for (GetPagaduriasRequest p : pagadurias) {
-            names.add(p.getNombre());
+        //Validar obligatoriedades
+        if (TextUtils.isEmpty(edt_names.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo primer nombre es obligatorio", Toast.LENGTH_LONG).show();
+        } /*else if (TextUtils.isEmpty(edt_names2.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo segundo nombre es obligatorio", Toast.LENGTH_LONG).show();
+        }*/ else if (TextUtils.isEmpty(edt_lastNames.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo primer apellido es obligatorio", Toast.LENGTH_LONG).show();
+        } /*else if (TextUtils.isEmpty(edt_lastNames2.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo segundo apellido es obligatorio", Toast.LENGTH_LONG).show();
+        }*/ else if (TextUtils.isEmpty(edt_numberIdentification.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo número de identificación es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(textview_fecha_nacimiento.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "La fecha de nacimiento es obligatoria", Toast.LENGTH_LONG).show();
+        } else if (spinner_genero.getSelectedItem() == null) {
+            Toast.makeText(getApplicationContext(), "El selector genero es obligatorio", Toast.LENGTH_LONG).show();
+        } else {
+            //Pasar a la siguiente pagina
+            Intent intent = new Intent(this, AdditionalDataActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivityForResult(intent, 0);
         }
+    }
 
-        ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        Spinner userSpinner = (Spinner) findViewById(R.id.spinner_pagaduria);
-        userSpinner.setAdapter(userAdapter);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // TODO Auto-generated method stub
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d("Lifecycle", "onPause()");
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
         Log.d("Lifecycle", "onStop()");
-
     }
 
     @Override
@@ -156,32 +288,20 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         Log.d("Lifecycle", "onDestroy()");
     }
 
-    public void onclickExit(View view) {
-        Intent intent = new Intent(view.getContext(), LoginActivity.class);
-        startActivityForResult(intent, 0);
-    }
 
-    private String getCodePagaduria(String name, List<GetPagaduriasRequest> listPagadurias) {
-        int i = -1;
-        for (GetPagaduriasRequest cc: listPagadurias) {
-            i++;
-            if (cc.getNombre().equals(name))
-                break;
-        }
+    //Define la persona
+    private Person person;
 
-        List<Integer> idPagadurias = new ArrayList<>();
-        for (GetPagaduriasRequest p : listPagadurias) {
-            idPagadurias.add(p.getId());
-        }
-        return idPagadurias.get(i).toString();
-    }
+    RealmStorage storage = new RealmStorage();
+
+    Context contextView;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 Log.d("ScannerActivity", "Scaneo cancelado");
                 //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
@@ -191,8 +311,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     getReadBarCode(result2);
 
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
-                }catch (Exception ex){
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo",ex,this);
+                } catch (Exception ex) {
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
 
@@ -204,9 +324,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    public void getReadBarCode(byte[] arrayData){
+    public void getReadBarCode(byte[] arrayData) {
 
-        try{
+        try {
             String user = getResources().getString(R.string.user_key);
             String license = getResources().getString(R.string.licenceKey);
             DocumentManager documentManager = new DocumentManager();
@@ -214,274 +334,46 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             person = new Gson().fromJson(resultScan, Person.class);
             //p = CedulaQrAnalytics.parse(data);
 
-            if(person != null){
-                if(person.getNumber().length()>0)
-                {
-                    storage.savePerson(contextView,person);
-                }
-                else{
+            if (person != null) {
+                if (person.getNumber().length() > 0) {
+
+                    edt_names.setText(person.getFirstName());
+                    edt_names2.setText(person.getSecondName());
+                    edt_lastNames.setText(person.getSurename());
+                    edt_lastNames2.setText(person.getSecondSurename());
+                    edt_numberIdentification.setText(person.getNumber());
+
+/*                    String p = person.getBirthday();*/
+
+                    textview_fecha_nacimiento.setText(person.getBirthday().substring(0,4) + "/" +
+                                    person.getBirthday().substring(4,6) + "/" +
+                                    person.getBirthday().substring(6,8)
+                            );
+
+                    String genero = person.getGender().equals("M") ? "Masculino" : "Femenino" ;
+
+                    int spinnerPosition = adapter_genero.getPosition(genero);
+                    spinner_genero.setSelection(spinnerPosition);
+
+                    storage.savePerson(contextView, person);
+
+
+                } else {
                     NotificacionErrorDatos(contextView);
                 }
-            }
-            else{
+            } else {
                 NotificacionErrorDatos(contextView);
             }
 
-        }
-        catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Escaneo",ex,this);
+        } catch (Exception ex) {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
             //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             NotificacionErrorDatos(this);
         }
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        final Dialog dialog;
-        switch(id) {
-            case DIALOG_REALLY_EXIT_ID:
-                dialog = new AlertDialog.Builder(this).setMessage(
-                        "¿ Desea terminar el proceso ?")
-                        .setCancelable(false)
-                        .setPositiveButton("Sí",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
-                                        startActivity(a);
-                                    }
-                                })
-                        .setNegativeButton("No",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                }).create();
-                break;
-            default:
-                dialog = null;
-        }
-        return dialog;
-    }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            showDialog(DIALOG_REALLY_EXIT_ID);
-        }
-        return true;
-    }
-
-    public void ValidarPrevalidacionesActivas(String Documento,Person person) throws JSONException {
-
-        QueryActiveValidationPresenter queryActiveValidationPresenter = new QueryActiveValidationPresenter();
-        HttpResponse model = queryActiveValidationPresenter.Get(Documento,getBaseContext());
-
-        if (model != null) {
-
-            JSONObject data = (JSONObject) model.getData();
-
-            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-
-            if (jSONArray.length()>0){
-
-                JSONObject object = (JSONObject) jSONArray.get(0);
-
-                boolean accion;
-                accion = Boolean.parseBoolean(object.getString("accion"));
-
-                if(accion){
-
-                    try{
-
-                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
-                        Alert.setTitle("IMPORTANTE");
-                        Alert.setMessage(object.getString("mensaje"));
-                        Alert.setCancelable(false);
-
-                        Alert.setPositiveButton(
-                                "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                        EnvioDataCambioPagina(person);
-                                    }
-                                });
-
-
-                        AlertDialog AlertMsg = Alert.create();
-                        AlertMsg.setCanceledOnTouchOutside(false);
-                        AlertMsg.show();
-                    }
-                    catch (Exception ex){
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
-                    }
-                }else {
-                    EnvioDataCambioPagina(person);
-                }
-            }else {
-                EnvioDataCambioPagina(person);
-            }
-        }else {
-            EnvioDataCambioPagina(person);
-        }
-    }
-
-    public void  EnvioDataCambioPagina(Person person){
-        Intent intent = new Intent (getBaseContext(), UploadFileActivity.class);
-
-        String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
-        String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
-
-        String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
-
-        intent.putExtra("PERSONA_Documento", person.getNumber());
-        intent.putExtra("PERSONA_PNombre", person.getFirstName());
-        intent.putExtra("PERSONA_SNombre", person.getSecondName());
-        intent.putExtra("PERSONA_PApellido", person.getSurename());
-        intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
-        intent.putExtra("PERSONA_FechaNac", bithdate);
-        intent.putExtra("PERSONA_Genero", person.getGender());
-        intent.putExtra("PERSONA_Celular", "0");
-
-        intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
-        intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
-        intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
-        intent.putExtra("IdPagaduria",codePagaduria);
-
-        startActivityForResult(intent, 0);
-    }
-
-    public void onClickBtnNextTerms(View view) throws JSONException {
-        Intent intent = new Intent (view.getContext(), UploadFileActivity.class);
-        /*intent.putExtra("PERSONA_Documento", p.getCedula());
-        intent.putExtra("PERSONA_PNombre", p.getNombre());
-        intent.putExtra("PERSONA_SNombre", "");
-        intent.putExtra("PERSONA_PApellido", p.getApellido1());
-        intent.putExtra("PERSONA_SApellido", p.getApellido2());
-        intent.putExtra("PERSONA_FechaNac", p.getFechaNacimiento());
-        intent.putExtra("PERSONA_Genero", p.getGenero());
-        intent.putExtra("PERSONA_Celular", p.getCelular());
-        */
-
-        String pagaduria = (String) ((Spinner)findViewById(R.id.spinner_pagaduria) ).getSelectedItem();
-        String codePagaduria = getCodePagaduria(pagaduria,pagadurias);
-
-        if(person == null){
-            person = storage.getPerson(this);
-        }
-
-        if(person != null){
-            if(person.getNumber().length()>0)
-            {
-                ValidarPrevalidacionesActivas(person.getNumber(),person);
-
-                /*String bithdate = person.getBirthday().substring(0, 4) + "-" + person.getBirthday().substring(4, 6) + "-" + person.getBirthday().substring(6, 8);
-
-                intent.putExtra("PERSONA_Documento", person.getNumber());
-                intent.putExtra("PERSONA_PNombre", person.getFirstName());
-                intent.putExtra("PERSONA_SNombre", person.getSecondName());
-                intent.putExtra("PERSONA_PApellido", person.getSurename());
-                intent.putExtra("PERSONA_SApellido", person.getSecondSurename());
-                intent.putExtra("PERSONA_FechaNac", bithdate);
-                intent.putExtra("PERSONA_Genero", person.getGender());
-                intent.putExtra("PERSONA_Celular", person.getPlaceBirth());
-
-                intent.putExtra("IdTipoEmpleado",spinner_tipo_empleado.getSelectedItem().toString());
-                intent.putExtra("IdTipoContrato",spinner_tipo_contrato.getSelectedItem().toString());
-                intent.putExtra("IdDestinoCredito",spinner_destino_credito.getSelectedItem().toString());
-                intent.putExtra("IdPagaduria",codePagaduria);
-
-                startActivityForResult(intent, 0);*/
-            }
-            else{
-                NotificacionErrorDatos(this);
-            }
-        }
-        else{
-            NotificacionErrorDatos(this);
-        }
-
-
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (spinner_tipo_empleado.getSelectedItem().toString().equals("Empleado")) {
-
-            ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
-            spinner_tipo_contrato.setAdapter(adapter2);
-        } else {
-            ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                    R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
-            spinner_tipo_contrato.setAdapter(adapter2);
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Auto-generated method stub
-    }
-
-    public void showPersonalInfo(View view) {
-        if(person != null){
-            if(person.getNumber().length()>0)
-            {
-                TextView txtclose;
-                TextView txt_primer_nombre;
-                TextView txt_segundo_nombre;
-                TextView txt_primer_apellido;
-                TextView txt_segundo_apellido;
-                TextView txt_numero_identificacion;
-                TextView txt_fecha_nacimiento;
-                TextView txt_genero;
-                TextView txt_tipo_sangre;
-
-                myDialog.setContentView(R.layout.content_scanner_poppup);
-
-                txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-
-                txt_primer_nombre =(TextView) myDialog.findViewById(R.id.txt_primer_nombre);
-                txt_segundo_nombre =(TextView) myDialog.findViewById(R.id.txt_segundo_nombre);
-                txt_primer_apellido =(TextView) myDialog.findViewById(R.id.txt_primer_apellido);
-                txt_segundo_apellido =(TextView) myDialog.findViewById(R.id.txt_segundo_apellido);
-                txt_numero_identificacion =(TextView) myDialog.findViewById(R.id.txt_numero_identificacion);
-                txt_fecha_nacimiento =(TextView) myDialog.findViewById(R.id.txt_fecha_nacimiento);
-                txt_genero =(TextView) myDialog.findViewById(R.id.txt_genero);
-                txt_tipo_sangre =(TextView) myDialog.findViewById(R.id.txt_tipo_sangre);
-
-                txt_primer_nombre.setText(person.getFirstName());
-                txt_segundo_nombre.setText(person.getSecondName());
-                txt_primer_apellido.setText(person.getSurename());
-                txt_segundo_apellido.setText(person.getSecondSurename());
-                txt_numero_identificacion.setText(person.getNumber());
-                txt_fecha_nacimiento.setText(person.getBirthday());
-                txt_genero.setText(person.getGender());
-                txt_tipo_sangre.setText(person.getBloodType());
-
-                txtclose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        myDialog.dismiss();
-                    }
-                });
-                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                myDialog.show();
-            }
-            else{
-                NotificacionErrorDatos(this);
-            }
-        }
-        else{
-            NotificacionErrorDatos(this);
-        }
-
-    }
-
-    public void NotificacionErrorDatos(final Context view){
+    public void NotificacionErrorDatos(final Context view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
         builder1.setMessage("No ha sido posible obtener información del código de barras de la cédula. ¿ Desea realizar la captura de datos manual ?");
         builder1.setCancelable(true);
@@ -490,7 +382,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        Intent intent = new Intent(view, PersonalInformationActivity.class);
+                        Intent intent = new Intent(view, ScannerActivity.class);
                         startActivityForResult(intent, 0);
                     }
                 });
@@ -507,5 +399,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
 
 }

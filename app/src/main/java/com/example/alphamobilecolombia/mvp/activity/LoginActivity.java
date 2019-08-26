@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validator.validate();
 
         if(validationResult) {
+            TextView message = findViewById(R.id.txt_message);
             String userText = editTextUsername.getText().toString();
             String passwordText = editTextPassword.getText().toString();
             Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
