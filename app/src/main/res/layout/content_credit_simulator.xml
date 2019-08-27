@@ -138,7 +138,7 @@
                 android:orientation="horizontal">
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/seekbar_plazo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

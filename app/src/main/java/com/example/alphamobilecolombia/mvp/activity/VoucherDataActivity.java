@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class VoucherDataActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -21,6 +22,7 @@ public class VoucherDataActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voucher_data);
 
@@ -62,19 +64,30 @@ public class VoucherDataActivity extends AppCompatActivity implements AdapterVie
 
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
-        if (TextUtils.isEmpty(edt_ingresos.getText().toString().trim())) {
+
+        String[] Campos = new String[]{"edt_ingresos", "edt_salud", "edt_pension"};
+
+        new Formulario().Validar(this, VoucherDiscountActivity.class, Campos);
+    }
+}
+
+
+/*        if (new Formulario().Validar(this, Campos)) {
+                //Pasar a la siguiente pagina
+                Intent intent = new Intent(this, VoucherDiscountActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
+
+
+/*        if (TextUtils.isEmpty(edt_ingresos.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "El campo ingresos es obligatorio", Toast.LENGTH_LONG).show();
-        }
-        else if (TextUtils.isEmpty(edt_salud.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(edt_salud.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "El campo salud es obligatorio", Toast.LENGTH_LONG).show();
-        }
-        else if (TextUtils.isEmpty(edt_pension.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(edt_pension.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "El campo pensión es obligatorio", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Intent intent = new Intent(view.getContext(), VoucherDiscountActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivityForResult(intent, 0);
-        }
-    }
-}
+        }*/

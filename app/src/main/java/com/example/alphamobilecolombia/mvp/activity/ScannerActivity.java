@@ -29,6 +29,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -40,6 +41,17 @@ import java.util.Calendar;
 import co.venko.api.android.cedula.DocumentManager;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    //************************** LECTOR
+
+    //Define la persona
+    private Person person;
+
+    RealmStorage storage = new RealmStorage();
+
+    Context contextView;
+
+    //************************** CAMPOS PRIMER NOMBRE, SEGUNDO NOMBRE, PRIMER APELLIDO, SEGUNDO APELLIDO, NUMERO IDENTIFICACIÓN
 
     //Define los campos
     private EditText edt_names, edt_names2, edt_lastNames, edt_lastNames2, edt_numberIdentification;
@@ -164,11 +176,14 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         /********************************************************************** GENERO */
 
-        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
+/*        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         adapter_genero = ArrayAdapter.createFromResource(this,
                 R.array.spinner_gender, android.R.layout.simple_spinner_item);
         adapter_genero.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_genero.setAdapter(adapter_genero);
+        spinner_genero.setAdapter(adapter_genero);*/
+
+        spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
+        new Formulario().Cargar(this, spinner_genero);
 
         /********************************************************************** FECHA NACIMIENTO */
 
@@ -215,7 +230,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             }
         };
 
-        /***********************************************************************/
+        //*********************************************************************** LECTOR
 
         contextView = this;
 
@@ -227,6 +242,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 .setBarcodeImageEnabled(false)
                 .initiateScan();
 
+        //***********************************************************************
     }
 
     public void onclickExit(View view) {
@@ -236,27 +252,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     public void onClickBtnNextTerms(View view) throws JSONException {
 
-        //Validar obligatoriedades
-        if (TextUtils.isEmpty(edt_names.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo primer nombre es obligatorio", Toast.LENGTH_LONG).show();
-        } /*else if (TextUtils.isEmpty(edt_names2.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo segundo nombre es obligatorio", Toast.LENGTH_LONG).show();
-        }*/ else if (TextUtils.isEmpty(edt_lastNames.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo primer apellido es obligatorio", Toast.LENGTH_LONG).show();
-        } /*else if (TextUtils.isEmpty(edt_lastNames2.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo segundo apellido es obligatorio", Toast.LENGTH_LONG).show();
-        }*/ else if (TextUtils.isEmpty(edt_numberIdentification.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo número de identificación es obligatorio", Toast.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(textview_fecha_nacimiento.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "La fecha de nacimiento es obligatoria", Toast.LENGTH_LONG).show();
-        } else if (spinner_genero.getSelectedItem() == null) {
-            Toast.makeText(getApplicationContext(), "El selector genero es obligatorio", Toast.LENGTH_LONG).show();
-        } else {
-            //Pasar a la siguiente pagina
-            Intent intent = new Intent(this, AdditionalDataActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivityForResult(intent, 0);
-        }
+        String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
+
+        new Formulario().Validar(this, AdditionalDataActivity.class, Campos);
     }
 
     @Override
@@ -288,14 +286,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         Log.d("Lifecycle", "onDestroy()");
     }
 
-
-    //Define la persona
-    private Person person;
-
-    RealmStorage storage = new RealmStorage();
-
-    Context contextView;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -315,7 +305,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
-
                 }
             }
         } else {
@@ -343,14 +332,14 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     edt_lastNames2.setText(person.getSecondSurename());
                     edt_numberIdentification.setText(person.getNumber());
 
-/*                    String p = person.getBirthday();*/
+                    /*                    String p = person.getBirthday();*/
 
-                    textview_fecha_nacimiento.setText(person.getBirthday().substring(0,4) + "/" +
-                                    person.getBirthday().substring(4,6) + "/" +
-                                    person.getBirthday().substring(6,8)
-                            );
+                    textview_fecha_nacimiento.setText(person.getBirthday().substring(0, 4) + "/" +
+                            person.getBirthday().substring(4, 6) + "/" +
+                            person.getBirthday().substring(6, 8)
+                    );
 
-                    String genero = person.getGender().equals("M") ? "Masculino" : "Femenino" ;
+                    String genero = person.getGender().equals("M") ? "Masculino" : "Femenino";
 
                     int spinnerPosition = adapter_genero.getPosition(genero);
                     spinner_genero.setSelection(spinnerPosition);
@@ -371,7 +360,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             NotificacionErrorDatos(this);
         }
     }
-
 
     public void NotificacionErrorDatos(final Context view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
@@ -400,5 +388,36 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         alert11.show();
     }
 
-
 }
+
+
+
+
+/*
+        if (new Formulario().Validar(this, AdditionalDataActivity.class, Campos)) {
+        //Pasar a la siguiente pagina
+        Intent intent = new Intent(this, AdditionalDataActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }
+*/
+
+/*        if (TextUtils.isEmpty(edt_names.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo primer nombre es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(edt_names2.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo segundo nombre es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(edt_lastNames.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo primer apellido es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(edt_lastNames2.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo segundo apellido es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(edt_numberIdentification.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "El campo número de identificación es obligatorio", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(textview_fecha_nacimiento.getText().toString().trim())) {
+            Toast.makeText(getApplicationContext(), "La fecha de nacimiento es obligatoria", Toast.LENGTH_LONG).show();
+        } else if (spinner_genero.getSelectedItem() == null) {
+            Toast.makeText(getApplicationContext(), "El selector genero es obligatorio", Toast.LENGTH_LONG).show();
+        } else {
+            Intent intent = new Intent(this, AdditionalDataActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivityForResult(intent, 0);
+        }*/
