@@ -16,6 +16,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasR
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -36,15 +37,19 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     //Se produce cuando se inicia esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
         /********************************************************************** PAGADURIA */
 
-        ScannerPresenter scannerPresenter = new ScannerPresenter();
+        spinner_pagaduria = (Spinner) findViewById(R.id.spinner_pagaduria);
+        new Formulario().Cargar(this, spinner_pagaduria);
+
+/*        ScannerPresenter scannerPresenter = new ScannerPresenter();
         HttpResponse response = scannerPresenter.getPaying(this);
         Gson gson = new Gson();
-        /*contextView = this;*/
+        *//*contextView = this;*//*
         JSONObject data = (JSONObject) response.getData();
         try {
             JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
@@ -69,15 +74,18 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         ArrayAdapter userAdapter = new ArrayAdapter(this, R.layout.spinner, names);
 
         spinner_pagaduria = (Spinner) findViewById(R.id.spinner_pagaduria);
-        spinner_pagaduria.setAdapter(userAdapter);
+        spinner_pagaduria.setAdapter(userAdapter);*/
 
         /********************************************************************** DESTINO DEL CREDITO */
 
         spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
+        new Formulario().Cargar(this, spinner_destino_credito);
+
+/*        spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
         ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(this,
                 R.array.spinner_credit_destination, android.R.layout.simple_spinner_item);
         adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_destino_credito.setAdapter(adapter_destino_credito);
+        spinner_destino_credito.setAdapter(adapter_destino_credito);*/
 
         /***********************************************************************/
     }
@@ -116,7 +124,20 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
 
-        if (spinner_pagaduria.getSelectedItem() == null) {
+        String[] Campos = new String[]{"spinner_pagaduria", "spinner_destino_credito"};
+
+        new Formulario().Validar(this, CustomerTypeActivity.class, Campos);
+    }
+}
+
+/*        if (new Formulario().Validar(this, Campos)) {
+                //Pasar a la siguiente pagina
+                Intent intent = new Intent(this, CustomerTypeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
+
+/*        if (spinner_pagaduria.getSelectedItem() == null) {
             Toast.makeText(getApplicationContext(), "El campo pagaduría es obligatorio", Toast.LENGTH_LONG).show();
         } else if (spinner_destino_credito.getSelectedItem() == null) {
             Toast.makeText(getApplicationContext(), "El campo destino del credito es obligatorio", Toast.LENGTH_LONG).show();
@@ -124,6 +145,4 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
             Intent intent = new Intent(view.getContext(), CustomerTypeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivityForResult(intent, 0);
-        }
-    }
-}
+        }*/

@@ -20,7 +20,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -75,17 +77,19 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         /********************************************************************** TIPO CLIENTE */
 
-        spinner_tipo_cliente = (Spinner) findViewById(R.id.spinner_tipo_cliente);
+/*        spinner_tipo_cliente = (Spinner) findViewById(R.id.spinner_tipo_cliente);
         ArrayAdapter<CharSequence> adapter_tipo_cliente = ArrayAdapter.createFromResource(this,
                 R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
         adapter_tipo_cliente.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_tipo_cliente.setAdapter(adapter_tipo_cliente);
+        spinner_tipo_cliente.setAdapter(adapter_tipo_cliente);*/
+
+        spinner_tipo_cliente = (Spinner) findViewById(R.id.spinner_tipo_cliente);
+        new Formulario().Cargar(this, spinner_tipo_cliente);
 
         spinner_tipo_cliente.setOnItemSelectedListener(this);
 
         /*********************************************************************** TIPO CONTRATO */
 
-        txtfecha_finalizacion_contrato = (TextView) findViewById(R.id.txtfecha_finalizacion_contrato);
         spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
         spinner_tipo_contrato.setOnItemSelectedListener(this);
 
@@ -107,7 +111,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                         evento_fecha_ingreso,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMinDate((long) (cal.getTimeInMillis() - (5.682e+11)));
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()));
                 dialog.show();
             }
         });
@@ -136,6 +140,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         /********************************************************************** FECHA FINALIZACIÓN CONTRATO */
 
+        txtfecha_finalizacion_contrato = (TextView) findViewById(R.id.txtfecha_finalizacion_contrato);
         textview_fecha_finalizacion_contrato = (TextView) findViewById(R.id.edt_fecha_finalizacion_contrato);
 
         textview_fecha_finalizacion_contrato.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +157,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                         evento_fecha_finalizacion_contrato,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                /*dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()));
                 dialog.show();
             }
         });
@@ -187,26 +192,6 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("Lifecycle", "onPause()");
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Lifecycle", "onStop()");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Runtime.getRuntime().gc();
-        Log.d("Lifecycle", "onDestroy()");
-    }
 
     //Se produce al seleccionar un combobox
     @Override
@@ -218,8 +203,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
                 if (spinner_tipo_cliente.getSelectedItem().toString().toUpperCase().equals("EMPLEADO")) {
 
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                            R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
+                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
                     spinner_tipo_contrato.setAdapter(adapter2);
 
                     panel_campos.setVisibility(View.VISIBLE);
@@ -227,8 +211,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
                 } else {
 
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this,
-                            R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
+                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
                     spinner_tipo_contrato.setAdapter(adapter2);
 
                     panel_campos.setVisibility(View.GONE);
@@ -261,7 +244,77 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
 
-        //Define si las validaciones son correctas
+        //Define la lista de campos a validar
+        ArrayList<String> Campos = new ArrayList<String>();
+
+        //************************************************************ Si el empleado es activo entonces
+        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {
+
+            //Agrega los campos a validar
+            Campos.add("spinner_tipo_cliente");
+            Campos.add("spinner_tipo_contrato");
+            Campos.add("edt_fecha_ingreso");
+
+            //Si el tipo de contrato es FIJO o TEMPORAL
+            if ((spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("FIJO") ||
+                    spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("TEMPORAL")) &&
+                    TextUtils.isEmpty(textview_fecha_finalizacion_contrato.getText().toString().trim())) {
+                Campos.add("edt_fecha_finalizacion_contrato");
+            }
+        }
+        //************************************************************ Si el empleado es pensionado entonces
+        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {
+            //Agrega los campos a validar
+            Campos.add("edt_antiguedad_en_meses");
+        }
+
+        //************************************************************
+
+        //Valida los campos
+        new Formulario().Validar(this, VoucherDataActivity.class, Campos.toArray(new String[Campos.size()]));
+
+        //************************************************************
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
+
+}
+
+
+
+
+
+/*
+//Valida los campos
+        if (new Formulario().Validar(this, Campos.toArray(new String[Campos.size()]))) {
+                Intent intent = new Intent(view.getContext(), VoucherDataActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }
+*/
+
+
+/*        //Define si las validaciones son correctas
         boolean Correcto = false;
 
         //************************************************************ Si el empleado es activo entonces
@@ -296,7 +349,4 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
             Intent intent = new Intent(view.getContext(), VoucherDataActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivityForResult(intent, 0);
-        }
-    }
-
-}
+        }*/

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class CreditSimulatorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -33,7 +34,7 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
         edt_monto_a_desembolsar = (EditText) findViewById(R.id.edt_monto_a_desembolsar);
         edt_cuota = (EditText) findViewById(R.id.edt_cuota);
 
-        SeekBar sk = (SeekBar) findViewById(R.id.seekBar);
+        SeekBar sk = (SeekBar) findViewById(R.id.seekbar_plazo);
         sk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -87,7 +88,25 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
 
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
-        if (TextUtils.isEmpty(edt_monto_a_desembolsar.getText().toString().trim())) {
+
+        String[] Campos = new String[]{"edt_monto_a_desembolsar", "edt_cuota"};
+
+        new Formulario().Validar(this, ConditionsSummaryActivity.class, Campos);
+    }
+}
+
+
+
+
+/*        if (new Formulario().Validar(this, Campos)) {
+                //Pasar a la siguiente pagina
+                Intent intent = new Intent(this, ConditionsSummaryActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
+
+
+/*        if (TextUtils.isEmpty(edt_monto_a_desembolsar.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "El campo monto a desembolsar es obligatorio", Toast.LENGTH_LONG).show();
         } else if (TextUtils.isEmpty(edt_cuota.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "El campo cuota es obligatorio", Toast.LENGTH_LONG).show();
@@ -95,6 +114,4 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
             Intent intent = new Intent(view.getContext(), ConditionsSummaryActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivityForResult(intent, 0);
-        }
-    }
-}
+        }*/

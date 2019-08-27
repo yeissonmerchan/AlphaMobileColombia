@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 import java.util.Calendar;
 
@@ -93,15 +94,6 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
         /***********************************************************************/
 
-/*        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            String mytext = savedInstanceState.getString("textview_fecha_expedicion_cedula");
-            textview_fecha_expedicion_cedula.setText(mytext);
-        } else {
-            // Probably initialize members with default values for a new instance
-        }*/
-
-        /***********************************************************************/
     }
 
     @Override
@@ -135,28 +127,33 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
-/*        if (spinner_departamento_expedicion_cedula.getSelectedItem() == null) {
+
+        String[] Campos = new String[]{"edt_fecha_expedicion_cedula"}; //"spinner_departamento_expedicion_cedula", "spinner_ciudad_expedicion_cedula",
+
+        new Formulario().Validar(this, PaymentActivity.class, Campos);
+    }
+}
+
+
+/*        if (new Formulario().Validar(this, Campos)) {
+                //Pasar a la siguiente pagina
+                Intent intent = new Intent(this, PaymentActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
+
+
+
+
+/*
+        if (spinner_departamento_expedicion_cedula.getSelectedItem() == null) {
             Toast.makeText(getApplicationContext(), "El campo departamento de expedición de la cédula es obligatorio", Toast.LENGTH_LONG).show();
         } else if (spinner_ciudad_expedicion_cedula.getSelectedItem() == null) {
             Toast.makeText(getApplicationContext(), "El campo ciudad de expedición de la cédula es obligatorio", Toast.LENGTH_LONG).show();
-        } else*/
-        if (TextUtils.isEmpty(textview_fecha_expedicion_cedula.getText().toString().trim())) {
+        } else if (TextUtils.isEmpty(textview_fecha_expedicion_cedula.getText().toString().trim())) {
             Toast.makeText(getApplicationContext(), "La fecha de expedición de la cédula es obligatoria", Toast.LENGTH_LONG).show();
         } else {
             Intent intent = new Intent(view.getContext(), PaymentActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivityForResult(intent, 0);
-        }
-    }
-
-/*    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
-        savedInstanceState.putString("textview_fecha_expedicion_cedula", textview_fecha_expedicion_cedula.getText().toString());
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
-    }*/
-
-
-}
+        }*/

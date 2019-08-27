@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class PaymentsThirdPartiesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -60,6 +61,30 @@ public class PaymentsThirdPartiesActivity extends AppCompatActivity implements A
 
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
+
+        String[] Campos = new String[]{}; //"spinner_pago_a_terceros";
+
+        new Formulario().Validar(this, CreditSimulatorActivity.class, Campos);
+    }
+}
+
+
+/*
+    */
+/*        String[] Campos = new String[]{"spinner_pago_a_terceros"};
+
+            if (new Formulario().Validar(this, Campos)) {*//*
+
+    //Pasar a la siguiente pagina
+    Intent intent = new Intent(this, CreditSimulatorActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivityForResult(intent, 0);
+*/
+/*}*//*
+
+
+
+
 /*
         String selected = "";
 
@@ -71,10 +96,7 @@ public class PaymentsThirdPartiesActivity extends AppCompatActivity implements A
         if (TextUtils.isEmpty(selected.trim())) {
             Toast.makeText(getApplicationContext(), "El selector pago a terceros es obligatorio", Toast.LENGTH_LONG).show();
         } else {*/
-            Intent intent = new Intent(view.getContext(), CreditSimulatorActivity.class);
+/*            Intent intent = new Intent(view.getContext(), CreditSimulatorActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivityForResult(intent, 0);
-        /*}*/
-    }
-
-}
+            startActivityForResult(intent, 0);*/
+/*}*/

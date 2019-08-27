@@ -115,21 +115,6 @@ public class VoucherDiscountActivity extends AppCompatActivity implements Adapte
             } else {
                 Mensaje_obligatoriedad = "Debe haber al menos un alguna compra de cartera";
             }
-/*            if (TextUtils.isEmpty(edt_compras_cartera1.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo compras cartera 1 es obligatorio";
-            } else if (TextUtils.isEmpty(edt_compras_cartera2.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo compras cartera 2 es obligatorio";
-            } else if (TextUtils.isEmpty(edt_compras_cartera3.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo compras cartera 3 es obligatorio";
-            } else if (TextUtils.isEmpty(edt_compras_cartera4.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo compras cartera 4 es obligatorio";
-            } else if (TextUtils.isEmpty(edt_saneamientos1.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo saneamientos 1 es obligatorio";
-            } else if (TextUtils.isEmpty(edt_saneamientos2.getText().toString())) {
-                Mensaje_obligatoriedad = "El campo saneamientos 2 es obligatorio";
-            } else {
-                Correcto = true;
-            }*/
         } else {
             Correcto = true;
         }

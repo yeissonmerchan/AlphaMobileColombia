@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class OtherDiscountsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -70,18 +71,37 @@ public class OtherDiscountsActivity extends AppCompatActivity implements Adapter
 
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
-        if (TextUtils.isEmpty(edt_medicina_prepagada.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo medicina prepagada es obligatorio", Toast.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(edt_fondo_pension_voluntario.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo fondo pensión voluntario es obligatorio", Toast.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(edt_ahorro.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo ahorro es obligatorio", Toast.LENGTH_LONG).show();
-        } else if (TextUtils.isEmpty(edt_otros.getText().toString().trim())) {
-            Toast.makeText(getApplicationContext(), "El campo otros es obligatorio", Toast.LENGTH_LONG).show();
-        } else {
-            Intent intent = new Intent(view.getContext(), PaymentsThirdPartiesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivityForResult(intent, 0);
-        }
+
+        String[] Campos = new String[]{"edt_medicina_prepagada", "edt_fondo_pension_voluntario", "edt_ahorro", "edt_otros"};
+
+        new Formulario().Validar(this, PaymentsThirdPartiesActivity.class, Campos);
     }
 }
+
+
+
+/*        if (new Formulario().Validar(this, Campos)) {
+                //Pasar a la siguiente pagina
+                Intent intent = new Intent(this, PaymentsThirdPartiesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
+
+
+
+
+
+/*
+        if (TextUtils.isEmpty(edt_medicina_prepagada.getText().toString().trim())) {
+                Toast.makeText(getApplicationContext(), "El campo medicina prepagada es obligatorio", Toast.LENGTH_LONG).show();
+                } else if (TextUtils.isEmpty(edt_fondo_pension_voluntario.getText().toString().trim())) {
+                Toast.makeText(getApplicationContext(), "El campo fondo pensión voluntario es obligatorio", Toast.LENGTH_LONG).show();
+                } else if (TextUtils.isEmpty(edt_ahorro.getText().toString().trim())) {
+                Toast.makeText(getApplicationContext(), "El campo ahorro es obligatorio", Toast.LENGTH_LONG).show();
+                } else if (TextUtils.isEmpty(edt_otros.getText().toString().trim())) {
+                Toast.makeText(getApplicationContext(), "El campo otros es obligatorio", Toast.LENGTH_LONG).show();
+                } else {
+                Intent intent = new Intent(view.getContext(), PaymentsThirdPartiesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+        }*/
