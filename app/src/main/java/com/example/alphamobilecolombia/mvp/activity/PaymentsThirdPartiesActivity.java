@@ -23,7 +23,6 @@ public class PaymentsThirdPartiesActivity extends AppCompatActivity implements A
         setContentView(R.layout.activity_payments_third_parties);
 
         spinner_pago_a_terceros = (Spinner) findViewById(R.id.spinner_pago_a_terceros);
-
         spinner_pago_a_terceros.setOnItemSelectedListener(this);
     }
 

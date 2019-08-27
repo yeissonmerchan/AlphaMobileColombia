@@ -16,12 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.alphamobilecolombia.R;
 
 public class CreditSimulatorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
-    /*   SeekBar Slider;*/
-
     //Define el control campo monto a desembolsar
     EditText edt_monto_a_desembolsar;
-
     //Define el control campo cuota
     EditText edt_cuota;
 
@@ -29,13 +25,11 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_simulator);
-
         edt_monto_a_desembolsar = (EditText) findViewById(R.id.edt_monto_a_desembolsar);
         edt_cuota = (EditText) findViewById(R.id.edt_cuota);
 
         SeekBar sk = (SeekBar) findViewById(R.id.seekBar);
         sk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 TextView t = (TextView) findViewById(R.id.textView4);

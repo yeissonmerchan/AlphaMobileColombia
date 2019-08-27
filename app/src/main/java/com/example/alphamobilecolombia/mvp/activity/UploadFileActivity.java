@@ -21,8 +21,10 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
+import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.File;
@@ -63,7 +65,6 @@ public class UploadFileActivity extends AppCompatActivity {
     List<com.example.alphamobilecolombia.mvp.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.mvp.models.File>();
     RealmStorage storage = new RealmStorage();
     View view;
-    ProgressDialog mDialog;
     Boolean isCreateUserAndSubject = false;
     String idSujeroCredito;
     String idElement;
@@ -76,11 +77,14 @@ public class UploadFileActivity extends AppCompatActivity {
     private String IdPagaduria;
     private String pathNewFile1;
     final Context context = this;
-    CountDownLatch executionCompleted;
-    List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();
     private static final int DIALOG_REALLY_EXIT_ID = 0;
 
-    final UploadFilesPresenter uploadFilesPresenter = new UploadFilesPresenter();
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IUploadFilesPresenter _iUploadFilesPresenter;
+    public UploadFileActivity(){
+        _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -178,193 +182,19 @@ public class UploadFileActivity extends AppCompatActivity {
     }
 
     public void saveFiles(View view){
-        List<HttpResponse> listResponses = new ArrayList<>();
-        boolean isValidSendFiles = false;
-
-        if(lisReintentos.size()>0){
-            executionCompleted = new CountDownLatch(lisReintentos.size());
-        }
-        else{
-            executionCompleted = new CountDownLatch(listUpload.size());
-        }
-
-        for(com.example.alphamobilecolombia.mvp.models.File file : listUpload)
-        {
-            if(lisReintentos.size()>0){
-                boolean isNewSend = false;
-                for (PostRetriesModelResponse postRetriesModelResponse : lisReintentos){
-                    if (postRetriesModelResponse.getNameFile().equals(file.getName())){
-                        isNewSend = true;
-                    }
-                }
-
-                if(isNewSend) {
-                    try {
-                        new Thread()
-                        {
-                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                            @Override
-                            public void run ()
-                            {
-                                System.out.println("I am executed by :" + Thread.currentThread().getName());
-                                HttpResponse httpResponse = uploadFilesPresenter.Post(file, view.getContext(), idSujeroCredito, pathNewFile1);
-                                // One thread has completed its job
-                                executionCompleted.countDown();
-                                if (httpResponse != null) {
-                                    listResponses.add(httpResponse);
-                                }
-                            }
-                        }.start();
-                    } catch (Exception ex) {
-                        // TODO Auto-generated catch block
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Hilo almacenamiento "+file.getName(),ex,this);
-                    }
-                }
-            }
-            else{
-                try
-                {
-                    new Thread()
-                    {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void run ()
-                        {
-                            System.out.println("I am executed by 2:" + Thread.currentThread().getName());
-                            HttpResponse httpResponse = uploadFilesPresenter.Post(file,view.getContext(),idSujeroCredito,pathNewFile1);
-                            // One thread has completed its job
-                            executionCompleted.countDown();
-                            if (httpResponse != null) {
-                                listResponses.add(httpResponse);
-                            }
-                        }
-                    }.start();
-
-                }
-                catch (Exception ex)
-                {
-                    // TODO Auto-generated catch block
-                    ex.printStackTrace();
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Hilo almacenamiento "+file.getName(),ex,this);
-                }
-            }
-        }
-
-        try
-        {
-            executionCompleted.await();
-            // Wait till the count down latch opens.In the given case till five
-            // times countDown method is invoked
-            System.out.println("All over");
-            System.out.println("Cantidad de respuestas "+listResponses.size());
-            //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
-            //if (listResponses.size() == listUpload.size()){
-            if (listResponses.size() > 0){
-                lisReintentos = new ArrayList<>();
-                for(HttpResponse httpResponse : listResponses){
-                    System.out.println("Proceso de envio de archivo " + httpResponse);
-                    if(httpResponse != null) {
-                        System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
-                        System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
-                        System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
-                        //System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
-
-                        if(httpResponse.getCode() != null) {
-                            if (!httpResponse.getCode().contains("200")) {
-                                isValidSendFiles = true;
-                                System.out.println("Paso error 400:  " + httpResponse.getCode());
-                                PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
-                                postRetriesModelResponse.setModelResponse(httpResponse);
-                                postRetriesModelResponse.setNameFile(httpResponse.getNameFile());
-                                lisReintentos.add(postRetriesModelResponse);
-                            }
-                            else {
-                                try {
-                                    JSONObject objeto2 = (JSONObject) httpResponse.getData();
-                                    //JSONObject objetoNew =  new JSONObject(objeto2.getString("result"));
-                                    JSONArray objeto3 = objeto2.getJSONArray("data");
-                                    JSONObject objeto4 = new JSONObject(objeto3.getString(0));
-                                    String codigoRespuesta3 = objeto4.getString("codigoRespuesta");
-                                    String nombreAnterior = objeto4.getString("nombreAnterior");
-                                    System.out.println("nombreAnterior:  " + nombreAnterior);
-                                    System.out.println("codigoRespuesta2:  " + codigoRespuesta3);
-                                    if (!codigoRespuesta3.contains("200")) {
-                                        System.out.println("Paso error 400:  " + nombreAnterior);
-                                        PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
-                                        postRetriesModelResponse.setModelResponse(httpResponse);
-                                        postRetriesModelResponse.setNameFile(nombreAnterior);
-                                        lisReintentos.add(postRetriesModelResponse);
-                                        isValidSendFiles = true;
-                                    }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                    isValidSendFiles = true;
-                                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando respuesta "+httpResponse.getNameFile(),ex,this);
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-            }
-            else{
-                //Toast.makeText(getApplicationContext(), listResponses.size(), Toast.LENGTH_LONG).show();
-                ValidacionCargueDocumentos(view);
-            }
-        }
-        catch (InterruptedException ex)
-        {
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando peticiones ",ex,this);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Procesando peticiones ",ex,this);
-        }
-
-        /*if (listResponses.size() != listUpload.size()) {
-            if (listResponses.size() != listUpload.size() - 1) {
-                ValidacionCargueDocumentos(view);
-            }
-        }*/
+        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1);
 
         if(isValidSendFiles){
             ValidacionCargueDocumentos(view);
         }
         else{
-            deleteFiles();
             Intent intento1=new Intent(view.getContext(), ProcessCompletedActivity.class);
             startActivity(intento1);
         }
     }
 
-    public void deleteFiles() {
-        /*for (com.example.alphamobilecolombia.mvp.models.File file : listUpload){
-            try {
-                String nameFile = file.getName();
-                //String pathFileLocal = context.getExternalFilesDir(null) + "/" + nameFile;
-                String pathFileLocalCompress = pathNewFile1 + nameFile;
-                //java.io.File fileLocal = new java.io.File(pathFileLocal);
-                java.io.File fileLocalCompress = new java.io.File(pathFileLocalCompress);
-                //fileLocal.delete();
-                fileLocalCompress.delete();
-            }
-            catch (Exception ex){
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminando archivo "+file.getName(),ex,this);
-                ex.printStackTrace();
-            }
-        }*/
-        ApplicationData applicationData = new ApplicationData();
-        applicationData.ClearDirectoryTemp(getApplicationContext());
-    }
-
 
     public boolean compareLists(List<File> modelList) {
-        boolean indicator = false;
-
         List<com.example.alphamobilecolombia.mvp.models.File> filesRequired = new ArrayList<File>();
         filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(66,"",true,"SolicitudCreditoCara1",false));
         filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false));
@@ -415,33 +245,15 @@ public class UploadFileActivity extends AppCompatActivity {
         }
     }
 
-    public boolean existDocumentUpload(){
-        final String nameFile = idElement;
-        boolean result = false;
-
-        for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
-            if(file.getType().equals(nameFile)) {
-                result = true;
-            }
-        }
-        return result;
-    }
-
     public void tomarFoto(View v) {
         idElement = getIdElementUpload(v);
-        //boolean existFile = existDocumentUpload();
         view = v;
-        //if (!existFile){
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
-            intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-            startActivityForResult(intento1,1);
-        //}
-        //else{
-        //    NotificacionExistente(v);
-        //}
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+        intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
+        startActivityForResult(intento1,1);
     }
 
     public static class ExistFile{
@@ -536,8 +348,6 @@ public class UploadFileActivity extends AppCompatActivity {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
         }
     }
-
-
 
     public String getNameFile(View view){
         String documentNumber;
@@ -652,8 +462,6 @@ public class UploadFileActivity extends AppCompatActivity {
 
 
     public void validStatusUpload(boolean status1, boolean status2, boolean status3, boolean status4, boolean status5, boolean status6, boolean status7){
-
-
                 LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
                 if(status1){
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
@@ -893,37 +701,6 @@ public class UploadFileActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    public void notificationEndProcess(){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getBaseContext());
-        builder1.setMessage("¿ Desea terminar el proceso ?");
-        builder1.setCancelable(false);
-
-        final String nameFile = idElement;
-        builder1.setPositiveButton(
-                "Sí",
-                new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
-                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(a);
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.setCanceledOnTouchOutside(false);
-        alert11.show();
-    }
-
     @Override
     protected Dialog onCreateDialog(int id) {
         final Dialog dialog;
@@ -1110,24 +887,6 @@ public class UploadFileActivity extends AppCompatActivity {
         myDialog.show();
     }
 
-
-    public void NotificacionExistente(final View view){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-        builder1.setMessage("Este archivo ya esta cargado, por favor selecione otro.");
-        builder1.setCancelable(false);
-        builder1.setPositiveButton(
-                "Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.setCanceledOnTouchOutside(false);
-        alert11.show();
-    }
-
     public void NotificacionArchivospendientes(final View view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Aun faltan archivos por cargar..");
@@ -1244,7 +1003,6 @@ public class UploadFileActivity extends AppCompatActivity {
     }
 
     public void setData(SharedPreferences sharedPref, JSONObject objeto) throws JSONException {
-
         String data = objeto.getString("codigoTransaccion");
 
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -1283,70 +1041,6 @@ public class UploadFileActivity extends AppCompatActivity {
                 break;
         }
         return getResources().getStringArray(R.array.spinner_code_employee_type)[i];
-    }
-
-
-    private class LoadinAsyncTask extends AsyncTask<Void,Integer,Boolean> {
-        public LoadinAsyncTask() {
-            super();
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //progressBar.setMax(100);
-            //progressBar.setProgress(0);
-            myDialog.setContentView(R.layout.loading_page);
-            myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myDialog.show();
-            // Hilo principal
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            //uploadFilesPresenter.PostGuardarDocumentos(fileUpload,view.getContext(),idSujeroCredito);
-            try
-            {
-                // Wait till the count down latch opens.In the given case till five
-                // times countDown method is invoked
-                executionCompleted.await();
-                System.out.println("All over");
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-
-            return true;
-            // Ejecutar en segundo plano
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            //progressBar.setProgress(values[0].intValue());
-            // Hilo principal
-            // Se conecta con hilo principal
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aVoid) {
-            // super.onPostExecute(aVoid);
-            if (aVoid){
-                //Toast.makeText(getBaseContext(),"Tarea larga finalizada AsynTask1111.",Toast.LENGTH_LONG).show();
-                myDialog.dismiss();
-            }
-            // Puede ser un mensaje de que el hilo a finalizado
-            // Lo que se ejecute despues de terminar el hilo
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            //Toast.makeText(getBaseContext(),"Tarea larga ha sido cancelada111.",Toast.LENGTH_LONG).show();
-            // Para cancelar el hilo mientras esta haciendo loading
-        }
     }
 
 }

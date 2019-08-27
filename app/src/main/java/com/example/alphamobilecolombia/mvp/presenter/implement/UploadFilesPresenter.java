@@ -2,165 +2,42 @@ package com.example.alphamobilecolombia.mvp.presenter.implement;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-
-import android.util.Base64;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.json.JSONObject;
-
 import android.os.Build;
-import android.os.StrictMode;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocumentRequest;
-import com.example.alphamobilecolombia.data.remote.EndPoint.PostGuardarDocumentos;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
+import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
+import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.google.gson.Gson;
+import com.example.alphamobilecolombia.utils.files.IFileStorage;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+import org.json.JSONObject;
 
-public class UploadFilesPresenter {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static HttpResponse Post(com.example.alphamobilecolombia.mvp.models.File filesUpload, Context context, String codeCreditSubject, String pathFile) {
-        final HttpResponse responseModel = new HttpResponse();
-        try {
-            //TODO: Quitar el policy y poner asíncrono
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+public class UploadFilesPresenter implements IUploadFilesPresenter {
 
-            Gson gson = new Gson();
-            List<PostSaveDocumentRequest> listDocuments = new ArrayList<PostSaveDocumentRequest>();
+    IUploadFileAdapter _iUploadFileAdapter;
+    IFileStorage _iFileStorage;
+    Context _context;
+    CountDownLatch executionCompleted;
+    List<HttpResponse> listResponses = new ArrayList<>();
+    List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();
+    List<com.example.alphamobilecolombia.mvp.models.File> listFiles = null;
 
-            SharedPreferences sharedPref = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
-            String user = sharedPref.getString("idUser", "");
-
-                String nameFile = filesUpload.getName();
-                File fileLocal;
-                boolean isValidUpload = false;
-                String pathFileLocal = pathFile+"/"+nameFile;
-                String base64 = "";
-                try {
-                    fileLocal = new File(pathFileLocal);
-
-                    byte[] buffer = new byte[(int) fileLocal.length() + 100];
-                    int length = new FileInputStream(fileLocal).read(buffer);
-                    base64 = Base64.encodeToString(buffer, 0, length,
-                            Base64.DEFAULT);
-                    isValidUpload = true;
-                } catch (Exception ex) {
-                    LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),codeCreditSubject,ex,context);
-                    System.out.println("Ha ocurrido un error en la lectura del archivo! "+ex.getMessage());
-                    ex.printStackTrace();
-                }
-
-                if(isValidUpload) {
-                    PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
-                    newDocument.setRutaArchivo(nameFile);
-                    newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
-                    newDocument.setTipoArchivoID(GetIdDocument(filesUpload.getType()));
-                    newDocument.setTipoArchivoNombre(filesUpload.getType());
-                    newDocument.setUsuarioRegistroID(Integer.parseInt(user));
-                    newDocument.setExtensionArchivo(".jpg");
-                    newDocument.setNombreArchivo(nameFile);
-                    newDocument.setArchivo(base64);
-
-                    listDocuments.add(newDocument);
-                    //fileLocal.delete();
-
-                    String data = gson.toJson(listDocuments);
-                    RequestBody body1 = RequestBody.create(MediaType.parse("application/json"), data);
-                    OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                            .connectTimeout(60, TimeUnit.SECONDS)
-                            .readTimeout(60, TimeUnit.SECONDS)
-                            .writeTimeout(60, TimeUnit.SECONDS)
-                            .build();
-
-                    //TODO: Cambiar a implementación de flavors
-                    String urlApi = ApiEnviroment.GetIpAddressApi(context.getResources().getString(R.string.api_storage),context);//Obtener Ip a partir de configuración
-                    Retrofit retrofit = new Retrofit.Builder().baseUrl(urlApi).client(okHttpClient).addConverterFactory(ScalarsConverterFactory.create()).build();
-                    PostGuardarDocumentos postService = retrofit.create(PostGuardarDocumentos.class);
-
-                    Call<String> call = postService.Upload(body1);
-                    Response response = null;
-
-                    try{
-                        response = call.execute();
-                    }
-                    catch (Exception ex){
-                        System.out.println("Ha ocurrido un error en la ejecución! "+ex.getMessage());
-                        System.out.println("Ha ocurrido un error! Traza: "+ex.getStackTrace());
-                        System.out.println("Ha ocurrido un error! "+ ex);
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),codeCreditSubject,ex,context);
-                    }
-
-                    JSONObject jsonObject;
-                    if (response != null) {
-                        if (!(response.code() != 200)) {
-                            jsonObject = new JSONObject(response.body().toString());
-                            String value = jsonObject.toString();
-                            responseModel.setCode(String.valueOf(response.code()));
-                            responseModel.setData(jsonObject);
-                            responseModel.setMessage(response.message());
-                            responseModel.setSendData(data);
-                            responseModel.setNameFile(filesUpload.getName());
-                        } else {
-                            String errorResponse = response.errorBody().string();
-                            System.out.println("Trama de error! "+ errorResponse);
-                            try {
-                                JSONObject object = new JSONObject(errorResponse);
-                                responseModel.setCode(String.valueOf(response.code()));
-                                responseModel.setData(object);
-                                responseModel.setMessage(String.valueOf(object.get("mensaje")));
-                                responseModel.setSendData(data);
-                                responseModel.setNameFile(filesUpload.getName());
-                            }
-                            catch (Exception ex){
-                                responseModel.setCode(String.valueOf(response.code()));
-                                responseModel.setData(errorResponse);
-                                responseModel.setMessage("Error mapeo a json de error");
-                                responseModel.setSendData(data);
-                                responseModel.setNameFile(filesUpload.getName());
-                                LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),codeCreditSubject,ex,context);
-                            }
-
-                        }
-                    }
-
-                    return responseModel;
-                }
-
-        }
-        catch (Exception ex){
-            System.out.println("Ha ocurrido un error! "+ ex.getMessage());
-            System.out.println("Ha ocurrido un error! Traza: "+ex.getStackTrace());
-            System.out.println("Ha ocurrido un error! "+ ex);
-            ex.printStackTrace();
-            Log.d("Error servicio", String.valueOf(ex.getStackTrace()));
-            LogError.SendErrorCrashlytics(context.getClass().getSimpleName(),codeCreditSubject,ex,context);
-        }
-        return null;
+    public UploadFilesPresenter(IUploadFileAdapter iUploadFileAdapter, IFileStorage iFileStorage, Context context){
+        _iUploadFileAdapter = iUploadFileAdapter;
+        _iFileStorage = iFileStorage;
+        _context = context;
     }
 
-
-    public static int GetIdDocument(String name){
+    private int GetIdDocument(String name){
         int idDocument = 0;
 
         switch(name){
@@ -205,5 +82,160 @@ public class UploadFilesPresenter {
         return idDocument;
     }
 
+    private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile){
+        String base64 = _iFileStorage.GetFile(fileUpload.getName(),codeCreditSubject,pathFile);
+        String pathFileLocal = pathFile+"/"+fileUpload.getName();
+
+        SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String user = sharedPref.getString("idUser", "");
+
+        PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
+        newDocument.setRutaArchivo(fileUpload.getName());
+        newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
+        newDocument.setTipoArchivoID(GetIdDocument(fileUpload.getType()));
+        newDocument.setTipoArchivoNombre(fileUpload.getType());
+        newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+        newDocument.setExtensionArchivo(".jpg");
+        newDocument.setNombreArchivo(fileUpload.getName());
+        newDocument.setArchivo(base64);
+
+       return _iUploadFileAdapter.Post(newDocument);
+    }
+
+    public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile) {
+        boolean isValid = false;
+        try {
+            executionCompleted = new CountDownLatch(listUpload.size());
+            for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                try {
+                    new Thread() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                        @Override
+                        public void run() {
+                            System.out.println("Thread number :" + Thread.currentThread().getName());
+                            ApiResponse apiResponse = Upload(file, codeCreditSubject,pathFile);
+                            // One thread has completed its job
+                            executionCompleted.countDown();
+                            if (apiResponse != null) {
+                                HttpResponse httpResponse = new HttpResponse();
+                                httpResponse.setCode(apiResponse.getCodigoRespuesta().toString());
+                                httpResponse.setData(apiResponse.getData());
+                                httpResponse.setMessage(apiResponse.getMensaje());
+                                httpResponse.setNameFile(file.getName());
+                                listResponses.add(httpResponse);
+                            }
+                        }
+                    }.start();
+                } catch (Exception ex) {
+                    // TODO Auto-generated catch block
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
+                }
+            }
+            executionCompleted.await();
+            // Wait till the count down latch opens.In the given case till five
+            // times countDown method is invoked
+            System.out.println("All over");
+            System.out.println("Cantidad de respuestas " + listResponses.size());
+            isValid = ReadResponse(codeCreditSubject,pathFile);
+        }
+        catch (InterruptedException ex){
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Error en arbol de hilos ",ex,_context);
+        }
+        return isValid;
+    }
+
+    private boolean ReadResponse(String codeCreditSubject,String pathFile){
+        boolean isValidSendFiles = false;
+        if (listResponses.size() > 0) {
+            lisReintentos = new ArrayList<>();
+            for (HttpResponse httpResponse : listResponses) {
+                if (httpResponse != null) {
+                    System.out.println("Proceso de envio de archivo, Codigo de respuesta" + httpResponse.getCode());
+                    System.out.println("Proceso de envio de archivo, Mensaje de respuesta" + httpResponse.getMessage());
+                    System.out.println("Proceso de envio de archivo, Data de respuesta" + httpResponse.getData());
+                    //System.out.println("Proceso de envio de archivo, Data de envio" + httpResponse.getSendData());
+
+                    if (httpResponse.getCode() != null) {
+                        if (!httpResponse.getCode().contains("200")) {
+                            System.out.println("Paso error 400:  " + httpResponse.getCode());
+                            PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
+                            postRetriesModelResponse.setModelResponse(httpResponse);
+                            postRetriesModelResponse.setNameFile(httpResponse.getNameFile());
+                            lisReintentos.add(postRetriesModelResponse);
+                            sendErrorFailedUpload(httpResponse);
+                        } else {
+                            try {
+                                JSONObject objectCompleted = (JSONObject) httpResponse.getData();
+                                //JSONArray objectData = objectCompleted.getJSONArray("data");
+                                //JSONObject objectFile = new JSONObject(objectData.getString(0));
+                                String codigoRespuesta = objectCompleted.getString("codigoRespuesta");
+                                String nombreAnterior = objectCompleted.getString("nombreAnterior");
+                                System.out.println("nombreAnterior:  " + nombreAnterior);
+                                System.out.println("codigoRespuesta2:  " + codigoRespuesta);
+                                if (!codigoRespuesta.contains("200")) {
+                                    System.out.println("Paso error 400:  " + nombreAnterior);
+                                    PostRetriesModelResponse postRetriesModelResponse = new PostRetriesModelResponse();
+                                    postRetriesModelResponse.setModelResponse(httpResponse);
+                                    postRetriesModelResponse.setNameFile(nombreAnterior);
+                                    lisReintentos.add(postRetriesModelResponse);
+                                    sendErrorFailedUpload(httpResponse);
+                                }
+                                else{
+                                    updateUploadFile(nombreAnterior);
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Procesando respuesta " + httpResponse.getNameFile(), ex, _context);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(lisReintentos.size()>0){
+            SendFileList(pendingUpload(),codeCreditSubject,pathFile);
+        }
+        else{
+            isValidSendFiles = true;
+        }
+
+        return isValidSendFiles;
+    }
+
+    private List<com.example.alphamobilecolombia.mvp.models.File> pendingUpload(){
+        List<com.example.alphamobilecolombia.mvp.models.File> pendingFiles = new ArrayList<>();
+        for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
+            if (!file.isUpload() && file.isRequired()){
+                pendingFiles.add(file);
+            }
+        }
+
+        return pendingFiles;
+    }
+
+    private void updateUploadFile(String nameFile){
+        if(listFiles == null)
+            listFiles = _iFileStorage.GetListFiles();
+
+        for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
+
+            if(file.getName().equals(nameFile))
+            {
+                file.setUpload(true);
+            }
+        }
+    }
+
+    private void sendErrorFailedUpload(HttpResponse httpResponse){
+        try {
+            throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización "+httpResponse.getNameFile(),ex,_context);
+        }
+    }
 
 }

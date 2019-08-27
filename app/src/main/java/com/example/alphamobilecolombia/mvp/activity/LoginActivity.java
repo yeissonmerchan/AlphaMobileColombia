@@ -32,6 +32,7 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     ILoginPresenter _iLoginPresenter;
+
     public LoginActivity(){
         _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
     }
@@ -124,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     public void onClickBtn(View view) {
         validator.validate();
-
         if(validationResult) {
             TextView message = findViewById(R.id.txt_message);
             String userText = editTextUsername.getText().toString();

@@ -12,7 +12,9 @@ import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocume
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.models.Persona;
+import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.files.implement.FileStorage;
 import com.google.gson.Gson;
 
@@ -25,18 +27,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 
-public class UploadFileAdapter {
+public class UploadFileAdapter implements IUploadFileAdapter {
     IRetrofitInstance _iRetrofitInstance;
     IMapRequest _iMapRequest;
     Context _context;
-    String _pathFile;
-    FileStorage _fileStorage;
 
-    public UploadFileAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, Context context, String pathFile){
+    public UploadFileAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, Context context){
         _iRetrofitInstance = iRetrofitInstance;
         _iMapRequest = iMapRequest;
         _context = context;
-        _pathFile = pathFile;
     }
 
     public ApiResponse Post(PostSaveDocumentRequest postSaveDocumentRequest){

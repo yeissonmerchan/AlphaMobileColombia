@@ -20,20 +20,13 @@ public class OtherDiscountsActivity extends AppCompatActivity implements Adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //
         super.onCreate(savedInstanceState);
-
-        //
         setContentView(R.layout.activity_other_discounts);
-
         //***************************** Establecer campos
-
         edt_medicina_prepagada = (EditText) findViewById(R.id.edt_medicina_prepagada);
         edt_fondo_pension_voluntario = (EditText) findViewById(R.id.edt_fondo_pension_voluntario);
         edt_ahorro = (EditText) findViewById(R.id.edt_ahorro);
         edt_otros = (EditText) findViewById(R.id.edt_otros);
-
         //*****************************
     }
 
