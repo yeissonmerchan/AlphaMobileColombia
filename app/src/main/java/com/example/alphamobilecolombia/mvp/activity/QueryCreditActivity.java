@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
 import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;

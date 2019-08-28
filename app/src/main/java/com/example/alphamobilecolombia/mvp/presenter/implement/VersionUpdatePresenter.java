@@ -1,34 +1,16 @@
 package com.example.alphamobilecolombia.mvp.presenter.implement;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.StrictMode;
 
-import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.EndPoint.GetVersion;
-import com.example.alphamobilecolombia.data.remote.Models.Request.PostUserRequest;
+import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.entity.UserRoleInformation;
 import com.example.alphamobilecolombia.mvp.adapter.IVersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class VersionUpdatePresenter implements IVersionUpdatePresenter {
     private Context _context;

@@ -5,13 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
-import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
-import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;

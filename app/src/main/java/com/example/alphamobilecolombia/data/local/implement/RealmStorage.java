@@ -1,4 +1,4 @@
-package com.example.alphamobilecolombia.data.local;
+package com.example.alphamobilecolombia.data.local.implement;
 
 
 import android.content.Context;
@@ -35,7 +35,8 @@ public class RealmStorage {
                 RealmConfiguration config = new RealmConfiguration.Builder()
                         .name("alphaStorage.realm")
                         .encryptionKey(createNewKeys(context))
-                        .schemaVersion(42)
+                        .schemaVersion(1)
+                        .deleteRealmIfMigrationNeeded()
                         .build();
 
                 Realm myRealm = Realm.getInstance(config);

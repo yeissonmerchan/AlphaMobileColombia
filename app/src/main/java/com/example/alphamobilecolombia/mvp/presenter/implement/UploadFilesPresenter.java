@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.mvp.presenter.implement;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
@@ -11,10 +12,13 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
+import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
 
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -99,14 +103,26 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         newDocument.setNombreArchivo(fileUpload.getName());
         newDocument.setArchivo(base64);
 
+        updateUploadFileName(fileUpload.getType(),fileUpload.getName());
+
        return _iUploadFileAdapter.Post(newDocument);
     }
 
     public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile) {
         boolean isValid = false;
         try {
-            executionCompleted = new CountDownLatch(listUpload.size());
-            for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+            List<com.example.alphamobilecolombia.mvp.models.File> listSend = new ArrayList<>();
+            if(listFiles != null){
+                if(pendingUpload().size()>0){
+                    listSend = pendingUpload();
+                }
+            }
+            else{
+                listSend = listUpload;
+            }
+
+            executionCompleted = new CountDownLatch(listSend.size());
+            for (com.example.alphamobilecolombia.mvp.models.File file : listSend) {
                 try {
                     new Thread() {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -121,7 +137,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                                 httpResponse.setCode(apiResponse.getCodigoRespuesta().toString());
                                 httpResponse.setData(apiResponse.getData());
                                 httpResponse.setMessage(apiResponse.getMensaje());
-                                httpResponse.setNameFile(file.getName());
+                                httpResponse.setNameFile(file.getType());
                                 listResponses.add(httpResponse);
                             }
                         }
@@ -148,6 +164,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
 
     private boolean ReadResponse(String codeCreditSubject,String pathFile){
         boolean isValidSendFiles = false;
+
         if (listResponses.size() > 0) {
             lisReintentos = new ArrayList<>();
             for (HttpResponse httpResponse : listResponses) {
@@ -167,11 +184,11 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                             sendErrorFailedUpload(httpResponse);
                         } else {
                             try {
-                                JSONObject objectCompleted = (JSONObject) httpResponse.getData();
-                                //JSONArray objectData = objectCompleted.getJSONArray("data");
-                                //JSONObject objectFile = new JSONObject(objectData.getString(0));
-                                String codigoRespuesta = objectCompleted.getString("codigoRespuesta");
-                                String nombreAnterior = objectCompleted.getString("nombreAnterior");
+                                //JSONObject objectCompleted = (JSONObject) httpResponse.getData();
+                                JSONArray objectData = (JSONArray) httpResponse.getData();
+                                JSONObject objectFile = new JSONObject((String) objectData.getString(0));
+                                String codigoRespuesta = objectFile.getString("codigoRespuesta");
+                                String nombreAnterior = objectFile.getString("nombreAnterior");
                                 System.out.println("nombreAnterior:  " + nombreAnterior);
                                 System.out.println("codigoRespuesta2:  " + codigoRespuesta);
                                 if (!codigoRespuesta.contains("200")) {
@@ -183,7 +200,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                                     sendErrorFailedUpload(httpResponse);
                                 }
                                 else{
-                                    updateUploadFile(nombreAnterior);
+                                    updateUploadFile(httpResponse.getNameFile());
                                 }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
@@ -195,10 +212,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             }
         }
 
-        if(lisReintentos.size()>0){
-            SendFileList(pendingUpload(),codeCreditSubject,pathFile);
-        }
-        else{
+        if(pendingUpload().size()==0){
             isValidSendFiles = true;
         }
 
@@ -216,13 +230,27 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return pendingFiles;
     }
 
+    private void updateUploadFileName(String fileType,String nameFile){
+        if(listFiles == null)
+            listFiles = _iFileStorage.GetListFiles();
+
+        for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
+
+            if(file.getType().equals(fileType))
+            {
+                file.setName(nameFile);
+            }
+        }
+    }
+
+
     private void updateUploadFile(String nameFile){
         if(listFiles == null)
             listFiles = _iFileStorage.GetListFiles();
 
         for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
 
-            if(file.getName().equals(nameFile))
+            if(file.getType().equals(nameFile))
             {
                 file.setUpload(true);
             }

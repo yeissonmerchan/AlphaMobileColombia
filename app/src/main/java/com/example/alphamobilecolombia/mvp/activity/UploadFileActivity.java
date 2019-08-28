@@ -1,7 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,19 +12,18 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
+import com.example.alphamobilecolombia.data.local.entity.Parameter;
+import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
+import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
-import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
-import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
@@ -47,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,10 +52,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 import id.zelory.compressor.Compressor;
+import io.realm.RealmObject;
 
 
 public class UploadFileActivity extends AppCompatActivity {
@@ -81,6 +78,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
+    IRealmInstance iRealmInstance =new RealmInstance(this);
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
     }
@@ -105,6 +103,13 @@ public class UploadFileActivity extends AppCompatActivity {
         isCreateUserAndSubject = false;
 
         cleanInitImages();
+
+        Parameter newParameter = new Parameter();
+        newParameter.setKey("2234");
+        newParameter.setValue("jejejeje");
+        iRealmInstance.Insert(newParameter);
+
+        List<RealmObject> lisParameters = iRealmInstance.GetAll(newParameter);
     }
 
 
@@ -184,12 +189,12 @@ public class UploadFileActivity extends AppCompatActivity {
     public void saveFiles(View view){
         boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1);
 
-        if(isValidSendFiles){
+        if(!isValidSendFiles){
             ValidacionCargueDocumentos(view);
         }
         else{
-            Intent intento1=new Intent(view.getContext(), ProcessCompletedActivity.class);
-            startActivity(intento1);
+            Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -906,34 +911,49 @@ public class UploadFileActivity extends AppCompatActivity {
 
 
     public void SavePersonAndSubject() {
-
         Persona persona = new Persona();
-        String genero = getIntent().getStringExtra("PERSONA_Genero");
-        int generoId = 0;
-        switch (genero){
-            case "M":
-                generoId = 1;
-                break;
-            case "F":
-                generoId = 2;
-                break;
-        }
-
-        persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
-        persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
-        persona.setNombre2(getIntent().getStringExtra("PERSONA_SNombre"));
-        persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
-        persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
-        persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));
-        persona.setGenero(String.valueOf(generoId));
-        persona.setCelular(getIntent().getStringExtra("PERSONA_Celular"));
-        IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
-        IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
-        IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
-        IdPagaduria = getIntent().getStringExtra("IdPagaduria");
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
+        try {
+            String genero = getIntent().getStringExtra("PERSONA_Genero");
+            int generoId = 0;
+            switch (genero) {
+                case "M":
+                    generoId = 1;
+                    break;
+                case "F":
+                    generoId = 2;
+                    break;
+            }
 
+            persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
+            persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
+            persona.setNombre2(getIntent().getStringExtra("PERSONA_SNombre"));
+            persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
+            persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
+            persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));
+            persona.setGenero(String.valueOf(generoId));
+            persona.setCelular(getIntent().getStringExtra("PERSONA_Celular"));
+            IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
+            IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
+            IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
+            IdPagaduria = getIntent().getStringExtra("IdPagaduria");
+
+        }
+        catch (Exception ex){
+            persona.setCedula("1052407752");
+            persona.setNombre("Yeisson");
+            persona.setNombre2("Andres");
+            persona.setApellido1("Merchan");
+                persona.setApellido2("Lemus");
+            persona.setFechaNacimiento("1996/08/08");
+            persona.setGenero(String.valueOf(1));
+            persona.setCelular("234");
+            IdTipoEmpleado = "1";
+            IdTipoContrato = "2";
+            IdDestinoCredito = "1";
+            IdPagaduria = "35";
+        }
 
         ProcessCompletedPresenter presenter = new ProcessCompletedPresenter();
         HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
