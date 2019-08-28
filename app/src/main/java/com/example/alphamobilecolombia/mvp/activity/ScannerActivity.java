@@ -267,24 +267,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         // TODO Auto-generated method stub
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("Lifecycle", "onPause()");
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Lifecycle", "onStop()");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Runtime.getRuntime().gc();
-        Log.d("Lifecycle", "onDestroy()");
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -346,6 +329,13 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                     storage.savePerson(contextView, person);
 
+                    edt_names.setEnabled(false);
+                    edt_names2.setEnabled(false);
+                    edt_lastNames.setEnabled(false);
+                    edt_lastNames2.setEnabled(false);
+                    edt_numberIdentification.setEnabled(false);
+                    textview_fecha_nacimiento.setEnabled(false);
+                    spinner_genero.setEnabled(false);
 
                 } else {
                     NotificacionErrorDatos(contextView);
@@ -387,6 +377,29 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Lifecycle", "onPause()");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Lifecycle", "onStop()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+        Log.d("Lifecycle", "onDestroy()");
+    }
+
 
 }
 
