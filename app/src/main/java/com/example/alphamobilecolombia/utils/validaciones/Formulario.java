@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Formulario {
@@ -36,6 +37,7 @@ public class Formulario {
     //<arrayId>Define los Ids de los campos a obtener de la pagina especificada</arrayId>
     public boolean Validar(AppCompatActivity pagina, Class<?> clase, String[] arrayId) {
 
+        Hashtable<String, String> ListaValores = new Hashtable<String, String>(); //Define la lista de valores
         ArrayList<String> ListaErrores = new ArrayList<String>(); //Define la lista de errores
 
         for (int Indice = 0; Indice < arrayId.length; Indice++) { //Recorre la lista de Ids de los controles
@@ -45,23 +47,25 @@ public class Formulario {
             View Control = pagina.findViewById(Id); //Obtiene el control
 
             if (Control != null) {
-                //Si el texto x está vacío entonces
+
+                String Texto = "";
+
+                //Si el control x es un TextView entonces
                 if (Control instanceof TextView) {
-                    String Texto = ((TextView) Control).getText().toString();
-                    if (TextUtils.isEmpty(Texto.trim())) {
-                        ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
-                    }
-                    //Si el campo x está vacío entonces
+                    Texto = ((TextView) Control).getText().toString();
+                    //Si el control x es un EditText entonces
                 } else if (Control instanceof EditText) {
-                    String Texto = ((EditText) Control).getText().toString();
-                    if (TextUtils.isEmpty(Texto.trim())) {
-                        ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
-                    }
-                    //Si el spinner x está vacío entonces
-                } else if (Control instanceof Spinner) {
-                    if (((Spinner) Control).getSelectedItem() == null) {
-                        ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
-                    }
+                    Texto = ((EditText) Control).getText().toString();
+                    //Si el control x es Spinner entonces
+                } else if (Control instanceof Spinner && ((Spinner) Control).getSelectedItem() != null) {
+                    Texto = ((Spinner) Control).getSelectedItem().toString();
+                }
+
+                //Si el texto es vacío entonces
+                if (TextUtils.isEmpty(Texto.trim())) {
+                    ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
+                } else {
+                    ListaValores.put(arrayId[Indice], Texto);
                 }
             }
         }
@@ -71,6 +75,10 @@ public class Formulario {
             Toast.makeText(pagina.getApplicationContext(), ListaErrores.get(0), Toast.LENGTH_LONG).show(); //Muestra el mensaje
             return false; //Retorna falso
         } else {
+
+            //Guardar en Realm
+
+
             //Pasar a la siguiente pagina
             Intent intent = new Intent(pagina, clase);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
