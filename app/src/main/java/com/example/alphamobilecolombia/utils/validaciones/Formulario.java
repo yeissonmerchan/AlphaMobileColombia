@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
+import com.example.alphamobilecolombia.data.local.entity.Parameter;
+import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.AdditionalDataActivity;
@@ -25,11 +28,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
+import io.realm.RealmObject;
 
 public class Formulario {
-
 
     //<summary>Valida la pagina</summary>
     //<pagina>Define la pagina que tiene los controles a validar</pagina>
@@ -37,7 +44,7 @@ public class Formulario {
     //<arrayId>Define los Ids de los campos a obtener de la pagina especificada</arrayId>
     public boolean Validar(AppCompatActivity pagina, Class<?> clase, String[] arrayId) {
 
-        Hashtable<String, String> ListaValores = new Hashtable<String, String>(); //Define la lista de valores
+        List<Parameter> ListaValores = new ArrayList<>(); //Define la lista de valores
         ArrayList<String> ListaErrores = new ArrayList<String>(); //Define la lista de errores
 
         for (int Indice = 0; Indice < arrayId.length; Indice++) { //Recorre la lista de Ids de los controles
@@ -65,7 +72,10 @@ public class Formulario {
                 if (TextUtils.isEmpty(Texto.trim())) {
                     ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
                 } else {
-                    ListaValores.put(arrayId[Indice], Texto);
+                    Parameter Parametro = new Parameter();
+                    Parametro.setKey(arrayId[Indice]);
+                    Parametro.setValue(Texto);
+                    ListaValores.add(Parametro);
                 }
             }
         }
@@ -77,7 +87,11 @@ public class Formulario {
         } else {
 
             //Guardar en Realm
+            IRealmInstance iRealmInstance = new RealmInstance(pagina.getApplicationContext());
 
+            for (Parameter Parametro : ListaValores) {
+                iRealmInstance.Insert(Parametro);
+            }
 
             //Pasar a la siguiente pagina
             Intent intent = new Intent(pagina, clase);
@@ -147,7 +161,40 @@ public class Formulario {
                 spinner.setAdapter(adapter_destino_credito);
                 break;
         }
-
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    //Obtiene el valor especificado
+    public String ObtenerValor(AppCompatActivity pagina, String Llave) {
+        IRealmInstance iRealmInstance = new RealmInstance(pagina);
+        Parameter newParameter = new Parameter();
+        newParameter.setKey("2234"); //Valor quemado
+        newParameter.setValue("jejejeje"); //Valor quemado
+        iRealmInstance.Insert(newParameter);
+
+        List<RealmObject> lisParameters = iRealmInstance.GetAll(newParameter); //Actualmente se pasa Parameter para que pueda obtener los objetos del tipo especificado
+
+        for (RealmObject ObjetoRealm : lisParameters) {
+
+            Parameter Parametro = (Parameter) ObjetoRealm;
+
+            if (Parametro.getKey().trim().toUpperCase() == Llave.trim().toUpperCase()) {
+                return Parametro.getValue();
+            }
+        }
+
+        return  "";
+    }
+
+
 }

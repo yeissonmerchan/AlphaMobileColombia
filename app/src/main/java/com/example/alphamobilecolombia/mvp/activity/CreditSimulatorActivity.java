@@ -14,7 +14,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
+import com.example.alphamobilecolombia.data.local.entity.Parameter;
+import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
+
+import java.util.List;
+
+import io.realm.RealmObject;
 
 public class CreditSimulatorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     //Define el control campo monto a desembolsar
@@ -29,8 +36,8 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
         edt_monto_a_desembolsar = (EditText) findViewById(R.id.edt_monto_a_desembolsar);
         edt_cuota = (EditText) findViewById(R.id.edt_cuota);
 
-        SeekBar sk = (SeekBar) findViewById(R.id.seekbar_plazo);
-        sk.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        SeekBar seekbar_plazo = (SeekBar) findViewById(R.id.seekbar_plazo);
+        seekbar_plazo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 TextView t = (TextView) findViewById(R.id.textView4);
@@ -47,6 +54,14 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
 
             }
         });
+
+        String tipo_cliente = new Formulario().ObtenerValor(this, "spinner_tipo_cliente"); //Obtiene el tipo de cliente
+
+        if (tipo_cliente == "EMPLEADO") {
+            seekbar_plazo.setMax(84);
+        } else if (tipo_cliente == "PENSIONADO") {
+            seekbar_plazo.setMax(108);
+        }
     }
 
     @Override
