@@ -22,7 +22,6 @@ import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import java.util.Calendar;
 
 public class AdditionalDataActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
     //Define los controles combobox
     private Spinner spinner_departamento_expedicion_cedula, spinner_ciudad_expedicion_cedula;
 
