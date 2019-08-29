@@ -34,7 +34,7 @@ public class CreditSubjectAdapter implements ICreditSubjectAdapter {
     public ApiResponse Post(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         PostSujetoCredito service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSujetoCredito.class);
 
         Gson gson = new Gson();
@@ -46,7 +46,7 @@ public class CreditSubjectAdapter implements ICreditSubjectAdapter {
     }
 
     public Call<String> PostAsync(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster){
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         Gson gson = new Gson();
         String data = gson.toJson(new PostSujetoInsertarRequest(codeTransaction, typeEmployee, typeContract, creditDestination,  registryUser, codePayMaster));
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);

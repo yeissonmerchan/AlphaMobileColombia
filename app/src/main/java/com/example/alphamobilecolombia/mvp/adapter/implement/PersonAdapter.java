@@ -34,7 +34,7 @@ public class PersonAdapter implements IPersonAdapter {
     public ApiResponse Post(Persona person, String idUser){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         PostPersonaInsertar service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostPersonaInsertar.class);
 
         Gson gson = new Gson();
@@ -46,7 +46,7 @@ public class PersonAdapter implements IPersonAdapter {
     }
 
     public Call<String> PostAsync(Persona person, String idUser){
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         Gson gson = new Gson();
         String data = gson.toJson(new PostPersonaInsertarRequest(person.getCedula(), person.getNombre(), person.getNombre2(), person.getApellido1(), person.getApellido2(), person.getGenero(), person.getFechaNacimiento(), person.getCelular(), idUser));
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);

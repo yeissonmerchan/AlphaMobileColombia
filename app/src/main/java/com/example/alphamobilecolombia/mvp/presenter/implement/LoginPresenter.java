@@ -58,6 +58,5 @@ public class LoginPresenter implements ILoginPresenter {
 
     public String MessageError(){
         return messageError;
-
     }
 }

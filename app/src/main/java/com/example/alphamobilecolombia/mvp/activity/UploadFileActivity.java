@@ -21,6 +21,8 @@ import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
@@ -79,8 +81,12 @@ public class UploadFileActivity extends AppCompatActivity {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
     IRealmInstance iRealmInstance =new RealmInstance(this);
+    ICreditSubjectPresenter _iCreditSubjectPresenter;
+    IPersonPresenter _iPersonPresenter;
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
+        _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
+        _iPersonPresenter = diContainer.injectDIIPersonPresenter(this);
     }
 
     @Override
@@ -955,6 +961,22 @@ public class UploadFileActivity extends AppCompatActivity {
             IdPagaduria = "35";
         }
 
+        boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona,user);
+        if (isSuccessPerson){
+            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona,user,_iPersonPresenter.GetIdPerson());
+            if(isSuccessSubjectCredit){
+                idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
+                isCreateUserAndSubject = true;
+            }
+            else {
+                NotificacionErrorDatos(this.context);
+            }
+        }
+        else {
+            NotificacionErrorDatos(this.context);
+        }
+
+        /*
         ProcessCompletedPresenter presenter = new ProcessCompletedPresenter();
         HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
 
@@ -1000,8 +1022,8 @@ public class UploadFileActivity extends AppCompatActivity {
         else{
             NotificacionErrorDatos(this.context);
         }
+        */
     }
-
 
     public void NotificacionErrorDatos(final Context view){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
