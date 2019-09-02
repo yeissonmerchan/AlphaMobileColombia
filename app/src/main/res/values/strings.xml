@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="environment_release">DEV</string>
+    <string name="environment_release">PRE</string>
     <string name="environment_development">DEV</string>
 
     <!-- Ips de dev -->
@@ -50,7 +50,7 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">Usuario o contraseña invalido</string>
+    <string name="login_failed">Usuario o contraseña inválido</string>
     <string name="login_incorrect">Usuario o contraseña son obligatorios</string>
 
     <string name="btn_new_request">Nueva solicitud</string>
@@ -75,6 +75,9 @@
     <string name="title_activity_modulo"></string>
     <string name="title_activity_login">Check</string>
     <string name="title_activity_version_update"></string>
+
+    <string name="alert_activity_module">Aceptar</string>
+    <string name="alert_activity_module_c">Cancelar</string>
 
 
     <string-array name="spinner_credit_destination">
