@@ -3,6 +3,8 @@ package com.example.alphamobilecolombia.utils;
 import android.content.ComponentName;
 import android.content.Context;
 
+import com.example.alphamobilecolombia.data.cloud.firestore.ICloudStoreInstance;
+import com.example.alphamobilecolombia.data.cloud.firestore.implement.CloudStoreInstance;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
@@ -38,8 +40,8 @@ public class DependencyInjectionContainer {
         return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),context);
     }
 
-    public ILoginPresenter injectDIILoginPresenter (Context context){
-        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing());
+    public ILoginPresenter injectDIILoginPresenter(Context context){
+        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing(),injectICloudStoreInstance(context));
     }
 
     public IVersionUpdatePresenter injectDIIVersionUpdatePresenter (Context context){
@@ -53,7 +55,7 @@ public class DependencyInjectionContainer {
 
     public IPersonPresenter injectDIIPersonPresenter(Context context)
     {
-        return new PersonPresenter(injectDIIPersonAdapter(context));
+        return new PersonPresenter(injectDIIPersonAdapter(context),context);
     }
     //End Presenters
 
@@ -83,6 +85,10 @@ public class DependencyInjectionContainer {
     //End Adapters
 
     //Start Configurations
+    private ICloudStoreInstance injectICloudStoreInstance(Context context){
+        return new CloudStoreInstance(context);
+    }
+
     private IRetrofitInstance injectIRetrofitInstance(){
         return new RetrofitInstance();
     }

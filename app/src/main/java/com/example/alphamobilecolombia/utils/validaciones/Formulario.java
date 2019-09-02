@@ -21,6 +21,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.AdditionalDataActivity;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -87,7 +88,7 @@ public class Formulario {
         } else {
 
             //Guardar en Realm
-            IRealmInstance iRealmInstance = new RealmInstance(pagina.getApplicationContext());
+            IRealmInstance iRealmInstance = new RealmInstance(pagina.getApplicationContext(), new RSA(pagina.getApplicationContext()));
 
             for (Parameter Parametro : ListaValores) {
                 iRealmInstance.Insert(Parametro);
@@ -176,7 +177,7 @@ public class Formulario {
 
     //Obtiene el valor especificado
     public String ObtenerValor(AppCompatActivity pagina, String Llave) {
-        IRealmInstance iRealmInstance = new RealmInstance(pagina);
+        IRealmInstance iRealmInstance = new RealmInstance(pagina, new RSA(pagina.getBaseContext()));
         Parameter newParameter = new Parameter();
         newParameter.setKey("2234"); //Valor quemado
         newParameter.setValue("jejejeje"); //Valor quemado

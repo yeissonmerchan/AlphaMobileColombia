@@ -30,6 +30,7 @@ import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
+import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -80,7 +81,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
-    IRealmInstance iRealmInstance =new RealmInstance(this);
+    IRealmInstance iRealmInstance =new RealmInstance(this, new RSA(this));
     ICreditSubjectPresenter _iCreditSubjectPresenter;
     IPersonPresenter _iPersonPresenter;
     public UploadFileActivity(){
@@ -111,11 +112,21 @@ public class UploadFileActivity extends AppCompatActivity {
         cleanInitImages();
 
         Parameter newParameter = new Parameter();
-        newParameter.setKey("2234");
-        newParameter.setValue("jejejeje");
+        newParameter.setKey("campo1");
+        newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
         iRealmInstance.Insert(newParameter);
 
+        Parameter newParameter2 = new Parameter();
+        newParameter2.setKey("campo2");
+        newParameter2.setValue("673478487456");
+        iRealmInstance.Insert(newParameter2);
+
         List<RealmObject> lisParameters = iRealmInstance.GetAll(newParameter);
+        List<Parameter> lisParameters2 = iRealmInstance.GetAllGeneric(newParameter);
+
+        Parameter busqueda = iRealmInstance.GetByAttribute(newParameter,"Key",newParameter.getKey());
+        String key = busqueda.getKey();
+        String value = busqueda.getValue();
     }
 
 
