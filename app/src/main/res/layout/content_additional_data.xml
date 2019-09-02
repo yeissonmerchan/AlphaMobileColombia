@@ -41,30 +41,6 @@
                 android:typeface="serif" />
 
             <TextView
-                android:id="@+id/txtdepartamento_expedicion_cedula"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:drawSelectorOnTop="true"
-                android:ems="20"
-                android:inputType="textMultiLine"
-                android:longClickable="true"
-                android:scrollbars="vertical"
-                android:text="Departamento expedición cédula *"
-                android:textColor="@color/colorHeader"
-                android:textSize="18dp"
-                android:typeface="serif" />
-
-            <Spinner
-                android:id="@+id/spinner_departamento_expedicion_cedula"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
                 android:id="@+id/txtDestino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,44 +57,71 @@
                 android:textSize="18dp"
                 android:typeface="serif" />
 
-            <Spinner
-                android:id="@+id/spinner_ciudad_expedicion_cedula"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/txtfecha_expedicion_cedula"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:drawSelectorOnTop="true"
-                android:ems="20"
-                android:inputType="textMultiLine"
-                android:longClickable="true"
-                android:scrollbars="vertical"
-                android:text="Fecha expedición cédula *"
-                android:textColor="@color/colorHeader"
-                android:textSize="18dp"
-                android:typeface="serif" />
-
-            <EditText
-                android:id="@+id/edt_fecha_expedicion_cedula"
+            <SearchView
+                android:id="@+id/search_ciudad_expedicion_cedula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="10dp"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="Seleccione una fecha"
-                android:inputType="date"
-                android:maxLines="1"
-                android:textSize="@dimen/size_text" />
+                android:iconifiedByDefault="false"
+                android:queryHint="Busque una ciudad"
+                android:searchIcon="@null">
+                android:tag="ciudad de expedición de cédula"
+                <requestFocus />
+            </SearchView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtfecha_expedicion_cedula"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="10dp"
+                        android:drawSelectorOnTop="true"
+                        android:ems="20"
+                        android:inputType="textMultiLine"
+                        android:longClickable="true"
+                        android:scrollbars="vertical"
+                        android:text="Fecha expedición cédula *"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="18dp"
+                        android:typeface="serif" />
+
+                    <EditText
+                        android:id="@+id/edt_fecha_expedicion_cedula"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="10dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Seleccione una fecha"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:textSize="@dimen/size_text"
+                        android:tag="fecha de expedición de cédula"
+                        />
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listview_ciudad_expedicion_cedula"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="gone" />
+
+            </RelativeLayout>}
 
         </LinearLayout>
 
@@ -152,3 +155,35 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--            <Spinner
+                    android:id="@+id/spinner_ciudad_expedicion_cedula"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />-->
+
+    <!--            <TextView
+                    android:id="@+id/txtdepartamento_expedicion_cedula"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="10dp"
+                    android:drawSelectorOnTop="true"
+                    android:ems="20"
+                    android:inputType="textMultiLine"
+                    android:longClickable="true"
+                    android:scrollbars="vertical"
+                    android:text="Departamento expedición cédula *"
+                    android:textColor="@color/colorHeader"
+                    android:textSize="18dp"
+                    android:typeface="serif" />
+
+                <Spinner
+                    android:id="@+id/spinner_departamento_expedicion_cedula"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />-->

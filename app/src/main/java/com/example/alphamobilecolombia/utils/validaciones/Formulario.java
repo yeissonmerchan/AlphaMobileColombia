@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsSpinner;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +24,7 @@ import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.AdditionalDataActivity;
+import com.example.alphamobilecolombia.mvp.activity.ListViewAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
@@ -70,7 +76,10 @@ public class Formulario {
 
                 //Si el texto es vacío entonces
                 if (TextUtils.isEmpty(Texto.trim())) {
-                    ListaErrores.add("El campo " + arrayId[Indice] + " es obligatorio");
+
+                    String Textico = Control.getTag() == null? arrayId[Indice] : Control.getTag().toString();
+
+                    ListaErrores.add("El campo " + Textico + " es obligatorio"); //arrayId[Indice]
                 } else {
                     Parameter Parametro = new Parameter();
                     Parametro.setKey(arrayId[Indice]);
@@ -102,27 +111,63 @@ public class Formulario {
     }
 
     //Carga el Spinner especificado
-    public void Cargar(AppCompatActivity pagina, Spinner spinner) {
+    public void Cargar(AppCompatActivity pagina, AdapterView spinner) {
 
         ArrayAdapter<CharSequence> adapter; //Define el adaptador
 
         switch (spinner.getId()) {
             /*******************************************************************/
             case R.id.spinner_genero:
-                spinner = (Spinner) pagina.findViewById(R.id.spinner_genero); //Establece el Spinner
+                /*                spinner = (AbsListView) pagina.findViewById(R.id.spinner_genero); //Establece el Spinner*/
                 adapter = ArrayAdapter.createFromResource(pagina, R.array.spinner_gender, android.R.layout.simple_spinner_item); //Establece el adaptador del recurso
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Establece el diseño del adaptador
                 spinner.setAdapter(adapter); //Establece el adaptador al Spinner
                 break;
             /*******************************************************************/
             case R.id.spinner_tipo_cliente:
-                spinner = (Spinner) pagina.findViewById(R.id.spinner_tipo_cliente);
+                /*                spinner = (AbsListView) pagina.findViewById(R.id.spinner_tipo_cliente);*/
                 adapter = ArrayAdapter.createFromResource(pagina, R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter);
                 break;
             /*******************************************************************/
-            case R.id.spinner_pagaduria:
+            case R.id.listview_pagaduria:
+
+                List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
+
+                ScannerPresenter scannerPresenter = new ScannerPresenter();
+                HttpResponse response = scannerPresenter.getPaying(pagina);
+                JSONObject data = (JSONObject) response.getData();
+                try {
+                    JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+                    GetPagaduriasRequest getPagaduriasRequest;
+                    for (int i = 0; i < jSONArray.length(); i++) {
+                        getPagaduriasRequest = new GetPagaduriasRequest();
+                        JSONObject object = (JSONObject) jSONArray.get(i);
+                        getPagaduriasRequest.setId(Integer.parseInt(object.getString("id")));
+                        getPagaduriasRequest.setNombre(object.getString("nombre"));
+                        pagadurias.add(getPagaduriasRequest);
+                    }
+                } catch (JSONException ex) {
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Pagadurías", ex, pagina);
+                }
+
+                List<String> names = new ArrayList<>();
+
+                for (GetPagaduriasRequest p : pagadurias) {
+                    names.add(p.getNombre());
+                }
+
+                // Pass results to ListViewAdapter Class
+                ListViewAdapter Adaptador = new ListViewAdapter(pagina, names);
+
+                // Binds the Adapter to the ListView
+                spinner.setAdapter(Adaptador);
+
+                break;
+            /*******************************************************************/
+/*            case R.id.spinner_pagaduria:
                 List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
                 ScannerPresenter scannerPresenter = new ScannerPresenter();
                 HttpResponse response = scannerPresenter.getPaying(pagina);
@@ -152,7 +197,7 @@ public class Formulario {
                 spinner = (Spinner) pagina.findViewById(R.id.spinner_pagaduria);
                 spinner.setAdapter(adapter);
 
-                break;
+                break;*/
             /*******************************************************************/
             case R.id.spinner_destino_credito:
                 spinner = (Spinner) pagina.findViewById(R.id.spinner_destino_credito);
@@ -160,18 +205,25 @@ public class Formulario {
                 adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(adapter_destino_credito);
                 break;
+            case R.id.listview_ciudad_expedicion_cedula:
+
+                List<String> Listica = new ArrayList<>();
+
+                Listica.add("Santa marta (Cordoba)");
+                Listica.add("Santa marta (Magdalena)");
+                Listica.add("Bogotá (Cundinamarca)");
+                Listica.add("Barranquilla (Atlantico)");
+                Listica.add("Barranquilla (Antioquia)");
+
+                // Pass results to ListViewAdapter Class
+                ListViewAdapter Adaptador2 = new ListViewAdapter(pagina, Listica);
+
+                // Binds the Adapter to the ListView
+                spinner.setAdapter(Adaptador2);
+
+                break;
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
     //Obtiene el valor especificado
@@ -193,7 +245,7 @@ public class Formulario {
             }
         }
 
-        return  "";
+        return "";
     }
 
 

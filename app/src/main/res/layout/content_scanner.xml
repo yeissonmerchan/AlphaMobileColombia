@@ -76,7 +76,9 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
                 android:maxLength="50"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="primer nombre"
+                />
 
             <TextView
                 android:id="@+id/txtNombres2"
@@ -108,7 +110,9 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
                 android:maxLength="50"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="segundo nombre"
+                />
 
             <TextView
                 android:id="@+id/txtApellidos"
@@ -125,7 +129,8 @@
                 android:text="Primer apellido *"
                 android:textColor="@color/colorHeader"
                 android:textSize="18dp"
-                android:typeface="serif" />
+                android:typeface="serif"
+                />
 
             <EditText
                 android:id="@+id/edt_lastNames"
@@ -140,7 +145,9 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
                 android:maxLength="50"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="primer apellido"
+                />
 
             <TextView
                 android:id="@+id/txtApellidos2"
@@ -157,7 +164,8 @@
                 android:text="Segundo apellido"
                 android:textColor="@color/colorHeader"
                 android:textSize="18dp"
-                android:typeface="serif" />
+                android:typeface="serif"
+                />
 
             <EditText
                 android:id="@+id/edt_lastNames2"
@@ -172,7 +180,9 @@
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
                 android:maxLength="50"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="segundo apellido"
+                />
 
 
             <TextView
@@ -203,7 +213,9 @@
                 android:hint="Número identificación"
                 android:inputType="number"
                 android:maxLength="11"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="número de identificación"
+                />
 
             <TextView
                 android:id="@+id/txtFechaNac"
@@ -235,7 +247,9 @@
                 android:hint="Seleccione una fecha"
                 android:inputType="date"
                 android:maxLines="1"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"
+                android:tag="fecha de nacimiento"
+                />
 
             <TextView
                 android:id="@+id/txtGenero"
@@ -259,7 +273,9 @@
                 style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:tag="genero"
+                />
 
             <Button
                 android:id="@+id/btn_new_request"
