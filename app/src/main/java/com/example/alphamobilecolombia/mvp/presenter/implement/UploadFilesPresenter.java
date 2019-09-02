@@ -11,8 +11,12 @@ import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocume
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
+import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
@@ -30,6 +34,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
     IUploadFileAdapter _iUploadFileAdapter;
     IFileStorage _iFileStorage;
     Context _context;
+
     CountDownLatch executionCompleted;
     List<HttpResponse> listResponses = new ArrayList<>();
     List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();

@@ -88,6 +88,12 @@ dependencies {
 
     //Input money
     implementation 'me.abhinay.input:currency-edittext:1.1'
+
+    //Firebase Database
+    implementation 'com.google.firebase:firebase-database:9.2.1'
+    //implementation 'com.google.firebase:firebase-analytics:17.0.1'
+    //implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
