@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             String passwordText = editTextPassword.getText().toString();
             Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
             if (isValid){
-                Intent intent = new Intent(view.getContext(), UploadFileActivity.class);
+                Intent intent = new Intent(view.getContext(), ScannerActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivityForResult(intent, 0);
             }
