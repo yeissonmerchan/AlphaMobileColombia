@@ -4,14 +4,14 @@
     <string name="environment_development">DEV</string>
 
     <!-- Ips de dev -->
-    <string name="dev_ip_api_authentication">http://192.168.100.22:8089/</string>
-    <string name="dev_ip_api_storage">http://181.57.145.20:8083/</string>
-    <string name="dev_ip_api_generic">http://181.57.145.20:8081/</string>
+    <string name="dev_ip_api_authentication">http://192.168.100.22:8081/Security/</string>
+    <string name="dev_ip_api_storage">http://192.168.100.22:8081/Storage/</string>
+    <string name="dev_ip_api_generic">http://192.168.100.22:8081/Generic/</string>
 
     <!-- Ips de pre-produccion -->
-    <string name="pre_ip_api_authentication">http://181.57.145.20:8082/</string>
-    <string name="pre_ip_api_storage">http://181.57.145.20:8083/</string>
-    <string name="pre_ip_api_generic">http://181.57.145.20:8081/</string>
+    <string name="pre_ip_api_authentication">http://192.168.100.22:8082/Security/</string>
+    <string name="pre_ip_api_storage">http://192.168.100.22:8082/Storage/</string>
+    <string name="pre_ip_api_generic">hhttp://192.168.100.22:8082/Generic/</string>
 
     <!-- Ips de produccion -->
     <string name="pro_ip_api_authentication">http://apps.vivecreditos.com:8081/</string>
@@ -50,7 +50,7 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">Usuario o contraseña invalido</string>
+    <string name="login_failed">Usuario o contraseña inválido</string>
     <string name="login_incorrect">Usuario o contraseña son obligatorios</string>
 
     <string name="btn_new_request">Nueva solicitud</string>
@@ -75,6 +75,14 @@
     <string name="title_activity_modulo"></string>
     <string name="title_activity_login">Check</string>
     <string name="title_activity_version_update"></string>
+
+    <!-- ModuleActivity _ViewFloating -->
+    <string name="alert_activity_module">Aceptar</string>
+    <string name="alert_activity_module_c">Cancelar</string>
+    <!-- ViewFloating -->
+    <string name="text_view">Vista previa</string>
+    <string name="text_upload">Tomar foto</string>
+    <string name="text_load_gallery">Elegir de galería</string>
 
 
     <string-array name="spinner_credit_destination">

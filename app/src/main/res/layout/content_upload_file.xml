@@ -62,8 +62,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -107,6 +106,16 @@
                             android:onClick="tomarFoto"
                             android:text=""></Button>
 
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btnFab1"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:text=""
+                            app:fabSize="normal"
+                            app:backgroundTint="@color/colorHeaderBack"/>
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -120,8 +129,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView1"
@@ -157,8 +165,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -201,6 +208,16 @@
                             android:layout_height="30dp"
                             android:onClick="tomarFoto"
                             android:text=""></Button>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btnFab2"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:text=""
+                            app:fabSize="normal"
+                            app:backgroundTint="@color/colorHeaderBack"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -214,8 +231,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -276,8 +292,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -320,6 +335,16 @@
                             android:onClick="tomarFoto"
                             android:text=""></Button>
 
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btnFab3"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:text=""
+                            app:fabSize="normal"
+                            app:backgroundTint="@color/colorHeaderBack"/>
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -333,8 +358,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView3"
@@ -369,8 +393,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -412,6 +435,14 @@
                             android:layout_height="30dp"
                             android:onClick="tomarFoto"
                             android:text=""></Button>
+
+                        <Button android:id="@+id/btnOpenFloating4"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:onClick="openViewFloating"
+                            android:text=""></Button>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -425,8 +456,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -487,8 +517,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -530,6 +559,14 @@
                             android:layout_height="30dp"
                             android:onClick="tomarFoto"
                             android:text=""></Button>
+
+                        <Button android:id="@+id/btnOpenFloating5"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:onClick="openViewFloating"
+                            android:text=""></Button>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -543,8 +580,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView5"
@@ -579,8 +615,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -622,6 +657,14 @@
                             android:layout_height="30dp"
                             android:onClick="tomarFoto"
                             android:text=""></Button>
+
+                        <Button android:id="@+id/btnOpenFloating6"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:onClick="openViewFloating"
+                            android:text=""></Button>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -635,8 +678,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView6"
@@ -671,8 +713,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -715,6 +756,13 @@
                             android:onClick="tomarFoto"
                             android:layout_marginRight="2dp"
                             android:text=""></Button>
+                        <Button android:id="@+id/btnOpenFloating7"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:onClick="openViewFloating"
+                            android:text=""></Button>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -728,8 +776,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -764,8 +811,7 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:paddingTop="10dp"
-                    android:paddingBottom="5dp"
-                    >
+                    android:paddingBottom="5dp">
 
                     <TextView
                         android:layout_width="190dp"
@@ -808,6 +854,14 @@
                             android:onClick="tomarFoto"
                             android:layout_marginRight="2dp"
                             android:text=""></Button>
+
+                        <Button android:id="@+id/btnOpenFloating8"
+                            android:layout_width="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/ic_see"
+                            android:layout_height="30dp"
+                            android:onClick="openViewFloating"
+                            android:text=""></Button>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -821,8 +875,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    >
+                    android:weightSum="3">
 
                     <ImageView
                         android:id="@+id/imageView8"
@@ -884,8 +937,7 @@
                         android:orientation="horizontal"
                         android:weightSum="3"
                         android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
-                        >
+                        android:paddingBottom="5dp">
 
                         <TextView
                             android:layout_width="190dp"
@@ -928,6 +980,13 @@
                                 android:onClick="tomarFoto"
                                 android:layout_marginRight="2dp"
                                 android:text=""></Button>
+                            <Button android:id="@+id/btnOpenFloating9"
+                                android:layout_width="30dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/ic_see"
+                                android:layout_height="30dp"
+                                android:onClick="openViewFloating"
+                                android:text=""></Button>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -941,8 +1000,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3"
-                        >
+                        android:weightSum="3">
 
                         <ImageView
                             android:id="@+id/imageView9"

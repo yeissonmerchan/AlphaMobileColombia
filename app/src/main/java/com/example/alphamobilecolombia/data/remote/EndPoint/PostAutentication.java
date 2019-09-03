@@ -6,7 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PostAutentication {
-    String API_ROUTE = "/api/Autenticacion/Login";
+    String API_ROUTE = "/Security/api/Autenticacion/Login";
 
     @POST(API_ROUTE)
     Call<String> Login(

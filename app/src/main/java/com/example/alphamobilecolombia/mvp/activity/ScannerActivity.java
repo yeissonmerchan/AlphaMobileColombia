@@ -233,14 +233,20 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         //*********************************************************************** LECTOR
 
         contextView = this;
+        Bundle dataqr = this.getIntent().getExtras();
+        if(dataqr != null){
+            boolean qr = dataqr.getBoolean("qr");
+            if(qr == true){
+                new IntentIntegrator(ScannerActivity.this)
+                        .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
+                        .setPrompt("Por favor escanear el código de barras de la cédula.")
+                        .setCameraId(0)
+                        .setBeepEnabled(false)
+                        .setBarcodeImageEnabled(false)
+                        .initiateScan();
+            }
+        }
 
-        new IntentIntegrator(ScannerActivity.this)
-                .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
-                .setPrompt("Por favor escanear el código de barras de la cédula.")
-                .setCameraId(0)
-                .setBeepEnabled(false)
-                .setBarcodeImageEnabled(false)
-                .initiateScan();
 
         //***********************************************************************
     }
