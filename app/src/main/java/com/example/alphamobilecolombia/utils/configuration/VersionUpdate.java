@@ -26,7 +26,7 @@ public class VersionUpdate {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),version,ex,context);
         }
 
-        VersionUpdatePresenter presenter = new VersionUpdatePresenter(context, null);
+        VersionUpdatePresenter presenter = new VersionUpdatePresenter(context, null,null);
         //HttpResponse model = presenter.GetVersion(version,context);
         HttpResponse model = new HttpResponse();
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.alphamobilecolombia.data.cloud.firestore.ICloudStoreInstance;
+import com.example.alphamobilecolombia.data.cloud.firestore.entity.ParametrizacionMotor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.List;
 
 import static com.google.firebase.firestore.DocumentChange.Type.ADDED;
 import static io.fabric.sdk.android.Fabric.TAG;
@@ -52,50 +55,45 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                     }
                     if (documentSnapshot != null && documentSnapshot.exists()) {
                         //Toast.makeText(MainActivity.this, "Current data:" + documentSnapshot.getData(), Toast.LENGTH_SHORT).show();
+
                     }
 
                 }
             });
 
+            Task<QuerySnapshot> user2 = rootRef.collection("Simulador")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                // Convert the whole snapshot to a POJO list
+                                List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
 
-            rootRef.collection("Decisor").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
-                    if (e !=null)
-                    {
-
-                    }
-
-                    for (DocumentChange documentChange : documentSnapshots.getDocumentChanges())
-                    {
-                        String   FechaUltimaActualizacion =  documentChange.getDocument().getData().get("FechaUltimaActualizacion").toString();
-                        String  Proceso   =  documentChange.getDocument().getData().get("Proceso").toString();
-                        String IdParameter = documentChange.getDocument().getData().get("IdParameter").toString();
-
-                    }
-                }
-            });
-
-            /*DocumentReference user = rootRef.collection("Decisor").document("Z3RYGx9bvRmAl69IPyDs");
+            DocumentReference user = rootRef.collection("Decisor").document("Z3RYGx9bvRmAl69IPyDs");
             user.get().addOnCompleteListener(new OnCompleteListener< DocumentSnapshot >() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
+                        ParametrizacionMotor objects = task.getResult().toObject(ParametrizacionMotor.class);
                         DocumentSnapshot doc = task.getResult();
                         StringBuilder fields = new StringBuilder("");
                         fields.append("FechaUltimaActualizacion: ").append(doc.get("FechaUltimaActualizacion"));
                         fields.append("\nProceso: ").append(doc.get("Proceso"));
                         fields.append("\nIdParameter: ").append(doc.get("IdParameter"));
 
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                         }
                     });
-*/
+
             return productsRef;
         }
         catch (Exception ex){

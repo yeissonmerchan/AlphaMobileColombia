@@ -45,7 +45,7 @@ public class DependencyInjectionContainer {
     }
 
     public IVersionUpdatePresenter injectDIIVersionUpdatePresenter (Context context){
-        return new VersionUpdatePresenter(context,injectDIIVersionUpdateAdapter(context));
+        return new VersionUpdatePresenter(context,injectDIIVersionUpdateAdapter(context),injectICloudStoreInstance(context));
     }
 
     public ICreditSubjectPresenter injectDIICreditSubjectPresenter(Context context)

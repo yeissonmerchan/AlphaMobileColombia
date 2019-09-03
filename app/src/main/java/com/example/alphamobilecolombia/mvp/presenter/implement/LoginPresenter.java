@@ -45,8 +45,6 @@ public class LoginPresenter implements ILoginPresenter {
 
                 SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
                 postUserRequest.setData(sharedPref, (JSONObject) jsonObject.get(0), txtUser);
-
-                _iCloudStoreInstance.instance();
             }
             catch (JSONException e) {
                 e.printStackTrace();
