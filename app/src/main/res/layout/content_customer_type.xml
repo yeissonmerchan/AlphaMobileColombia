@@ -67,7 +67,8 @@
                     style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:tag="tipo de cliente" />
 
                 <LinearLayout
                     android:id="@+id/panel_campos"
@@ -97,7 +98,8 @@
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="10dp"
+                        android:tag="tipo de contrato" />
 
                     <TextView
                         android:id="@+id/txtfecha_ingreso"
@@ -128,6 +130,7 @@
                         android:hint="Seleccione una fecha"
                         android:inputType="date"
                         android:maxLines="1"
+                        android:tag="fecha de ingreso"
                         android:textSize="@dimen/size_text" />
 
                     <TextView
@@ -159,46 +162,47 @@
                         android:hint="Seleccione una fecha"
                         android:inputType="date"
                         android:maxLines="1"
+                        android:tag="fecha de finalización del contrato"
                         android:textSize="@dimen/size_text" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/panel_antiguedad_en_meses"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <!--                <LinearLayout
+                                    android:id="@+id/panel_antiguedad_en_meses"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtantiguedad_en_meses"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="10dp"
-                        android:drawSelectorOnTop="true"
-                        android:ems="20"
-                        android:inputType="textMultiLine"
-                        android:longClickable="true"
-                        android:scrollbars="vertical"
-                        android:text="Antiguedad en meses"
-                        android:textColor="@color/colorHeader"
-                        android:textSize="18dp"
-                        android:typeface="serif" />
+                                    <TextView
+                                        android:id="@+id/txtantiguedad_en_meses"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_gravity="left"
+                                        android:layout_marginTop="10dp"
+                                        android:drawSelectorOnTop="true"
+                                        android:ems="20"
+                                        android:inputType="textMultiLine"
+                                        android:longClickable="true"
+                                        android:scrollbars="vertical"
+                                        android:text="Antiguedad en meses"
+                                        android:textColor="@color/colorHeader"
+                                        android:textSize="18dp"
+                                        android:typeface="serif" />
 
-                    <EditText
-                        android:id="@+id/edt_antiguedad_en_meses"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="0dp"
-                        android:layout_marginBottom="10dp"
-                        android:hint="Digite la antiguedad en meses"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:textSize="@dimen/size_text" />
+                                    <EditText
+                                        android:id="@+id/edt_antiguedad_en_meses"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginRight="0dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:hint="Digite la antiguedad en meses"
+                                        android:inputType="number"
+                                        android:maxLength="3"
+                                        android:textSize="@dimen/size_text" />
 
-                </LinearLayout>
+                                </LinearLayout>-->
 
             </LinearLayout>
         </ScrollView>
