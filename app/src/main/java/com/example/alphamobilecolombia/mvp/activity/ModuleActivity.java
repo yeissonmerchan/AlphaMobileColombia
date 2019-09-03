@@ -81,17 +81,16 @@ public class ModuleActivity extends AppCompatActivity {
     }
 
     public void onClickBtnNewRequest(View view) {
-        /*Intent intent = new Intent (view.getContext(), ScannerActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 0);*/
 
         new AlertDialog.Builder(ModuleActivity.this)
                 .setTitle("¡Atención!")
-                .setMessage("Estás seguro de eliminar esta notificación?")
+                .setMessage("Deseas solicitar QR")
                 .setPositiveButton(R.string.alert_activity_module, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-
+                        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("qr", true);
+                        startActivityForResult(intent, 0);
                     }
                 })
                 .setNegativeButton(R.string.alert_activity_module_c, new DialogInterface.OnClickListener() {

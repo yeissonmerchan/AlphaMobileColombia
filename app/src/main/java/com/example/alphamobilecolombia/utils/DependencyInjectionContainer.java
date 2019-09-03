@@ -29,6 +29,8 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.LoginPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.PersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
+import com.example.alphamobilecolombia.utils.configuration.IDevice;
+import com.example.alphamobilecolombia.utils.configuration.implement.Device;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 import com.example.alphamobilecolombia.utils.cryptography.providers.IMD5Hashing;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
@@ -70,7 +72,7 @@ public class DependencyInjectionContainer {
 
     private ILoginAdapter injectDIILoginAdapter(Context context)
     {
-        return new LoginAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new LoginAdapter(injectIRetrofitInstance(),injectIMapRequest(),injectIDevice(),context);
     }
 
     private ICreditSubjectAdapter injectDIICreditSubjectAdapter(Context context)
@@ -102,5 +104,7 @@ public class DependencyInjectionContainer {
     }
 
     private FileStorage injectIFileStorage(Context context){ return new FileStorage(context);}
+
+    private IDevice injectIDevice(){return new Device();}
     //End Configurations
 }
