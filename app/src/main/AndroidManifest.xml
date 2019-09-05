@@ -64,6 +64,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan"
             />
 
         <!--PAGADURÍA-->
@@ -71,7 +72,9 @@
             android:name=".mvp.activity.PaymentActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            />
 
         <!--TIPO CLIENTE-->
         <activity

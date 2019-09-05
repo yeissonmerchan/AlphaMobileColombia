@@ -11,6 +11,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.mvp.adapter.ILoginAdapter;
+import com.example.alphamobilecolombia.utils.configuration.IDevice;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 import com.google.gson.Gson;
 
@@ -21,12 +22,14 @@ import retrofit2.Call;
 public class LoginAdapter implements ILoginAdapter {
     IRetrofitInstance _iRetrofitInstance;
     IMapRequest _iMapRequest;
+    IDevice _iDevice;
     Context _context;
 
-    public LoginAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, Context context){
+    public LoginAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, IDevice iDevice, Context context){
         _iRetrofitInstance = iRetrofitInstance;
         _iMapRequest = iMapRequest;
         _context = context;
+        _iDevice = iDevice;
     }
 
     public ApiResponse Post(String txtUser, String txtPassword){
@@ -39,10 +42,10 @@ public class LoginAdapter implements ILoginAdapter {
         String currentlyEnvironment = _context.getResources().getString(R.string.environment_development);
         String data;
         if(currentlyEnvironment.contains("DEV")) {
-            data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67"));
+            data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67",_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         else{
-            data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword)));
+            data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword),_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 
@@ -56,10 +59,10 @@ public class LoginAdapter implements ILoginAdapter {
         String currentlyEnvironment = _context.getResources().getString(R.string.environment_development);
         String data;
         if(currentlyEnvironment.contains("DEV")) {
-            data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67"));
+            data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67",_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         else{
-            data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword)));
+            data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword),_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 

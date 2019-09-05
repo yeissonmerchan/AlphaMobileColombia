@@ -27,6 +27,8 @@ import java.util.Calendar;
 
 public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    TextView txtfecha_ingreso;
+
     //Define el control de texto del tipo de contrato
     private TextView txtfecha_finalizacion_contrato;
 
@@ -39,9 +41,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
     //************************** ANTIGUEDAD EN MESES
 
-    private LinearLayout panel_antiguedad_en_meses;
+/*    private LinearLayout panel_antiguedad_en_meses;
 
-    private EditText edt_antiguedad_en_meses;
+    private EditText edt_antiguedad_en_meses;*/
 
     //************************** FECHA INGRESO
 
@@ -67,13 +69,15 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_type);
 
+        txtfecha_ingreso = (TextView) findViewById(R.id.txtfecha_ingreso);
+
         /********************************************************************** PANELES */
 
         panel_campos = (LinearLayout) findViewById(R.id.panel_campos);
 
-        panel_antiguedad_en_meses = (LinearLayout) findViewById(R.id.panel_antiguedad_en_meses);
+/*        panel_antiguedad_en_meses = (LinearLayout) findViewById(R.id.panel_antiguedad_en_meses);*/
 
-        panel_antiguedad_en_meses.setVisibility(View.GONE);
+/*        panel_antiguedad_en_meses.setVisibility(View.GONE);*/
 
         /********************************************************************** TIPO CLIENTE */
 
@@ -186,7 +190,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         //*********************************************************************** ANTIGUEDAD EN MESES
 
-        edt_antiguedad_en_meses = (EditText) findViewById(R.id.edt_antiguedad_en_meses);
+/*        edt_antiguedad_en_meses = (EditText) findViewById(R.id.edt_antiguedad_en_meses);*/
 
         //***********************************************************************
 
@@ -206,16 +210,20 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
                     spinner_tipo_contrato.setAdapter(adapter2);
 
-                    panel_campos.setVisibility(View.VISIBLE);
-                    panel_antiguedad_en_meses.setVisibility(View.GONE);
+/*                    panel_campos.setVisibility(View.VISIBLE);*/
+/*                    panel_antiguedad_en_meses.setVisibility(View.GONE);*/
+
+                    txtfecha_ingreso.setText("Fecha de ingreso *");
 
                 } else {
 
                     ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
                     spinner_tipo_contrato.setAdapter(adapter2);
 
-                    panel_campos.setVisibility(View.GONE);
-                    panel_antiguedad_en_meses.setVisibility(View.VISIBLE);
+                    txtfecha_ingreso.setText("Fecha de ingreso");
+
+/*                    panel_campos.setVisibility(View.GONE);*/
+/*                    panel_antiguedad_en_meses.setVisibility(View.VISIBLE);*/
                 }
 
                 break;
@@ -248,7 +256,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         ArrayList<String> Campos = new ArrayList<String>();
 
         //************************************************************ Si el empleado es activo entonces
-        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {
+
+        if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
+/*        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {*/
 
             //Agrega los campos a validar
             Campos.add("spinner_tipo_cliente");
@@ -263,15 +273,16 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
             }
         }
         //************************************************************ Si el empleado es pensionado entonces
-        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {
+/*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
+        else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
             //Agrega los campos a validar
-            Campos.add("edt_antiguedad_en_meses");
+/*            Campos.add("edt_antiguedad_en_meses");*/
         }
 
         //************************************************************
 
         //Valida los campos
-        new Formulario().Validar(this, VoucherDataActivity.class, Campos.toArray(new String[Campos.size()]));
+        new Formulario().Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]));
 
         //************************************************************
     }

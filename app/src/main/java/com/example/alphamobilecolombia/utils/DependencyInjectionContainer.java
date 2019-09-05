@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.example.alphamobilecolombia.data.cloud.firestore.ICloudStoreInstance;
 import com.example.alphamobilecolombia.data.cloud.firestore.implement.CloudStoreInstance;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
+import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
@@ -29,10 +31,17 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.LoginPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.PersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
+import com.example.alphamobilecolombia.utils.configuration.IDevice;
+import com.example.alphamobilecolombia.utils.configuration.implement.Device;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
+import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 import com.example.alphamobilecolombia.utils.cryptography.providers.IMD5Hashing;
+import com.example.alphamobilecolombia.utils.cryptography.providers.IRSA;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
 import com.example.alphamobilecolombia.utils.files.implement.FileStorage;
+import com.example.alphamobilecolombia.utils.notification.local.INotification;
+import com.example.alphamobilecolombia.utils.notification.local.implement.Notification;
+import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
 
 public class DependencyInjectionContainer {
     //Start Presenters
@@ -70,7 +79,7 @@ public class DependencyInjectionContainer {
 
     private ILoginAdapter injectDIILoginAdapter(Context context)
     {
-        return new LoginAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new LoginAdapter(injectIRetrofitInstance(),injectIMapRequest(),injectIDevice(),context);
     }
 
     private ICreditSubjectAdapter injectDIICreditSubjectAdapter(Context context)
@@ -86,7 +95,7 @@ public class DependencyInjectionContainer {
 
     //Start Configurations
     private ICloudStoreInstance injectICloudStoreInstance(Context context){
-        return new CloudStoreInstance(context);
+        return new CloudStoreInstance(injectINotification(context), injectIRealmInstance(context),context);
     }
 
     private IRetrofitInstance injectIRetrofitInstance(){
@@ -102,5 +111,15 @@ public class DependencyInjectionContainer {
     }
 
     private FileStorage injectIFileStorage(Context context){ return new FileStorage(context);}
+
+    private IDevice injectIDevice(){return new Device();}
+
+    private INotification injectINotification(Context context){
+        return new Notification(context);
+    }
+
+    private IRSA injectIRSA(Context context){return new RSA(context);}
+
+    private IRealmInstance injectIRealmInstance(Context context){return new RealmInstance(context,injectIRSA(context)); }
     //End Configurations
 }

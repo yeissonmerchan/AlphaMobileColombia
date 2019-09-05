@@ -1,6 +1,8 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,11 +19,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
 
 public class ModuleActivity extends AppCompatActivity {
 
     Dialog myDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +80,25 @@ public class ModuleActivity extends AppCompatActivity {
     }
 
     public void onClickBtnNewRequest(View view) {
-        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivityForResult(intent, 0);
+
+        new AlertDialog.Builder(ModuleActivity.this)
+                .setTitle("¡Atención!")
+                .setMessage("Deseas solicitar QR")
+                .setPositiveButton(R.string.alert_activity_module, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("qr", true);
+                        startActivityForResult(intent, 0);
+                    }
+                })
+                .setNegativeButton(R.string.alert_activity_module_c, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void onClickBtnListRequest(View view) {

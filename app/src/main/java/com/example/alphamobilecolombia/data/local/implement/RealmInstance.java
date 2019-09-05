@@ -59,12 +59,34 @@ public class RealmInstance implements IRealmInstance {
         return isSuccess;
     }
 
-    public List<RealmObject> GetAll(RealmObject object){
+    public <T> boolean Insert(List<T> realmObject){
+        boolean isSuccess = false;
+        try {
+            Realm.init(_context);
+
+            Realm realm = Realm.getDefaultInstance();
+
+            realm.beginTransaction();
+            realm.copyFromRealm((RealmObject)realmObject);
+            realm.commitTransaction();
+
+            realm.close();
+
+            isSuccess = true;
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,_context);
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+
+    public <T> List<T> GetAll(RealmObject object){
         try {
             Realm.init(_context);
             Realm realm = Realm.getDefaultInstance();
             Class classObject = object.getClass();
-            final RealmResults<RealmObject> data = realm.where(classObject).findAll();
+            final RealmResults<T> data = realm.where(classObject).findAll();
 
             return data;
         }
@@ -91,6 +113,22 @@ public class RealmInstance implements IRealmInstance {
         return null;
     }
 
+    public <T> List<T> GetAllByAttribute(RealmObject object, String key, String value){
+        try {
+            Realm.init(_context);
+            Realm realm = Realm.getDefaultInstance();
+            Class classObject = object.getClass();
+            final RealmResults<T> data = realm.where(classObject).equalTo(key,value).findAll();
+
+            return data;
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista",ex,_context);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public <T> T GetByAttribute(RealmObject object, String key, String value){
         try {
             Realm.init(_context);
@@ -107,7 +145,7 @@ public class RealmInstance implements IRealmInstance {
         return null;
     }
 
-    public <T> boolean deleteObject(RealmObject object){
+    public <T> boolean DeleteObject(RealmObject object){
         boolean isSuccess = false;
         try {
             Realm.init(_context);
@@ -130,7 +168,7 @@ public class RealmInstance implements IRealmInstance {
         return isSuccess;
     }
 
-    public Realm initLocalStorage(){
+    public Realm InitLocalStorage(){
         try {
             File file = new File(_context.getFilesDir(), "alphaStorage.realm");
             /*if(file.exists()){

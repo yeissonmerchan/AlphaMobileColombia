@@ -9,7 +9,7 @@ import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.mvp.adapter.IVersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
-import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
+import com.example.alphamobilecolombia.utils.configuration.implement.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -35,7 +35,7 @@ public class VersionUpdatePresenter implements IVersionUpdatePresenter {
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),version,ex,_context);
         }
-        _iCloudStoreInstance.instance();
+        _iCloudStoreInstance.syncCollection("Simulador");
         ApiResponse apiResponse = _iVersionUpdateAdapter.Get(version);
         try {
             if (apiResponse.getCodigoRespuesta().toString().contains("200")) {

@@ -1,6 +1,8 @@
 package com.example.alphamobilecolombia.data.cloud.firestore.entity;
 
-public class Regla {
+import io.realm.RealmObject;
+
+public class Regla extends RealmObject {
     /// <summary>
     /// Get - Set IdProceso
     /// </summary>

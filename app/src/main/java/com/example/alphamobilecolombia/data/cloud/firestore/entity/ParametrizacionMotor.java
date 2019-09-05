@@ -1,6 +1,7 @@
 package com.example.alphamobilecolombia.data.cloud.firestore.entity;
 
 import com.example.alphamobilecolombia.data.cloud.firestore.entity.enumerator.Motor;
+import com.google.firebase.Timestamp;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ParametrizacionMotor {
     /// <summary>
     /// Get - Set FechaUltimaActualizacion
     /// </summary>
-    private String FechaUltimaActualizacion;
+    private Timestamp FechaUltimaActualizacion;
 
     /// <summary>
     /// Get - Set Variables
@@ -51,11 +52,11 @@ public class ParametrizacionMotor {
         Proceso = proceso;
     }
 
-    public String getFechaUltimaActualizacion() {
+    public Timestamp getFechaUltimaActualizacion() {
         return FechaUltimaActualizacion;
     }
 
-    public void setFechaUltimaActualizacion(String fechaUltimaActualizacion) {
+    public void setFechaUltimaActualizacion(Timestamp fechaUltimaActualizacion) {
         FechaUltimaActualizacion = fechaUltimaActualizacion;
     }
 

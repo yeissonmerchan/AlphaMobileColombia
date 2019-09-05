@@ -31,6 +31,7 @@ import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -44,6 +45,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,7 +63,7 @@ import id.zelory.compressor.Compressor;
 import io.realm.RealmObject;
 
 
-public class UploadFileActivity extends AppCompatActivity {
+public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener {
     List<com.example.alphamobilecolombia.mvp.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.mvp.models.File>();
     RealmStorage storage = new RealmStorage();
     View view;
@@ -111,7 +113,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
         cleanInitImages();
 
-        Parameter newParameter = new Parameter();
+        /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
         iRealmInstance.Insert(newParameter);
@@ -126,7 +128,16 @@ public class UploadFileActivity extends AppCompatActivity {
 
         Parameter busqueda = iRealmInstance.GetByAttribute(newParameter,"Key",newParameter.getKey());
         String key = busqueda.getKey();
-        String value = busqueda.getValue();
+        String value = busqueda.getValue();*/
+
+        // View Floating
+        FloatingActionButton floatingActionButton1 = findViewById(R.id.btnFab1);
+        floatingActionButton1.setOnClickListener(this);
+        FloatingActionButton floatingActionButton2 = findViewById(R.id.btnFab2);
+        floatingActionButton2.setOnClickListener(this);
+        FloatingActionButton floatingActionButton3 = findViewById(R.id.btnFab3);
+        floatingActionButton3.setOnClickListener(this);
+
     }
 
 
@@ -277,6 +288,7 @@ public class UploadFileActivity extends AppCompatActivity {
         intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intento1,1);
     }
+
 
     public static class ExistFile{
         public boolean SolicitudCreditoCara1 = false;
@@ -1095,5 +1107,25 @@ public class UploadFileActivity extends AppCompatActivity {
         }
         return getResources().getStringArray(R.array.spinner_code_employee_type)[i];
     }
+    // inflate_the_view
+
+    @Override
+    public void onClick(View v) {
+
+
+    }
+
+    /*public void openViewFloating(View v){
+
+        View view1 = (View) findViewById(R.id.include1);
+        View view2 = (View) findViewById(R.id.include2);
+
+        view1.setVisibility(View.GONE);
+        view2.setVisibility(View.VISIBLE);
+        view1.setAlpha(0);
+
+    }*/
+
+
 
 }

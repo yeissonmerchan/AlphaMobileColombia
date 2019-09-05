@@ -11,7 +11,14 @@
         layout="@layout/app_bar_main"
         />
 
-    <include layout="@layout/content_upload_file" />
+    <include
+        android:id="@+id/include1"
+        layout="@layout/content_upload_file" />
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/content_upload_file_view_floating"
+        android:visibility="gone"/>
 
 
 
