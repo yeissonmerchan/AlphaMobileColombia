@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -185,6 +186,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         new Formulario().Cargar(this, spinner_genero);
 
+        adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
+
         /********************************************************************** FECHA NACIMIENTO */
 
         textview_fecha_nacimiento = (TextView) findViewById(R.id.edt_birthDate);
@@ -203,7 +206,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         evento_fecha_nacimiento,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.683e+11)));
                 dialog.show();
             }
         });
@@ -378,6 +381,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } catch (Exception ex) {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
             //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
             NotificacionErrorDatos(this);
         }
     }
