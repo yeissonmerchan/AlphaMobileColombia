@@ -4,7 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface GetPaying {
-    String API_ROUTE = "/api/TP_Pagaduria/ConsultarPagaduriasActivas";
+    String API_ROUTE = "/Generic/api/TP_Pagaduria/ConsultarPagaduriasActivas";
 
 
 

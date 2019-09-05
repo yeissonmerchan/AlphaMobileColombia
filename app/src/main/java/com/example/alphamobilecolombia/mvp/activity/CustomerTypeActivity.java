@@ -8,11 +8,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,17 +24,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
-    TextView txtfecha_ingreso;
 
-    //Define el control de texto del tipo de contrato
-    private TextView txtfecha_finalizacion_contrato;
+
+
 
     //Define los controles combobox tipo cliente, y tipo contrato
     private Spinner spinner_tipo_cliente, spinner_tipo_contrato;
@@ -38,6 +43,23 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
     //************************** PANEL CAMPOS
 
     private LinearLayout panel_campos;
+
+    //************************** TIPO DE CONTRATO
+
+    //Define la lista de los tipos de contrato
+    private List<String> ListaTipoContrato = new ArrayList<>();
+
+    //Define el texto del tipo de contrato
+    private TextView txttipo_contrato;
+
+    //Define el campo buscador de los tipos de contrato
+    SearchView search_tipo_contrato;
+
+    //Define el control de lista de los tipos de contrato
+    ListView listview_tipo_contrato;
+
+    //Define el adaptador de la lista de los tipos de contrato
+    ListViewAdapter adapter;
 
     //************************** ANTIGUEDAD EN MESES
 
@@ -47,6 +69,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
     //************************** FECHA INGRESO
 
+    //Define el texto de la fecha de ingreso
+    TextView txtfecha_ingreso;
+
     //Define el control fecha de ingreso
     private TextView textview_fecha_ingreso;
 
@@ -55,17 +80,21 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
     //************************** FECHA FINALIZACION CONTRATO
 
+    //Define el control de texto del tipo de contrato
+    /*    private TextView txtfecha_finalizacion_contrato;*/
+
     //Define el control fecha de finalización del contrato
-    private TextView textview_fecha_finalizacion_contrato;
+/*    private TextView textview_fecha_finalizacion_contrato;*/
 
     //Define el evento del control fecha finalización del contrato
-    private DatePickerDialog.OnDateSetListener evento_fecha_finalizacion_contrato;
+/*    private DatePickerDialog.OnDateSetListener evento_fecha_finalizacion_contrato;*/
 
     //**************************
 
     //Se produce cuando se inicia esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_type);
 
@@ -75,9 +104,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         panel_campos = (LinearLayout) findViewById(R.id.panel_campos);
 
-/*        panel_antiguedad_en_meses = (LinearLayout) findViewById(R.id.panel_antiguedad_en_meses);*/
+        /*        panel_antiguedad_en_meses = (LinearLayout) findViewById(R.id.panel_antiguedad_en_meses);*/
 
-/*        panel_antiguedad_en_meses.setVisibility(View.GONE);*/
+        /*        panel_antiguedad_en_meses.setVisibility(View.GONE);*/
 
         /********************************************************************** TIPO CLIENTE */
 
@@ -94,8 +123,50 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         /*********************************************************************** TIPO CONTRATO */
 
-        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
-        spinner_tipo_contrato.setOnItemSelectedListener(this);
+/*        spinner_tipo_contrato = (Spinner) findViewById(R.id.spinner_tipo_contrato);
+        spinner_tipo_contrato.setOnItemSelectedListener(this);*/
+
+        txttipo_contrato = (TextView) findViewById(R.id.txttipo_contrato);
+        listview_tipo_contrato = (ListView) findViewById(R.id.listview_tipo_contrato);
+        search_tipo_contrato = (SearchView) findViewById(R.id.search_tipo_contrato);
+
+        /*        new Formulario().Cargar(this, listview_tipo_contrato);*/
+
+        /*        adapter = (ListViewAdapter) listview_tipo_contrato.getAdapter();*/
+
+/*        for (int i = 0; i < adapter.getCount(); i++)
+            ListaTipoContrato.add(adapter.getItem(i));*/
+
+        search_tipo_contrato.setOnQueryTextListener(this);
+
+        listview_tipo_contrato.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                String Texto = (String) parent.getItemAtPosition(position);
+
+                search_tipo_contrato.setQuery(Texto, false);
+
+                listview_tipo_contrato.setVisibility(View.GONE);
+
+                enableSearchView(search_tipo_contrato, false);
+
+                EstablecerSeleccion(search_tipo_contrato, 0);
+
+            }
+        });
+
+        int searchCloseButtonId = search_tipo_contrato.getContext().getResources().getIdentifier("android:id/search_close_btn", null, null);
+        ImageView closeButton = (ImageView) this.search_tipo_contrato.findViewById(searchCloseButtonId);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableSearchView(search_tipo_contrato, true);
+                search_tipo_contrato.setQuery("", false);
+            }
+        });
 
         /********************************************************************** FECHA INGRESO */
 
@@ -144,7 +215,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
         /********************************************************************** FECHA FINALIZACIÓN CONTRATO */
 
-        txtfecha_finalizacion_contrato = (TextView) findViewById(R.id.txtfecha_finalizacion_contrato);
+/*        txtfecha_finalizacion_contrato = (TextView) findViewById(R.id.txtfecha_finalizacion_contrato);
         textview_fecha_finalizacion_contrato = (TextView) findViewById(R.id.edt_fecha_finalizacion_contrato);
 
         textview_fecha_finalizacion_contrato.setOnClickListener(new View.OnClickListener() {
@@ -186,16 +257,15 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                 String date = year + "/" + monthS + "/" + dayS;
                 textview_fecha_finalizacion_contrato.setText(date);
             }
-        };
+        };*/
 
         //*********************************************************************** ANTIGUEDAD EN MESES
 
-/*        edt_antiguedad_en_meses = (EditText) findViewById(R.id.edt_antiguedad_en_meses);*/
+        /*        edt_antiguedad_en_meses = (EditText) findViewById(R.id.edt_antiguedad_en_meses);*/
 
         //***********************************************************************
 
     }
-
 
     //Se produce al seleccionar un combobox
     @Override
@@ -207,27 +277,73 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
                 if (spinner_tipo_cliente.getSelectedItem().toString().toUpperCase().equals("EMPLEADO")) {
 
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
-                    spinner_tipo_contrato.setAdapter(adapter2);
+/*                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
+                    spinner_tipo_contrato.setAdapter(adapter2);*/
 
-/*                    panel_campos.setVisibility(View.VISIBLE);*/
-/*                    panel_antiguedad_en_meses.setVisibility(View.GONE);*/
+                    /*                    panel_campos.setVisibility(View.VISIBLE);*/
+                    /*                    panel_antiguedad_en_meses.setVisibility(View.GONE);*/
 
-                    txtfecha_ingreso.setText("Fecha de ingreso *");
+                    /*                    txtfecha_ingreso.setText("Fecha de ingreso *");*/
+
+                    ListaTipoContrato.clear();
+
+                    ListaTipoContrato.add("CARRERA ADMINISTRATIVA");
+                    ListaTipoContrato.add("LIBRE NOMBRAMIENTO Y REMOCION");
+                    ListaTipoContrato.add("PROVISIONAL");
+                    ListaTipoContrato.add("OTRO");
+                    ListaTipoContrato.add("INDEFINIDO");
+                    ListaTipoContrato.add("EN PROPIEDAD");
+                    ListaTipoContrato.add("CORRETAJE");
+                    ListaTipoContrato.add("ORDINARIO-ACTIVO");
+                    ListaTipoContrato.add("PERIODO DE PRUEBA");
+                    ListaTipoContrato.add("PLANTA");
+                    ListaTipoContrato.add("RESOLUCION");
+                    ListaTipoContrato.add("TEMPORAL");
+                    ListaTipoContrato.add("PLANTA PERMANENTE");
+                    ListaTipoContrato.add("FIJO");
+
+                    // Pass results to ListViewAdapter Class
+                    adapter = new ListViewAdapter(this, ListaTipoContrato);
+
+                    listview_tipo_contrato.setAdapter(adapter);
+
+                    //Tipo de Contrato
+                    txttipo_contrato.setVisibility(View.VISIBLE);
+                    search_tipo_contrato.setVisibility(View.VISIBLE);
+
+                    //Fecha de Ingreso
+                    txtfecha_ingreso.setVisibility(View.VISIBLE);
+                    textview_fecha_ingreso.setVisibility(View.VISIBLE);
+
+                    //Fecha de Finalización del Contrato
+/*                    txtfecha_finalizacion_contrato.setVisibility(View.VISIBLE);
+                    textview_fecha_finalizacion_contrato.setVisibility(View.VISIBLE);*/
 
                 } else {
 
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
-                    spinner_tipo_contrato.setAdapter(adapter2);
+/*                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
+                    spinner_tipo_contrato.setAdapter(adapter2);*/
 
-                    txtfecha_ingreso.setText("Fecha de ingreso");
+                    /*                   txtfecha_ingreso.setText("Fecha de ingreso");*/
 
-/*                    panel_campos.setVisibility(View.GONE);*/
-/*                    panel_antiguedad_en_meses.setVisibility(View.VISIBLE);*/
+                    //Tipo de Contrato
+                    txttipo_contrato.setVisibility(View.GONE);
+                    search_tipo_contrato.setVisibility(View.GONE);
+
+                    //Fecha de Ingreso
+                    txtfecha_ingreso.setVisibility(View.GONE);
+                    textview_fecha_ingreso.setVisibility(View.GONE);
+
+                    //Fecha de Finalización del Contrato
+/*                    txtfecha_finalizacion_contrato.setVisibility(View.GONE);
+                    textview_fecha_finalizacion_contrato.setVisibility(View.GONE);*/
+
+                    /*                    panel_campos.setVisibility(View.GONE);*/
+                    /*                    panel_antiguedad_en_meses.setVisibility(View.VISIBLE);*/
                 }
 
                 break;
-            case R.id.spinner_tipo_contrato:
+/*            case R.id.spinner_tipo_contrato:
 
                 //Si el tipo de contrato es fijo o temporal entonces
                 if (spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("FIJO") ||
@@ -240,7 +356,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     textview_fecha_finalizacion_contrato.setVisibility(View.GONE);
                 }
 
-                break;
+                break;*/
         }
     }
 
@@ -252,31 +368,62 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
     //Se produce cuando se presiona el botón Siguiente
     public void onClickBtnNewRequest(View view) {
 
+
+
+
+        boolean Correcto = search_tipo_contrato.getVisibility() == View.GONE ? true : false ;
+
+        //Si el tipo de contrato es obligatorio entonces valida su valor correcto
+        if (!Correcto)
+        for (int Indice = 0; Indice < ListaTipoContrato.size(); Indice++) {
+
+            String Cadena1 = search_tipo_contrato.getQuery().toString().trim().toUpperCase();
+
+            String Cadena2 = ListaTipoContrato.get(Indice).trim().toUpperCase();
+
+            if (Cadena1.equals(Cadena2)) {
+                Correcto = true;
+                break;
+            }
+        }
+
+
+
+
+        if (Correcto) {
+
+
+
+
         //Define la lista de campos a validar
         ArrayList<String> Campos = new ArrayList<String>();
 
         //************************************************************ Si el empleado es activo entonces
 
         if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
-/*        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {*/
+            /*        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {*/
 
             //Agrega los campos a validar
             Campos.add("spinner_tipo_cliente");
-            Campos.add("spinner_tipo_contrato");
+            /*            Campos.add("spinner_tipo_contrato");*/
             Campos.add("edt_fecha_ingreso");
 
             //Si el tipo de contrato es FIJO o TEMPORAL
-            if ((spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("FIJO") ||
+/*            if ((spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("FIJO") ||
                     spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("TEMPORAL")) &&
                     TextUtils.isEmpty(textview_fecha_finalizacion_contrato.getText().toString().trim())) {
                 Campos.add("edt_fecha_finalizacion_contrato");
-            }
+            }*/
+
+/*            if (textview_fecha_finalizacion_contrato.getVisibility() == View.VISIBLE) {
+                Campos.add("edt_fecha_finalizacion_contrato");
+            }*/
         }
         //************************************************************ Si el empleado es pensionado entonces
-/*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
+        /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
         else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
             //Agrega los campos a validar
-/*            Campos.add("edt_antiguedad_en_meses");*/
+            /*            Campos.add("edt_antiguedad_en_meses");*/
         }
 
         //************************************************************
@@ -285,6 +432,26 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         new Formulario().Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]));
 
         //************************************************************
+
+
+
+
+        } else {
+            Toast.makeText(this.getApplicationContext(), "Debe seleccionar un tipo de contrato valido", Toast.LENGTH_LONG).show(); //Muestra el mensaje
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -309,11 +476,59 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         Log.d("Lifecycle", "onDestroy()");
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String text = s;
+
+        if (adapter.filter(text)) {
+            listview_tipo_contrato.setVisibility(View.VISIBLE);
+        } else {
+            listview_tipo_contrato.setVisibility(View.GONE);
+        }
+
+/*        if (text.toUpperCase().equals("FIJO") || text.toUpperCase().equals("TEMPORAL")) {
+            txtfecha_finalizacion_contrato.setVisibility(View.VISIBLE);
+            textview_fecha_finalizacion_contrato.setVisibility(View.VISIBLE);
+        } else {
+            txtfecha_finalizacion_contrato.setVisibility(View.GONE);
+            textview_fecha_finalizacion_contrato.setVisibility(View.GONE);
+        }*/
+
+        return false;
+    }
+
+    private void EstablecerSeleccion(View view, int position) {
+        if (view instanceof EditText) {
+            ((EditText) view).setSelection(position);
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                EstablecerSeleccion(child, position);
+            }
+        }
+    }
+
+    private void enableSearchView(View view, boolean enabled) {
+        if (view instanceof EditText) {
+            view.setEnabled(enabled);
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                enableSearchView(child, enabled);
+            }
+        }
+    }
+
 }
-
-
-
-
 
 /*
 //Valida los campos
