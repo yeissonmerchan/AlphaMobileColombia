@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ import java.util.List;
 
 public class AdditionalDataActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public AdditionalDataActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     //************************** CIUDAD EXPEDICIÓN CEDULA
 
     //Define la lista de ciudades de expedición de la cedula
@@ -64,7 +70,7 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         //********************************************************************** CIUDAD EXPEDICIÓN CEDULA
 
         listview_ciudad_expedicion_cedula = (ListView) findViewById(R.id.listview_ciudad_expedicion_cedula);
-        new Formulario().Cargar(this, listview_ciudad_expedicion_cedula);
+       formulario.Cargar(this, listview_ciudad_expedicion_cedula);
 
         adapter = (ListViewAdapter) listview_ciudad_expedicion_cedula.getAdapter();
 
@@ -211,9 +217,10 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         }
 
         if (Correcto) {
-            String[] Campos = new String[]{"edt_fecha_expedicion_cedula"}; //"spinner_pagaduria"
 
-            new Formulario().Validar(this, PaymentActivity.class, Campos);
+            String[] Campos = new String[]{"search_ciudad_expedicion_cedula", "edt_fecha_expedicion_cedula"}; //"spinner_pagaduria"
+
+            formulario.Validar(this, PaymentActivity.class, Campos);
         } else {
             Toast.makeText(this.getApplicationContext(), "Debe seleccionar una ciudad de expedición de cédula valida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }

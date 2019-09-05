@@ -5,6 +5,7 @@ import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
 import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SelectList implements ISelectList {
@@ -15,13 +16,27 @@ public class SelectList implements ISelectList {
     }
 
     public int GetValueByCodeField(String nameOption){
-        SelectionOption selectionOption = _iRealmInstance.GetByAttribute(new SelectionOption(),"NameOption",nameOption);
-        return selectionOption.getCodeOption();
+        int returnValue = 0;
+        try {
+            SelectionOption selectionOption = _iRealmInstance.GetByAttribute(new SelectionOption(), "NameOption", nameOption);
+            returnValue = selectionOption.getCodeOption();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return returnValue;
     }
 
     public int GetValueByIdField(String nameOption){
-        SelectionOption selectionOption = _iRealmInstance.GetByAttribute(new SelectionOption(),"NameOption",nameOption);
-        return selectionOption.getCodeOption();
+        int returnValue = 0;
+        try {
+            SelectionOption selectionOption = _iRealmInstance.GetByAttribute(new SelectionOption(),"NameOption",nameOption);
+            returnValue = selectionOption.getCodeOption();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return returnValue;
     }
 
     public List<SelectionOption> GetListByCodeField(String codeField){
@@ -44,23 +59,29 @@ public class SelectList implements ISelectList {
         return listReturn;
     }
 
-    public ArrayList<String> GetArrayByCodeField(String codeField){
+    public List<String> GetArrayByCodeField(String codeField){
         ArrayList<String> listReturn = new ArrayList<String>();
         List<SelectionOption> selectionOption = _iRealmInstance.GetAllByAttribute(new SelectionOption(),"CodeField",codeField);
         for (SelectionOption selectionOption1 : selectionOption){
             listReturn.add(selectionOption1.getNameOption());
         }
+        Object[] objectList = listReturn.toArray();
+        String[] stringArray =  Arrays.copyOf(objectList,objectList.length,String[].class);
+        List<String> list = Arrays.asList(stringArray);
 
-        return listReturn;
+        return list;
     }
 
-    public ArrayList<String> GetArrayByIdField(String idField){
+    public List<String> GetArrayByIdField(String idField){
         ArrayList<String> listReturn = new ArrayList<String>();
         List<SelectionOption> selectionOption = _iRealmInstance.GetAllByAttribute(new SelectionOption(),"IdField",idField);
         for (SelectionOption selectionOption1 : selectionOption){
             listReturn.add(selectionOption1.getNameOption());
         }
+        Object[] objectList = listReturn.toArray();
+        String[] stringArray =  Arrays.copyOf(objectList,objectList.length,String[].class);
+        List<String> list = Arrays.asList(stringArray);
 
-        return listReturn;
+        return list;
     }
 }

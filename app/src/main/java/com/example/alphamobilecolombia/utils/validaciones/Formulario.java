@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.activity.AdditionalDataActivity;
 import com.example.alphamobilecolombia.mvp.activity.ListViewAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
+import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 import com.google.gson.Gson;
@@ -35,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -44,6 +47,11 @@ import java.util.ListIterator;
 import io.realm.RealmObject;
 
 public class Formulario {
+    ISelectList _iSelectList;
+
+    public Formulario(ISelectList iSelectList) {
+        _iSelectList = iSelectList;
+    }
 
     //<summary>Valida la pagina</summary>
     //<pagina>Define la pagina que tiene los controles a validar</pagina>
@@ -72,13 +80,20 @@ public class Formulario {
                     Texto = ((EditText) Control).getText().toString();
                     //Si el control x es Spinner entonces
                 } else if (Control instanceof Spinner && ((Spinner) Control).getSelectedItem() != null) {
-                    Texto = ((Spinner) Control).getSelectedItem().toString();
+                    //Texto = ((Spinner) Control).getSelectedItem().toString();
+                    Texto = String.valueOf(_iSelectList.GetValueByCodeField(((Spinner) Control).getSelectedItem().toString()));
+                } else if (Control instanceof SearchView) {
+                    SearchView searchView = (SearchView)Control;
+
+                    Texto = searchView.getQuery().toString();
+
+                    Texto = String.valueOf(_iSelectList.GetValueByCodeField(searchView.getQuery().toString()));
                 }
 
                 //Si el texto es vacío entonces
                 if (TextUtils.isEmpty(Texto.trim())) {
 
-                    String Textico = Control.getTag() == null? arrayId[Indice] : Control.getTag().toString();
+                    String Textico = Control.getTag() == null ? arrayId[Indice] : Control.getTag().toString();
 
                     ListaErrores.add("El campo " + Textico + " es obligatorio"); //arrayId[Indice]
                 } else {
@@ -113,127 +128,29 @@ public class Formulario {
 
     //Carga el Spinner especificado
     public void Cargar(AppCompatActivity pagina, AdapterView spinner) {
-
         ArrayAdapter<CharSequence> adapter; //Define el adaptador
 
         switch (spinner.getId()) {
-            /*******************************************************************/
             case R.id.spinner_genero:
-                /*                spinner = (AbsListView) pagina.findViewById(R.id.spinner_genero); //Establece el Spinner*/
                 adapter = ArrayAdapter.createFromResource(pagina, R.array.spinner_gender, android.R.layout.simple_spinner_item); //Establece el adaptador del recurso
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Establece el diseño del adaptador
                 spinner.setAdapter(adapter); //Establece el adaptador al Spinner
                 break;
-            /*******************************************************************/
             case R.id.spinner_tipo_cliente:
-                /*                spinner = (AbsListView) pagina.findViewById(R.id.spinner_tipo_cliente);*/
-                adapter = ArrayAdapter.createFromResource(pagina, R.array.spinner_employee_type, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
+                ListViewAdapter Adaptadortc = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X001"));
+                spinner.setAdapter(Adaptadortc);
                 break;
-            /*******************************************************************/
             case R.id.listview_pagaduria:
-
-                List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
-
-/*                ScannerPresenter scannerPresenter = new ScannerPresenter();
-                HttpResponse response = scannerPresenter.getPaying(pagina);
-                JSONObject data = (JSONObject) response.getData();
-                try {
-                    JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                    GetPagaduriasRequest getPagaduriasRequest;
-                    for (int i = 0; i < jSONArray.length(); i++) {
-                        getPagaduriasRequest = new GetPagaduriasRequest();
-                        JSONObject object = (JSONObject) jSONArray.get(i);
-                        getPagaduriasRequest.setId(Integer.parseInt(object.getString("id")));
-                        getPagaduriasRequest.setNombre(object.getString("nombre"));
-                        pagadurias.add(getPagaduriasRequest);
-                    }
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Pagadurías", ex, pagina);
-                }*/
-
-                GetPagaduriasRequest GetPagaduriasRequest1 = new GetPagaduriasRequest();
-                GetPagaduriasRequest1.setNombre("Uno");
-                pagadurias.add(GetPagaduriasRequest1);
-
-                GetPagaduriasRequest GetPagaduriasRequest2 = new GetPagaduriasRequest();
-                GetPagaduriasRequest2.setNombre("Dos");
-                pagadurias.add(GetPagaduriasRequest2);
-
-                GetPagaduriasRequest GetPagaduriasRequest3 = new GetPagaduriasRequest();
-                GetPagaduriasRequest3.setNombre("Tres");
-                pagadurias.add(GetPagaduriasRequest3);
-
-                List<String> names = new ArrayList<>();
-
-                for (GetPagaduriasRequest p : pagadurias) {
-                    names.add(p.getNombre());
-                }
-
-                // Pass results to ListViewAdapter Class
-                ListViewAdapter Adaptador = new ListViewAdapter(pagina, names);
-
-                // Binds the Adapter to the ListView
+                ListViewAdapter Adaptador = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X015"));
                 spinner.setAdapter(Adaptador);
-
                 break;
-            /*******************************************************************/
-/*            case R.id.spinner_pagaduria:
-                List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
-                ScannerPresenter scannerPresenter = new ScannerPresenter();
-                HttpResponse response = scannerPresenter.getPaying(pagina);
-                JSONObject data = (JSONObject) response.getData();
-                try {
-                    JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                    GetPagaduriasRequest getPagaduriasRequest;
-                    for (int i = 0; i < jSONArray.length(); i++) {
-                        getPagaduriasRequest = new GetPagaduriasRequest();
-                        JSONObject object = (JSONObject) jSONArray.get(i);
-                        getPagaduriasRequest.setId(Integer.parseInt(object.getString("id")));
-                        getPagaduriasRequest.setNombre(object.getString("nombre"));
-                        pagadurias.add(getPagaduriasRequest);
-                    }
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Pagadurías", ex, pagina);
-                }
-
-                List<String> names = new ArrayList<>();
-                for (GetPagaduriasRequest p : pagadurias) {
-                    names.add(p.getNombre());
-                }
-
-                adapter = new ArrayAdapter(pagina, R.layout.spinner, names);
-
-                spinner = (Spinner) pagina.findViewById(R.id.spinner_pagaduria);
-                spinner.setAdapter(adapter);
-
-                break;*/
-            /*******************************************************************/
             case R.id.spinner_destino_credito:
-                spinner = (Spinner) pagina.findViewById(R.id.spinner_destino_credito);
-                ArrayAdapter<CharSequence> adapter_destino_credito = ArrayAdapter.createFromResource(pagina, R.array.spinner_credit_destination, android.R.layout.simple_spinner_item);
-                adapter_destino_credito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter_destino_credito);
+                ListViewAdapter AdaptadorDc = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X004"));
+                spinner.setAdapter(AdaptadorDc);
                 break;
             case R.id.listview_ciudad_expedicion_cedula:
-
-                List<String> Listica = new ArrayList<>();
-
-                Listica.add("Santa marta (Cordoba)");
-                Listica.add("Santa marta (Magdalena)");
-                Listica.add("Bogotá (Cundinamarca)");
-                Listica.add("Barranquilla (Atlantico)");
-                Listica.add("Barranquilla (Antioquia)");
-
-                // Pass results to ListViewAdapter Class
-                ListViewAdapter Adaptador2 = new ListViewAdapter(pagina, Listica);
-
-                // Binds the Adapter to the ListView
-                spinner.setAdapter(Adaptador2);
-
+                ListViewAdapter Adaptador23 = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X026"));
+                spinner.setAdapter(Adaptador23);
                 break;
         }
     }

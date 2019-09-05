@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import com.google.gson.Gson;
@@ -42,7 +43,11 @@ import java.util.Calendar;
 import co.venko.api.android.cedula.DocumentManager;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public ScannerActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     //************************** LECTOR
 
     //Define la persona
@@ -184,7 +189,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero.setAdapter(adapter_genero);*/
 
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
-        new Formulario().Cargar(this, spinner_genero);
+        formulario.Cargar(this, spinner_genero);
 
         adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
 
@@ -288,7 +293,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             Toast.makeText(this.getApplicationContext(), Error, Toast.LENGTH_LONG).show(); //Muestra el mensaje
         } else {
             String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
-            new Formulario().Validar(this, AdditionalDataActivity.class, Campos);
+            formulario.Validar(this, AdditionalDataActivity.class, Campos);
         }
     }
 

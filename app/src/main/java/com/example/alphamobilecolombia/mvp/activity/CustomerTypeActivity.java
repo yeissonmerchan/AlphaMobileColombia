@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 import java.util.ArrayList;
@@ -33,8 +34,12 @@ import java.util.List;
 
 public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
 
-
+    public CustomerTypeActivity() {
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
 
 
     //Define los controles combobox tipo cliente, y tipo contrato
@@ -84,10 +89,10 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
     /*    private TextView txtfecha_finalizacion_contrato;*/
 
     //Define el control fecha de finalización del contrato
-/*    private TextView textview_fecha_finalizacion_contrato;*/
+    /*    private TextView textview_fecha_finalizacion_contrato;*/
 
     //Define el evento del control fecha finalización del contrato
-/*    private DatePickerDialog.OnDateSetListener evento_fecha_finalizacion_contrato;*/
+    /*    private DatePickerDialog.OnDateSetListener evento_fecha_finalizacion_contrato;*/
 
     //**************************
 
@@ -117,7 +122,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         spinner_tipo_cliente.setAdapter(adapter_tipo_cliente);*/
 
         spinner_tipo_cliente = (Spinner) findViewById(R.id.spinner_tipo_cliente);
-        new Formulario().Cargar(this, spinner_tipo_cliente);
+        formulario.Cargar(this, spinner_tipo_cliente);
 
         spinner_tipo_cliente.setOnItemSelectedListener(this);
 
@@ -369,46 +374,40 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
     public void onClickBtnNewRequest(View view) {
 
 
-
-
-        boolean Correcto = search_tipo_contrato.getVisibility() == View.GONE ? true : false ;
+        boolean Correcto = search_tipo_contrato.getVisibility() == View.GONE ? true : false;
 
         //Si el tipo de contrato es obligatorio entonces valida su valor correcto
         if (!Correcto)
-        for (int Indice = 0; Indice < ListaTipoContrato.size(); Indice++) {
+            for (int Indice = 0; Indice < ListaTipoContrato.size(); Indice++) {
 
-            String Cadena1 = search_tipo_contrato.getQuery().toString().trim().toUpperCase();
+                String Cadena1 = search_tipo_contrato.getQuery().toString().trim().toUpperCase();
 
-            String Cadena2 = ListaTipoContrato.get(Indice).trim().toUpperCase();
+                String Cadena2 = ListaTipoContrato.get(Indice).trim().toUpperCase();
 
-            if (Cadena1.equals(Cadena2)) {
-                Correcto = true;
-                break;
+                if (Cadena1.equals(Cadena2)) {
+                    Correcto = true;
+                    break;
+                }
             }
-        }
-
-
 
 
         if (Correcto) {
 
 
+            //Define la lista de campos a validar
+            ArrayList<String> Campos = new ArrayList<String>();
 
+            //************************************************************ Si el empleado es activo entonces
 
-        //Define la lista de campos a validar
-        ArrayList<String> Campos = new ArrayList<String>();
+            if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
+                /*        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {*/
 
-        //************************************************************ Si el empleado es activo entonces
+                //Agrega los campos a validar
+                Campos.add("spinner_tipo_cliente");
+                /*            Campos.add("spinner_tipo_contrato");*/
+                Campos.add("edt_fecha_ingreso");
 
-        if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
-            /*        if (panel_antiguedad_en_meses.getVisibility() == View.GONE) {*/
-
-            //Agrega los campos a validar
-            Campos.add("spinner_tipo_cliente");
-            /*            Campos.add("spinner_tipo_contrato");*/
-            Campos.add("edt_fecha_ingreso");
-
-            //Si el tipo de contrato es FIJO o TEMPORAL
+                //Si el tipo de contrato es FIJO o TEMPORAL
 /*            if ((spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("FIJO") ||
                     spinner_tipo_contrato.getSelectedItem().toString().trim().toUpperCase().equals("TEMPORAL")) &&
                     TextUtils.isEmpty(textview_fecha_finalizacion_contrato.getText().toString().trim())) {
@@ -418,38 +417,27 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 /*            if (textview_fecha_finalizacion_contrato.getVisibility() == View.VISIBLE) {
                 Campos.add("edt_fecha_finalizacion_contrato");
             }*/
-        }
-        //************************************************************ Si el empleado es pensionado entonces
-        /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
-        else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
-            //Agrega los campos a validar
-            /*            Campos.add("edt_antiguedad_en_meses");*/
-        }
+            }
+            //************************************************************ Si el empleado es pensionado entonces
+            /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
+            else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
+                //Agrega los campos a validar
+                /*            Campos.add("edt_antiguedad_en_meses");*/
+            }
 
-        //************************************************************
+            //************************************************************
 
-        //Valida los campos
-        new Formulario().Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]));
+            Campos.add("search_tipo_contrato");
 
-        //************************************************************
+            //Valida los campos
+            formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]));
 
-
+            //************************************************************
 
 
         } else {
             Toast.makeText(this.getApplicationContext(), "Debe seleccionar un tipo de contrato valido", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

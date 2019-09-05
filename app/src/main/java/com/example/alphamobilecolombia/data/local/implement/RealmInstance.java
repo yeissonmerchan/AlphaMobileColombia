@@ -67,7 +67,7 @@ public class RealmInstance implements IRealmInstance {
             Realm realm = Realm.getDefaultInstance();
 
             realm.beginTransaction();
-            realm.copyFromRealm((RealmObject)realmObject);
+            realm.insert((List<RealmObject>) realmObject);
             realm.commitTransaction();
 
             realm.close();
