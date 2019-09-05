@@ -1,11 +1,13 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -31,7 +33,7 @@ import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -42,12 +44,15 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -55,6 +60,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -86,6 +92,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     IRealmInstance iRealmInstance =new RealmInstance(this, new RSA(this));
     ICreditSubjectPresenter _iCreditSubjectPresenter;
     IPersonPresenter _iPersonPresenter;
+
+    // PopupMenu
+    ImageButton btnPopup1,btnPopup2,btnPopup3,btnPopup4, btnPopup5, btnPopup6, btnPopup7,btnPopup8, btnPopup9,
+            btnCloseView1,btnCloseView2,btnCloseView3,btnCloseView4,btnCloseView5,btnCloseView6,btnCloseView7,btnCloseView8,btnCloseView9;
+
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private final int SELECT_PICTURE = 200;
+    private final int PHOTO_CODE = 100;
+
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
@@ -130,13 +145,50 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String key = busqueda.getKey();
         String value = busqueda.getValue();
 
-        // View Floating
-        FloatingActionButton floatingActionButton1 = findViewById(R.id.btnFab1);
-        floatingActionButton1.setOnClickListener(this);
-        FloatingActionButton floatingActionButton2 = findViewById(R.id.btnFab2);
-        floatingActionButton2.setOnClickListener(this);
-        FloatingActionButton floatingActionButton3 = findViewById(R.id.btnFab3);
-        floatingActionButton3.setOnClickListener(this);
+        // View PopupMenu
+        configureView();
+
+    }
+
+    public void configureView(){
+        // View PopupMenu
+        btnPopup1 = (ImageButton) findViewById(R.id.btnPopup1);
+        btnPopup1.setOnClickListener(this);
+        btnPopup2 = (ImageButton) findViewById(R.id.btnPopup2);
+        btnPopup2.setOnClickListener(this);
+        btnPopup3 = (ImageButton) findViewById(R.id.btnPopup3);
+        btnPopup3.setOnClickListener(this);
+        btnPopup4 = (ImageButton) findViewById(R.id.btnPopup4);
+        btnPopup4.setOnClickListener(this);
+        btnPopup5 = (ImageButton) findViewById(R.id.btnPopup5);
+        btnPopup5.setOnClickListener(this);
+        btnPopup6 = (ImageButton) findViewById(R.id.btnPopup6);
+        btnPopup6.setOnClickListener(this);
+        btnPopup7 = (ImageButton) findViewById(R.id.btnPopup7);
+        btnPopup7.setOnClickListener(this);
+        btnPopup8 = (ImageButton) findViewById(R.id.btnPopup8);
+        btnPopup8.setOnClickListener(this);
+        btnPopup9 = (ImageButton) findViewById(R.id.btnPopup9);
+        btnPopup9.setOnClickListener(this);
+
+        btnCloseView1 = (ImageButton) findViewById(R.id.btnCloseView1);
+        btnCloseView1.setOnClickListener(this);
+        btnCloseView2 = (ImageButton) findViewById(R.id.btnCloseView2);
+        btnCloseView2.setOnClickListener(this);
+        btnCloseView3 = (ImageButton) findViewById(R.id.btnCloseView3);
+        btnCloseView3.setOnClickListener(this);
+        btnCloseView4 = (ImageButton) findViewById(R.id.btnCloseView4);
+        btnCloseView4.setOnClickListener(this);
+        btnCloseView5 = (ImageButton) findViewById(R.id.btnCloseView5);
+        btnCloseView5.setOnClickListener(this);
+        btnCloseView6 = (ImageButton) findViewById(R.id.btnCloseView6);
+        btnCloseView6.setOnClickListener(this);
+        btnCloseView7 = (ImageButton) findViewById(R.id.btnCloseView7);
+        btnCloseView7.setOnClickListener(this);
+        btnCloseView8 = (ImageButton) findViewById(R.id.btnCloseView8);
+        btnCloseView8.setOnClickListener(this);
+        btnCloseView9 = (ImageButton) findViewById(R.id.btnCloseView9);
+        btnCloseView9.setOnClickListener(this);
 
     }
 
@@ -278,15 +330,37 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    // Method Permission Camera
+
+    private void checkPermissionCamera(View v) {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            tomarFoto(v);
+        } else {
+
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.CAMERA);
+
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+                tomarFoto(v);
+            }
+
+        }
+
+        return;
+    }
+
     public void tomarFoto(View v) {
-        idElement = getIdElementUpload(v);
+        //idElement = getIdElementUpload(v);
         view = v;
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
         intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-        startActivityForResult(intento1,1);
+        startActivityForResult(intento1,PHOTO_CODE);
     }
 
 
@@ -303,7 +377,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     public void recuperarFotoCargada(View v) {
         try {
             idElement = getIdElementView(v);
-
             boolean isExist = false;
             for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                 if(file.getType().equals(idElement)) {
@@ -585,113 +658,138 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public void getViewImage(View v, Bitmap bitmap, boolean isFetch){
         int idButton = v.getId();
-        if (!isFetch)
+        if (isFetch)
         {
             idButton = getIdViewImage(idElement);
+
+            /*ImageView imagen1 = findViewById(R.id.imageView);
+            if(imagen1.getVisibility() == View.GONE && isFetch){
+                imagen1.setImageBitmap(bitmap);
+                imagen1.setVisibility(View.VISIBLE);
+            }
+            else if(imagen1.getVisibility() == View.VISIBLE){
+                imagen1.setImageBitmap(null);
+                imagen1.setVisibility(View.GONE);
+            }*/
+            switch (idButton) {
+                case R.id.imageView1:
+                    ImageView imagen1 = findViewById(R.id.imageView1);
+                    if(imagen1.getVisibility() == View.GONE && isFetch){
+                        imagen1.setImageBitmap(bitmap);
+                        imagen1.setVisibility(View.VISIBLE);
+                        btnCloseView1.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen1.getVisibility() == View.VISIBLE){
+                        imagen1.setImageBitmap(null);
+                        imagen1.setVisibility(View.GONE);
+                        btnCloseView1.setVisibility(View.GONE);
+                    }
+                    break;
+                case R.id.imageView2:
+                    ImageView imagen2 = findViewById(R.id.imageView2);
+                    if(imagen2.getVisibility() == View.GONE && isFetch){
+                        imagen2.setImageBitmap(bitmap);
+                        imagen2.setVisibility(View.VISIBLE);
+                        btnCloseView2.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen2.getVisibility() == View.VISIBLE){
+                        imagen2.setImageBitmap(null);
+                        imagen2.setVisibility(View.GONE);
+                    }
+                    break;
+                case R.id.imageView3:
+                    ImageView imagen3 = findViewById(R.id.imageView3);
+                    if(imagen3.getVisibility() == View.GONE && isFetch){
+                        imagen3.setImageBitmap(bitmap);
+                        imagen3.setVisibility(View.VISIBLE);
+                        btnCloseView3.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen3.getVisibility() == View.VISIBLE){
+                        imagen3.setImageBitmap(null);
+                        imagen3.setVisibility(View.GONE);
+
+                    }
+                    break;
+                case R.id.imageView4:
+                    ImageView imagen4 = findViewById(R.id.imageView4);
+                    if(imagen4.getVisibility() == View.GONE && isFetch){
+                        imagen4.setImageBitmap(bitmap);
+                        imagen4.setVisibility(View.VISIBLE);
+                        btnCloseView4.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen4.getVisibility() == View.VISIBLE){
+                        imagen4.setImageBitmap(null);
+                        imagen4.setVisibility(View.GONE);
+
+                    }
+                    break;
+                case R.id.imageView5:
+                    ImageView imagen5 = findViewById(R.id.imageView5);
+                    if(imagen5.getVisibility() == View.GONE && isFetch){
+                        imagen5.setImageBitmap(bitmap);
+                        imagen5.setVisibility(View.VISIBLE);
+                        btnCloseView5.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen5.getVisibility() == View.VISIBLE){
+                        imagen5.setImageBitmap(null);
+                        imagen5.setVisibility(View.GONE);
+                    }
+                    break;
+                case R.id.imageView6:
+                    ImageView imagen6 = findViewById(R.id.imageView6);
+                    if(imagen6.getVisibility() == View.GONE && isFetch){
+                        imagen6.setImageBitmap(bitmap);
+                        imagen6.setVisibility(View.VISIBLE);
+                        btnCloseView6.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen6.getVisibility() == View.VISIBLE){
+                        imagen6.setImageBitmap(null);
+                        imagen6.setVisibility(View.GONE);
+                    }
+                    break;
+                case R.id.imageView7:
+                    ImageView imagen7 = findViewById(R.id.imageView7);
+                    if(imagen7.getVisibility() == View.GONE && isFetch){
+                        imagen7.setImageBitmap(bitmap);
+                        imagen7.setVisibility(View.VISIBLE);
+                        btnCloseView7.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen7.getVisibility() == View.VISIBLE){
+                        imagen7.setImageBitmap(null);
+                        imagen7.setVisibility(View.GONE);
+
+                    }
+                    break;
+                case R.id.imageView8:
+                    ImageView imagen8 = findViewById(R.id.imageView8);
+                    if(imagen8.getVisibility() == View.GONE && isFetch){
+                        imagen8.setImageBitmap(bitmap);
+                        imagen8.setVisibility(View.VISIBLE);
+                        btnCloseView8.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen8.getVisibility() == View.VISIBLE){
+                        imagen8.setImageBitmap(null);
+                        imagen8.setVisibility(View.GONE);
+
+                    }
+                    break;
+
+                case R.id.imageView9:
+                    ImageView imagen9 = findViewById(R.id.imageView9);
+                    if(imagen9.getVisibility() == View.GONE && isFetch){
+                        imagen9.setImageBitmap(bitmap);
+                        imagen9.setVisibility(View.VISIBLE);
+                        btnCloseView9.setVisibility(View.VISIBLE);
+                    }
+                    else if(imagen9.getVisibility() == View.VISIBLE){
+                        imagen9.setImageBitmap(null);
+                        imagen9.setVisibility(View.GONE);
+                    }
+                    break;
+            }
         }
 
-        switch (idButton) {
-            case R.id.btnView1:
-                ImageView imagen1 = findViewById(R.id.imageView1);
-                if(imagen1.getVisibility() == View.GONE && isFetch){
-                    imagen1.setImageBitmap(bitmap);
-                    imagen1.setVisibility(View.VISIBLE);
-                }
-                else if(imagen1.getVisibility() == View.VISIBLE){
-                    imagen1.setImageBitmap(null);
-                    imagen1.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView2:
-                ImageView imagen2 = findViewById(R.id.imageView2);
-                if(imagen2.getVisibility() == View.GONE && isFetch){
-                    imagen2.setImageBitmap(bitmap);
-                    imagen2.setVisibility(View.VISIBLE);
-                }
-                else if(imagen2.getVisibility() == View.VISIBLE){
-                    imagen2.setImageBitmap(null);
-                    imagen2.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView3:
-                ImageView imagen3 = findViewById(R.id.imageView3);
-                if(imagen3.getVisibility() == View.GONE && isFetch){
-                    imagen3.setImageBitmap(bitmap);
-                    imagen3.setVisibility(View.VISIBLE);
-                }
-                else if(imagen3.getVisibility() == View.VISIBLE){
-                    imagen3.setImageBitmap(null);
-                    imagen3.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView4:
-                ImageView imagen4 = findViewById(R.id.imageView4);
-                if(imagen4.getVisibility() == View.GONE && isFetch){
-                    imagen4.setImageBitmap(bitmap);
-                    imagen4.setVisibility(View.VISIBLE);
-                }
-                else if(imagen4.getVisibility() == View.VISIBLE){
-                    imagen4.setImageBitmap(null);
-                    imagen4.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView5:
-                ImageView imagen5 = findViewById(R.id.imageView5);
-                if(imagen5.getVisibility() == View.GONE && isFetch){
-                    imagen5.setImageBitmap(bitmap);
-                    imagen5.setVisibility(View.VISIBLE);
-                }
-                else if(imagen5.getVisibility() == View.VISIBLE){
-                    imagen5.setImageBitmap(null);
-                    imagen5.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView6:
-                ImageView imagen6 = findViewById(R.id.imageView6);
-                if(imagen6.getVisibility() == View.GONE && isFetch){
-                    imagen6.setImageBitmap(bitmap);
-                    imagen6.setVisibility(View.VISIBLE);
-                }
-                else if(imagen6.getVisibility() == View.VISIBLE){
-                    imagen6.setImageBitmap(null);
-                    imagen6.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView7:
-                ImageView imagen7 = findViewById(R.id.imageView7);
-                if(imagen7.getVisibility() == View.GONE && isFetch){
-                    imagen7.setImageBitmap(bitmap);
-                    imagen7.setVisibility(View.VISIBLE);
-                }
-                else if(imagen7.getVisibility() == View.VISIBLE){
-                    imagen7.setImageBitmap(null);
-                    imagen7.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.btnView8:
-                ImageView imagen8 = findViewById(R.id.imageView8);
-                if(imagen8.getVisibility() == View.GONE && isFetch){
-                    imagen8.setImageBitmap(bitmap);
-                    imagen8.setVisibility(View.VISIBLE);
-                }
-                else if(imagen8.getVisibility() == View.VISIBLE){
-                    imagen8.setImageBitmap(null);
-                    imagen8.setVisibility(View.GONE);
-                }
-                break;
 
-            case R.id.btnView9:
-                ImageView imagen9 = findViewById(R.id.imageView9);
-                if(imagen9.getVisibility() == View.GONE && isFetch){
-                    imagen9.setImageBitmap(bitmap);
-                    imagen9.setVisibility(View.VISIBLE);
-                }
-                else if(imagen9.getVisibility() == View.VISIBLE){
-                    imagen9.setImageBitmap(null);
-                    imagen9.setVisibility(View.GONE);
-                }
-                break;
-        }
 
     }
 
@@ -704,7 +802,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             case R.id.btnView2:
                 id = "SolicitudCreditoCara2";
                 break;
-            case R.id.btnView3:
+            /*case R.id.btnView3:
                 id = "CedulaCara1";
                 break;
             case R.id.btnView4:
@@ -724,7 +822,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.btnView9:
                 id = "TratamientoDatosPersonales";
-                break;
+                break;*/
         }
         return id;
 
@@ -776,41 +874,41 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         int id = 0;
         switch (typeFile) {
             case "SolicitudCreditoCara1":
-                id = R.id.btnView1;
+                id = R.id.imageView1;
                 break;
             case "SolicitudCreditoCara2":
-                id = R.id.btnView2;
+                id = R.id.imageView2;
                 break;
             case "CedulaCara1":
-                id = R.id.btnView3;
+                id = R.id.imageView3;
                 break;
             case "CedulaCara2":
-                id = R.id.btnView4;
+                id = R.id.imageView4;
                 break;
             case "Desprendible1":
-                id = R.id.btnView5;
+                id = R.id.imageView5;
                 break;
             case "Desprendible2":
-                id = R.id.btnView6;
+                id = R.id.imageView6;
                 break;
             case "Desprendible3":
-                id = R.id.btnView7;
+                id = R.id.imageView7;
                 break;
             case "Desprendible4":
-                id = R.id.btnView8;
+                id = R.id.imageView8;
                 break;
             case "TratamientoDatosPersonales":
-                id = R.id.btnView9;
+                id = R.id.imageView9;
                 break;
         }
         return id;
 
     }
 
-    public String getIdElementUpload(View v){
+    /*public String getIdElementUpload(View v){
         String id = "";
         switch (v.getId()) {
-            case R.id.btnUpload1:
+            case R.id.btnUpload:
                 id = "SolicitudCreditoCara1";
                 break;
             case R.id.btnUpload2:
@@ -839,18 +937,31 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
         return id;
-    }
+    }*/
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //recuperarFotoCargada(view);
+        recuperarFotoCargada(view);
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != 0) {
-            ConfirmacionImagen(view);
+        switch (requestCode) {
+            case PHOTO_CODE:
+            case 0 :
+                if (resultCode != 0) {
+                    ConfirmacionImagen(view);
+
+                }
+                break;
+
+            case SELECT_PICTURE:
+                if (resultCode == RESULT_OK) {
+                    ConfirmacionImagen(view);
+                }
         }
+
     }
 
     public void ConfirmacionImagen(final View view){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
+        //AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
         builder1.setCancelable(false);
 
@@ -876,7 +987,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
                         //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
                         //loadinAsyncTask.execute();
-                        //uploadFilesPresenter.uploadFiles(pathFile,view.getContext());
+                        //uploadFilesPresenter.uploadFiles(pathFile,this);
                         recuperarImagen(view,false);
                         changeStatusUpload(true);
                     }
@@ -1107,25 +1218,433 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         return getResources().getStringArray(R.array.spinner_code_employee_type)[i];
     }
-    // inflate_the_view
+
+    // inflate_PopupMenu
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
+        switch (view.getId()){
+            case  R.id.btnPopup1:
+            PopupMenu popup = new PopupMenu(this, btnPopup1);
+            //inflating menu from xml resource
+            popup.inflate(R.menu.menu_upload_file);
+            //adding click listener
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+
+                        case R.id.btnUpload:
+                            idElement = "SolicitudCreditoCara1";
+                            checkPermissionCamera(view);
 
 
+                            break;
+
+                        case R.id.btnLoadGallery:
+                            idElement = "SolicitudCreditoCara1";
+                            checkPermissionGallery(view);
+
+                            break;
+
+                        case R.id.btnView:
+                            idElement = "SolicitudCreditoCara1";
+                            recuperarFotoCargada(view);
+                            break;
+
+                    }
+                    return false;
+                }
+            });
+            popup.show();
+
+            break;
+
+            case  R.id.btnPopup2:
+
+                PopupMenu popup2 = new PopupMenu(this, btnPopup2);
+                //inflating menu from xml resource
+                popup2.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "SolicitudCreditoCara2";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "SolicitudCreditoCara2";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "SolicitudCreditoCara2";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup2.show();
+                break;
+
+            case  R.id.btnPopup3:
+
+                PopupMenu popup3 = new PopupMenu(this, btnPopup3);
+                //inflating menu from xml resource
+                popup3.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "CedulaCara1";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "CedulaCara1";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "CedulaCara1";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup3.show();
+                break;
+
+            case  R.id.btnPopup4:
+
+                PopupMenu popup4 = new PopupMenu(this, btnPopup4);
+                //inflating menu from xml resource
+                popup4.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup4.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "CedulaCara2";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "CedulaCara2";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "CedulaCara2";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup4.show();
+                break;
+
+            case  R.id.btnPopup5:
+
+                PopupMenu popup5 = new PopupMenu(this, btnPopup5);
+                //inflating menu from xml resource
+                popup5.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup5.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "Desprendible1";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "Desprendible1";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "Desprendible1";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup5.show();
+                break;
+
+            case  R.id.btnPopup6:
+
+                PopupMenu popup6 = new PopupMenu(this, btnPopup6);
+                //inflating menu from xml resource
+                popup6.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup6.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "Desprendible2";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "Desprendible2";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "Desprendible2";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup6.show();
+                break;
+
+            case  R.id.btnPopup7:
+
+                PopupMenu popup7 = new PopupMenu(this, btnPopup7);
+                //inflating menu from xml resource
+                popup7.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup7.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "Desprendible3";
+                                checkPermissionCamera(view);
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "Desprendible3";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "Desprendible3";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup7.show();
+                break;
+
+            case  R.id.btnPopup8:
+
+                PopupMenu popup8 = new PopupMenu(this, btnPopup8);
+                //inflating menu from xml resource
+                popup8.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup8.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "Desprendible4";
+                                checkPermissionCamera(view);
+
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "Desprendible4";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "Desprendible4";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup8.show();
+                break;
+
+            case  R.id.btnPopup9:
+
+                PopupMenu popup9 = new PopupMenu(this, btnPopup9);
+                //inflating menu from xml resource
+                popup9.inflate(R.menu.menu_upload_file);
+                //adding click listener
+                popup9.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+
+                            case R.id.btnUpload:
+                                idElement = "TratamientoDatosPersonales";
+                                checkPermissionCamera(view);
+                                checkPermissionCamera(view);
+
+
+                                break;
+
+                            case R.id.btnLoadGallery:
+                                idElement = "TratamientoDatosPersonales";
+                                checkPermissionGallery(view);
+
+                                break;
+
+                            case R.id.btnView:
+                                idElement = "TratamientoDatosPersonales";
+                                recuperarFotoCargada(view);
+
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+
+                popup9.show();
+                break;
+
+
+            // Close ImageView
+            case R.id.btnCloseView1:
+                btnCloseView1.setVisibility(View.GONE);
+                ImageView imagen1 = findViewById(R.id.imageView1);
+                imagen1.setImageBitmap(null);
+                break;
+            case R.id.btnCloseView2:
+                btnCloseView2.setVisibility(View.GONE);
+
+                ImageView imagen2 = findViewById(R.id.imageView2);
+                imagen2.setImageBitmap(null);
+
+                break;
+            case R.id.btnCloseView3:
+                btnCloseView3.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView4:
+                btnCloseView4.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView5:
+                btnCloseView5.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView6:
+                btnCloseView6.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView7:
+                btnCloseView7.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView8:
+                btnCloseView8.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+            case R.id.btnCloseView9:
+                btnCloseView9.setVisibility(View.GONE);
+                cleanInitImages();
+                break;
+        }
     }
 
-    /*public void openViewFloating(View v){
+    //OpenGallery
+    private void checkPermissionGallery(View view) {
+        this.view = view;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            openGallery(view);
+        } else {
 
-        View view1 = (View) findViewById(R.id.include1);
-        View view2 = (View) findViewById(R.id.include2);
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        view1.setVisibility(View.GONE);
-        view2.setVisibility(View.VISIBLE);
-        view1.setAlpha(0);
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+                openGallery(view);
+            }
 
-    }*/
+        }
+
+        return;
+    }
+
+    private void openGallery(View v) {
+        view = v;
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
+        startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
+    }
+
+
 
 
 
 }
+
+
+
+
+
+
+
