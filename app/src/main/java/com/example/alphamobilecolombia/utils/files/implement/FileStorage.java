@@ -3,14 +3,13 @@ package com.example.alphamobilecolombia.utils.files.implement;
 import android.content.Context;
 import android.util.Base64;
 
-import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
+import com.example.alphamobilecolombia.utils.configuration.implement.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FileStorage implements IFileStorage {

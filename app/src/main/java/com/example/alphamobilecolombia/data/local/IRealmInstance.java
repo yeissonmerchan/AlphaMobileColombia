@@ -7,9 +7,11 @@ import io.realm.RealmObject;
 
 public interface IRealmInstance {
     <T> boolean Insert(T realmObject);
-    List<RealmObject> GetAll(RealmObject object);
+    <T> boolean Insert(List<T> realmObject);
+    <T> List<T> GetAll(RealmObject object);
+    <T> List<T> GetAllByAttribute(RealmObject object, String key, String value);
     <T> List<T> GetAllGeneric(RealmObject object);
     <T> T GetByAttribute(RealmObject object, String key, String value);
-    <T> boolean deleteObject(RealmObject object);
-    Realm initLocalStorage();
+    <T> boolean DeleteObject(RealmObject object);
+    Realm InitLocalStorage();
 }

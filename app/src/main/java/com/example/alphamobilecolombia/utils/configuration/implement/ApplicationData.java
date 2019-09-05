@@ -1,4 +1,4 @@
-package com.example.alphamobilecolombia.utils.configuration;
+package com.example.alphamobilecolombia.utils.configuration.implement;
 
 import android.app.ActivityManager;
 import android.content.Context;

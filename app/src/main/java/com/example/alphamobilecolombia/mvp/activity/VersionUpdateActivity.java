@@ -6,7 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.utils.configuration.ApplicationData;
+import com.example.alphamobilecolombia.utils.configuration.implement.ApplicationData;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;

@@ -128,7 +128,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         cleanInitImages();
 
-        Parameter newParameter = new Parameter();
+        /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
         iRealmInstance.Insert(newParameter);
@@ -143,7 +143,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         Parameter busqueda = iRealmInstance.GetByAttribute(newParameter,"Key",newParameter.getKey());
         String key = busqueda.getKey();
-        String value = busqueda.getValue();
+        String value = busqueda.getValue();*/
 
         // View PopupMenu
         configureView();

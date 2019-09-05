@@ -40,12 +40,6 @@
                 android:textStyle="bold"
                 android:typeface="serif" />
 
-<!--            <com.example.alphamobilecolombia.mvp.activity.EditTextCurrency
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="$0"
-                android:maxLength="12" />-->
-
             <TextView
                 android:id="@+id/txtNombres"
                 android:layout_width="wrap_content"
@@ -75,10 +69,9 @@
                 android:hint="Primer nombre"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
-                android:maxLength="50"
-                android:textSize="@dimen/size_text"
+                android:maxLength="15"
                 android:tag="primer nombre"
-                />
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtNombres2"
@@ -109,10 +102,9 @@
                 android:hint="Segundo nombre"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
-                android:maxLength="50"
-                android:textSize="@dimen/size_text"
+                android:maxLength="15"
                 android:tag="segundo nombre"
-                />
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtApellidos"
@@ -129,8 +121,7 @@
                 android:text="Primer apellido *"
                 android:textColor="@color/colorHeader"
                 android:textSize="18dp"
-                android:typeface="serif"
-                />
+                android:typeface="serif" />
 
             <EditText
                 android:id="@+id/edt_lastNames"
@@ -144,10 +135,9 @@
                 android:hint="Primer apellido"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
-                android:maxLength="50"
-                android:textSize="@dimen/size_text"
+                android:maxLength="15"
                 android:tag="primer apellido"
-                />
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtApellidos2"
@@ -164,8 +154,7 @@
                 android:text="Segundo apellido"
                 android:textColor="@color/colorHeader"
                 android:textSize="18dp"
-                android:typeface="serif"
-                />
+                android:typeface="serif" />
 
             <EditText
                 android:id="@+id/edt_lastNames2"
@@ -179,11 +168,9 @@
                 android:hint="Segundo apellido"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|text"
-                android:maxLength="50"
-                android:textSize="@dimen/size_text"
+                android:maxLength="15"
                 android:tag="segundo apellido"
-                />
-
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtNumIdent"
@@ -213,9 +200,8 @@
                 android:hint="Número identificación"
                 android:inputType="number"
                 android:maxLength="11"
-                android:textSize="@dimen/size_text"
                 android:tag="número de identificación"
-                />
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtFechaNac"
@@ -247,9 +233,8 @@
                 android:hint="Seleccione una fecha"
                 android:inputType="date"
                 android:maxLines="1"
-                android:textSize="@dimen/size_text"
                 android:tag="fecha de nacimiento"
-                />
+                android:textSize="@dimen/size_text" />
 
             <TextView
                 android:id="@+id/txtGenero"
@@ -274,8 +259,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:tag="genero"
-                />
+                android:tag="genero" />
 
             <Button
                 android:id="@+id/btn_new_request"

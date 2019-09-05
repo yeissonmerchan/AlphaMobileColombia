@@ -136,7 +136,7 @@ public class Formulario {
 
                 List<GetPagaduriasRequest> pagadurias = new ArrayList<>();
 
-                ScannerPresenter scannerPresenter = new ScannerPresenter();
+/*                ScannerPresenter scannerPresenter = new ScannerPresenter();
                 HttpResponse response = scannerPresenter.getPaying(pagina);
                 JSONObject data = (JSONObject) response.getData();
                 try {
@@ -152,7 +152,19 @@ public class Formulario {
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                     LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Pagadurías", ex, pagina);
-                }
+                }*/
+
+                GetPagaduriasRequest GetPagaduriasRequest1 = new GetPagaduriasRequest();
+                GetPagaduriasRequest1.setNombre("Uno");
+                pagadurias.add(GetPagaduriasRequest1);
+
+                GetPagaduriasRequest GetPagaduriasRequest2 = new GetPagaduriasRequest();
+                GetPagaduriasRequest2.setNombre("Dos");
+                pagadurias.add(GetPagaduriasRequest2);
+
+                GetPagaduriasRequest GetPagaduriasRequest3 = new GetPagaduriasRequest();
+                GetPagaduriasRequest3.setNombre("Tres");
+                pagadurias.add(GetPagaduriasRequest3);
 
                 List<String> names = new ArrayList<>();
 
@@ -225,7 +237,6 @@ public class Formulario {
                 break;
         }
     }
-
 
     //Obtiene el valor especificado
     public String ObtenerValor(AppCompatActivity pagina, String Llave) {

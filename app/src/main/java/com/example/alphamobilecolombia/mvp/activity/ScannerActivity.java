@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -183,6 +186,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         new Formulario().Cargar(this, spinner_genero);
 
+        adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
+
         /********************************************************************** FECHA NACIMIENTO */
 
         textview_fecha_nacimiento = (TextView) findViewById(R.id.edt_birthDate);
@@ -201,7 +206,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         evento_fecha_nacimiento,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));
+                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.683e+11)));
                 dialog.show();
             }
         });
@@ -249,16 +254,42 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         //***********************************************************************
     }
 
-    public void onclickExit(View view) {
-        Intent intent = new Intent(view.getContext(), LoginActivity.class);
-        startActivityForResult(intent, 0);
-    }
-
+    //Se prodcue cuando se presiona el botón Continuar
     public void onClickBtnNextTerms(View view) throws JSONException {
 
-        String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
+        //Define el error
+        String Error = "";
 
-        new Formulario().Validar(this, AdditionalDataActivity.class, Campos);
+        //Quitar los espacios antes y después de los campos de texto
+
+        edt_names.setText(edt_names.getText().toString().trim().replace("  ", " "));
+        edt_names2.setText(edt_names2.getText().toString().trim());
+        edt_lastNames.setText(edt_lastNames.getText().toString().trim());
+        edt_lastNames2.setText(edt_lastNames2.getText().toString().trim());
+        edt_numberIdentification.setText(edt_numberIdentification.getText().toString().trim());
+
+        //Validar longitudes de los campos de texto
+
+        if (!TextUtils.isEmpty(edt_names.getText()) && (edt_names.getText().toString().length() < 3 || edt_names.getText().toString().length() > 15)) {
+            Error = "El campo primer nombre debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_names2.getText()) && (edt_names2.getText().toString().length() < 3 || edt_names2.getText().toString().length() > 15)) {
+            Error = "El campo segundo nombre debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_lastNames.getText()) && (edt_lastNames.getText().toString().length() < 3 || edt_lastNames.getText().toString().length() > 15)) {
+            Error = "El campo primer apellido debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 15)) {
+            Error = "El campo segundo apellido debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_numberIdentification.getText()) && (edt_numberIdentification.getText().toString().length() < 6 || edt_numberIdentification.getText().toString().length() > 11)) {
+            Error = "El campo número de identificación debe tener entre 6 y 11 caracteres";
+        }
+
+        //Si tiene error entonces muestra el mensaje
+
+        if (!TextUtils.isEmpty(Error)) {
+            Toast.makeText(this.getApplicationContext(), Error, Toast.LENGTH_LONG).show(); //Muestra el mensaje
+        } else {
+            String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
+            new Formulario().Validar(this, AdditionalDataActivity.class, Campos);
+        }
     }
 
     @Override
@@ -270,7 +301,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
         // TODO Auto-generated method stub
     }
-
 
 
     @Override
@@ -351,6 +381,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } catch (Exception ex) {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
             //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
             NotificacionErrorDatos(this);
         }
     }
@@ -382,8 +413,11 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         alert11.show();
     }
 
-
-
+    //Se produce cuando de presiona el botón de salir
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
 
     @Override
     public void onPause() {
@@ -403,7 +437,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
     }
-
 
 }
 

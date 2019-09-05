@@ -81,7 +81,9 @@
             android:name=".mvp.activity.CustomerTypeActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            />
 
         <!--DATOS DESPRENDIBLES-->
         <activity

@@ -1,107 +1,137 @@
 package com.example.alphamobilecolombia.data.cloud.firestore.implement;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.example.alphamobilecolombia.data.cloud.firestore.ICloudStoreInstance;
+import com.example.alphamobilecolombia.data.cloud.firestore.entity.ConfiguracionMotor;
+import com.example.alphamobilecolombia.data.cloud.firestore.entity.ListData;
+import com.example.alphamobilecolombia.data.cloud.firestore.entity.ParametrizacionMotor;
+import com.example.alphamobilecolombia.data.cloud.firestore.entity.VariableMotor;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
+import com.example.alphamobilecolombia.data.local.entity.Parameter;
+import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
+import com.example.alphamobilecolombia.utils.notification.local.INotification;
+import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import static com.google.firebase.firestore.DocumentChange.Type.ADDED;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.RealmObject;
+
 import static io.fabric.sdk.android.Fabric.TAG;
 
 public class CloudStoreInstance implements ICloudStoreInstance {
     Context _context;
-    public CloudStoreInstance(Context context){
+    INotification _iNotification;
+    IRealmInstance _iRealmInstance;
+    public CloudStoreInstance(INotification iNotification, IRealmInstance iRealmInstance, Context context){
         _context = context;
+        _iNotification = iNotification;
+        _iRealmInstance = iRealmInstance;
     }
 
-    public CollectionReference instance(){
+    public FirebaseFirestore instanceDb(){
+        FirebaseFirestoreSettings fireStoreSettings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                .build();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.setFirestoreSettings(fireStoreSettings);
+        return db;
+    }
+
+    public Task<QuerySnapshot> syncCollection(String nameCollection){
         try {
-            FirebaseFirestoreSettings firestoreSettings = new FirebaseFirestoreSettings.Builder()
-                    .setPersistenceEnabled(true)
-                    .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
-                    .build();
-            FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-            rootRef.setFirestoreSettings(firestoreSettings);
-            CollectionReference productsRef = rootRef.collection("Decisor");
-            DocumentReference documentReference = productsRef.document();
-            Query query = productsRef.whereEqualTo("Proceso", 3);
+            /*Parameter newParameter = new Parameter();
+            newParameter.setKey("campo1");
+            newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
+            _iRealmInstance.Insert(newParameter);
 
-            DocumentReference contactListener = rootRef.collection("Decisor").document("Z3RYGx9bvRmAl69IPyDs");
-            contactListener.addSnapshotListener(new EventListener < DocumentSnapshot > () {
-                @Override
-                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.d("ERROR", e.getMessage());
-                        return;
-                    }
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-                        //Toast.makeText(MainActivity.this, "Current data:" + documentSnapshot.getData(), Toast.LENGTH_SHORT).show();
-                    }
+            Parameter newParameter2 = new Parameter();
+            newParameter2.setKey("campo2");
+            newParameter2.setValue("673478487456");
+            _iRealmInstance.Insert(newParameter2);
 
-                }
-            });
+            List<RealmObject> lisParameters = _iRealmInstance.GetAll(newParameter);
+            List<Parameter> lisParameters2 = _iRealmInstance.GetAllGeneric(newParameter);
+            for (Parameter parameter : lisParameters2){
+                String key = parameter.getKey();
+                String value = parameter.getValue();
+            }
 
+            Parameter busqueda = _iRealmInstance.GetByAttribute(newParameter,"Key",newParameter.getKey());
+            String key = busqueda.getKey();
+            String value = busqueda.getValue();*/
 
-            rootRef.collection("Decisor").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-
-                    if (e !=null)
-                    {
-
-                    }
-
-                    for (DocumentChange documentChange : documentSnapshots.getDocumentChanges())
-                    {
-                        String   FechaUltimaActualizacion =  documentChange.getDocument().getData().get("FechaUltimaActualizacion").toString();
-                        String  Proceso   =  documentChange.getDocument().getData().get("Proceso").toString();
-                        String IdParameter = documentChange.getDocument().getData().get("IdParameter").toString();
-
-                    }
-                }
-            });
-
-            /*DocumentReference user = rootRef.collection("Decisor").document("Z3RYGx9bvRmAl69IPyDs");
-            user.get().addOnCompleteListener(new OnCompleteListener< DocumentSnapshot >() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                        DocumentSnapshot doc = task.getResult();
-                        StringBuilder fields = new StringBuilder("");
-                        fields.append("FechaUltimaActualizacion: ").append(doc.get("FechaUltimaActualizacion"));
-                        fields.append("\nProceso: ").append(doc.get("Proceso"));
-                        fields.append("\nIdParameter: ").append(doc.get("IdParameter"));
-
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+            FirebaseFirestore db = instanceDb();
+            Task<QuerySnapshot> collectionSimulator = db.collection(nameCollection)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
+                            if (objects != null)
+                            {
+                                ParametrizacionMotor parametrizacionMotor = objects.get(0);
+                                uploadConfiguration(parametrizacionMotor);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     });
-*/
-            return productsRef;
+
+            return collectionSimulator;
         }
         catch (Exception ex){
             ex.printStackTrace();
+            return null;
         }
-
-        return null;
     }
+
+    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor){
+        LocalNotification localNotification = new LocalNotification();
+        try {
+            if (parametrizacionMotor != null) {
+                List<VariableMotor> variableMotors = parametrizacionMotor.getVariables();
+                List<SelectionOption> newOptions = new ArrayList<>();
+
+                _iRealmInstance.DeleteObject(new SelectionOption());
+
+                for (VariableMotor variableMotor : variableMotors) {
+                    if (variableMotor.getListaData() != null) {
+                        for (ListData listData : variableMotor.getListaData()) {
+                            newOptions.add(new SelectionOption(variableMotor.getCodigoCampo(), variableMotor.getNombreControl(), listData.getCodigo(), listData.getNombre()));
+                        }
+                    }
+                }
+
+                _iRealmInstance.Insert(newOptions);
+                localNotification.setMessage("Sincronización de configuración del app finalizada.");
+                localNotification.setTitle("Check!");
+
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            localNotification.setMessage("Error en la sincronización de la configuración del app.");
+            localNotification.setTitle("Check!");
+        }
+        finally {
+            _iNotification.ShowNotification(localNotification);
+        }
+    }
+
 }

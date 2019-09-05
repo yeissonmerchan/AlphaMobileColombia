@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.utils.configuration.VersionUpdate;
 
 public class ModuleActivity extends AppCompatActivity {
 
@@ -87,7 +86,7 @@ public class ModuleActivity extends AppCompatActivity {
                 .setMessage("Deseas solicitar QR")
                 .setPositiveButton(R.string.alert_activity_module, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent (view.getContext(), ScannerActivity.class);
+                        Intent intent = new Intent (view.getContext(), ScannerActivity.class); //ScannerActivity
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra("qr", true);
                         startActivityForResult(intent, 0);
