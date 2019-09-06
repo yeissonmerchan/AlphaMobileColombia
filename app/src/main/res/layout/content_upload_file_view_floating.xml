@@ -24,7 +24,7 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnView"
+            android:id="@+id/btnView11"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@mipmap/logo_camara"
@@ -39,7 +39,7 @@
         android:layout_gravity="bottom|end">
 
         <TextView
-            android:id="@+id/textviewUplod"
+            android:id="@+id/textviewUplod111"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -50,7 +50,7 @@
             android:clickable="true"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnView2"
+            android:id="@+id/btnView222"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@mipmap/logo_camara"

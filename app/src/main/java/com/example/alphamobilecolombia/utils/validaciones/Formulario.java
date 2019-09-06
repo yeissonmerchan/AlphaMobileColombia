@@ -163,6 +163,8 @@ public class Formulario {
     }
 
     //Obtiene el valor especificado
+    //<pagina>La pagina que se quiere conectar a Realm</pagina>
+    //<Llave>La llave a la que se le quiere obtener su valor</Llave>
     public String ObtenerValor(AppCompatActivity pagina, String Llave) {
         IRealmInstance iRealmInstance = new RealmInstance(pagina, new RSA(pagina.getBaseContext()));
         Parameter newParameter = new Parameter();
@@ -176,7 +178,9 @@ public class Formulario {
 
             Parameter Parametro = (Parameter) ObjetoRealm;
 
-            if (Parametro.getKey().trim().toUpperCase() == Llave.trim().toUpperCase()) {
+            String LlaveActual = Parametro.getKey().trim().toUpperCase();
+
+            if (LlaveActual.equals(Llave.trim().toUpperCase())) {
                 return Parametro.getValue();
             }
         }

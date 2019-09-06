@@ -191,7 +191,19 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                         evento_fecha_ingreso,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()));
+
+
+                Calendar FechaMaxima = Calendar.getInstance();
+
+                String[] FechaNacimiento = formulario.ObtenerValor(CustomerTypeActivity.this, "edt_birthDate").split("/");
+
+                FechaMaxima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
+                        Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
+                        Integer.valueOf(FechaNacimiento[2]));
+
+                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+
+/*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()));*/
                 dialog.show();
             }
         });

@@ -132,7 +132,18 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
                         evento_fecha_expedicion_cedula,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));
+/*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
+
+                Calendar FechaMaxima = Calendar.getInstance();
+
+                String[] FechaNacimiento = formulario.ObtenerValor(AdditionalDataActivity.this, "edt_birthDate").split("/");
+
+                FechaMaxima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
+                        Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
+                        Integer.valueOf(FechaNacimiento[2]));
+
+                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+
                 dialog.show();
             }
         });
