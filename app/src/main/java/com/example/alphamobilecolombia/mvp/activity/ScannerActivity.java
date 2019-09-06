@@ -39,13 +39,15 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import co.venko.api.android.cedula.DocumentManager;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     Formulario formulario;
-    public ScannerActivity(){
+
+    public ScannerActivity() {
         formulario = new Formulario(diContainer.injectISelectList(this));
     }
     //************************** LECTOR
@@ -191,7 +193,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         formulario.Cargar(this, spinner_genero);
 
-        adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
+        adapter_genero = (ArrayAdapter<CharSequence>) spinner_genero.getAdapter();
 
         /********************************************************************** FECHA NACIMIENTO */
 
@@ -211,7 +213,11 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         evento_fecha_nacimiento,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.683e+11)));
+
+                Calendar FechaMaxima = Calendar.getInstance();
+                FechaMaxima.set(year - 18, month, day);
+                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+
                 dialog.show();
             }
         });
@@ -242,9 +248,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         contextView = this;
         Bundle dataqr = this.getIntent().getExtras();
-        if(dataqr != null){
+        if (dataqr != null) {
             boolean qr = dataqr.getBoolean("qr");
-            if(qr == true){
+            if (qr == true) {
                 new IntentIntegrator(ScannerActivity.this)
                         .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
                         .setPrompt("Por favor escanear el código de barras de la cédula.")
