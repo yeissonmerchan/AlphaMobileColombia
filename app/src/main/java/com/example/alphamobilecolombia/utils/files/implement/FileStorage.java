@@ -45,15 +45,15 @@ public class FileStorage implements IFileStorage {
 
     public List<com.example.alphamobilecolombia.mvp.models.File> GetListFiles(){
         List<com.example.alphamobilecolombia.mvp.models.File> filesRequired = new ArrayList<>();
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(66,"",true,"SolicitudCreditoCara1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68,"",true,"CedulaCara1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69,"",true,"CedulaCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70,"",true,"Desprendible1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71,"",true,"Desprendible2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(72,"",false,"Desprendible3",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(73,"",false,"Desprendible4",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77,"",true,"TratamientoDatosPersonales",false));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(27,"",true,"CargueDocumentosPreValidación",false,"", true));
+        //filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false,"", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68,"",true,"CedulaCara1",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69,"",true,"CedulaCara2",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70,"",true,"Desprendible1",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71,"",true,"Desprendible2",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(72,"",false,"Desprendible3",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(73,"",false,"Desprendible4",false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77,"",true,"TratamientoDatosPersonales",false, "", true));
 
         return filesRequired;
     }

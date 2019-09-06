@@ -12,7 +12,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,7 +71,7 @@ import id.zelory.compressor.Compressor;
 import io.realm.RealmObject;
 
 
-public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener {
+public class UploadFileActivity extends AppCompatActivity {
     List<com.example.alphamobilecolombia.mvp.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.mvp.models.File>();
     RealmStorage storage = new RealmStorage();
     View view;
@@ -94,12 +96,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     IPersonPresenter _iPersonPresenter;
 
     // PopupMenu
-    ImageButton btnPopup1,btnPopup2,btnPopup3,btnPopup4, btnPopup5, btnPopup6, btnPopup7,btnPopup8, btnPopup9,
-            btnCloseView1,btnCloseView2,btnCloseView3,btnCloseView4,btnCloseView5,btnCloseView6,btnCloseView7,btnCloseView8,btnCloseView9;
+    ImageButton btnCloseView1,btnCloseView2,btnCloseView3,btnCloseView4,btnCloseView5,btnCloseView6,btnCloseView7,btnCloseView8,btnCloseView9;
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private final int SELECT_PICTURE = 200;
     private final int PHOTO_CODE = 100;
+
+    String nameUriPath;
 
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
@@ -146,50 +149,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String value = busqueda.getValue();*/
 
         // View PopupMenu
-        configureView();
-
-    }
-
-    public void configureView(){
-        // View PopupMenu
-        btnPopup1 = (ImageButton) findViewById(R.id.btnPopup1);
-        btnPopup1.setOnClickListener(this);
-        btnPopup2 = (ImageButton) findViewById(R.id.btnPopup2);
-        btnPopup2.setOnClickListener(this);
-        btnPopup3 = (ImageButton) findViewById(R.id.btnPopup3);
-        btnPopup3.setOnClickListener(this);
-        btnPopup4 = (ImageButton) findViewById(R.id.btnPopup4);
-        btnPopup4.setOnClickListener(this);
-        btnPopup5 = (ImageButton) findViewById(R.id.btnPopup5);
-        btnPopup5.setOnClickListener(this);
-        btnPopup6 = (ImageButton) findViewById(R.id.btnPopup6);
-        btnPopup6.setOnClickListener(this);
-        btnPopup7 = (ImageButton) findViewById(R.id.btnPopup7);
-        btnPopup7.setOnClickListener(this);
-        btnPopup8 = (ImageButton) findViewById(R.id.btnPopup8);
-        btnPopup8.setOnClickListener(this);
-        btnPopup9 = (ImageButton) findViewById(R.id.btnPopup9);
-        btnPopup9.setOnClickListener(this);
-
         btnCloseView1 = (ImageButton) findViewById(R.id.btnCloseView1);
-        btnCloseView1.setOnClickListener(this);
-        btnCloseView2 = (ImageButton) findViewById(R.id.btnCloseView2);
-        btnCloseView2.setOnClickListener(this);
+        //btnCloseView2 = (ImageButton) findViewById(R.id.btnCloseView2);
         btnCloseView3 = (ImageButton) findViewById(R.id.btnCloseView3);
-        btnCloseView3.setOnClickListener(this);
         btnCloseView4 = (ImageButton) findViewById(R.id.btnCloseView4);
-        btnCloseView4.setOnClickListener(this);
         btnCloseView5 = (ImageButton) findViewById(R.id.btnCloseView5);
-        btnCloseView5.setOnClickListener(this);
         btnCloseView6 = (ImageButton) findViewById(R.id.btnCloseView6);
-        btnCloseView6.setOnClickListener(this);
         btnCloseView7 = (ImageButton) findViewById(R.id.btnCloseView7);
-        btnCloseView7.setOnClickListener(this);
         btnCloseView8 = (ImageButton) findViewById(R.id.btnCloseView8);
-        btnCloseView8.setOnClickListener(this);
         btnCloseView9 = (ImageButton) findViewById(R.id.btnCloseView9);
-        btnCloseView9.setOnClickListener(this);
-
     }
 
 
@@ -281,21 +249,21 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public boolean compareLists(List<File> modelList) {
         List<com.example.alphamobilecolombia.mvp.models.File> filesRequired = new ArrayList<File>();
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(66,"",true,"SolicitudCreditoCara1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68,"",true,"CedulaCara1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69,"",true,"CedulaCara2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70,"",true,"Desprendible1",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71,"",true,"Desprendible2",false));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77,"",true,"TratamientoDatosPersonales",false));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(27,"",true,"CargueDocumentosPreValidación",false,"",true));
+       // filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68,"",true,"CedulaCara1",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69,"",true,"CedulaCara2",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70,"",true,"Desprendible1",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71,"",true,"Desprendible2",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77,"",true,"TratamientoDatosPersonales",false,"",true));
 
         ExistFile existFile = new ExistFile();
 
         if(listUpload.size()>0) {
             for (com.example.alphamobilecolombia.mvp.models.File file : modelList) {
                 switch (file.getType()) {
-                    case "SolicitudCreditoCara1":
-                        existFile.SolicitudCreditoCara1 = true;
+                    case "CargueDocumentosPreValidación":
+                        existFile.CargueDocumentosPreValidación = true;
                         break;
                     case "SolicitudCreditoCara2":
                         existFile.SolicitudCreditoCara2 = true;
@@ -318,14 +286,14 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         }
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
         //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         //if(existFile.SolicitudCreditoCara1)
         {
             return true;
         }
         else{
-            validStatusUpload(existFile.SolicitudCreditoCara1, existFile.SolicitudCreditoCara2, existFile.CedulaCara1, existFile.CedulaCara2,  existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
+            validStatusUpload(existFile.CargueDocumentosPreValidación, existFile.SolicitudCreditoCara2, existFile.CedulaCara1, existFile.CedulaCara2,  existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
             return false;
         }
     }
@@ -365,7 +333,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
 
     public static class ExistFile{
-        public boolean SolicitudCreditoCara1 = false;
+        public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;
         public boolean CedulaCara1 = false;
         public boolean CedulaCara2 = false;
@@ -376,21 +344,38 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public void recuperarFotoCargada(View v) {
         try {
-            idElement = getIdElementView(v);
+            //idElement = getIdElementView(v);
             boolean isExist = false;
+            boolean isPhoto = false;
+            String path = "";
             for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                 if(file.getType().equals(idElement)) {
                     isExist = true;
+                    isPhoto = file.getPhoto();
+                    path = file.getFilePath();
+                    break;
                 }
             }
 
             if(isExist) {
                 Matrix matrix = new Matrix();
                 matrix.postRotate(90);
-
+                Bitmap rotatedBitmap = null;
                 //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
-                Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                if (isPhoto){
+                    Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
+                    rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                }else {
+                    try {
+                        Uri imageUri = Uri.parse(path);
+                        Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
+                        rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
                 getViewImage(v, rotatedBitmap, true);
             }
@@ -401,7 +386,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void recuperarImagen(View v, boolean isfetch) {
+    public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
             //showLoading(v);
             //idElement = getIdElementView(v);
@@ -456,6 +441,32 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void recuperarImagenGaleria(View v, boolean isfetch, String path) {
+        try {
+            Bitmap bitmap = null;
+            try {
+                Uri imageUri = Uri.parse(path);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(), bitmap.getHeight(), true);
+                getViewImage(v,bitmap,isfetch);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+
+            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);*/
+
+            //getViewImage(v,rotatedBitmap,isfetch);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
+        }
+    }
+
     public String getNameFile(View view){
         String documentNumber;
         String nameFile = idElement;
@@ -482,7 +493,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
 
         switch (idElement) {
-            case "SolicitudCreditoCara1":
+            case "CargueDocumentosPreValidación":
                 LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
                 if(status){
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
@@ -491,7 +502,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
-            case "SolicitudCreditoCara2":
+            /*case "SolicitudCreditoCara2":
                 LinearLayout rl2 = (LinearLayout)findViewById(R.id.lyt_cargue2);
                 if(status){
                     rl2.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
@@ -499,7 +510,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 else{
                     rl2.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
-                break;
+                break;*/
             case "CedulaCara1":
                 LinearLayout rl3 = (LinearLayout)findViewById(R.id.lyt_cargue3);
                 if(status){
@@ -569,61 +580,61 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
 
     public void validStatusUpload(boolean status1, boolean status2, boolean status3, boolean status4, boolean status5, boolean status6, boolean status7){
-                LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
-                if(status1){
-                    rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
+        if(status1){
+            rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
-                LinearLayout rl2 = (LinearLayout)findViewById(R.id.lyt_cargue2);
+               /* LinearLayout rl2 = (LinearLayout)findViewById(R.id.lyt_cargue2);
                 if(status2){
                     rl2.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
                 }
                 else{
                     rl2.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+                }*/
 
-                LinearLayout rl3 = (LinearLayout)findViewById(R.id.lyt_cargue3);
-                if(status3){
-                    rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl3 = (LinearLayout)findViewById(R.id.lyt_cargue3);
+        if(status3){
+            rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
-                LinearLayout rl4 = (LinearLayout)findViewById(R.id.lyt_cargue4);
-                if(status4){
-                    rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl4 = (LinearLayout)findViewById(R.id.lyt_cargue4);
+        if(status4){
+            rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
-                LinearLayout rl5 = (LinearLayout)findViewById(R.id.lyt_cargue5);
-                if(status5){
-                    rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl5 = (LinearLayout)findViewById(R.id.lyt_cargue5);
+        if(status5){
+            rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
-                LinearLayout rl6 = (LinearLayout)findViewById(R.id.lyt_cargue6);
-                if(status6){
-                    rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl6 = (LinearLayout)findViewById(R.id.lyt_cargue6);
+        if(status6){
+            rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
-                LinearLayout rl9 = (LinearLayout)findViewById(R.id.lyt_cargue9);
-                if(status7){
-                    rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
-                    rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
-                }
+        LinearLayout rl9 = (LinearLayout)findViewById(R.id.lyt_cargue9);
+        if(status7){
+            rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
+        }
+        else{
+            rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
+        }
 
     }
 
@@ -631,8 +642,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         ImageView imagen1 = findViewById(R.id.imageView1);
         imagen1.setImageBitmap(null);
 
-        ImageView imagen2 = findViewById(R.id.imageView2);
-        imagen2.setImageBitmap(null);
+        //ImageView imagen2 = findViewById(R.id.imageView2);
+        //imagen2.setImageBitmap(null);
 
         ImageView imagen3 = findViewById(R.id.imageView3);
         imagen3.setImageBitmap(null);
@@ -685,7 +696,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         btnCloseView1.setVisibility(View.GONE);
                     }
                     break;
-                case R.id.imageView2:
+               /* case R.id.imageView2:
                     ImageView imagen2 = findViewById(R.id.imageView2);
                     if(imagen2.getVisibility() == View.GONE && isFetch){
                         imagen2.setImageBitmap(bitmap);
@@ -696,7 +707,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         imagen2.setImageBitmap(null);
                         imagen2.setVisibility(View.GONE);
                     }
-                    break;
+                    break;*/
                 case R.id.imageView3:
                     ImageView imagen3 = findViewById(R.id.imageView3);
                     if(imagen3.getVisibility() == View.GONE && isFetch){
@@ -789,20 +800,18 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-
-
     }
 
     public String getIdElementView(View v){
         String id = "";
         switch (v.getId()) {
-            case R.id.btnView1:
-                id = "SolicitudCreditoCara1";
+            /*case R.id.btnView1:
+                id = "CargueDocumentosPreValidación";
                 break;
             case R.id.btnView2:
                 id = "SolicitudCreditoCara2";
                 break;
-            /*case R.id.btnView3:
+            case R.id.btnView3:
                 id = "CedulaCara1";
                 break;
             case R.id.btnView4:
@@ -873,12 +882,12 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     public int getIdViewImage(String typeFile){
         int id = 0;
         switch (typeFile) {
-            case "SolicitudCreditoCara1":
+            case "CargueDocumentosPreValidación":
                 id = R.id.imageView1;
                 break;
-            case "SolicitudCreditoCara2":
+            /*case "SolicitudCreditoCara2":
                 id = R.id.imageView2;
-                break;
+                break;*/
             case "CedulaCara1":
                 id = R.id.imageView3;
                 break;
@@ -909,7 +918,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String id = "";
         switch (v.getId()) {
             case R.id.btnUpload:
-                id = "SolicitudCreditoCara1";
+                id = "CargueDocumentosPreValidación";
                 break;
             case R.id.btnUpload2:
                 id = "SolicitudCreditoCara2";
@@ -946,20 +955,23 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             case PHOTO_CODE:
             case 0 :
                 if (resultCode != 0) {
-                    ConfirmacionImagen(view);
+                    String path = pathNewFile1+"/"+getNameFile(view);
+                    ConfirmacionImagen(view, path,true);
 
                 }
                 break;
 
             case SELECT_PICTURE:
                 if (resultCode == RESULT_OK) {
-                    ConfirmacionImagen(view);
+                    //ConfirmacionImagen(view);
+                    Uri selectedImageUri = data.getData();
+                    ConfirmacionImagen(view,selectedImageUri.toString(),false);
                 }
         }
 
     }
 
-    public void ConfirmacionImagen(final View view){
+    public void ConfirmacionImagen(final View view,final String path,final Boolean isPhoto){
         //AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
@@ -981,14 +993,19 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         }
 
                         if (!isExist){
-                            fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true);
+                            fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
                             listUpload.add(fileUpload);
                         }
 
                         //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
                         //loadinAsyncTask.execute();
                         //uploadFilesPresenter.uploadFiles(pathFile,this);
-                        recuperarImagen(view,false);
+                        if(isPhoto){
+                            recuperarImagen(view,false,path);
+                        }else {
+                            recuperarImagenGaleria(view,false,path);
+                        }
+
                         changeStatusUpload(true);
                     }
                 });
@@ -1085,7 +1102,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             persona.setNombre("Yeisson");
             persona.setNombre2("Andres");
             persona.setApellido1("Merchan");
-                persona.setApellido2("Lemus");
+            persona.setApellido2("Lemus");
             persona.setFechaNacimiento("1996/08/08");
             persona.setGenero(String.valueOf(1));
             persona.setCelular("234");
@@ -1221,385 +1238,143 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     // inflate_PopupMenu
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case  R.id.btnPopup1:
-            PopupMenu popup = new PopupMenu(this, btnPopup1);
-            //inflating menu from xml resource
-            popup.inflate(R.menu.menu_upload_file);
-            //adding click listener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
+    public String getByNameImage(View v){
+        String id = "";
+        switch (v.getId()) {
+            case R.id.btnPopup1:
+                id = "CargueDocumentosPreValidación";
+                break;
+            /*case R.id.btnPopup2:
+                id = "SolicitudCreditoCara2";
+                break;*/
+            case R.id.btnPopup3:
+                id = "CedulaCara1";
+                break;
+            case R.id.btnPopup4:
+                id = "CedulaCara2";
+                break;
+            case R.id.btnPopup5:
+                id = "Desprendible1";
+                break;
+            case R.id.btnPopup6:
+                id = "Desprendible2";
+                break;
+            case R.id.btnPopup7:
+                id = "Desprendible3";
+                break;
+            case R.id.btnPopup8:
+                id = "Desprendible4";
+                break;
+            case R.id.btnPopup9:
+                id = "TratamientoDatosPersonales";
+                break;
+        }
+        return id;
 
-                        case R.id.btnUpload:
-                            idElement = "SolicitudCreditoCara1";
-                            checkPermissionCamera(view);
+    }
+
+    public void onClickOptions(View view) {
+        idElement = getByNameImage(view);
+        PopupMenu popup = new PopupMenu(this, view);
+        //inflating menu from xml resource
+        popup.inflate(R.menu.menu_upload_file);
+        //adding click listener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.btnUpload:
+                        checkPermissionCamera(view);
 
 
-                            break;
+                        break;
 
-                        case R.id.btnLoadGallery:
-                            idElement = "SolicitudCreditoCara1";
-                            checkPermissionGallery(view);
+                    case R.id.btnLoadGallery:
+                        checkPermissionGallery(view);
 
-                            break;
+                        break;
 
-                        case R.id.btnView:
-                            idElement = "SolicitudCreditoCara1";
-                            recuperarFotoCargada(view);
-                            break;
+                    case R.id.btnView:
+                        recuperarFotoCargada(view);
+                        break;
 
-                    }
-                    return false;
                 }
-            });
-            popup.show();
+                return false;
+            }
+        });
+        popup.show();
 
-            break;
+        closeButtonImage(view, popup);
 
-            case  R.id.btnPopup2:
+    }
 
-                PopupMenu popup2 = new PopupMenu(this, btnPopup2);
-                //inflating menu from xml resource
-                popup2.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup2.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "SolicitudCreditoCara2";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "SolicitudCreditoCara2";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "SolicitudCreditoCara2";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup2.show();
-                break;
-
-            case  R.id.btnPopup3:
-
-                PopupMenu popup3 = new PopupMenu(this, btnPopup3);
-                //inflating menu from xml resource
-                popup3.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup3.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "CedulaCara1";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "CedulaCara1";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "CedulaCara1";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup3.show();
-                break;
-
-            case  R.id.btnPopup4:
-
-                PopupMenu popup4 = new PopupMenu(this, btnPopup4);
-                //inflating menu from xml resource
-                popup4.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup4.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "CedulaCara2";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "CedulaCara2";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "CedulaCara2";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup4.show();
-                break;
-
-            case  R.id.btnPopup5:
-
-                PopupMenu popup5 = new PopupMenu(this, btnPopup5);
-                //inflating menu from xml resource
-                popup5.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup5.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "Desprendible1";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "Desprendible1";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "Desprendible1";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup5.show();
-                break;
-
-            case  R.id.btnPopup6:
-
-                PopupMenu popup6 = new PopupMenu(this, btnPopup6);
-                //inflating menu from xml resource
-                popup6.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup6.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "Desprendible2";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "Desprendible2";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "Desprendible2";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup6.show();
-                break;
-
-            case  R.id.btnPopup7:
-
-                PopupMenu popup7 = new PopupMenu(this, btnPopup7);
-                //inflating menu from xml resource
-                popup7.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup7.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "Desprendible3";
-                                checkPermissionCamera(view);
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "Desprendible3";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "Desprendible3";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup7.show();
-                break;
-
-            case  R.id.btnPopup8:
-
-                PopupMenu popup8 = new PopupMenu(this, btnPopup8);
-                //inflating menu from xml resource
-                popup8.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup8.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "Desprendible4";
-                                checkPermissionCamera(view);
-
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "Desprendible4";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "Desprendible4";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup8.show();
-                break;
-
-            case  R.id.btnPopup9:
-
-                PopupMenu popup9 = new PopupMenu(this, btnPopup9);
-                //inflating menu from xml resource
-                popup9.inflate(R.menu.menu_upload_file);
-                //adding click listener
-                popup9.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.btnUpload:
-                                idElement = "TratamientoDatosPersonales";
-                                checkPermissionCamera(view);
-                                checkPermissionCamera(view);
-
-
-                                break;
-
-                            case R.id.btnLoadGallery:
-                                idElement = "TratamientoDatosPersonales";
-                                checkPermissionGallery(view);
-
-                                break;
-
-                            case R.id.btnView:
-                                idElement = "TratamientoDatosPersonales";
-                                recuperarFotoCargada(view);
-
-                                break;
-
-                        }
-                        return false;
-                    }
-                });
-
-                popup9.show();
-                break;
-
-
-            // Close ImageView
+    private void closeButtonImage(View view, PopupMenu popup){
+        switch (view.getId()){
             case R.id.btnCloseView1:
                 btnCloseView1.setVisibility(View.GONE);
                 ImageView imagen1 = findViewById(R.id.imageView1);
                 imagen1.setImageBitmap(null);
+                imagen1.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
-            case R.id.btnCloseView2:
+            /*case R.id.btnCloseView2:
                 btnCloseView2.setVisibility(View.GONE);
 
                 ImageView imagen2 = findViewById(R.id.imageView2);
                 imagen2.setImageBitmap(null);
+                imagen2.setVisibility(View.GONE);
+                popup.dismiss();
+                break;*/
 
-                break;
             case R.id.btnCloseView3:
                 btnCloseView3.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen3 = findViewById(R.id.imageView3);
+                imagen3.setImageBitmap(null);
+                imagen3.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView4:
                 btnCloseView4.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen4 = findViewById(R.id.imageView4);
+                imagen4.setImageBitmap(null);
+                imagen4.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView5:
                 btnCloseView5.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen5 = findViewById(R.id.imageView5);
+                imagen5.setImageBitmap(null);
+                imagen5.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView6:
                 btnCloseView6.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen6 = findViewById(R.id.imageView6);
+                imagen6.setImageBitmap(null);
+                imagen6.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView7:
                 btnCloseView7.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen7 = findViewById(R.id.imageView7);
+                imagen7.setImageBitmap(null);
+                imagen7.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView8:
                 btnCloseView8.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen8 = findViewById(R.id.imageView8);
+                imagen8.setImageBitmap(null);
+                imagen8.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
             case R.id.btnCloseView9:
                 btnCloseView9.setVisibility(View.GONE);
-                cleanInitImages();
+                ImageView imagen9 = findViewById(R.id.imageView9);
+                imagen9.setImageBitmap(null);
+                imagen9.setVisibility(View.GONE);
+                popup.dismiss();
                 break;
         }
     }
@@ -1635,16 +1410,4 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
     }
-
-
-
-
-
 }
-
-
-
-
-
-
-
