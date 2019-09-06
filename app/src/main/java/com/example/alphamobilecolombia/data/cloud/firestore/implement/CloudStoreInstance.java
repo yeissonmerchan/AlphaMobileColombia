@@ -56,27 +56,6 @@ public class CloudStoreInstance implements ICloudStoreInstance {
 
     public Task<QuerySnapshot> syncCollection(String nameCollection){
         try {
-            /*Parameter newParameter = new Parameter();
-            newParameter.setKey("campo1");
-            newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
-            _iRealmInstance.Insert(newParameter);
-
-            Parameter newParameter2 = new Parameter();
-            newParameter2.setKey("campo2");
-            newParameter2.setValue("673478487456");
-            _iRealmInstance.Insert(newParameter2);
-
-            List<RealmObject> lisParameters = _iRealmInstance.GetAll(newParameter);
-            List<Parameter> lisParameters2 = _iRealmInstance.GetAllGeneric(newParameter);
-            for (Parameter parameter : lisParameters2){
-                String key = parameter.getKey();
-                String value = parameter.getValue();
-            }
-
-            Parameter busqueda = _iRealmInstance.GetByAttribute(newParameter,"Key",newParameter.getKey());
-            String key = busqueda.getKey();
-            String value = busqueda.getValue();*/
-
             FirebaseFirestore db = instanceDb();
             Task<QuerySnapshot> collectionSimulator = db.collection(nameCollection)
                     .get()

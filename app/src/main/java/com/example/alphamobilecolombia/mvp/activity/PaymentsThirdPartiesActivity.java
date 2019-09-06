@@ -10,10 +10,15 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class PaymentsThirdPartiesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public PaymentsThirdPartiesActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     //Define los controles combobox
     private Spinner spinner_pago_a_terceros;
 
@@ -63,7 +68,7 @@ public class PaymentsThirdPartiesActivity extends AppCompatActivity implements A
 
         String[] Campos = new String[]{}; //"spinner_pago_a_terceros";
 
-        new Formulario().Validar(this, CreditSimulatorActivity.class, Campos);
+        formulario.Validar(this, CreditSimulatorActivity.class, Campos);
     }
 }
 

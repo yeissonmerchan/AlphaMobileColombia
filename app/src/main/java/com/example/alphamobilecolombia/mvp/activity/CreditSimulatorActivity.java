@@ -17,6 +17,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 import java.util.List;
@@ -28,6 +29,12 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
     EditText edt_monto_a_desembolsar;
     //Define el control campo cuota
     EditText edt_cuota;
+
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public CreditSimulatorActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +62,7 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
             }
         });
 
-        String tipo_cliente = new Formulario().ObtenerValor(this, "spinner_tipo_cliente"); //Obtiene el tipo de cliente
+        String tipo_cliente = formulario.ObtenerValor(this, "spinner_tipo_cliente"); //Obtiene el tipo de cliente
 
         if (tipo_cliente == "EMPLEADO") {
             seekbar_plazo.setMax(84);
@@ -100,7 +107,7 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
 
         String[] Campos = new String[]{"edt_monto_a_desembolsar", "edt_cuota"};
 
-        new Formulario().Validar(this, ConditionsSummaryActivity.class, Campos);
+        formulario.Validar(this, ConditionsSummaryActivity.class, Campos);
     }
 }
 

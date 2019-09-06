@@ -68,25 +68,31 @@ public class ListViewAdapter extends BaseAdapter {
     // Filter Class
     public boolean filter(String charText) {
 
-        charText = charText.toLowerCase(Locale.getDefault());
+        try {
 
-        Lista.clear();
+            charText = charText.toLowerCase(Locale.getDefault());
 
-        if (charText.length() == 0) {
-            //Lista.addAll(arraylist);
-        } else {
-            for (String wp : arraylist) {
-                if (wp.toLowerCase(Locale.getDefault()).contains(charText)) { //getAnimalName()
-                    Lista.add(wp);
+            if (Lista != null)
+                Lista = new ArrayList<>();
+
+            if (charText.length() == 0) {
+                //Lista.addAll(arraylist);
+            } else {
+                for (String wp : arraylist) {
+                    if (wp.toLowerCase(Locale.getDefault()).contains(charText)) { //getAnimalName()
+                        Lista.add(wp);
+                    }
                 }
             }
-        }
 
-        notifyDataSetChanged();
+            notifyDataSetChanged();
 
-        if (Lista.size() > 0)
-        {
-            return true;
+            if (Lista.size() > 0) {
+                return true;
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return false;

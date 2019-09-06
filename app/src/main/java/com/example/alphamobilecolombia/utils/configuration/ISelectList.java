@@ -10,6 +10,6 @@ public interface ISelectList {
     int GetValueByIdField(String nameOption);
     List<SelectionOption> GetListByCodeField(String codeField);
     List<SelectionOption> GetListByIdField(String idField);
-    ArrayList<String> GetArrayByCodeField(String codeField);
-    ArrayList<String> GetArrayByIdField(String idField);
+    List<String> GetArrayByCodeField(String codeField);
+    List<String> GetArrayByIdField(String idField);
 }

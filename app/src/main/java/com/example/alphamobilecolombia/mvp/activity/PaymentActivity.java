@@ -19,6 +19,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import com.google.gson.Gson;
@@ -39,7 +40,11 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 
 public class PaymentActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public PaymentActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     // Declare Variables
     ListView listview_pagaduria;
     ListViewAdapter adapter;
@@ -64,7 +69,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         /********************************************************************** PAGADURIA */
 
         listview_pagaduria = (ListView) findViewById(R.id.listview_pagaduria);
-        new Formulario().Cargar(this, listview_pagaduria);
+        formulario.Cargar(this, listview_pagaduria);
 
         adapter = (ListViewAdapter) listview_pagaduria.getAdapter();
 
@@ -106,7 +111,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         /********************************************************************** DESTINO DEL CREDITO */
 
         spinner_destino_credito = (Spinner) findViewById(R.id.spinner_destino_credito);
-        new Formulario().Cargar(this, spinner_destino_credito);
+        formulario.Cargar(this, spinner_destino_credito);
 
         /***********************************************************************/
 
@@ -188,9 +193,9 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         }
 
         if (Correcto) {
-            String[] Campos = new String[]{"spinner_destino_credito"}; //"spinner_pagaduria"
+            String[] Campos = new String[]{"search_pagaduria", "spinner_destino_credito"}; //"spinner_pagaduria"
 
-            new Formulario().Validar(this, CustomerTypeActivity.class, Campos);
+            formulario.Validar(this, CustomerTypeActivity.class, Campos);
         } else {
             Toast.makeText(this.getApplicationContext(), "Debe seleccionar una pagaduría valida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }

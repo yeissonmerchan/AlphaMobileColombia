@@ -12,10 +12,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class VoucherDataActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public VoucherDataActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     EditText edt_ingresos;//Define el control campo ingresos
     EditText edt_salud;//Defineel control campo salud
     EditText edt_pension;//Define el control campo pension
@@ -67,7 +72,7 @@ public class VoucherDataActivity extends AppCompatActivity implements AdapterVie
 
         String[] Campos = new String[]{"edt_ingresos", "edt_salud", "edt_pension"};
 
-        new Formulario().Validar(this, VoucherDiscountActivity.class, Campos);
+        formulario.Validar(this, VoucherDiscountActivity.class, Campos);
     }
 }
 

@@ -12,10 +12,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 
 public class OtherDiscountsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
+    public OtherDiscountsActivity(){
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     //Define los campos
     EditText edt_medicina_prepagada, edt_fondo_pension_voluntario, edt_ahorro, edt_otros;
 
@@ -67,7 +72,7 @@ public class OtherDiscountsActivity extends AppCompatActivity implements Adapter
 
         String[] Campos = new String[]{"edt_medicina_prepagada", "edt_fondo_pension_voluntario", "edt_ahorro", "edt_otros"};
 
-        new Formulario().Validar(this, PaymentsThirdPartiesActivity.class, Campos);
+        formulario.Validar(this, PaymentsThirdPartiesActivity.class, Campos);
     }
 }
 

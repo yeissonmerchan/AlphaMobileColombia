@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import com.google.gson.Gson;
@@ -38,11 +39,17 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import co.venko.api.android.cedula.DocumentManager;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    Formulario formulario;
 
+    public ScannerActivity() {
+        formulario = new Formulario(diContainer.injectISelectList(this));
+    }
     //************************** LECTOR
 
     //Define la persona
@@ -184,9 +191,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero.setAdapter(adapter_genero);*/
 
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
-        new Formulario().Cargar(this, spinner_genero);
+        formulario.Cargar(this, spinner_genero);
 
-        adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
+        adapter_genero = (ArrayAdapter<CharSequence>) spinner_genero.getAdapter();
 
         /********************************************************************** FECHA NACIMIENTO */
 
@@ -206,7 +213,11 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         evento_fecha_nacimiento,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.683e+11)));
+
+                Calendar FechaMaxima = Calendar.getInstance();
+                FechaMaxima.set(year - 18, month, day);
+                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+
                 dialog.show();
             }
         });
@@ -237,9 +248,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         contextView = this;
         Bundle dataqr = this.getIntent().getExtras();
-        if(dataqr != null){
+        if (dataqr != null) {
             boolean qr = dataqr.getBoolean("qr");
-            if(qr == true){
+            if (qr == true) {
                 new IntentIntegrator(ScannerActivity.this)
                         .setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
                         .setPrompt("¿Desea realizar prevalidación presencial?")
@@ -288,7 +299,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             Toast.makeText(this.getApplicationContext(), Error, Toast.LENGTH_LONG).show(); //Muestra el mensaje
         } else {
             String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
-            new Formulario().Validar(this, AdditionalDataActivity.class, Campos);
+            formulario.Validar(this, AdditionalDataActivity.class, Campos);
         }
     }
 

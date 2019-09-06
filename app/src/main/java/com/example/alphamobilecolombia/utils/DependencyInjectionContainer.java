@@ -32,7 +32,9 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.PersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.configuration.IDevice;
+import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.configuration.implement.Device;
+import com.example.alphamobilecolombia.utils.configuration.implement.SelectList;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 import com.example.alphamobilecolombia.utils.cryptography.providers.IMD5Hashing;
@@ -97,6 +99,8 @@ public class DependencyInjectionContainer {
     private ICloudStoreInstance injectICloudStoreInstance(Context context){
         return new CloudStoreInstance(injectINotification(context), injectIRealmInstance(context),context);
     }
+
+    public ISelectList injectISelectList(Context context){return new SelectList(injectIRealmInstance(context));}
 
     private IRetrofitInstance injectIRetrofitInstance(){
         return new RetrofitInstance();
