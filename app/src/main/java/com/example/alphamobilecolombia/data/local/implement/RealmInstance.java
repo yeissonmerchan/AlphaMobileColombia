@@ -169,6 +169,12 @@ public class RealmInstance implements IRealmInstance {
     }
 
     public Realm InitLocalStorage(){
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("alphaStorage.realm")
+                .encryptionKey(_iRsa.createKeyStorage())
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
         try {
             File file = new File(_context.getFilesDir(), "alphaStorage.realm");
             /*if(file.exists()){
@@ -176,13 +182,6 @@ public class RealmInstance implements IRealmInstance {
             }*/
             if(!file.exists()) {
                 Realm.init(_context);
-                RealmConfiguration config = new RealmConfiguration.Builder()
-                        .name("alphaStorage.realm")
-                        .encryptionKey(_iRsa.createKeyStorage())
-                        .schemaVersion(1)
-                        .deleteRealmIfMigrationNeeded()
-                        .build();
-
                 Realm myRealm = Realm.getInstance(config);
 
                 return myRealm;
@@ -193,6 +192,8 @@ public class RealmInstance implements IRealmInstance {
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,_context);
+            Realm.deleteRealm(config);
+            Realm.getInstance(config);
             return null;
         }
     }

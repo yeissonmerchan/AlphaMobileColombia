@@ -67,7 +67,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     //Define el control combobox genero
     private Spinner spinner_genero;
 
-    ArrayAdapter<CharSequence> adapter_genero;
+
+    ListViewAdapter adapter_genero;
 
     //************************** FECHA NACIMIENTO
 
@@ -191,7 +192,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         spinner_genero = (Spinner) findViewById(R.id.spinner_genero);
         formulario.Cargar(this, spinner_genero);
 
-        adapter_genero = (ArrayAdapter<CharSequence>)spinner_genero.getAdapter();
+        adapter_genero = (ListViewAdapter) spinner_genero.getAdapter();
 
         /********************************************************************** FECHA NACIMIENTO */
 
@@ -363,8 +364,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                     String genero = person.getGender().equals("M") ? "Masculino" : "Femenino";
 
-                    int spinnerPosition = adapter_genero.getPosition(genero);
-                    spinner_genero.setSelection(spinnerPosition);
+                    spinner_genero.setSelection(1);
 
                     storage.savePerson(contextView, person);
 

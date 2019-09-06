@@ -128,13 +128,20 @@ public class Formulario {
 
     //Carga el Spinner especificado
     public void Cargar(AppCompatActivity pagina, AdapterView spinner) {
-        ArrayAdapter<CharSequence> adapter; //Define el adaptador
+        String idField = pagina.getResources().getResourceEntryName(spinner.getId());
+        if (spinner instanceof Spinner) {
+            ListViewAdapter adapter = new ListViewAdapter(pagina, _iSelectList.GetArrayByIdField(idField));
+            spinner.setAdapter(adapter);
+        }
+        else{
+            ListViewAdapter Adaptadortm = new ListViewAdapter(pagina, _iSelectList.GetArrayByIdField(idField));
+            spinner.setAdapter(Adaptadortm);
+        }
 
-        switch (spinner.getId()) {
+        /*switch (spinner.getId()) {
             case R.id.spinner_genero:
-                adapter = ArrayAdapter.createFromResource(pagina, R.array.spinner_gender, android.R.layout.simple_spinner_item); //Establece el adaptador del recurso
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //Establece el diseño del adaptador
-                spinner.setAdapter(adapter); //Establece el adaptador al Spinner
+                ListViewAdapter Adaptadortm = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X027"));
+                spinner.setAdapter(Adaptadortm);
                 break;
             case R.id.spinner_tipo_cliente:
                 ListViewAdapter Adaptadortc = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X001"));
@@ -152,7 +159,7 @@ public class Formulario {
                 ListViewAdapter Adaptador23 = new ListViewAdapter(pagina, _iSelectList.GetArrayByCodeField("10X026"));
                 spinner.setAdapter(Adaptador23);
                 break;
-        }
+        }*/
     }
 
     //Obtiene el valor especificado

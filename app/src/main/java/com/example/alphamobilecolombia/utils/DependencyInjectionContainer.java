@@ -52,7 +52,7 @@ public class DependencyInjectionContainer {
     }
 
     public ILoginPresenter injectDIILoginPresenter(Context context){
-        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing(),injectICloudStoreInstance(context));
+        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing(),injectICloudStoreInstance(context),injectIRealmInstance(context));
     }
 
     public IVersionUpdatePresenter injectDIIVersionUpdatePresenter (Context context){

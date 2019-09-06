@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Token {
+import io.realm.RealmObject;
+
+public class Token extends RealmObject {
 
     public String getType() {
         return Type;
@@ -36,5 +38,15 @@ public class Token {
     private String Jwt;
     @SerializedName("TiempoExpiracion")
     private String ExpirationDate;
-    //httpResponse = new Gson().fromJson(response.body().toString(), ApiResponse.class);
+
+    public String getTokenRenovation() {
+        return TokenRenovation;
+    }
+
+    public void setTokenRenovation(String tokenRenovation) {
+        TokenRenovation = tokenRenovation;
+    }
+
+    @SerializedName("tokenRenovacion")
+    private String TokenRenovation;
 }

@@ -25,6 +25,17 @@ import java.util.List;
 public class RealmStorage {
 
     public Realm initLocalStorage(Context context){
+        RealmConfiguration config = null;
+        try {
+            config = new RealmConfiguration.Builder()
+                    .name("alphaStorage.realm")
+                    .encryptionKey(createNewKeys(context))
+                    .schemaVersion(1)
+                    .deleteRealmIfMigrationNeeded()
+                    .build();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
         try {
             File file = new File(context.getFilesDir(), "alphaStorage.realm");
             /*if(file.exists()){
@@ -32,13 +43,6 @@ public class RealmStorage {
             }*/
             if(!file.exists()) {
                 Realm.init(context);
-                RealmConfiguration config = new RealmConfiguration.Builder()
-                        .name("alphaStorage.realm")
-                        .encryptionKey(createNewKeys(context))
-                        .schemaVersion(1)
-                        .deleteRealmIfMigrationNeeded()
-                        .build();
-
                 Realm myRealm = Realm.getInstance(config);
 
                 return myRealm;
@@ -49,6 +53,8 @@ public class RealmStorage {
         }
         catch (Exception ex){
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,context);
+            Realm.deleteRealm(config);
+            Realm.getInstance(config);
             return null;
         }
     }

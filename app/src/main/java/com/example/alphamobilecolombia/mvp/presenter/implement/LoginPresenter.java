@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.alphamobilecolombia.data.cloud.firestore.ICloudStoreInstance;
+import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostUserRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.entity.UserRoleInformation;
@@ -23,12 +24,14 @@ public class LoginPresenter implements ILoginPresenter {
     private IMD5Hashing _imd5Hashing;
     private String messageError;
     private ICloudStoreInstance _iCloudStoreInstance;
+    private IRealmInstance _iRealmInstance;
 
-    public LoginPresenter(Context context, ILoginAdapter iloginAdapter, IMD5Hashing imd5Hashing, ICloudStoreInstance iCloudStoreInstance){
+    public LoginPresenter(Context context, ILoginAdapter iloginAdapter, IMD5Hashing imd5Hashing, ICloudStoreInstance iCloudStoreInstance, IRealmInstance iRealmInstance){
         _iLoginAdapter = iloginAdapter;
         _imd5Hashing = imd5Hashing;
         _context = context;
         _iCloudStoreInstance = iCloudStoreInstance;
+        _iRealmInstance = iRealmInstance;
     }
 
     public boolean LoginCheck(String txtUser, String txtPassword){
@@ -46,7 +49,6 @@ public class LoginPresenter implements ILoginPresenter {
                 SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
                 postUserRequest.setData(sharedPref, (JSONObject) jsonObject.get(0), txtUser);
 
-                //_iCloudStoreInstance.instance();
             }
             catch (JSONException e) {
                 e.printStackTrace();
