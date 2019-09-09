@@ -14,6 +14,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesMo
 import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
+import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
@@ -111,6 +112,31 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         updateUploadFileName(fileUpload.getType(),fileUpload.getName());
 
        return _iUploadFileAdapter.Post(newDocument);
+    }
+
+    public ApiResponse SaveListTotalFiles(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject) {
+        try {
+            List<PostSaveDocumentRequest> listSendRequest = new ArrayList<>();
+            SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String user = sharedPref.getString("idUser", "");
+            for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
+                newDocument.setRutaArchivo(file.getName());
+                newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
+                newDocument.setTipoArchivoID(GetIdDocument(file.getType()));
+                newDocument.setTipoArchivoNombre(file.getType());
+                newDocument.setUsuarioRegistroID(Integer.parseInt("0"));
+                newDocument.setExtensionArchivo(".jpg");
+                newDocument.setNombreArchivo(file.getName());
+                listSendRequest.add(newDocument);
+            }
+            return _iUploadFileAdapter.Post(listSendRequest);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            //LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
+        }
+        return null;
     }
 
     public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile) {

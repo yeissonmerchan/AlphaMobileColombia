@@ -6,6 +6,7 @@ import android.os.StrictMode;
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.EndPoint.PostGuardarDocumentos;
+import com.example.alphamobilecolombia.data.remote.EndPoint.PostGuardarListaTotalArchivos;
 import com.example.alphamobilecolombia.data.remote.EndPoint.PostPersonaInsertar;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostPersonaInsertarRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocumentRequest;
@@ -50,6 +51,18 @@ public class UploadFileAdapter implements IUploadFileAdapter {
         String data = gson.toJson(listDocuments);
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), data);
 
+        Call<String> call = service.Upload(body);
+        return _iMapRequest.SynchronousRequest(call);
+    }
+
+    public ApiResponse Post(List<PostSaveDocumentRequest> postSaveListDocumentRequest){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_storage),_context);//Obtener Ip a partir de configuración
+        PostGuardarListaTotalArchivos service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostGuardarListaTotalArchivos.class);
+        Gson gson = new Gson();
+        String data = gson.toJson(postSaveListDocumentRequest);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), data);
         Call<String> call = service.Upload(body);
         return _iMapRequest.SynchronousRequest(call);
     }

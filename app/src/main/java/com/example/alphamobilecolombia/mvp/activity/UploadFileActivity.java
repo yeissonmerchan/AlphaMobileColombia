@@ -104,6 +104,9 @@ public class UploadFileActivity extends AppCompatActivity {
 
     String nameUriPath;
 
+    //Varible para identificar si el archivo viene de galeri
+    private boolean fileGallery = false;
+
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
@@ -265,9 +268,6 @@ public class UploadFileActivity extends AppCompatActivity {
                     case "CargueDocumentosPreValidación":
                         existFile.CargueDocumentosPreValidación = true;
                         break;
-                    case "SolicitudCreditoCara2":
-                        existFile.SolicitudCreditoCara2 = true;
-                        break;
                     case "CedulaCara1":
                         existFile.CedulaCara1 = true;
                         break;
@@ -286,7 +286,7 @@ public class UploadFileActivity extends AppCompatActivity {
                 }
             }
         }
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
         //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         //if(existFile.SolicitudCreditoCara1)
         {
@@ -390,7 +390,10 @@ public class UploadFileActivity extends AppCompatActivity {
         try {
             //showLoading(v);
             //idElement = getIdElementView(v);
-            String pathFileLocal = getExternalFilesDir(null)+"/"+getNameFile(v);
+            String pathFileLocal = getExternalFilesDir(null) + "/" + getNameFile(v);
+            if (fileGallery) {
+                pathFileLocal = path;
+            }
 
             java.io.File fileLocal = new java.io.File(pathFileLocal);
             int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length()/1024));
@@ -434,32 +437,6 @@ public class UploadFileActivity extends AppCompatActivity {
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v,rotatedBitmap,isfetch);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
-        }
-    }
-
-    public void recuperarImagenGaleria(View v, boolean isfetch, String path) {
-        try {
-            Bitmap bitmap = null;
-            try {
-                Uri imageUri = Uri.parse(path);
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(), bitmap.getHeight(), true);
-                getViewImage(v,bitmap,isfetch);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            /*Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);*/
-
-            //getViewImage(v,rotatedBitmap,isfetch);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -985,27 +962,20 @@ public class UploadFileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         boolean isExist = false;
+                        fileGallery = false;
 
                         for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                             if(file.getType().equals(nameFile)) {
-                                isExist = true;
+                                listUpload.remove(file);
+                                break;
                             }
                         }
-
-                        if (!isExist){
-                            fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
-                            listUpload.add(fileUpload);
+                        fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
+                        listUpload.add(fileUpload);
+                        if(!isPhoto){
+                            fileGallery = true;
                         }
-
-                        //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
-                        //loadinAsyncTask.execute();
-                        //uploadFilesPresenter.uploadFiles(pathFile,this);
-                        if(isPhoto){
-                            recuperarImagen(view,false,path);
-                        }else {
-                            recuperarImagenGaleria(view,false,path);
-                        }
-
+                        recuperarImagen(view,false,path);
                         changeStatusUpload(true);
                     }
                 });
@@ -1118,6 +1088,7 @@ public class UploadFileActivity extends AppCompatActivity {
             if(isSuccessSubjectCredit){
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
+                _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito);
             }
             else {
                 NotificacionErrorDatos(this.context);

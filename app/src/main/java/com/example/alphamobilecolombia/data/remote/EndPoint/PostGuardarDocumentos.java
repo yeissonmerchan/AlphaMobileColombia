@@ -6,7 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PostGuardarDocumentos {
-    String API_ROUTE = "/api/TPArchivo/GuardarDocumentos";
+    String API_ROUTE = "/Storage/api/TPArchivo/GuardarDocumentos";
 
     @POST(API_ROUTE)
     Call<String> Upload(
