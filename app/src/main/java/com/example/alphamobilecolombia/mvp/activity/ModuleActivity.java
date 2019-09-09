@@ -19,8 +19,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.mvp.presenter.IModulePresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 
 public class ModuleActivity extends AppCompatActivity {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IModulePresenter _iModulePresenter;
+    public ModuleActivity() {
+        _iModulePresenter = diContainer.injectDIIModulePresenter(this);
+    }
 
     Dialog myDialog;
 
@@ -80,7 +87,7 @@ public class ModuleActivity extends AppCompatActivity {
     }
 
     public void onClickBtnNewRequest(View view) {
-
+        _iModulePresenter.CleanCreditInformation();
         new AlertDialog.Builder(ModuleActivity.this)
                 .setTitle("¡Atención!")
                 .setMessage("Deseas solicitar QR")

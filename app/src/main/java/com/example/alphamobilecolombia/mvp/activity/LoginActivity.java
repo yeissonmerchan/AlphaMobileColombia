@@ -19,13 +19,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
+import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.implement.PayingAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 

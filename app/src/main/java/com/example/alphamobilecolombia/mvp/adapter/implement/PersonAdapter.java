@@ -39,7 +39,7 @@ public class PersonAdapter implements IPersonAdapter {
 
         Gson gson = new Gson();
         String data = gson.toJson(new PostPersonaInsertarRequest(person.getCedula(), person.getNombre(), person.getNombre2(), person.getApellido1(), person.getApellido2(), person.getGenero(), person.getFechaNacimiento(), person.getCelular(), idUser));
-        RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), data);
 
         Call<String> call = service.Insertar(body);
         return _iMapRequest.SynchronousRequest(call);

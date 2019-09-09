@@ -51,4 +51,15 @@ public class AccessToken implements IAccessToken {
         }
         return isValid;
     }
+
+    public boolean CleanToken(){
+        boolean isValid;
+        try {
+            isValid = _iRealmInstance.DeleteObject(new Token());
+        } catch (Exception e) {
+            e.printStackTrace();
+            isValid = false;
+        }
+        return isValid;
+    }
 }
