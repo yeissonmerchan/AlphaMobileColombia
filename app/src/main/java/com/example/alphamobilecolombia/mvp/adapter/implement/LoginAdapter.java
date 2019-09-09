@@ -45,7 +45,7 @@ public class LoginAdapter implements ILoginAdapter {
             data = gson.toJson(new PostAutenticationRequest("Desarrollo", "6d91327bca8251614ee4b0400e3edb67",_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         else{
-            data = gson.toJson(new PostAutenticationRequest(txtUser, MD5Hashing.MD5(txtPassword),_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
+            data = gson.toJson(new PostAutenticationRequest(txtUser,txtPassword,_iDevice.getVersionApi(),_iDevice.getDeviceName(),2));
         }
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 

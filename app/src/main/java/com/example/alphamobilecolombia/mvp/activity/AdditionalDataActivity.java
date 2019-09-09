@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +34,8 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     Formulario formulario;
-    public AdditionalDataActivity(){
+
+    public AdditionalDataActivity() {
         formulario = new Formulario(diContainer.injectISelectList(this));
     }
     //************************** CIUDAD EXPEDICIÓN CEDULA
@@ -67,10 +69,13 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_data);
 
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
+
         //********************************************************************** CIUDAD EXPEDICIÓN CEDULA
 
         listview_ciudad_expedicion_cedula = (ListView) findViewById(R.id.listview_ciudad_expedicion_cedula);
-       formulario.Cargar(this, listview_ciudad_expedicion_cedula);
+        formulario.Cargar(this, listview_ciudad_expedicion_cedula);
 
         adapter = (ListViewAdapter) listview_ciudad_expedicion_cedula.getAdapter();
 
@@ -109,6 +114,8 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
             }
         });
 
+        //EstablecerTamañoMaximo(search_ciudad_expedicion_cedula, 10);
+
         //********************************************************************** COMBOBOX DEPARTAMENTO, CIUDAD
 
         /*spinner_departamento_expedicion_cedula = (Spinner) findViewById(R.id.spinner_departamento_expedicion_cedula);*/
@@ -132,17 +139,18 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
                         evento_fecha_expedicion_cedula,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-/*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
+                /*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
 
-                Calendar FechaMaxima = Calendar.getInstance();
+                Calendar FechaMinima = Calendar.getInstance();
 
                 String[] FechaNacimiento = formulario.ObtenerValor(AdditionalDataActivity.this, "edt_birthDate").split("/");
 
-                FechaMaxima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
+                FechaMinima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
                         Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
                         Integer.valueOf(FechaNacimiento[2]));
 
-                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+                dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
 
                 dialog.show();
             }
@@ -173,6 +181,22 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         /***********************************************************************/
 
     }
+
+/*
+    private void EstablecerTamañoMaximo(View view, int tamaño) {
+        if (view instanceof EditText) {
+            ((EditText) view).setFilters(new InputFilter[]{new InputFilter.LengthFilter(tamaño)});
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                EstablecerSeleccion(child, tamaño);
+            }
+        }
+    }
+*/
+
 
     private void EstablecerSeleccion(View view, int position) {
         if (view instanceof EditText) {

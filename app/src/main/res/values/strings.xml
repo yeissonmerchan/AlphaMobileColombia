@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="environment_release">DEV</string>
-    <string name="environment_development">DEV</string>
+    <string name="environment_release">PRE</string>
+    <string name="environment_development">QA</string>
 
     <!-- Ips de dev -->
     <string name="dev_ip_api_authentication">http://181.57.145.20:8081/Security/</string>
@@ -77,8 +77,8 @@
     <string name="title_activity_version_update"></string>
 
     <!-- ModuleActivity _ViewFloating -->
-    <string name="alert_activity_module">Aceptar</string>
-    <string name="alert_activity_module_c">Cancelar</string>
+    <string name="alert_activity_module">Sí</string>
+    <string name="alert_activity_module_c">No</string>
     <!-- ViewFloating -->
     <string name="text_view">Vista previa</string>
     <string name="text_upload">Tomar foto</string>

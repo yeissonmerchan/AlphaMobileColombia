@@ -95,6 +95,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         //Establece la vista de la pagina
         setContentView(R.layout.activity_scanner);
 
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
+
         /********************************************************************** PRIMER NOMBRE */
 
         edt_names = (EditText) findViewById(R.id.edt_names);
@@ -284,12 +287,12 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         if (!TextUtils.isEmpty(edt_names.getText()) && (edt_names.getText().toString().length() < 3 || edt_names.getText().toString().length() > 15)) {
             Error = "El campo primer nombre debe tener entre 3 y 15 caracteres";
-        } else if (!TextUtils.isEmpty(edt_names2.getText()) && (edt_names2.getText().toString().length() < 3 || edt_names2.getText().toString().length() > 15)) {
-            Error = "El campo segundo nombre debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_names2.getText()) && (edt_names2.getText().toString().length() < 3 || edt_names2.getText().toString().length() > 20)) {
+            Error = "El campo segundo nombre debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_lastNames.getText()) && (edt_lastNames.getText().toString().length() < 3 || edt_lastNames.getText().toString().length() > 15)) {
             Error = "El campo primer apellido debe tener entre 3 y 15 caracteres";
-        } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 15)) {
-            Error = "El campo segundo apellido debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 20)) {
+            Error = "El campo segundo apellido debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_numberIdentification.getText()) && (edt_numberIdentification.getText().toString().length() < 6 || edt_numberIdentification.getText().toString().length() > 11)) {
             Error = "El campo número de identificación debe tener entre 6 y 11 caracteres";
         }

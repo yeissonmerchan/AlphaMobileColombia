@@ -65,6 +65,7 @@
                 android:queryHint="Busque una ciudad"
                 android:searchIcon="@null">
                 android:tag="ciudad de expedición de cédula"
+                android:Ma
                 <requestFocus />
             </SearchView>
 

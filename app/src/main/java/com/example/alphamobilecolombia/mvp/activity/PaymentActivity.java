@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +66,9 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
 
         /********************************************************************** PAGADURIA */
 

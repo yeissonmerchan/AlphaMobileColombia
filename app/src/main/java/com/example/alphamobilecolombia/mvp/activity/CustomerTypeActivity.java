@@ -103,6 +103,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_type);
 
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
+
         txtfecha_ingreso = (TextView) findViewById(R.id.txtfecha_ingreso);
 
         /********************************************************************** PANELES */
@@ -193,17 +196,17 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-                Calendar FechaMaxima = Calendar.getInstance();
+                Calendar FechaMinima = Calendar.getInstance();
 
                 String[] FechaNacimiento = formulario.ObtenerValor(CustomerTypeActivity.this, "edt_birthDate").split("/");
 
-                FechaMaxima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
+                FechaMinima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
                         Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
                         Integer.valueOf(FechaNacimiento[2]));
 
-                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+                dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
 
-/*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis()));*/
                 dialog.show();
             }
         });
