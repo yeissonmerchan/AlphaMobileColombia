@@ -30,6 +30,13 @@ public class MapRequest implements IMapRequest {
                     httpResponse.setData(jSONArray);
                 }
             }
+            else if(response.code() == 401){
+                String errorResponse = response.errorBody().string();
+                JSONObject object = new JSONObject(errorResponse);
+                httpResponse.setCodigoRespuesta(Integer.parseInt(String.valueOf(response.code())));
+                httpResponse.setData(object);
+                httpResponse.setMensaje(String.valueOf(object.get("mensaje")));
+            }
             else{
                 String errorResponse = response.errorBody().string();
                 JSONObject object = new JSONObject(errorResponse);

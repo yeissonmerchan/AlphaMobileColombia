@@ -35,7 +35,6 @@ import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
