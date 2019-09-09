@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,11 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public  int GetPositionByValue(String value)
+    {
+        return arraylist.indexOf(value);
     }
 
     public View getView(final int position, View view, ViewGroup parent) {

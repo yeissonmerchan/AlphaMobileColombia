@@ -368,9 +368,11 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                             person.getBirthday().substring(6, 8)
                     );
 
-                    String genero = person.getGender().equals("M") ? "Masculino" : "Femenino";
+                    String genero = person.getGender().equals("M") ? "MASCULINO" : "FEMENINO";
 
-                    spinner_genero.setSelection(1);
+                    int Position = adapter_genero.GetPositionByValue(genero);
+
+                    spinner_genero.setSelection(Position);
 
                     storage.savePerson(contextView, person);
 
