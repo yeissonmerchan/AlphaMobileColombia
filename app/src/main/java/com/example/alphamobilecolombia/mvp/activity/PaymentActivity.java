@@ -1,8 +1,11 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
@@ -39,6 +43,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
 
 public class PaymentActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
@@ -118,6 +124,8 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         formulario.Cargar(this, spinner_destino_credito);
 
         /***********************************************************************/
+
+
 
     }
 
@@ -223,6 +231,46 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         return false;
     }
 
+    /********************************************************* DEBERÍA GENERALIZARSE EN FORMULARIO */
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
+
+    /*********************************************************************************/
 
 }
 

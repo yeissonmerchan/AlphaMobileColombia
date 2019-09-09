@@ -1,12 +1,15 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
@@ -31,6 +35,8 @@ import com.example.alphamobilecolombia.utils.validaciones.Formulario;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
 
 public class CustomerTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
@@ -204,7 +210,16 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                         Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
                         Integer.valueOf(FechaNacimiento[2]));
 
-                dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                //Si la fecha minima y maxima son iguales arroja una excepción, por lo que se resta un día
+                if (FechaMinima.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
+                        FechaMinima.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
+                        FechaMinima.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)
+                ) {
+                    FechaMinima.add(FechaMinima.DAY_OF_MONTH, -1);
+                    dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                } else {
+                    dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                }
                 dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
 
                 dialog.show();
@@ -530,6 +545,47 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
             }
         }
     }
+
+    /********************************************************* DEBERÍA GENERALIZARSE EN FORMULARIO */
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
+
+    /*********************************************************************************/
 
 }
 

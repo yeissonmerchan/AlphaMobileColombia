@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.utils.validaciones;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -48,6 +49,8 @@ import io.realm.RealmObject;
 
 public class Formulario {
     ISelectList _iSelectList;
+
+    public static final int DIALOG_REALLY_EXIT_ID = 0;
 
     public Formulario(ISelectList iSelectList) {
         _iSelectList = iSelectList;
@@ -187,6 +190,8 @@ public class Formulario {
 
         return "";
     }
+
+
 
 
 }

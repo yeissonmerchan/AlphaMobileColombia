@@ -1,6 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +44,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import co.venko.api.android.cedula.DocumentManager;
+
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
@@ -267,6 +271,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
 
         //***********************************************************************
+
     }
 
     //Se prodcue cuando se presiona el botón Continuar
@@ -295,6 +300,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             Error = "El campo segundo apellido debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_numberIdentification.getText()) && (edt_numberIdentification.getText().toString().length() < 6 || edt_numberIdentification.getText().toString().length() > 11)) {
             Error = "El campo número de identificación debe tener entre 6 y 11 caracteres";
+        } else if (edt_numberIdentification.getText().toString().startsWith("0")) {
+            Error = "El campo número de identificación No debe comenzar con cero";
         }
 
         //Si tiene error entonces muestra el mensaje
@@ -453,6 +460,47 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
     }
+
+    /********************************************************* DEBERÍA GENERALIZARSE EN FORMULARIO */
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
+
+    /*********************************************************************************/
 
 }
 
