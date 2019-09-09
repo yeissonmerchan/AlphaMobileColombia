@@ -23,17 +23,23 @@ import com.example.alphamobilecolombia.mvp.adapter.implement.UploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.VersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IModulePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.CreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.LoginPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.ModulePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.PersonPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.configuration.IDevice;
+import com.example.alphamobilecolombia.utils.configuration.IParameterField;
 import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.configuration.implement.Device;
+import com.example.alphamobilecolombia.utils.configuration.implement.ParameterField;
 import com.example.alphamobilecolombia.utils.configuration.implement.SelectList;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
@@ -44,6 +50,8 @@ import com.example.alphamobilecolombia.utils.files.implement.FileStorage;
 import com.example.alphamobilecolombia.utils.notification.local.INotification;
 import com.example.alphamobilecolombia.utils.notification.local.implement.Notification;
 import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
+import com.example.alphamobilecolombia.utils.security.IAccessToken;
+import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 
 public class DependencyInjectionContainer {
     //Start Presenters
@@ -51,8 +59,16 @@ public class DependencyInjectionContainer {
         return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),context);
     }
 
+    public IModulePresenter injectDIIModulePresenter(Context context){
+        return new ModulePresenter(injectIParameterField(context));
+    }
+
+    public IProcessCompletedPresenter injectDIIProcessCompletedPresenter(Context context){
+        return new ProcessCompletedPresenter(injectIParameterField(context));
+    }
+
     public ILoginPresenter injectDIILoginPresenter(Context context){
-        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing(),injectICloudStoreInstance(context),injectIRealmInstance(context));
+        return new LoginPresenter(context,injectDIILoginAdapter(context),injectIMD5Hashing(),injectICloudStoreInstance(context),injectIRealmInstance(context),injectIAccessToken(context));
     }
 
     public IVersionUpdatePresenter injectDIIVersionUpdatePresenter (Context context){
@@ -72,26 +88,26 @@ public class DependencyInjectionContainer {
 
     //Start Adapters
     private IUploadFileAdapter injectDIIUploadFileAdapter(Context context){
-        return new UploadFileAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new UploadFileAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
     }
 
     private IVersionUpdateAdapter injectDIIVersionUpdateAdapter (Context context){
-        return new VersionUpdateAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new VersionUpdateAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
     }
 
     private ILoginAdapter injectDIILoginAdapter(Context context)
     {
-        return new LoginAdapter(injectIRetrofitInstance(),injectIMapRequest(),injectIDevice(),context);
+        return new LoginAdapter(injectIRetrofitInstance(context),injectIMapRequest(),injectIDevice(),context);
     }
 
     private ICreditSubjectAdapter injectDIICreditSubjectAdapter(Context context)
     {
-        return new CreditSubjectAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new CreditSubjectAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
     }
 
     private IPersonAdapter injectDIIPersonAdapter(Context context)
     {
-        return new PersonAdapter(injectIRetrofitInstance(),injectIMapRequest(),context);
+        return new PersonAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
     }
     //End Adapters
 
@@ -102,8 +118,10 @@ public class DependencyInjectionContainer {
 
     public ISelectList injectISelectList(Context context){return new SelectList(injectIRealmInstance(context));}
 
-    private IRetrofitInstance injectIRetrofitInstance(){
-        return new RetrofitInstance();
+    public IParameterField injectIParameterField(Context context){return new ParameterField(injectIRealmInstance(context));}
+
+    private IRetrofitInstance injectIRetrofitInstance(Context context){
+        return new RetrofitInstance(injectIAccessToken(context));
     }
 
     private IMapRequest injectIMapRequest(){
@@ -125,5 +143,7 @@ public class DependencyInjectionContainer {
     private IRSA injectIRSA(Context context){return new RSA(context);}
 
     private IRealmInstance injectIRealmInstance(Context context){return new RealmInstance(context,injectIRSA(context)); }
+
+    private IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
     //End Configurations
 }
