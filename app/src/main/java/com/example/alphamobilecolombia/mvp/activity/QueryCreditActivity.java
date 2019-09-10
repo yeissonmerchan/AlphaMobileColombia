@@ -30,13 +30,18 @@ import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
 import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.QueryCreditAdapter;
+import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Adapter.RecyclerAdapterQueryCredit;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.ClientDescription;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.android.material.tabs.TabLayout;
 
@@ -48,7 +53,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueryCreditActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
-
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IQueryCreditPresenter _iQueryCreditPresenter;
+    public QueryCreditActivity(){
+        _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
+    }
     Dialog myDialog;
     RealmStorage storage = new RealmStorage();
     //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
@@ -75,6 +84,8 @@ public class QueryCreditActivity extends AppCompatActivity implements TabLayout.
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         //String user = sharedPref.getString("idUser", "");
         String user = "1";
+        String initDate = "2019-07-02";
+        String endDate = "2019-07-02";
 
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -85,76 +96,8 @@ public class QueryCreditActivity extends AppCompatActivity implements TabLayout.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //QueryCreditAdapter queryCreditAdapter = new QueryCreditAdapter(new RetrofitInstance(), new MapRequest(), getApplicationContext());
+                PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(user,initDate,endDate);
 
-
-                QueryCreditPresenter presenter = new QueryCreditPresenter();
-                HttpResponse model = new HttpResponse();
-                //ApiResponse model = queryCreditAdapter.Post(user);
-                model = presenter.Post(user, getApplicationContext());
-
-                if (model != null) {
-
-                    JSONObject data = (JSONObject) model.getData();
-
-                    try {
-
-                        JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                        ArrayList<ClientDescription> clientDescription = new ArrayList<>();
-
-                        for (int i = 0; i < jSONArray.length(); i++) {
-                            JSONObject object = (JSONObject) jSONArray.get(i);
-                            String estadoGeneral = object.getString("estadoGeneral");
-                            String pagaduria = object.getString("pagaduria");
-                            String fechaEnvioPrevalidacion = object.getString("fechaEnvioPrevalidacion");
-                            String montoSugerido = object.getString("montoSugerido");
-                            String cuotaSug = object.getString("cuotaSug");
-                            String plazoSugerido = object.getString("plazoSugerido");
-                            String fechaPrevalidacion = object.getString("fechaPrevalidacion");
-                            String obsPreaprobacion = object.getString("obsPreaprobacion");
-                            String observacionCredito = object.getString("observacionCredito");
-                            clientDescription.add(new ClientDescription(estadoGeneral,pagaduria,fechaEnvioPrevalidacion,montoSugerido,cuotaSug,plazoSugerido,fechaPrevalidacion,obsPreaprobacion,observacionCredito));
-
-                            String documentoCliente = object.getString("documentoCliente");
-                            String cliente = object.getString("cliente");
-                            String numeroSolicitud = object.getString("numeroSolicitud");
-
-                            String dataUser = "Cedula: " + documentoCliente + " Nombre: " + cliente + " No solicitud:  " + numeroSolicitud;
-
-                            Client client = new Client(dataUser,clientDescription);
-                            clients.add(client);
-
-                            /*ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
-                            ReporteCreditoResponse.setRegional(object.getString("regional"));
-                            ReporteCreditoResponse.setOficina(object.getString("oficina"));
-                            ReporteCreditoResponse.setCoordinador(object.getString("coordinador"));
-                            ReporteCreditoResponse.setAsesor(object.getString("asesor"));
-                            ReporteCreditoResponse.setPagaduria(object.getString("pagaduria"));
-                            ReporteCreditoResponse.setDocumentoCliente(object.getString("documentoCliente"));
-                            ReporteCreditoResponse.setCliente(object.getString("cliente"));
-                            ReporteCreditoResponse.setFechaEnvioPrevalidacion(object.getString("fechaEnvioPrevalidacion"));
-                            ReporteCreditoResponse.setMontoSugerido(object.getString("montoSugerido"));
-                            ReporteCreditoResponse.setCuotaSug(object.getString("cuotaSug"));
-                            ReporteCreditoResponse.setPlazoSugerido(object.getString("plazoSugerido"));
-                            ReporteCreditoResponse.setFechaPrevalidacion(object.getString("fechaPrevalidacion"));
-                            ReporteCreditoResponse.setObservacionCredito(object.getString("observacionCredito"));
-                            ReporteCreditoResponse.setNumeroSolicitud(object.getString("numeroSolicitud"));
-                            ReporteCreditoResponse.setTipoCr(object.getString("tipoCr"));
-                            listReporteCredito.add(ReporteCreditoResponse);*/
-                        }
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //generateControls(ReporteCredito);
-                                myDialog.dismiss();
-                            }
-                        });
-                    } catch (JSONException ex) {
-                        // TODO Auto-generated catch block
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Mapeo consultas", ex, getBaseContext());
-                    }
-                }
                 myDialog.show();
             }
         }).start();

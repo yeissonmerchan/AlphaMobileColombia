@@ -5,13 +5,23 @@ import android.os.StrictMode;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostConsultarReporteCreditoRequest;
 import com.example.alphamobilecolombia.data.remote.EndPoint.PostSolicitudes;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
+import com.example.alphamobilecolombia.data.remote.Models.entity.UserRoleInformation;
+import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IQueryCreditAdapter;
+import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -20,7 +30,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class QueryCreditPresenter {
+public class QueryCreditPresenter implements IQueryCreditPresenter {
+    IQueryCreditAdapter _iQueryCreditAdapter;
+    public QueryCreditPresenter(IQueryCreditAdapter iQueryCreditAdapter){
+         _iQueryCreditAdapter= iQueryCreditAdapter;
+    }
+
     public HttpResponse Post(String idUsuario, Context context) {
         final HttpResponse responseModel = new HttpResponse();
         try {
@@ -67,5 +82,23 @@ public class QueryCreditPresenter {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),idUsuario,ex,context);
         }
         return null;
+    }
+
+    public PostQueryCredit[] GetQuery(String idUser, String initDate, String endDate) {
+        PostQueryCredit[] postQueryCredits = null;
+        try {
+            ApiResponse apiResponse = _iQueryCreditAdapter.Post(idUser, initDate, endDate);
+            if (apiResponse.getCodigoRespuesta() == 200) {
+                String data = apiResponse.getData().toString();
+                JSONArray jsonObject = new JSONArray(data);
+
+                postQueryCredits = new Gson().fromJson(jsonObject.toString(), PostQueryCredit[].class);
+            }else{
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return postQueryCredits;
     }
 }

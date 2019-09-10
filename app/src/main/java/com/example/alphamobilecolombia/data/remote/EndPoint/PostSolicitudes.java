@@ -12,7 +12,5 @@ public interface PostSolicitudes
         @POST(API_ROUTE)
         Call<String> GetListSolicitudes(
                 @Body RequestBody body
-
-
         );
 }

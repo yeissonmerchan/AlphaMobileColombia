@@ -28,14 +28,14 @@ public class QueryCreditAdapter implements IQueryCreditAdapter {
         _context = context;
     }
 
-    public ApiResponse Post(String idUser){
+    public ApiResponse Post(String idUser, String initDate, String endDate){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
         PostSolicitudes service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSolicitudes.class);
 
         Gson gson = new Gson();
-        String data = gson.toJson(new PostConsultarReporteCreditoRequest("6","3","18",idUser,"2019-07-02","2019-07-02"));
+        String data = gson.toJson(new PostConsultarReporteCreditoRequest("6","3","18",idUser,initDate,endDate));
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 
         Call<String> call = service.GetListSolicitudes(body);
