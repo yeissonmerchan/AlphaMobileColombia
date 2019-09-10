@@ -8,6 +8,7 @@ import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CreditSubjectPresenter implements ICreditSubjectPresenter {
@@ -21,13 +22,15 @@ public class CreditSubjectPresenter implements ICreditSubjectPresenter {
         _context = context;
     }
 
-    public boolean SaveCreditSubject(Persona person, String idUser, int idPerson){
+    public boolean SaveCreditSubject(Persona person, String idUser, int idPerson, int typeEmployee, int typeContract, int creditDestination, int codePayMaster){
         boolean result = false;
         try {
-            ApiResponse apiResponse = _iCreditSubjectAdapter.Post(person, String.valueOf(idPerson),0,0,0,idUser,0);
+            ApiResponse apiResponse = _iCreditSubjectAdapter.Post(person, String.valueOf(idPerson),typeEmployee,typeContract,creditDestination,idUser,codePayMaster);
             if (apiResponse.getCodigoRespuesta() == 200) {
-                JSONObject objectData = (JSONObject) apiResponse.getData();
-                String codeTransaction = objectData.getString("codigoTransaccion");
+                String data = apiResponse.getData().toString();
+                JSONArray jsonObject = new JSONArray(data);
+                JSONObject objeto = (JSONObject) jsonObject.get(0);
+                String codeTransaction = String.valueOf(apiResponse.getCodigoTransaccion());
                 codeSubjectCredit = Integer.parseInt(codeTransaction);
                 result = true;
             } else {

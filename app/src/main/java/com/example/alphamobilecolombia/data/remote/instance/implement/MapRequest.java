@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.data.remote.instance.implement;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.IProxyService;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -17,6 +18,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MapRequest implements IMapRequest {
+    IProxyService _iProxyService;
+    public MapRequest(IProxyService iProxyService){
+        _iProxyService = iProxyService;
+    }
 
     public <T> ApiResponse SynchronousRequest(Call<T> call){
         ApiResponse httpResponse = new ApiResponse();
@@ -36,6 +41,7 @@ public class MapRequest implements IMapRequest {
                 httpResponse.setCodigoRespuesta(Integer.parseInt(String.valueOf(response.code())));
                 httpResponse.setData(object);
                 httpResponse.setMensaje(String.valueOf(object.get("mensaje")));
+                _iProxyService.NotifyNewToken();
             }
             else{
                 String errorResponse = response.errorBody().string();

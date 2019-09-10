@@ -6,7 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PostSujetoCredito {
-    String API_ROUTE = "/api/TM_SujetoCredito/Insertar";
+    String API_ROUTE = "/Generic/api/TM_SujetoCredito/Insertar";
 
     @POST(API_ROUTE)
     Call<String> Insertar(

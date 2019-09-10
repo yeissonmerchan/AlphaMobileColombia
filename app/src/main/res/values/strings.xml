@@ -1,17 +1,17 @@
 <resources>
 
-    <string name="environment_release">DEV</string>
-    <string name="environment_development">DEV</string>
+    <string name="environment_release">PRE</string>
+    <string name="environment_development">QA</string>
 
     <!-- Ips de dev -->
-    <string name="dev_ip_api_authentication">http://181.57.145.20:8081/Security/</string>
-    <string name="dev_ip_api_storage">http://181.57.145.20:8081/Storage/</string>
-    <string name="dev_ip_api_generic">http://181.57.145.20:8081/Generic/</string>
+    <string name="dev_ip_api_authentication">http://192.168.100.22:8081/Security/</string>
+    <string name="dev_ip_api_storage">http://192.168.100.22:8081/Storage/</string>
+    <string name="dev_ip_api_generic">http://192.168.100.22:8081/Generic/</string>
 
     <!-- Ips de pre-produccion -->
-    <string name="pre_ip_api_authentication">http://181.57.145.20:8082/Security/</string>
-    <string name="pre_ip_api_storage">http://181.57.145.20:8082/Storage/</string>
-    <string name="pre_ip_api_generic">hhttp://181.57.145.20:8082/Generic/</string>
+    <string name="pre_ip_api_authentication">http://192.168.100.22:8082/Security/</string>
+    <string name="pre_ip_api_storage">http://192.168.100.22:8082/Storage/</string>
+    <string name="pre_ip_api_generic">http://192.168.100.22:8082/Generic/</string>
 
     <!-- Ips de produccion -->
     <string name="pro_ip_api_authentication">http://apps.vivecreditos.com:8081/</string>

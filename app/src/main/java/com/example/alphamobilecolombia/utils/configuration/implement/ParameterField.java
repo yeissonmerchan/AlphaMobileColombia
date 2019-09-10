@@ -29,6 +29,20 @@ public class ParameterField implements IParameterField {
         return returnValue;
     }
 
+    public String GetValueByIdField(String idField){
+        String returnValue = null;
+        try {
+            Parameter parameter = _iRealmInstance.GetByAttribute(new Parameter(),"Key",idField);
+            if(parameter != null){
+                returnValue = parameter.getValue();
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return returnValue;
+    }
+
     public boolean CleanCreditValidation(){
         boolean returnValue = false;
         try {
