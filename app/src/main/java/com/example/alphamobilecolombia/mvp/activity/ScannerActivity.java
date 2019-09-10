@@ -1,6 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.mvp.presenter.implement.QueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
@@ -36,12 +40,16 @@ import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import co.venko.api.android.cedula.DocumentManager;
+
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
 
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
@@ -94,6 +102,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         //Establece la vista de la pagina
         setContentView(R.layout.activity_scanner);
+
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
 
         /********************************************************************** PRIMER NOMBRE */
 
@@ -264,11 +275,17 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
 
         //***********************************************************************
+
     }
 
     //Se prodcue cuando se presiona el botón Continuar
     public void onClickBtnNextTerms(View view) throws JSONException {
+        ValidarPrevalidacionesActivas(edt_numberIdentification.getText().toString(), person);
 
+    }
+
+
+    public void ValidarCampos(){
         //Define el error
         String Error = "";
 
@@ -284,14 +301,16 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
         if (!TextUtils.isEmpty(edt_names.getText()) && (edt_names.getText().toString().length() < 3 || edt_names.getText().toString().length() > 15)) {
             Error = "El campo primer nombre debe tener entre 3 y 15 caracteres";
-        } else if (!TextUtils.isEmpty(edt_names2.getText()) && (edt_names2.getText().toString().length() < 3 || edt_names2.getText().toString().length() > 15)) {
-            Error = "El campo segundo nombre debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_names2.getText()) && (edt_names2.getText().toString().length() < 3 || edt_names2.getText().toString().length() > 20)) {
+            Error = "El campo segundo nombre debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_lastNames.getText()) && (edt_lastNames.getText().toString().length() < 3 || edt_lastNames.getText().toString().length() > 15)) {
             Error = "El campo primer apellido debe tener entre 3 y 15 caracteres";
-        } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 15)) {
-            Error = "El campo segundo apellido debe tener entre 3 y 15 caracteres";
+        } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 20)) {
+            Error = "El campo segundo apellido debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_numberIdentification.getText()) && (edt_numberIdentification.getText().toString().length() < 6 || edt_numberIdentification.getText().toString().length() > 11)) {
             Error = "El campo número de identificación debe tener entre 6 y 11 caracteres";
+        } else if (edt_numberIdentification.getText().toString().startsWith("0")) {
+            Error = "El campo número de identificación No debe comenzar con cero";
         }
 
         //Si tiene error entonces muestra el mensaje
@@ -303,6 +322,106 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             formulario.Validar(this, AdditionalDataActivity.class, Campos);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+    public void ValidarPrevalidacionesActivas(String Documento, Person person) throws JSONException {
+
+        QueryActiveValidationPresenter presenter = new QueryActiveValidationPresenter();
+        HttpResponse model = presenter.Get(Documento,getBaseContext());
+
+        if (model != null) {
+
+            JSONObject data = (JSONObject) model.getData();
+
+            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+
+            if (jSONArray.length()>0){
+
+                JSONObject object = (JSONObject) jSONArray.get(0);
+
+                boolean accion;
+                accion = Boolean.parseBoolean(object.getString("accion"));
+
+                if(accion){
+
+                    try{
+
+                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+                        Alert.setTitle("IMPORTANTE");
+                        Alert.setMessage(object.getString("mensaje"));
+                        Alert.setCancelable(false);
+
+                        Alert.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        ValidarCampos();
+                                    }
+                                });
+
+
+                        AlertDialog AlertMsg = Alert.create();
+                        AlertMsg.setCanceledOnTouchOutside(false);
+                        AlertMsg.show();
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
+                    }
+                }else {
+                    ValidarCampos();
+                }
+            }else {
+                ValidarCampos();
+            }
+        }else {
+            ValidarCampos();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -450,6 +569,47 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
     }
+
+    /********************************************************* DEBERÍA GENERALIZARSE EN FORMULARIO */
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch(id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
+
+    /*********************************************************************************/
 
 }
 

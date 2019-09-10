@@ -90,7 +90,7 @@ public class ModuleActivity extends AppCompatActivity {
         _iModulePresenter.CleanCreditInformation();
         new AlertDialog.Builder(ModuleActivity.this)
                 .setTitle("¡Atención!")
-                .setMessage("Deseas solicitar QR")
+                .setMessage("¿Desea realizar prevalidación presencial?")
                 .setPositiveButton(R.string.alert_activity_module, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent (view.getContext(), ScannerActivity.class); //ScannerActivity
@@ -101,7 +101,10 @@ public class ModuleActivity extends AppCompatActivity {
                 })
                 .setNegativeButton(R.string.alert_activity_module_c, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Intent intent = new Intent (view.getContext(), ScannerActivity.class); //ScannerActivity
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.putExtra("qr", false);
+                        startActivityForResult(intent, 0);
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
