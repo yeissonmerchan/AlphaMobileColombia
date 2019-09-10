@@ -7,7 +7,7 @@ import retrofit2.http.POST;
 
 public interface PostSolicitudes
 {
-        String API_ROUTE = "/api/ConsultarReporteCredito/GetList";
+        String API_ROUTE = "/Generic/api/ConsultarReporteCredito/GetList";
 
         @POST(API_ROUTE)
         Call<String> GetListSolicitudes(
