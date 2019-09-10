@@ -51,6 +51,9 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         int idDocument = 0;
 
         switch(name){
+            case "CargueDocumentosPreValidación":
+                idDocument = 27;
+                break;
             case "SolicitudCreditoCara1":
                 idDocument = 66;
                 break;

@@ -93,7 +93,7 @@ public class ModuleActivity extends AppCompatActivity {
                 .setMessage("Deseas solicitar QR")
                 .setPositiveButton(R.string.alert_activity_module, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent (view.getContext(), UploadFileActivity.class); //ScannerActivity
+                        Intent intent = new Intent (view.getContext(), ScannerActivity.class); //ScannerActivity
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.putExtra("qr", true);
                         startActivityForResult(intent, 0);

@@ -6,7 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface PostGuardarListaTotalArchivos {
-    String API_ROUTE = "/api/TPArchivo/GuardarListaTotalArchivos";
+    String API_ROUTE = "/storage/api/TPArchivo/GuardarListaTotalArchivos";
 
     @POST(API_ROUTE)
     Call<String> Upload(
