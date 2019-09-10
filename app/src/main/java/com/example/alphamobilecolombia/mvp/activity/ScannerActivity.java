@@ -30,7 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.mvp.presenter.implement.QueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.validaciones.Formulario;
@@ -38,7 +40,9 @@ import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -276,7 +280,12 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     //Se prodcue cuando se presiona el botón Continuar
     public void onClickBtnNextTerms(View view) throws JSONException {
+        ValidarPrevalidacionesActivas(edt_numberIdentification.getText().toString(), person);
 
+    }
+
+
+    public void ValidarCampos(){
         //Define el error
         String Error = "";
 
@@ -313,6 +322,106 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             formulario.Validar(this, AdditionalDataActivity.class, Campos);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+    public void ValidarPrevalidacionesActivas(String Documento, Person person) throws JSONException {
+
+        QueryActiveValidationPresenter presenter = new QueryActiveValidationPresenter();
+        HttpResponse model = presenter.Get(Documento,getBaseContext());
+
+        if (model != null) {
+
+            JSONObject data = (JSONObject) model.getData();
+
+            JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
+
+            if (jSONArray.length()>0){
+
+                JSONObject object = (JSONObject) jSONArray.get(0);
+
+                boolean accion;
+                accion = Boolean.parseBoolean(object.getString("accion"));
+
+                if(accion){
+
+                    try{
+
+                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+                        Alert.setTitle("IMPORTANTE");
+                        Alert.setMessage(object.getString("mensaje"));
+                        Alert.setCancelable(false);
+
+                        Alert.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        ValidarCampos();
+                                    }
+                                });
+
+
+                        AlertDialog AlertMsg = Alert.create();
+                        AlertMsg.setCanceledOnTouchOutside(false);
+                        AlertMsg.show();
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
+                    }
+                }else {
+                    ValidarCampos();
+                }
+            }else {
+                ValidarCampos();
+            }
+        }else {
+            ValidarCampos();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

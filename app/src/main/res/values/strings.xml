@@ -11,7 +11,7 @@
     <!-- Ips de pre-produccion -->
     <string name="pre_ip_api_authentication">http://181.57.145.20:8082/Security/</string>
     <string name="pre_ip_api_storage">http://181.57.145.20:8082/Storage/</string>
-    <string name="pre_ip_api_generic">hhttp://181.57.145.20:8082/Generic/</string>
+    <string name="pre_ip_api_generic">http://181.57.145.20:8082/Generic/</string>
 
     <!-- Ips de produccion -->
     <string name="pro_ip_api_authentication">http://apps.vivecreditos.com:8081/</string>
