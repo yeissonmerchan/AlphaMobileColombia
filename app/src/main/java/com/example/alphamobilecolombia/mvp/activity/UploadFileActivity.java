@@ -1127,6 +1127,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 if(response.getCodigoRespuesta() != 200) {
                     NotificacionErrorDatos(this.context, response.getMensaje());
                 }
+                else{
+                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                    startActivity(intent);
+                }
             }
             else {
                 NotificacionErrorDatos(this.context);
