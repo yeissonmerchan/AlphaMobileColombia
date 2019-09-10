@@ -4,65 +4,64 @@ import com.google.gson.annotations.SerializedName;
 
 public class PostQueryCredit {
     @SerializedName("idSujeto")
-    private int IdSubject;
+    private String IdSubject;
 
     @SerializedName("idCredito")
-    private int IdCredit;
+    private String IdCredit;
 
     @SerializedName("estadoGeneral")
     private String GeneralState;
-    private String estadoGeneral;
     private String regional;
     private String oficina;
     private String coordinador;
     private String asesor;
     private String pagaduria;
-    private int documentoCliente;
+    private String documentoCliente;
     private String cliente;
     private String fechaEnvioPrevalidacion;
-    private int montoSugerido;
-    private int cuotaSug;
-    private int plazoSugerido;
+    private String montoSugerido;
+    private String cuotaSug;
+    private String plazoSugerido;
     private String fechaPrevalidacion;
     private String obsPrevalidacion;
     private String estadoPrevalidacion;
     private String observacionCredito;
-    private int numeroSolicitud;
-    private int numeroLibranza;
+    private String numeroSolicitud;
+    private String numeroLibranza;
     private String fechaRadicacion;
     private String tipoCr;
-    private int montoSolicitado;
-    private int plazoSolicitado;
-    private int montoAprobado;
-    private int cuotaAprob;
-    private int plazoAprob;
+    private String montoSolicitado;
+    private String plazoSolicitado;
+    private String montoAprobado;
+    private String cuotaAprob;
+    private String plazoAprob;
     private String obsPreaprobacion;
     private String fechaAprobacionCredito;
     private String obsAprobacion;
     private String estado;
     private String fabrica;
-    private int idAsesor;
+    private String idAsesor;
     private String fechaDesembolso;
-    private int idCoordinador;
-    private int idRegional;
-    private int idOficina;
+    private String idCoordinador;
+    private String idRegional;
+    private String idOficina;
     private String estadoLibranza;
     private String observicionLlamadaCliente;
 
 
-    public int getIdSubject() {
+    public String getIdSubject() {
         return IdSubject;
     }
 
-    public void setIdSubject(int idSubject) {
+    public void setIdSubject(String idSubject) {
         IdSubject = idSubject;
     }
 
-    public int getIdCredit() {
+    public String getIdCredit() {
         return IdCredit;
     }
 
-    public void setIdCredit(int idCredit) {
+    public void setIdCredit(String idCredit) {
         IdCredit = idCredit;
     }
 
@@ -72,14 +71,6 @@ public class PostQueryCredit {
 
     public void setGeneralState(String generalState) {
         GeneralState = generalState;
-    }
-
-    public String getEstadoGeneral() {
-        return estadoGeneral;
-    }
-
-    public void setEstadoGeneral(String estadoGeneral) {
-        this.estadoGeneral = estadoGeneral;
     }
 
     public String getRegional() {
@@ -122,11 +113,11 @@ public class PostQueryCredit {
         this.pagaduria = pagaduria;
     }
 
-    public int getDocumentoCliente() {
+    public String getDocumentoCliente() {
         return documentoCliente;
     }
 
-    public void setDocumentoCliente(int documentoCliente) {
+    public void setDocumentoCliente(String documentoCliente) {
         this.documentoCliente = documentoCliente;
     }
 
@@ -146,27 +137,27 @@ public class PostQueryCredit {
         this.fechaEnvioPrevalidacion = fechaEnvioPrevalidacion;
     }
 
-    public int getMontoSugerido() {
+    public String getMontoSugerido() {
         return montoSugerido;
     }
 
-    public void setMontoSugerido(int montoSugerido) {
+    public void setMontoSugerido(String montoSugerido) {
         this.montoSugerido = montoSugerido;
     }
 
-    public int getCuotaSug() {
+    public String getCuotaSug() {
         return cuotaSug;
     }
 
-    public void setCuotaSug(int cuotaSug) {
+    public void setCuotaSug(String cuotaSug) {
         this.cuotaSug = cuotaSug;
     }
 
-    public int getPlazoSugerido() {
+    public String getPlazoSugerido() {
         return plazoSugerido;
     }
 
-    public void setPlazoSugerido(int plazoSugerido) {
+    public void setPlazoSugerido(String plazoSugerido) {
         this.plazoSugerido = plazoSugerido;
     }
 
@@ -202,19 +193,19 @@ public class PostQueryCredit {
         this.observacionCredito = observacionCredito;
     }
 
-    public int getNumeroSolicitud() {
+    public String getNumeroSolicitud() {
         return numeroSolicitud;
     }
 
-    public void setNumeroSolicitud(int numeroSolicitud) {
+    public void setNumeroSolicitud(String numeroSolicitud) {
         this.numeroSolicitud = numeroSolicitud;
     }
 
-    public int getNumeroLibranza() {
+    public String getNumeroLibranza() {
         return numeroLibranza;
     }
 
-    public void setNumeroLibranza(int numeroLibranza) {
+    public void setNumeroLibranza(String numeroLibranza) {
         this.numeroLibranza = numeroLibranza;
     }
 
@@ -234,43 +225,43 @@ public class PostQueryCredit {
         this.tipoCr = tipoCr;
     }
 
-    public int getMontoSolicitado() {
+    public String getMontoSolicitado() {
         return montoSolicitado;
     }
 
-    public void setMontoSolicitado(int montoSolicitado) {
+    public void setMontoSolicitado(String montoSolicitado) {
         this.montoSolicitado = montoSolicitado;
     }
 
-    public int getPlazoSolicitado() {
+    public String getPlazoSolicitado() {
         return plazoSolicitado;
     }
 
-    public void setPlazoSolicitado(int plazoSolicitado) {
+    public void setPlazoSolicitado(String plazoSolicitado) {
         this.plazoSolicitado = plazoSolicitado;
     }
 
-    public int getMontoAprobado() {
+    public String getMontoAprobado() {
         return montoAprobado;
     }
 
-    public void setMontoAprobado(int montoAprobado) {
+    public void setMontoAprobado(String montoAprobado) {
         this.montoAprobado = montoAprobado;
     }
 
-    public int getCuotaAprob() {
+    public String getCuotaAprob() {
         return cuotaAprob;
     }
 
-    public void setCuotaAprob(int cuotaAprob) {
+    public void setCuotaAprob(String cuotaAprob) {
         this.cuotaAprob = cuotaAprob;
     }
 
-    public int getPlazoAprob() {
+    public String getPlazoAprob() {
         return plazoAprob;
     }
 
-    public void setPlazoAprob(int plazoAprob) {
+    public void setPlazoAprob(String plazoAprob) {
         this.plazoAprob = plazoAprob;
     }
 
@@ -314,11 +305,11 @@ public class PostQueryCredit {
         this.fabrica = fabrica;
     }
 
-    public int getIdAsesor() {
+    public String getIdAsesor() {
         return idAsesor;
     }
 
-    public void setIdAsesor(int idAsesor) {
+    public void setIdAsesor(String idAsesor) {
         this.idAsesor = idAsesor;
     }
 
@@ -330,27 +321,27 @@ public class PostQueryCredit {
         this.fechaDesembolso = fechaDesembolso;
     }
 
-    public int getIdCoordinador() {
+    public String getIdCoordinador() {
         return idCoordinador;
     }
 
-    public void setIdCoordinador(int idCoordinador) {
+    public void setIdCoordinador(String idCoordinador) {
         this.idCoordinador = idCoordinador;
     }
 
-    public int getIdRegional() {
+    public String getIdRegional() {
         return idRegional;
     }
 
-    public void setIdRegional(int idRegional) {
+    public void setIdRegional(String idRegional) {
         this.idRegional = idRegional;
     }
 
-    public int getIdOficina() {
+    public String getIdOficina() {
         return idOficina;
     }
 
-    public void setIdOficina(int idOficina) {
+    public void setIdOficina(String idOficina) {
         this.idOficina = idOficina;
     }
 

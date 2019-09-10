@@ -105,7 +105,7 @@ public class QueryCreditActivity extends AppCompatActivity implements TabLayout.
     }
 
     public void configurerView() {
-        TabLayout tabFilters = (TabLayout) findViewById(R.id.tabFilters);
+        /*TabLayout tabFilters = (TabLayout) findViewById(R.id.tabFilters);
         tabFilters.addTab(tabFilters.newTab().setText("3 DÍAS"));
         tabFilters.addTab(tabFilters.newTab().setText("2 SEMANAS"));
         tabFilters.addTab(tabFilters.newTab().setText("MÁS DE 2 SEMANAS"));
@@ -116,7 +116,7 @@ public class QueryCreditActivity extends AppCompatActivity implements TabLayout.
 
         RecyclerAdapterQueryCredit adapter = new RecyclerAdapterQueryCredit(clients);
         recyclerCredits.setAdapter(adapter);
-
+*/
 
 
     }
