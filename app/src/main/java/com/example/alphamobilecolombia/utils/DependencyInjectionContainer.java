@@ -8,17 +8,21 @@ import com.example.alphamobilecolombia.data.cloud.firestore.implement.CloudStore
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.IProxyService;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.implement.ProxyService;
 import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
 import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.ILoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IProxyServiceAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IVersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.CreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.LoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.PersonAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.implement.ProxyServiceAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.UploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.VersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
@@ -88,26 +92,26 @@ public class DependencyInjectionContainer {
 
     //Start Adapters
     private IUploadFileAdapter injectDIIUploadFileAdapter(Context context){
-        return new UploadFileAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
+        return new UploadFileAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
 
     private IVersionUpdateAdapter injectDIIVersionUpdateAdapter (Context context){
-        return new VersionUpdateAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
+        return new VersionUpdateAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
 
     private ILoginAdapter injectDIILoginAdapter(Context context)
     {
-        return new LoginAdapter(injectIRetrofitInstance(context),injectIMapRequest(),injectIDevice(),context);
+        return new LoginAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),injectIDevice(),context);
     }
 
     private ICreditSubjectAdapter injectDIICreditSubjectAdapter(Context context)
     {
-        return new CreditSubjectAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
+        return new CreditSubjectAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
 
     private IPersonAdapter injectDIIPersonAdapter(Context context)
     {
-        return new PersonAdapter(injectIRetrofitInstance(context),injectIMapRequest(),context);
+        return new PersonAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
     //End Adapters
 
@@ -120,13 +124,13 @@ public class DependencyInjectionContainer {
 
     public IParameterField injectIParameterField(Context context){return new ParameterField(injectIRealmInstance(context));}
 
-    private IRetrofitInstance injectIRetrofitInstance(Context context){
-        return new RetrofitInstance(injectIAccessToken(context));
-    }
+    private IRetrofitInstance injectIRetrofitInstance(Context context){ return new RetrofitInstance(injectIAccessToken(context)); }
 
-    private IMapRequest injectIMapRequest(){
-        return new MapRequest();
-    }
+    //private IProxyServiceAdapter injectIProxyServiceAdapter(Context context){return new ProxyServiceAdapter(injectIRealmInstance(context),injectIRetrofitInstance(context),injectIMapRequest(context),context); }
+
+    //private IProxyService injectIProxyService(Context context) { return new ProxyService(injectIProxyServiceAdapter(context),injectIAccessToken(context));}
+
+    private IMapRequest injectIMapRequest(Context context){ return new MapRequest(null); }
 
     private IMD5Hashing injectIMD5Hashing(){
         return new MD5Hashing();

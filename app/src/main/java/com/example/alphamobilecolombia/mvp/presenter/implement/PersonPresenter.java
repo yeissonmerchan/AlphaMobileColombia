@@ -9,6 +9,7 @@ import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PersonPresenter implements IPersonPresenter {
@@ -26,8 +27,10 @@ public class PersonPresenter implements IPersonPresenter {
         try {
             ApiResponse apiResponse = _iPersonAdapter.Post(person, idUser);
             if (apiResponse.getCodigoRespuesta() == 200) {
-                JSONObject objeto = (JSONObject) apiResponse.getData();
-                String codigoTransaccion = objeto.getString("codigoTransaccion");
+                String data = apiResponse.getData().toString();
+                JSONArray jsonObject = new JSONArray(data);
+                JSONObject objeto = (JSONObject) jsonObject.get(0);
+                String codigoTransaccion = String.valueOf(apiResponse.getCodigoTransaccion());
                 codePerson = Integer.parseInt(codigoTransaccion);
                 result = true;
             } else {
