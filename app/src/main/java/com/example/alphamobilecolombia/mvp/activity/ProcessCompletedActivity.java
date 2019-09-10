@@ -19,8 +19,16 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 
 public class ProcessCompletedActivity extends AppCompatActivity {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IProcessCompletedPresenter _iProcessCompletedPresenter;
+    public ProcessCompletedActivity(){
+        _iProcessCompletedPresenter = diContainer.injectDIIProcessCompletedPresenter(this);
+    }
+
     private static final int DIALOG_REALLY_EXIT_ID = 0;
 
     @Override
@@ -37,7 +45,7 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         }
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Finalización");
-
+        _iProcessCompletedPresenter.CleanCreditInformation();
     }
 
     @Override

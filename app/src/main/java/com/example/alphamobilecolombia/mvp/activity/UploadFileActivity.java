@@ -30,12 +30,13 @@ import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.configuration.IParameterField;
+import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -81,10 +82,10 @@ public class UploadFileActivity extends AppCompatActivity {
     Dialog myDialog;
     com.example.alphamobilecolombia.mvp.models.File fileUpload;
     private Persona persona = new Persona();
-    private String IdTipoEmpleado;
-    private String IdTipoContrato;
-    private String IdDestinoCredito;
-    private String IdPagaduria;
+    private int IdTipoEmpleado;
+    private int IdTipoContrato;
+    private int IdDestinoCredito;
+    private int IdPagaduria;
     private String pathNewFile1;
     final Context context = this;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
@@ -94,7 +95,8 @@ public class UploadFileActivity extends AppCompatActivity {
     IRealmInstance iRealmInstance =new RealmInstance(this, new RSA(this));
     ICreditSubjectPresenter _iCreditSubjectPresenter;
     IPersonPresenter _iPersonPresenter;
-
+    IParameterField _iParameterField;
+    ISelectList _iSelectList;
     // PopupMenu
     ImageButton btnCloseView1,btnCloseView2,btnCloseView3,btnCloseView4,btnCloseView5,btnCloseView6,btnCloseView7,btnCloseView8,btnCloseView9;
 
@@ -108,6 +110,8 @@ public class UploadFileActivity extends AppCompatActivity {
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
         _iPersonPresenter = diContainer.injectDIIPersonPresenter(this);
+        _iParameterField = diContainer.injectIParameterField(this);
+        _iSelectList = diContainer.injectISelectList(this);
     }
 
     @Override
@@ -206,7 +210,8 @@ public class UploadFileActivity extends AppCompatActivity {
                                 if(!isCreateUserAndSubject){
                                     SavePersonAndSubject();
                                 }
-                                saveFiles(view);
+
+                                //saveFiles(view);
                             }
                             else{
                                 NotificacionArchivospendientes(view);
@@ -265,9 +270,6 @@ public class UploadFileActivity extends AppCompatActivity {
                     case "CargueDocumentosPreValidación":
                         existFile.CargueDocumentosPreValidación = true;
                         break;
-                    case "SolicitudCreditoCara2":
-                        existFile.SolicitudCreditoCara2 = true;
-                        break;
                     case "CedulaCara1":
                         existFile.CedulaCara1 = true;
                         break;
@@ -286,7 +288,7 @@ public class UploadFileActivity extends AppCompatActivity {
                 }
             }
         }
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.SolicitudCreditoCara2 && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
         //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         //if(existFile.SolicitudCreditoCara1)
         {
@@ -1072,29 +1074,33 @@ public class UploadFileActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
         try {
-            String genero = getIntent().getStringExtra("PERSONA_Genero");
-            int generoId = 0;
-            switch (genero) {
-                case "M":
-                    generoId = 1;
-                    break;
-                case "F":
-                    generoId = 2;
-                    break;
-            }
+            String genero = _iParameterField.GetValueByIdField("spinner_genero");
+            //int generoId = _iSelectList.GetValueByIdField(genero);
 
-            persona.setCedula(getIntent().getStringExtra("PERSONA_Documento"));
-            persona.setNombre(getIntent().getStringExtra("PERSONA_PNombre"));
-            persona.setNombre2(getIntent().getStringExtra("PERSONA_SNombre"));
-            persona.setApellido1(getIntent().getStringExtra("PERSONA_PApellido"));
-            persona.setApellido2(getIntent().getStringExtra("PERSONA_SApellido"));
-            persona.setFechaNacimiento(getIntent().getStringExtra("PERSONA_FechaNac"));
-            persona.setGenero(String.valueOf(generoId));
-            persona.setCelular(getIntent().getStringExtra("PERSONA_Celular"));
-            IdTipoEmpleado = getIntent().getStringExtra("IdTipoEmpleado");
-            IdTipoContrato = getIntent().getStringExtra("IdTipoContrato");
-            IdDestinoCredito = getIntent().getStringExtra("IdDestinoCredito");
-            IdPagaduria = getIntent().getStringExtra("IdPagaduria");
+            String pagaduria = _iParameterField.GetValueByIdField("search_pagaduria");
+            //int pagaduriaId = _iSelectList.GetValueByIdField(pagaduria);
+
+            String destinoCredito = _iParameterField.GetValueByIdField("spinner_destino_credito");
+            //int destinoCreditoId = _iSelectList.GetValueByIdField(destinoCredito);
+
+            String tipoContrato = _iParameterField.GetValueByIdField("search_tipo_contrato");
+            //int tipoContratoId = _iSelectList.GetValueByIdField(tipoContrato);
+
+            String tipoCliente = _iParameterField.GetValueByIdField("spinner_tipo_cliente");
+            //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
+
+            persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));
+            persona.setNombre(_iParameterField.GetValueByIdField("edt_names"));
+            persona.setNombre2(_iParameterField.GetValueByIdField("edt_names"));
+            persona.setApellido1(_iParameterField.GetValueByIdField("edt_lastNames"));
+            persona.setApellido2(_iParameterField.GetValueByIdField("edt_lastNames"));
+            persona.setFechaNacimiento(_iParameterField.GetValueByIdField("edt_birthDate"));
+            persona.setGenero(String.valueOf(genero));
+            persona.setCelular("0000000000");
+            IdTipoEmpleado = Integer.parseInt(tipoCliente);
+            IdTipoContrato = Integer.parseInt(tipoContrato);
+            IdDestinoCredito = Integer.parseInt(destinoCredito);
+            IdPagaduria = Integer.parseInt(pagaduria);
 
         }
         catch (Exception ex){
@@ -1106,18 +1112,20 @@ public class UploadFileActivity extends AppCompatActivity {
             persona.setFechaNacimiento("1996/08/08");
             persona.setGenero(String.valueOf(1));
             persona.setCelular("234");
-            IdTipoEmpleado = "1";
-            IdTipoContrato = "2";
-            IdDestinoCredito = "1";
-            IdPagaduria = "35";
+            IdTipoEmpleado = 1;
+            IdTipoContrato = 2;
+            IdDestinoCredito = 1;
+            IdPagaduria = 35;
         }
 
         boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona,user);
         if (isSuccessPerson){
-            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona,user,_iPersonPresenter.GetIdPerson());
+            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona,user,_iPersonPresenter.GetIdPerson(),IdTipoEmpleado,IdTipoContrato,IdDestinoCredito,IdPagaduria);
             if(isSuccessSubjectCredit){
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
+                Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                startActivity(intent);
             }
             else {
                 NotificacionErrorDatos(this.context);

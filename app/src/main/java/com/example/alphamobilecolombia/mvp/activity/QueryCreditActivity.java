@@ -85,13 +85,13 @@ public class QueryCreditActivity extends AppCompatActivity implements TabLayout.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                QueryCreditAdapter queryCreditAdapter = new QueryCreditAdapter(new RetrofitInstance(), new MapRequest(), getApplicationContext());
+                //QueryCreditAdapter queryCreditAdapter = new QueryCreditAdapter(new RetrofitInstance(), new MapRequest(), getApplicationContext());
 
 
                 QueryCreditPresenter presenter = new QueryCreditPresenter();
-                //HttpResponse model = new HttpResponse();
-                ApiResponse model = queryCreditAdapter.Post(user);
-                //model = presenter.Post(user, getApplicationContext());
+                HttpResponse model = new HttpResponse();
+                //ApiResponse model = queryCreditAdapter.Post(user);
+                model = presenter.Post(user, getApplicationContext());
 
                 if (model != null) {
 

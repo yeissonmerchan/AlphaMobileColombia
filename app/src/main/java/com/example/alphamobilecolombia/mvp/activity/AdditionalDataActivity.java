@@ -1,12 +1,16 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
@@ -29,11 +34,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
+
 public class AdditionalDataActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     Formulario formulario;
-    public AdditionalDataActivity(){
+
+    public AdditionalDataActivity() {
         formulario = new Formulario(diContainer.injectISelectList(this));
     }
     //************************** CIUDAD EXPEDICIÓN CEDULA
@@ -67,10 +75,13 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_data);
 
+        TextView modulo = findViewById(R.id.txt_modulo);
+        modulo.setText("Nueva solicitud");
+
         //********************************************************************** CIUDAD EXPEDICIÓN CEDULA
 
         listview_ciudad_expedicion_cedula = (ListView) findViewById(R.id.listview_ciudad_expedicion_cedula);
-       formulario.Cargar(this, listview_ciudad_expedicion_cedula);
+        formulario.Cargar(this, listview_ciudad_expedicion_cedula);
 
         adapter = (ListViewAdapter) listview_ciudad_expedicion_cedula.getAdapter();
 
@@ -109,6 +120,8 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
             }
         });
 
+        //EstablecerTamañoMaximo(search_ciudad_expedicion_cedula, 10);
+
         //********************************************************************** COMBOBOX DEPARTAMENTO, CIUDAD
 
         /*spinner_departamento_expedicion_cedula = (Spinner) findViewById(R.id.spinner_departamento_expedicion_cedula);*/
@@ -132,17 +145,28 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
                         evento_fecha_expedicion_cedula,
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-/*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
+                /*                dialog.getDatePicker().setMaxDate((long) (cal.getTimeInMillis() - (5.682e+11)));*/
 
-                Calendar FechaMaxima = Calendar.getInstance();
+                Calendar FechaMinima = Calendar.getInstance();
 
                 String[] FechaNacimiento = formulario.ObtenerValor(AdditionalDataActivity.this, "edt_birthDate").split("/");
 
-                FechaMaxima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
+                FechaMinima.set(Integer.valueOf(FechaNacimiento[0]) + 18,
                         Integer.valueOf(Integer.valueOf(FechaNacimiento[1]) - 1),
                         Integer.valueOf(FechaNacimiento[2]));
 
-                dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
+                //Si la fecha minima y maxima son iguales arroja una excepción, por lo que se resta un día
+                if (FechaMinima.get(Calendar.YEAR) == cal.get(Calendar.YEAR) &&
+                        FechaMinima.get(Calendar.MONTH) == cal.get(Calendar.MONTH) &&
+                        FechaMinima.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH)
+                ) {
+                    FechaMinima.add(FechaMinima.DAY_OF_MONTH, -1);
+                    dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                } else {
+                    dialog.getDatePicker().setMinDate(FechaMinima.getTimeInMillis());
+                }
+
+                dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
 
                 dialog.show();
             }
@@ -173,6 +197,22 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         /***********************************************************************/
 
     }
+
+/*
+    private void EstablecerTamañoMaximo(View view, int tamaño) {
+        if (view instanceof EditText) {
+            ((EditText) view).setFilters(new InputFilter[]{new InputFilter.LengthFilter(tamaño)});
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                EstablecerSeleccion(child, tamaño);
+            }
+        }
+    }
+*/
+
 
     private void EstablecerSeleccion(View view, int position) {
         if (view instanceof EditText) {
@@ -274,6 +314,47 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
         Log.d("Lifecycle", "onDestroy()");
     }
 
+
+    /********************************************************* DEBERÍA GENERALIZARSE EN FORMULARIO */
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final Dialog dialog;
+        switch (id) {
+            case DIALOG_REALLY_EXIT_ID:
+                dialog = new AlertDialog.Builder(this).setMessage(
+                        "¿ Desea terminar el proceso ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Sí",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent a = new Intent(getBaseContext(), ModuleActivity.class);
+                                        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(a);
+                                    }
+                                })
+                        .setNegativeButton("No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                }).create();
+                break;
+            default:
+                dialog = null;
+        }
+        return dialog;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showDialog(DIALOG_REALLY_EXIT_ID);
+        }
+        return true;
+    }
+
+    /*********************************************************************************/
 
 }
 
