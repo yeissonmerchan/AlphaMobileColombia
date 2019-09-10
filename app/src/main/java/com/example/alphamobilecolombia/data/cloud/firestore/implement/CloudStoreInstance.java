@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.realm.RealmObject;
 
@@ -38,13 +39,14 @@ public class CloudStoreInstance implements ICloudStoreInstance {
     Context _context;
     INotification _iNotification;
     IRealmInstance _iRealmInstance;
-    public CloudStoreInstance(INotification iNotification, IRealmInstance iRealmInstance, Context context){
+
+    public CloudStoreInstance(INotification iNotification, IRealmInstance iRealmInstance, Context context) {
         _context = context;
         _iNotification = iNotification;
         _iRealmInstance = iRealmInstance;
     }
 
-    public FirebaseFirestore instanceDb(){
+    public FirebaseFirestore instanceDb() {
         FirebaseFirestoreSettings fireStoreSettings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
@@ -54,18 +56,18 @@ public class CloudStoreInstance implements ICloudStoreInstance {
         return db;
     }
 
-    public Task<QuerySnapshot> syncCollection(String nameCollection){
+    public Task<QuerySnapshot> syncCollection(String nameCollection) {
         try {
             FirebaseFirestore db = instanceDb();
             Task<QuerySnapshot> collectionSimulator = db.collection(nameCollection)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
-                            if (objects != null)
-                            {
+                            List<ParametrizacionMotor> objects = Objects.requireNonNull(task.getResult()).toObjects(ParametrizacionMotor.class);
+                            if (objects != null && objects.get(0) != null) {
                                 ParametrizacionMotor parametrizacionMotor = objects.get(0);
-                                uploadConfiguration(parametrizacionMotor);
+                                if (parametrizacionMotor != null)
+                                    uploadConfiguration(parametrizacionMotor);
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -73,14 +75,13 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                     });
 
             return collectionSimulator;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor){
+    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor) {
         LocalNotification localNotification = new LocalNotification();
         try {
             if (parametrizacionMotor != null) {
@@ -102,13 +103,11 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                 localNotification.setTitle("Check!");
 
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             localNotification.setMessage("Error en la sincronización de la configuración del app.");
             localNotification.setTitle("Check!");
-        }
-        finally {
+        } finally {
             _iNotification.ShowNotification(localNotification);
         }
     }

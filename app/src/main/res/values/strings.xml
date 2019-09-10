@@ -83,6 +83,8 @@
     <string name="text_view">Vista previa</string>
     <string name="text_upload">Tomar foto</string>
     <string name="text_load_gallery">Elegir de galería</string>
+    <!-- Query_crediit -->
+    <string name="hint_search">Buscar</string>
 
 
     <string-array name="spinner_credit_destination">

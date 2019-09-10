@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlueLight"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/cedulaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlueLight"
+            android:text="Cédula"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:id="@+id/nombreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlueLight"
+            android:text="Nombre"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:id="@+id/numSolicitudText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlueLight"
+            android:text="Número de solicitud"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow">
+
+        </ImageView>
+    </LinearLayout>
+</FrameLayout>

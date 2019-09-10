@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/estadoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/pagaduriaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pagaduría"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/fechaEnvioPrevaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fecha envió prevalidación"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/montoSugeridoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monto sugerido"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/cuotaSugText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cuota sugerida"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/plazoSugeridoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plazo sugerido"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/fechaPrevalidacionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha prevalidación"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/observacionPrevaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Observación prevalidación"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/observacionCreditoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Observación crédito"
+            android:textColor="@color/colorBlack"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp">
+        </TextView>
+    </LinearLayout>
+</FrameLayout>

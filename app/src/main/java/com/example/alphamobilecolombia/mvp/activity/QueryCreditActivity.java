@@ -22,13 +22,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
+import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
+import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.implement.QueryCreditAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;
+import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Adapter.RecyclerAdapterQueryCredit;
+import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
+import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.ClientDescription;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,10 +47,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryCreditActivity extends AppCompatActivity {
+public class QueryCreditActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     Dialog myDialog;
     RealmStorage storage = new RealmStorage();
+    //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
+    ArrayList<Client> clients = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +69,29 @@ public class QueryCreditActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorHeader));
         }
 
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        String user = sharedPref.getString("idUser", "");
+        //String user = sharedPref.getString("idUser", "");
+        String user = "1";
 
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
 
-        List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
+        //List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+                QueryCreditAdapter queryCreditAdapter = new QueryCreditAdapter(new RetrofitInstance(), new MapRequest(), getApplicationContext());
+
+
                 QueryCreditPresenter presenter = new QueryCreditPresenter();
-                HttpResponse model = presenter.Post(user,getBaseContext());
+                //HttpResponse model = new HttpResponse();
+                ApiResponse model = queryCreditAdapter.Post(user);
+                //model = presenter.Post(user, getApplicationContext());
 
                 if (model != null) {
 
@@ -82,11 +100,31 @@ public class QueryCreditActivity extends AppCompatActivity {
                     try {
 
                         JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                        PostConsultarReporteCreditoResponse ReporteCreditoResponse;
+                        ArrayList<ClientDescription> clientDescription = new ArrayList<>();
+
                         for (int i = 0; i < jSONArray.length(); i++) {
-                            ReporteCreditoResponse = new PostConsultarReporteCreditoResponse();
                             JSONObject object = (JSONObject) jSONArray.get(i);
-                            ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
+                            String estadoGeneral = object.getString("estadoGeneral");
+                            String pagaduria = object.getString("pagaduria");
+                            String fechaEnvioPrevalidacion = object.getString("fechaEnvioPrevalidacion");
+                            String montoSugerido = object.getString("montoSugerido");
+                            String cuotaSug = object.getString("cuotaSug");
+                            String plazoSugerido = object.getString("plazoSugerido");
+                            String fechaPrevalidacion = object.getString("fechaPrevalidacion");
+                            String obsPreaprobacion = object.getString("obsPreaprobacion");
+                            String observacionCredito = object.getString("observacionCredito");
+                            clientDescription.add(new ClientDescription(estadoGeneral,pagaduria,fechaEnvioPrevalidacion,montoSugerido,cuotaSug,plazoSugerido,fechaPrevalidacion,obsPreaprobacion,observacionCredito));
+
+                            String documentoCliente = object.getString("documentoCliente");
+                            String cliente = object.getString("cliente");
+                            String numeroSolicitud = object.getString("numeroSolicitud");
+
+                            String dataUser = "Cedula: " + documentoCliente + " Nombre: " + cliente + " No solicitud:  " + numeroSolicitud;
+
+                            Client client = new Client(dataUser,clientDescription);
+                            clients.add(client);
+
+                            /*ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
                             ReporteCreditoResponse.setRegional(object.getString("regional"));
                             ReporteCreditoResponse.setOficina(object.getString("oficina"));
                             ReporteCreditoResponse.setCoordinador(object.getString("coordinador"));
@@ -102,25 +140,42 @@ public class QueryCreditActivity extends AppCompatActivity {
                             ReporteCreditoResponse.setObservacionCredito(object.getString("observacionCredito"));
                             ReporteCreditoResponse.setNumeroSolicitud(object.getString("numeroSolicitud"));
                             ReporteCreditoResponse.setTipoCr(object.getString("tipoCr"));
-                            ReporteCredito.add(ReporteCreditoResponse);
+                            listReporteCredito.add(ReporteCreditoResponse);*/
                         }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                generateControls(ReporteCredito);
+                                //generateControls(ReporteCredito);
                                 myDialog.dismiss();
                             }
                         });
-                    }
-                    catch (JSONException ex) {
+                    } catch (JSONException ex) {
                         // TODO Auto-generated catch block
                         ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Mapeo consultas",ex,getBaseContext());
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Mapeo consultas", ex, getBaseContext());
                     }
                 }
                 myDialog.show();
             }
         }).start();
+        configurerView();
+    }
+
+    public void configurerView() {
+        TabLayout tabFilters = (TabLayout) findViewById(R.id.tabFilters);
+        tabFilters.addTab(tabFilters.newTab().setText("3 DÍAS"));
+        tabFilters.addTab(tabFilters.newTab().setText("2 SEMANAS"));
+        tabFilters.addTab(tabFilters.newTab().setText("MÁS DE 2 SEMANAS"));
+
+        //RecyclerView
+        RecyclerView recyclerCredits = findViewById(R.id.recyclerCredits);
+        recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
+
+        RecyclerAdapterQueryCredit adapter = new RecyclerAdapterQueryCredit(clients);
+        recyclerCredits.setAdapter(adapter);
+
+
+
     }
 
     @Override
@@ -144,7 +199,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         Log.d("Lifecycle", "onDestroy()");
     }
 
-    public void generateControls(List data){
+   /*public void generateControls(List data){
 
         //Se elimina la data anterior
         storage.deleteInfoConsultaCreditro(this);
@@ -208,8 +263,9 @@ public class QueryCreditActivity extends AppCompatActivity {
             my_button[Index] = new Button(context);
             /*my_button[Index].setBackgroundResource(R.mipmap.logo_lupa);
             my_button[Index].setMaxHeight(35);
-            my_button[Index].setMaxWidth(30);*/
-            my_button[Index].setText("Ver");
+            my_button[Index].setMaxWidth(30);
+
+           // my_button[Index].setText("Ver");
             my_button[Index].setId(Index);
 
             my_button[Index].setOnClickListener(new View.OnClickListener() {
@@ -302,11 +358,28 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         startActivityForResult(intent, 0);
+    }
+
+    // Tab_filters
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 
 }
