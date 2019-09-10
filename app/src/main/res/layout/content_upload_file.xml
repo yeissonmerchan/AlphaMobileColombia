@@ -23,925 +23,944 @@
             android:layout_marginBottom="100dp"
             android:id="@+id/lyt_controls"
             android:orientation="vertical">
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity= "left"
-                    android:drawSelectorOnTop="true"
-                    android:typeface="serif"
-                    android:layout_marginTop="10dp"
-                    android:inputType="textMultiLine"
-                    android:ems="20"
-                    app:autoSizeTextType="uniform"
-                    android:textStyle="bold"
-                    android:id="@+id/txtSolicitudCredito"
-                    android:text="Documento Prevalidación"
-                    android:longClickable="true"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="18dp"
-                    android:textColor="@color/colorHeader"
-                    android:scrollbars = "vertical"/>
-
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
+                    android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/txtCargue1"
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="20dp"
-                            android:drawSelectorOnTop="true"
-                            android:ems="20"
-                            android:inputType="textMultiLine"
-                            android:longClickable="true"
-                            android:paddingTop="5dp"
-                            android:scrollbars="vertical"
-                            android:gravity="center_vertical"
-                            android:text="Cargar Hoja #1"
-                            android:textColor="@color/colorText"
-                            android:textSize="16dp"
-                            android:typeface="serif" />
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:gravity="right"
-                            android:orientation="horizontal">
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/DocPrevalidacion"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue1"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <RelativeLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/btn_capture">
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:id="@+id/txtSolicitudCredito"
+                        android:text="Documento Prevalidación"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
 
-                        <ImageView
-                            android:id="@+id/imageView1"
-                            android:layout_width="350dp"
-                            android:layout_height="400dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="false"
-                            android:layout_marginEnd="0dp"
-                            android:visibility="gone"
-                            android:layout_marginTop="0dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="0dp"
-                            android:layout_marginBottom="40dp"
-                            android:background="@color/colorObject"
-                            android:layout_below="@+id/btnCloseView1"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
 
-                        <ImageButton
-                            android:id="@+id/btnCloseView1"
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/txtCargue1"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:gravity="center_vertical"
+                                android:text="Cargar Hoja #1"
+                                android:textColor="@color/colorText"
+                                android:textSize="16dp"
+                                android:typeface="serif" />
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:orientation="horizontal">
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/DocPrevalidacion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue1"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_close"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginRight="15dp"
-                            android:onClick="onClickOptions"
-                            android:visibility="gone"/>
-                    </RelativeLayout>
+                            android:layout_below="@+id/btn_capture">
+
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="350dp"
+                                android:layout_height="400dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="false"
+                                android:layout_marginEnd="0dp"
+                                android:visibility="gone"
+                                android:layout_marginTop="0dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginBottom="40dp"
+                                android:background="@color/colorObject"
+                                android:layout_below="@+id/btnCloseView1"/>
+
+                            <ImageButton
+                                android:id="@+id/btnCloseView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_close"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="15dp"
+                                android:onClick="onClickOptions"
+                                android:visibility="gone"/>
+                        </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
 
-            <LinearLayout
+                    <TextView
+                        android:id="@+id/txtCedulaCiudadania"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="10dp"
+                        android:drawSelectorOnTop="true"
+                        android:ems="20"
+                        android:inputType="textMultiLine"
+                        android:longClickable="true"
+                        android:scrollbars="vertical"
+                        android:text="Cédula de ciudadanía"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        app:autoSizeTextType="uniform" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/txtCargue3"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:text="Cargar Cara #1"
+                                android:textColor="@color/colorText"
+                                android:textSize="16dp"
+                                android:typeface="serif" />
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:orientation="horizontal">
+
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue3"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_below="@+id/btnCloseView3"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:visibility="gone" />
+
+                                <ImageButton
+                                    android:id="@+id/btnCloseView3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:background="@drawable/ic_close"
+                                    android:onClick="onClickOptions"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/txtCargue4"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:text="Cargar Cara #2"
+                                android:textColor="@color/colorText"
+                                android:textSize="16dp"
+                                android:typeface="serif" />
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:orientation="horizontal">
+
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue4"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView4"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_below="@+id/btnCloseView4"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:visibility="gone" />
+
+                                <ImageButton
+                                    android:id="@+id/btnCloseView4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:background="@drawable/ic_close"
+                                    android:onClick="onClickOptions"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtCedulaCiudadania"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="10dp"
-                    android:drawSelectorOnTop="true"
-                    android:ems="20"
-                    android:inputType="textMultiLine"
-                    android:longClickable="true"
-                    android:scrollbars="vertical"
-                    android:text="Cédula de ciudadanía"
-                    android:textColor="@color/colorHeader"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:typeface="serif"
-                    app:autoSizeTextType="uniform" />
-
+                android:layout_marginTop="30dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
+                    android:layout_margin="8dp"
                     android:orientation="vertical">
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
-                        android:weightSum="3">
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        android:id="@+id/txtDesprendible"
+                        android:text="Desprendible de nómina"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
 
-                        <TextView
-                            android:id="@+id/txtCargue3"
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="20dp"
-                            android:drawSelectorOnTop="true"
-                            android:ems="20"
-                            android:inputType="textMultiLine"
-                            android:longClickable="true"
-                            android:paddingTop="5dp"
-                            android:scrollbars="vertical"
-                            android:text="Cargar Cara #1"
-                            android:textColor="@color/colorText"
-                            android:textSize="16dp"
-                            android:typeface="serif" />
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
                         <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:gravity="right"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
 
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup3"
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue5"
+                                android:text="Cargar Desprendible #1"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="16dp"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal" >
+
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue5"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView5"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginEnd="0dp"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:layout_below="@+id/btnCloseView5"/>
+
+                                <ImageButton
+                                    android:id="@+id/btnCloseView5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_close"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:onClick="onClickOptions"
+                                    android:layout_marginRight="15dp"
+                                    android:visibility="gone"/>
+                            </RelativeLayout>
                         </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/lyt_cargue3"
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView3"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_below="@+id/btnCloseView3"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginEnd="0dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:visibility="gone" />
-
-                            <ImageButton
-                                android:id="@+id/btnCloseView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:background="@drawable/ic_close"
-                                android:onClick="onClickOptions"
-                                android:visibility="gone" />
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
-                    android:orientation="vertical">
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/txtCargue4"
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="20dp"
-                            android:drawSelectorOnTop="true"
-                            android:ems="20"
-                            android:inputType="textMultiLine"
-                            android:longClickable="true"
-                            android:paddingTop="5dp"
-                            android:scrollbars="vertical"
-                            android:text="Cargar Cara #2"
-                            android:textColor="@color/colorText"
-                            android:textSize="16dp"
-                            android:typeface="serif" />
-
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
                         <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:gravity="right"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
 
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup4"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue6"
+                                android:text="Cargar Desprendible #2"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="16dp"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal" >
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue6"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
 
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView6"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginEnd="0dp"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:layout_below="@+id/btnCloseView6"/>
+                                <ImageButton
+                                    android:id="@+id/btnCloseView6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_close"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:onClick="onClickOptions"
+                                    android:visibility="gone"/>
+                            </RelativeLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/lyt_cargue4"
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
 
-                            <ImageView
-                                android:id="@+id/imageView4"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_below="@+id/btnCloseView4"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginEnd="0dp"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:visibility="gone" />
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue7"
+                                android:text="Cargar Desprendible #3"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="16dp"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
 
-                            <ImageButton
-                                android:id="@+id/btnCloseView4"
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal" >
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue7"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:background="@drawable/ic_close"
-                                android:onClick="onClickOptions"
-                                android:visibility="gone" />
-                        </RelativeLayout>
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView7"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginEnd="0dp"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:layout_below="@+id/btnCloseView7"/>
+
+                                <ImageButton
+                                    android:id="@+id/btnCloseView7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_close"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:onClick="onClickOptions"
+                                    android:visibility="gone"/>
+                            </RelativeLayout>
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue8"
+                                android:text="Cargar Desprendible #4"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="16dp"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal" >
+
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue8"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView8"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginEnd="0dp"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:layout_below="@+id/btnCloseView8"/>
+                                <ImageButton
+                                    android:id="@+id/btnCloseView8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_close"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:onClick="onClickOptions"
+                                    android:visibility="gone"/>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity= "left"
-                    android:drawSelectorOnTop="true"
-                    android:typeface="serif"
-                    android:layout_marginTop="10dp"
-                    android:inputType="textMultiLine"
-                    android:ems="20"
-                    android:id="@+id/txtDesprendible"
-                    android:text="Desprendible de nómina"
-                    android:longClickable="true"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="18dp"
-                    app:autoSizeTextType="uniform"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorHeader"
-                    android:scrollbars = "vertical"/>
-
+                android:layout_marginTop="30dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
+                    android:layout_margin="8dp"
                     android:orientation="vertical">
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp">
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:id="@+id/txtDatospersonales"
+                        android:text="Solicitud de tratamiento de datos"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
 
-                        <TextView
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:drawSelectorOnTop="true"
-                            android:typeface="serif"
-                            android:paddingTop="5dp"
-                            android:inputType="textMultiLine"
-                            android:layout_marginLeft="20dp"
-                            android:ems="20"
-                            android:id="@+id/txtCargue5"
-                            android:text="Cargar Desprendible #1"
-                            android:longClickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="16dp"
-                            android:textColor="@color/colorText"
-                            android:scrollbars = "vertical"/>
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
                         <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
 
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup5"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:paddingTop="5dp"
+                                android:id="@+id/txtCargueAutorizacion"
+                                android:text="Cargar autorización"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="16dp"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+
+                            <LinearLayout
+                                android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal" >
+
+                                <com.github.clans.fab.FloatingActionButton
+                                    android:id="@+id/btnPopup9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|right"
+                                    android:onClick="ShowDialog"
+                                    android:src="@drawable/ic_plus"
+                                    app:fab_colorNormal="#1986C0"
+                                    app:fab_colorPressed="#02A0E3"
+                                    app:fab_colorRipple="#99FFFFFF"
+                                    app:fab_label="Tomar Foto"
+                                    app:fab_size="mini" />
+                            </LinearLayout>
+
                         </LinearLayout>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue5"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView5"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_marginEnd="0dp"
-                                android:visibility="gone"
-                                android:layout_marginTop="0dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_below="@+id/btnCloseView5"/>
-
-                            <ImageButton
-                                android:id="@+id/btnCloseView5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/ic_close"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:onClick="onClickOptions"
-                                android:layout_marginRight="15dp"
-                                android:visibility="gone"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:drawSelectorOnTop="true"
-                            android:typeface="serif"
-                            android:paddingTop="5dp"
-                            android:inputType="textMultiLine"
-                            android:layout_marginLeft="20dp"
-                            android:ems="20"
-                            android:id="@+id/txtCargue6"
-                            android:text="Cargar Desprendible #2"
-                            android:longClickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="16dp"
-                            android:textColor="@color/colorText"
-                            android:scrollbars = "vertical"/>
-
                         <LinearLayout
+                            android:id="@+id/lyt_cargue9"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"
-                            android:orientation="horizontal" >
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup6"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
+                                android:layout_below="@+id/btn_capture">
+
+                                <ImageView
+                                    android:id="@+id/imageView9"
+                                    android:layout_width="350dp"
+                                    android:layout_height="400dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="false"
+                                    android:layout_marginEnd="0dp"
+                                    android:visibility="gone"
+                                    android:layout_marginTop="0dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginBottom="40dp"
+                                    android:layout_below="@+id/btnCloseView9"/>
+                                <ImageButton
+                                    android:id="@+id/btnCloseView9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/ic_close"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="15dp"
+                                    android:visibility="gone"/>
+                            </RelativeLayout>
                         </LinearLayout>
-
                     </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue6"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView6"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_marginEnd="0dp"
-                                android:visibility="gone"
-                                android:layout_marginTop="0dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_below="@+id/btnCloseView6"/>
-                            <ImageButton
-                                android:id="@+id/btnCloseView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/ic_close"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:onClick="onClickOptions"
-                                android:visibility="gone"/>
-                        </RelativeLayout>
-                    </LinearLayout>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:drawSelectorOnTop="true"
-                            android:typeface="serif"
-                            android:paddingTop="5dp"
-                            android:inputType="textMultiLine"
-                            android:layout_marginLeft="20dp"
-                            android:ems="20"
-                            android:id="@+id/txtCargue7"
-                            android:text="Cargar Desprendible #3"
-                            android:longClickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="16dp"
-                            android:textColor="@color/colorText"
-                            android:scrollbars = "vertical"/>
-
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"
-                            android:orientation="horizontal" >
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue7"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView7"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_marginEnd="0dp"
-                                android:visibility="gone"
-                                android:layout_marginTop="0dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_below="@+id/btnCloseView7"/>
-
-                            <ImageButton
-                                android:id="@+id/btnCloseView7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/ic_close"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:onClick="onClickOptions"
-                                android:visibility="gone"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:drawSelectorOnTop="true"
-                            android:typeface="serif"
-                            android:paddingTop="5dp"
-                            android:inputType="textMultiLine"
-                            android:layout_marginLeft="20dp"
-                            android:ems="20"
-                            android:id="@+id/txtCargue8"
-                            android:text="Cargar Desprendible #4"
-                            android:longClickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="16dp"
-                            android:textColor="@color/colorText"
-                            android:scrollbars = "vertical"/>
-
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"
-                            android:orientation="horizontal" >
-
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup8"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue8"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView8"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_marginEnd="0dp"
-                                android:visibility="gone"
-                                android:layout_marginTop="0dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_below="@+id/btnCloseView8"/>
-                            <ImageButton
-                                android:id="@+id/btnCloseView8"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/ic_close"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:onClick="onClickOptions"
-                                android:visibility="gone"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity= "left"
-                    android:drawSelectorOnTop="true"
-                    android:typeface="serif"
-                    android:layout_marginTop="10dp"
-                    android:inputType="textMultiLine"
-                    android:ems="20"
-                    app:autoSizeTextType="uniform"
-                    android:textStyle="bold"
-                    android:id="@+id/txtDatospersonales"
-                    android:text="Solicitud de tratamiento de datos"
-                    android:longClickable="true"
-                    android:layout_centerHorizontal="true"
-                    android:textSize="18dp"
-                    android:textColor="@color/colorHeader"
-                    android:scrollbars = "vertical"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/border_layout"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="5dp">
-
-                        <TextView
-                            android:layout_width="190dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:drawSelectorOnTop="true"
-                            android:typeface="serif"
-                            android:inputType="textMultiLine"
-                            android:layout_marginLeft="20dp"
-                            android:ems="20"
-                            android:paddingTop="5dp"
-                            android:id="@+id/txtCargueAutorizacion"
-                            android:text="Cargar autorización"
-                            android:longClickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:textSize="16dp"
-                            android:textColor="@color/colorText"
-                            android:scrollbars = "vertical"/>
-
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:layout_marginRight="10dp"
-                            android:orientation="horizontal" >
-
-                            <com.github.clans.fab.FloatingActionButton
-                                android:id="@+id/btnPopup9"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|right"
-                                android:onClick="ShowDialog"
-                                android:src="@drawable/ic_plus"
-                                app:fab_colorNormal="#1986C0"
-                                app:fab_colorPressed="#02A0E3"
-                                app:fab_colorRipple="#99FFFFFF"
-                                app:fab_label="Tomar Foto"
-                                app:fab_size="mini" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/lyt_cargue9"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:orientation="horizontal" />
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/btn_capture">
-
-                            <ImageView
-                                android:id="@+id/imageView9"
-                                android:layout_width="350dp"
-                                android:layout_height="400dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentBottom="false"
-                                android:layout_marginEnd="0dp"
-                                android:visibility="gone"
-                                android:layout_marginTop="0dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginRight="0dp"
-                                android:layout_marginBottom="40dp"
-                                android:layout_below="@+id/btnCloseView9"/>
-                            <ImageButton
-                                android:id="@+id/btnCloseView9"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/ic_close"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="15dp"
-                                android:visibility="gone"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
             <Button
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"
