@@ -1123,9 +1123,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             if(isSuccessSubjectCredit){
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
-                ApiResponse response = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito);
-                if(response.getCodigoRespuesta() != 200) {
-                    NotificacionErrorDatos(this.context, response.getMensaje());
+                boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
+                if(responseSaveFiles) {
+                    NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 }
                 else{
                     Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
@@ -1133,60 +1133,12 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 }
             }
             else {
-                NotificacionErrorDatos(this.context);
+                NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
             }
         }
         else {
-            NotificacionErrorDatos(this.context);
+            NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
         }
-
-        /*
-        ProcessCompletedPresenter presenter = new ProcessCompletedPresenter();
-        HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
-
-        if (model != null) {
-
-            try {
-                if(model.getCode().contains("200")){
-
-                    JSONObject objeto = (JSONObject) model.getData();
-                    setData(sharedPref, objeto);
-                    String codigoTransaccion = objeto.getString("codigoTransaccion");
-                    int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
-                    int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoContrato));
-                    int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
-                    int idPagaduria = Integer.parseInt(IdPagaduria);
-
-                    HttpResponse modelcreditSubject = presenter.PostInsertCreditSubject(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria,this.context);
-                    if (modelcreditSubject!=null){
-
-                        if(modelcreditSubject.getCode().contains("200")) {
-
-                            JSONObject objeto2 = (JSONObject) modelcreditSubject.getData();
-                            setData(sharedPref, objeto2);
-                            String idSujetoCredito = objeto2.getString("codigoTransaccion");
-                            idSujeroCredito = idSujetoCredito;
-                            isCreateUserAndSubject = true;
-                        }
-                        else{
-                            NotificacionErrorDatos(this.context);
-                        }
-                    }
-                }
-                else{
-                    NotificacionErrorDatos(this.context);
-                }
-            }
-            catch (JSONException ex)
-            {
-                System.out.println("Ha ocurrido un error! "+ex.getMessage());
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona "+persona.getCedula(),ex,this);
-            }
-        }
-        else{
-            NotificacionErrorDatos(this.context);
-        }
-        */
     }
 
     public void NotificacionErrorDatos(final Context view, String mensajeError){
@@ -1198,8 +1150,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        Intent intent = new Intent(view, ModuleActivity.class);
-                        startActivityForResult(intent, 0);
+                        //Intent intent = new Intent(view, ModuleActivity.class);
+                        //startActivityForResult(intent, 0);
                     }
                 });
 

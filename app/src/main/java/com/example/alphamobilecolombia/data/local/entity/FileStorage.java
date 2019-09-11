@@ -10,6 +10,8 @@ public class FileStorage extends RealmObject {
     private String NameType;
     private String Name;
     private boolean IsRequired;
+    private boolean IsUpload;
+    private String FilePath;
 
     public boolean isUpload() {
         return IsUpload;
@@ -19,8 +21,7 @@ public class FileStorage extends RealmObject {
         IsUpload = upload;
     }
 
-    private boolean IsUpload;
-    private String FilePath;
+
 
     public int getIdPerson() {
         return IdPerson;

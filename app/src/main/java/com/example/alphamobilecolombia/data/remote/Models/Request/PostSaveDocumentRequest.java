@@ -2,7 +2,7 @@ package com.example.alphamobilecolombia.data.remote.Models.Request;
 
 public class PostSaveDocumentRequest {
     private int sujetoCreditoID;
-    private String rutaArchivo;
+    //private String rutaArchivo;
     private int tipoArchivoID;
     private String tipoArchivoNombre;
     private int usuarioRegistroID;
@@ -42,13 +42,9 @@ public class PostSaveDocumentRequest {
         this.sujetoCreditoID = sujetoCreditoID;
     }
 
-    public String getRutaArchivo() {
-        return rutaArchivo;
-    }
+    //public String getRutaArchivo() {return rutaArchivo;}
 
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
-    }
+    //public void setRutaArchivo(String rutaArchivo) {this.rutaArchivo = rutaArchivo;}
 
     public int getTipoArchivoID() {
         return tipoArchivoID;

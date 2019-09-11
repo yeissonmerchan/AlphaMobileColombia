@@ -40,9 +40,11 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedP
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.configuration.IDevice;
+import com.example.alphamobilecolombia.utils.configuration.IFileStorageService;
 import com.example.alphamobilecolombia.utils.configuration.IParameterField;
 import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.configuration.implement.Device;
+import com.example.alphamobilecolombia.utils.configuration.implement.FileStorageService;
 import com.example.alphamobilecolombia.utils.configuration.implement.ParameterField;
 import com.example.alphamobilecolombia.utils.configuration.implement.SelectList;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
@@ -60,7 +62,7 @@ import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 public class DependencyInjectionContainer {
     //Start Presenters
     public IUploadFilesPresenter injectDIIUploadFilesPresenter(Context context){
-        return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),context);
+        return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),injectIFileStorageService(context),context);
     }
 
     public IModulePresenter injectDIIModulePresenter(Context context){
@@ -120,15 +122,17 @@ public class DependencyInjectionContainer {
         return new CloudStoreInstance(injectINotification(context), injectIRealmInstance(context),context);
     }
 
+    private IFileStorageService injectIFileStorageService(Context context){return new FileStorageService(injectIRealmInstance(context));}
+
     public ISelectList injectISelectList(Context context){return new SelectList(injectIRealmInstance(context));}
 
     public IParameterField injectIParameterField(Context context){return new ParameterField(injectIRealmInstance(context));}
 
     private IRetrofitInstance injectIRetrofitInstance(Context context){ return new RetrofitInstance(injectIAccessToken(context)); }
 
-    //private IProxyServiceAdapter injectIProxyServiceAdapter(Context context){return new ProxyServiceAdapter(injectIRealmInstance(context),injectIRetrofitInstance(context),injectIMapRequest(context),context); }
+    private IProxyServiceAdapter injectIProxyServiceAdapter(Context context){return new ProxyServiceAdapter(injectIRealmInstance(context),injectIRetrofitInstance(context),injectIMapRequest(context),context); }
 
-    //private IProxyService injectIProxyService(Context context) { return new ProxyService(injectIProxyServiceAdapter(context),injectIAccessToken(context));}
+    private IProxyService injectIProxyService(Context context) { return new ProxyService(injectIProxyServiceAdapter(context),injectIAccessToken(context));}
 
     private IMapRequest injectIMapRequest(Context context){ return new MapRequest(null); }
 
