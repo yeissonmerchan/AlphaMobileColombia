@@ -110,13 +110,16 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     String nameUriPath;
 
-    //Varible para identificar si el archivo viene de galeri
+    //Varible para identificar si el archivo viene de galeria
     private boolean fileGallery = false;
 
     //Variable para administrar bottom Dialog
-    LinearLayout tomarFotoLayout, vistaPreviaLayout, abrirGaleriaLayout;
-    BottomSheetDialog bottomSheetDialog;
+    private LinearLayout tomarFotoLayout, vistaPreviaLayout, abrirGaleriaLayout;
+    private BottomSheetDialog bottomSheetDialog;
     private View viewActivityActual;
+    private Dialog dialogPreviewFullScreen;
+    private ImageView imageViewFullScreen;
+    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;
 
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
@@ -140,6 +143,22 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
             bottomSheetDialog = new BottomSheetDialog(this);
             bottomSheetDialog.setContentView(view);
+
+            //Inicia full screen dialog
+            View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
+            imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
+            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+
+            dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+            dialogPreviewFullScreen.setContentView(viewFullScreen);
+
+            btnCloseFullScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogPreviewFullScreen.dismiss();
+                }
+            });
+
         }
     }
 
@@ -376,7 +395,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public void recuperarFotoCargada(View v) {
         try {
-            //idElement = getIdElementView(v);
             idElement = getByNameImage(v);
             boolean isExist = false;
             boolean isPhoto = false;
@@ -391,26 +409,22 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
 
             if(isExist) {
-                Matrix matrix = new Matrix();
-                matrix.postRotate(90);
-                Bitmap rotatedBitmap = null;
-                //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+                Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
                 if (isPhoto){
-                    Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-                    rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                    bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
                 }else {
                     try {
                         Uri imageUri = Uri.parse(path);
-                        Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
-                        rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-
-
-                getViewImage(v, rotatedBitmap, true);
+                imageViewFullScreen.setImageBitmap(bitmap1);
+                dialogPreviewFullScreen.show();
+            } else {
+                NotificacionErrorDatos(this.context, "No se ha cargado un archivo para previsualizar.");
             }
         }
         catch (Exception ex){
@@ -957,7 +971,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }*/
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        recuperarFotoCargada(view);
+        //recuperarFotoCargada(view);
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PHOTO_CODE:
