@@ -87,7 +87,6 @@ public class QueryCreditPresenter implements IQueryCreditPresenter {
             if (apiResponse.getCodigoRespuesta() == 200) {
                 String data = apiResponse.getData().toString();
                 JSONArray jsonObject = new JSONArray(data);
-
                 postQueryCredits = new Gson().fromJson(jsonObject.toString(), PostQueryCredit[].class);
             } else {
 

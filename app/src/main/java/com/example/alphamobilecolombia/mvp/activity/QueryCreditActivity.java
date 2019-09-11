@@ -147,15 +147,15 @@ public class QueryCreditActivity extends AppCompatActivity {
     }
 
     private void refreshData(String user, String typeQuery, String initDate, String endDate) {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, "3", "18", user, initDate, endDate);
-                myDialog.show();
-
                 QueryCreditActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        myDialog.show();
+                        PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, "3", "18", user, initDate, endDate);
                         configurerView(model);
                     }
                 });
@@ -174,7 +174,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         String title = "";
 
         Client client;
-        if (model != null) {
+        if (model != null && model.length > 0) {
             for (int j = 0; j < model.length; j++) {
                 List<PostQueryCredit> modelAux = new ArrayList<>();
                 title = String.format(" %s1 \n %s2 \n  %s3", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
