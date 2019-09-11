@@ -27,8 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Tomar Fotos"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"/>
+                    android:gravity="center"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,8 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Elegir de Galería"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"/>
+                    android:gravity="center"/>
     </LinearLayout>
 
 
@@ -71,8 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Vista Previa"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"/>
+                    android:gravity="center"/>
             </LinearLayout>
 
     </LinearLayout>
