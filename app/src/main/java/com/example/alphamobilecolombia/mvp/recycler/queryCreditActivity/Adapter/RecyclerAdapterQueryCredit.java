@@ -5,27 +5,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ObjectExpandible;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.ClientDescription;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.ViewHolder.ClientDescriptionViewHolder;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.ViewHolder.ClientViewHolder;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
-import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
-import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerAdapterQueryCredit extends ExpandableRecyclerViewAdapter <ClientViewHolder, ClientDescriptionViewHolder>  {
-    ArrayList<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
-    PostConsultarReporteCreditoResponse postConsultarReporteCreditoResponse;
-
 
     public RecyclerAdapterQueryCredit(List<? extends ExpandableGroup> groups) {
         super(groups);
     }
+
 
     @Override
     public ClientViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
@@ -41,9 +37,7 @@ public class RecyclerAdapterQueryCredit extends ExpandableRecyclerViewAdapter <C
 
     @Override
     public void onBindChildViewHolder(ClientDescriptionViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final ClientDescription clientDescription = (ClientDescription) group.getItems().get(childIndex);
-
-        postConsultarReporteCreditoResponse = listReporteCredito.get(childIndex);
+        final PostQueryCredit clientDescription = (PostQueryCredit) group.getItems().get(childIndex);
         holder.bind(clientDescription);
     }
 

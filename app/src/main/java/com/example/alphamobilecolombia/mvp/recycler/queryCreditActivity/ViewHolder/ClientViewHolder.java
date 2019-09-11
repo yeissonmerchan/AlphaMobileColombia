@@ -5,13 +5,15 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.alphamobilecolombia.R;
 
+import com.example.alphamobilecolombia.data.remote.Models.Response.ObjectExpandible;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 public class ClientViewHolder extends GroupViewHolder {
-    private TextView cedulaText,nombreText,numSolicitudText;
+    private TextView cedulaText;
     private ImageView arrow;
 
     public ClientViewHolder(View itemView) {
@@ -19,12 +21,10 @@ public class ClientViewHolder extends GroupViewHolder {
 
         arrow = itemView.findViewById(R.id.arrow);
         cedulaText = itemView.findViewById(R.id.cedulaText);
-        nombreText = itemView.findViewById(R.id.nombreText);
-        numSolicitudText = itemView.findViewById(R.id.numSolicitudText);
 
     }
 
-    public void bind(Client credit){
+    public void bind(Client credit) {
 
         cedulaText.setText(credit.getTitle());
     }

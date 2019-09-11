@@ -1,8 +1,14 @@
 package com.example.alphamobilecolombia.data.remote.Models.Response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class PostQueryCredit {
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
+public class PostQueryCredit implements Parcelable {
     @SerializedName("idSujeto")
     private String IdSubject;
 
@@ -11,6 +17,8 @@ public class PostQueryCredit {
 
     @SerializedName("estadoGeneral")
     private String GeneralState;
+
+
     private String regional;
     private String oficina;
     private String coordinador;
@@ -48,6 +56,107 @@ public class PostQueryCredit {
     private String estadoLibranza;
     private String observicionLlamadaCliente;
 
+    protected PostQueryCredit(Parcel in) {
+        IdSubject = in.readString();
+        IdCredit = in.readString();
+        GeneralState = in.readString();
+        regional = in.readString();
+        oficina = in.readString();
+        coordinador = in.readString();
+        asesor = in.readString();
+        pagaduria = in.readString();
+        documentoCliente = in.readString();
+        cliente = in.readString();
+        fechaEnvioPrevalidacion = in.readString();
+        montoSugerido = in.readString();
+        cuotaSug = in.readString();
+        plazoSugerido = in.readString();
+        fechaPrevalidacion = in.readString();
+        obsPrevalidacion = in.readString();
+        estadoPrevalidacion = in.readString();
+        observacionCredito = in.readString();
+        numeroSolicitud = in.readString();
+        numeroLibranza = in.readString();
+        fechaRadicacion = in.readString();
+        tipoCr = in.readString();
+        montoSolicitado = in.readString();
+        plazoSolicitado = in.readString();
+        montoAprobado = in.readString();
+        cuotaAprob = in.readString();
+        plazoAprob = in.readString();
+        obsPreaprobacion = in.readString();
+        fechaAprobacionCredito = in.readString();
+        obsAprobacion = in.readString();
+        estado = in.readString();
+        fabrica = in.readString();
+        idAsesor = in.readString();
+        fechaDesembolso = in.readString();
+        idCoordinador = in.readString();
+        idRegional = in.readString();
+        idOficina = in.readString();
+        estadoLibranza = in.readString();
+        observicionLlamadaCliente = in.readString();
+    }
+
+    public static final Creator<PostQueryCredit> CREATOR = new Creator<PostQueryCredit>() {
+        @Override
+        public PostQueryCredit createFromParcel(Parcel in) {
+            return new PostQueryCredit(in);
+        }
+
+        @Override
+        public PostQueryCredit[] newArray(int size) {
+            return new PostQueryCredit[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(IdSubject);
+        parcel.writeString(IdCredit);
+        parcel.writeString(GeneralState);
+        parcel.writeString(regional);
+        parcel.writeString(oficina);
+        parcel.writeString(coordinador);
+        parcel.writeString(asesor);
+        parcel.writeString(pagaduria);
+        parcel.writeString(documentoCliente);
+        parcel.writeString(cliente);
+        parcel.writeString(fechaEnvioPrevalidacion);
+        parcel.writeString(montoSugerido);
+        parcel.writeString(cuotaSug);
+        parcel.writeString(plazoSugerido);
+        parcel.writeString(fechaPrevalidacion);
+        parcel.writeString(obsPrevalidacion);
+        parcel.writeString(estadoPrevalidacion);
+        parcel.writeString(observacionCredito);
+        parcel.writeString(numeroSolicitud);
+        parcel.writeString(numeroLibranza);
+        parcel.writeString(fechaRadicacion);
+        parcel.writeString(tipoCr);
+        parcel.writeString(montoSolicitado);
+        parcel.writeString(plazoSolicitado);
+        parcel.writeString(montoAprobado);
+        parcel.writeString(cuotaAprob);
+        parcel.writeString(plazoAprob);
+        parcel.writeString(obsPreaprobacion);
+        parcel.writeString(fechaAprobacionCredito);
+        parcel.writeString(obsAprobacion);
+        parcel.writeString(estado);
+        parcel.writeString(fabrica);
+        parcel.writeString(idAsesor);
+        parcel.writeString(fechaDesembolso);
+        parcel.writeString(idCoordinador);
+        parcel.writeString(idRegional);
+        parcel.writeString(idOficina);
+        parcel.writeString(estadoLibranza);
+        parcel.writeString(observicionLlamadaCliente);
+    }
 
     public String getIdSubject() {
         return IdSubject;
@@ -359,5 +468,9 @@ public class PostQueryCredit {
 
     public void setObservicionLlamadaCliente(String observicionLlamadaCliente) {
         this.observicionLlamadaCliente = observicionLlamadaCliente;
+    }
+
+    public static Creator<PostQueryCredit> getCREATOR() {
+        return CREATOR;
     }
 }

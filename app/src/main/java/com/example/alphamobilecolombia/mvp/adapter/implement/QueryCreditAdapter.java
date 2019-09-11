@@ -22,31 +22,31 @@ public class QueryCreditAdapter implements IQueryCreditAdapter {
     IMapRequest _iMapRequest;
     Context _context;
 
-    public QueryCreditAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, Context context){
+    public QueryCreditAdapter(IRetrofitInstance iRetrofitInstance, IMapRequest iMapRequest, Context context) {
         _iRetrofitInstance = iRetrofitInstance;
         _iMapRequest = iMapRequest;
         _context = context;
     }
 
-    public ApiResponse Post(String idUser, String initDate, String endDate){
+    public ApiResponse Post(String typeQuery, String pValor, String pRol, String idUser, String initDate, String endDate) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic), _context);//Obtener Ip a partir de configuración
         PostSolicitudes service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSolicitudes.class);
 
         Gson gson = new Gson();
-        String data = gson.toJson(new PostConsultarReporteCreditoRequest("6","3","18",idUser,initDate,endDate));
-        RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
+        String data = gson.toJson(new PostConsultarReporteCreditoRequest(typeQuery, pValor, pRol, idUser, initDate, endDate));
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), data);
 
         Call<String> call = service.GetListSolicitudes(body);
         return _iMapRequest.SynchronousRequest(call);
     }
 
-    public Call<String> PostAsync(String idUser){
-        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication),_context);//Obtener Ip a partir de configuración
+    public Call<String> PostAsync(String idUser) {
+        String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_authentication), _context);//Obtener Ip a partir de configuración
         Gson gson = new Gson();
-        String data = gson.toJson(new PostConsultarReporteCreditoRequest("6","3","18",idUser,"2019-07-02","2019-07-02"));
-        RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
+        String data = gson.toJson(new PostConsultarReporteCreditoRequest("6", "3", "18", idUser, "2019-07-02", "2019-07-02"));
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), data);
 
         PostSolicitudes service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSolicitudes.class);
         Call<String> call = service.GetListSolicitudes(body);

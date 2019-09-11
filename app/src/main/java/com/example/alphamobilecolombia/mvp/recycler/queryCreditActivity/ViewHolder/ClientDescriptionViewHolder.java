@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.ClientDescription;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
@@ -33,15 +34,15 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
         observacionCreditoText = itemView.findViewById(R.id.observacionCreditoText);
     }
 
-    public void bind(ClientDescription creditDescription){
-        estadoText.setText(creditDescription.estadoText);
-        pagaduriaText.setText(creditDescription.pagaduriaText);
-        fechaEnvioPrevaText.setText(creditDescription.fechaEnvioPrevaText);
-        montoSugeridoText.setText(creditDescription.montoSugeridoText);
-        cuotaSugText.setText(creditDescription.cuotaSugText);
-        plazoSugeridoText.setText(creditDescription.plazoSugeridoText);
-        fechaPrevalidacionText.setText(creditDescription.fechaPrevalidacionText);
-        observacionPrevaText.setText(creditDescription.observacionPrevaText);
-        observacionCreditoText.setText(creditDescription.observacionCreditoText);
+    public void bind(PostQueryCredit creditDescription) {
+        estadoText.setText( creditDescription.getGeneralState());
+        pagaduriaText.setText( creditDescription.getPagaduria());
+        fechaEnvioPrevaText.setText( creditDescription.getFechaEnvioPrevalidacion());
+        montoSugeridoText.setText( creditDescription.getMontoSugerido());
+        cuotaSugText.setText( creditDescription.getCuotaSug());
+        plazoSugeridoText.setText( creditDescription.getPlazoSugerido());
+        fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
+        observacionPrevaText.setText( creditDescription.getObsPrevalidacion());
+        observacionCreditoText.setText( creditDescription.getObservacionCredito());
     }
 }

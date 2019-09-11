@@ -360,7 +360,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 if(accion){
 
                     try{
-
                         AlertDialog.Builder Alert = new AlertDialog.Builder(this);
                         Alert.setTitle("IMPORTANTE");
                         Alert.setMessage(object.getString("mensaje"));
