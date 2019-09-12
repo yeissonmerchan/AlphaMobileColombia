@@ -1100,6 +1100,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //int tipoContratoId = _iSelectList.GetValueByIdField(tipoContrato);
 
             String tipoCliente = _iParameterField.GetValueByIdField("spinner_tipo_cliente");
+            if (tipoCliente == null)
+                tipoCliente = "2";
             //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
 
             persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));

@@ -349,12 +349,19 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     //Fecha de Ingreso
                     txtfecha_ingreso.setVisibility(View.VISIBLE);
                     textview_fecha_ingreso.setVisibility(View.VISIBLE);
-
+                    search_tipo_contrato.setQuery("", false);
                     //Fecha de Finalización del Contrato
 /*                    txtfecha_finalizacion_contrato.setVisibility(View.VISIBLE);
                     textview_fecha_finalizacion_contrato.setVisibility(View.VISIBLE);*/
 
                 } else {
+                    ListaTipoContrato.clear();
+
+                    ListaTipoContrato.add("PENSIONADO");
+                    adapter = new ListViewAdapter(this, ListaTipoContrato);
+
+                    listview_tipo_contrato.setAdapter(adapter);
+                    search_tipo_contrato.setQuery("", false);
 
 /*                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
                     spinner_tipo_contrato.setAdapter(adapter2);*/

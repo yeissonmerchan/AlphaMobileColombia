@@ -41,8 +41,8 @@ public class BrandingActivity extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
 
-        Intent startServiceIntent = new Intent(BrandingActivity.this, FileStorageService.class);
-        startService(startServiceIntent);
+        //Intent startServiceIntent = new Intent(BrandingActivity.this, FileStorageService.class);
+        //startService(startServiceIntent);
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
