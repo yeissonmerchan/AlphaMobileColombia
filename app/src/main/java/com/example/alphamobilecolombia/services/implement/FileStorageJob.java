@@ -27,14 +27,15 @@ public class FileStorageJob {
 
         if (fileStorages != null) {
             for (FileStorage file : fileStorages) {
-                if (!listSubjectCredit.contains(file.getIdCreditSubject())) {
+                if (!listSubjectCredit.contains(String.valueOf(file.getIdCreditSubject()))) {
                     listSubjectCredit.add(String.valueOf(file.getIdCreditSubject()));
                 }
             }
 
             if(listSubjectCredit != null){
                 for (String creditSubject : listSubjectCredit) {
-                    SendFile(creditSubject);
+                    if(!creditSubject.equals("0"))
+                        SendFile(creditSubject);
                 }
             }
         }
@@ -47,7 +48,10 @@ public class FileStorageJob {
             List<FileStorage> fileStoragesForCreditSubject = _iFileStorageService.GetListForCreditSubject(Integer.parseInt(creditSubject));
             for (FileStorage itemFile : fileStoragesForCreditSubject) {
                 documentNumber = itemFile.getDocumentNumber();
-                if (itemFile.isUpload()) {
+                File newFile = new File(itemFile.getIdTypeFile(),itemFile.getName(),itemFile.isRequired(),itemFile.getNameType(),itemFile.isUpload(),itemFile.getFilePath(),true);
+                listUpload.add(newFile);
+
+                if (!itemFile.isUpload()) {
                     boolean isValidSend = _iUploadFilesPresenter.SendFileList(listUpload, creditSubject, itemFile.getFilePath());
                     if (isValidSend) {
                         itemFile.setUpload(true);

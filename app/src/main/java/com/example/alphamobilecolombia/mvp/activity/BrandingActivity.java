@@ -8,6 +8,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
 import com.example.alphamobilecolombia.services.FileStorageService;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.security.IAccessToken;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;

@@ -51,7 +51,7 @@ public class FileStorageService implements IFileStorageService {
     public List<FileStorage> GetListForCreditSubject(int idSubjectCredit){
         List<FileStorage> returnValue = new ArrayList<>();
         try {
-            returnValue = _iRealmInstance.GetAllByAttribute(new FileStorage(),"IdCreditSubject", String.valueOf(idSubjectCredit));
+            returnValue = _iRealmInstance.GetAllByAttribute(new FileStorage(),"IdCreditSubject", idSubjectCredit);
         }
         catch (Exception ex){
             ex.printStackTrace();

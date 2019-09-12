@@ -152,6 +152,6 @@ public class DependencyInjectionContainer {
 
     private IRealmInstance injectIRealmInstance(Context context){return new RealmInstance(context,injectIRSA(context)); }
 
-    private IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
+    public IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
     //End Configurations
 }

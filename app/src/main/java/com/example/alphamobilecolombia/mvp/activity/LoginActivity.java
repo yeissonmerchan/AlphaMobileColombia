@@ -31,6 +31,7 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.example.alphamobilecolombia.utils.security.IAccessToken;
 import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -48,8 +49,10 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     ILoginPresenter _iLoginPresenter;
+    IAccessToken _iAccessToken;
 
     public LoginActivity(){
+        _iAccessToken = diContainer.injectIAccessToken(this);
         _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
     }
 
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         initView();
         validator = new Validator(this);
         validator.setValidationListener(this);
-
+        _iAccessToken.CleanToken();
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
