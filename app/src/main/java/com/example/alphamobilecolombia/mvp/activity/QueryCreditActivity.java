@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -68,6 +69,7 @@ public class QueryCreditActivity extends AppCompatActivity {
 
     Dialog myDialog;
     RealmStorage storage = new RealmStorage();
+    private TabLayout tabFilters;
     //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
 
     @Override
@@ -93,7 +95,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         user = "1";
         typeQuery = "4";
 
-        final TabLayout tabFilters = (TabLayout) findViewById(R.id.tabFilters);
+        tabFilters = (TabLayout) findViewById(R.id.tabFilters);
         tabFilters.addTab(tabFilters.newTab().setText("3 DÍAS"));
         tabFilters.addTab(tabFilters.newTab().setText("2 SEMANAS"));
         tabFilters.addTab(tabFilters.newTab().setText("MÁS DE 2 SEMANAS"));
@@ -155,8 +157,8 @@ public class QueryCreditActivity extends AppCompatActivity {
                         pValor = searchEditext.getText().toString();
                         refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
                     } else {
-                        Toast toast1 = Toast.makeText(getApplicationContext(), "Por favor digite un número de cédula válido", Toast.LENGTH_LONG);
-                        toast1.show();
+                        //Toast toast1 = Toast.makeText(getApplicationContext(), "Por favor digite un número de cédula válido", Toast.LENGTH_LONG);
+                        //toast1.show();
                     }
                     return true;
                 }
@@ -172,6 +174,8 @@ public class QueryCreditActivity extends AppCompatActivity {
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     //detecta la tecla de borrar en el teclado
                     if (searchEditext.getText().length() == 0) {
+                        tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGray),
+                               getResources().getColor(R.color.colorBlack));
                         typeQuery = "4";
                         LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
                         for (int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -187,6 +191,8 @@ public class QueryCreditActivity extends AppCompatActivity {
                     typeQuery = "2";
                     LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
                     for (int i = 0; i < tabStrip.getChildCount(); i++) {
+                        tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGrayLight),
+                                getResources().getColor(R.color.ColorGrayLight));
                         tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
