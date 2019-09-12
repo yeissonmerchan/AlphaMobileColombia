@@ -81,6 +81,28 @@ public class RealmInstance implements IRealmInstance {
         return isSuccess;
     }
 
+    public <T> boolean Update(T realmObject){
+        boolean isSuccess = false;
+        try {
+            Realm.init(_context);
+
+            Realm realm = Realm.getDefaultInstance();
+
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate((RealmObject)realmObject);
+            realm.commitTransaction();
+
+            realm.close();
+
+            isSuccess = true;
+        }
+        catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,_context);
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+
     public <T> List<T> GetAll(RealmObject object){
         try {
             Realm.init(_context);
@@ -151,12 +173,32 @@ public class RealmInstance implements IRealmInstance {
             Realm.init(_context);
             Realm realm = Realm.getDefaultInstance();
             Class classObject = object.getClass();
-            final RealmResults<T> findPerson = realm.where(classObject).findAll();
+            RealmResults<T> findPerson = realm.where(classObject).findAll();
             realm.beginTransaction();
             realm.delete(classObject);
             if (null != findPerson && findPerson.size() > 0) {
                 findPerson.deleteAllFromRealm();
             }
+            realm.commitTransaction();
+            isSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminar persona ",ex,_context);
+            ex.printStackTrace();
+        }
+        return isSuccess;
+    }
+
+    public <T> boolean DeleteByKey(RealmObject object, String key, String value){
+        boolean isSuccess = false;
+        try {
+            Realm.init(_context);
+            Realm realm = Realm.getDefaultInstance();
+            Class classObject = object.getClass();
+            RealmResults<T> rowsDeleted = realm.where(classObject).equalTo(key, value).findAll();
+            realm.beginTransaction();
+            rowsDeleted.deleteAllFromRealm();
             realm.commitTransaction();
             isSuccess = true;
         }

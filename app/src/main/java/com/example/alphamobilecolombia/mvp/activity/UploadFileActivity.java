@@ -24,6 +24,7 @@ import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
@@ -37,6 +38,8 @@ import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -47,6 +50,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -72,7 +76,7 @@ import id.zelory.compressor.Compressor;
 import io.realm.RealmObject;
 
 
-public class UploadFileActivity extends AppCompatActivity {
+public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener {
     List<com.example.alphamobilecolombia.mvp.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.mvp.models.File>();
     RealmStorage storage = new RealmStorage();
     View view;
@@ -106,12 +110,56 @@ public class UploadFileActivity extends AppCompatActivity {
 
     String nameUriPath;
 
+    //Varible para identificar si el archivo viene de galeria
+    private boolean fileGallery = false;
+
+    //Variable para administrar bottom Dialog
+    private LinearLayout tomarFotoLayout, vistaPreviaLayout, abrirGaleriaLayout;
+    private BottomSheetDialog bottomSheetDialog;
+    private View viewActivityActual;
+    private Dialog dialogPreviewFullScreen;
+    private ImageView imageViewFullScreen;
+    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;
+
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
         _iPersonPresenter = diContainer.injectDIIPersonPresenter(this);
         _iParameterField = diContainer.injectIParameterField(this);
         _iSelectList = diContainer.injectISelectList(this);
+    }
+
+    private void CreateBottomSheetDialog() {
+        if(bottomSheetDialog == null) {
+            View view = LayoutInflater.from(this).inflate(R.layout.option_upload_file_dialog, null);
+            tomarFotoLayout = view.findViewById(R.id.tomarFoto);
+            vistaPreviaLayout = view.findViewById(R.id.vistaPrevia);
+            abrirGaleriaLayout = view.findViewById(R.id.abrirGaleria);
+
+            //Evento Click
+            tomarFotoLayout.setOnClickListener(this);
+            vistaPreviaLayout.setOnClickListener(this);
+            abrirGaleriaLayout.setOnClickListener(this);
+
+            bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(view);
+
+            //Inicia full screen dialog
+            View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
+            imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
+            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+
+            dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+            dialogPreviewFullScreen.setContentView(viewFullScreen);
+
+            btnCloseFullScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogPreviewFullScreen.dismiss();
+                }
+            });
+
+        }
     }
 
     @Override
@@ -134,7 +182,7 @@ public class UploadFileActivity extends AppCompatActivity {
         isCreateUserAndSubject = false;
 
         cleanInitImages();
-
+        CreateBottomSheetDialog();
         /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
@@ -302,8 +350,8 @@ public class UploadFileActivity extends AppCompatActivity {
 
     // Method Permission Camera
 
-    private void checkPermissionCamera(View v) {
-
+    public void checkPermissionCamera(View v) {
+        idElement = getByNameImage(v);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             tomarFoto(v);
         } else {
@@ -334,6 +382,7 @@ public class UploadFileActivity extends AppCompatActivity {
     }
 
 
+
     public static class ExistFile{
         public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;
@@ -346,7 +395,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
     public void recuperarFotoCargada(View v) {
         try {
-            //idElement = getIdElementView(v);
+            idElement = getByNameImage(v);
             boolean isExist = false;
             boolean isPhoto = false;
             String path = "";
@@ -360,26 +409,22 @@ public class UploadFileActivity extends AppCompatActivity {
             }
 
             if(isExist) {
-                Matrix matrix = new Matrix();
-                matrix.postRotate(90);
-                Bitmap rotatedBitmap = null;
-                //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+                Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
                 if (isPhoto){
-                    Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-                    rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                    bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
                 }else {
                     try {
                         Uri imageUri = Uri.parse(path);
-                        Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
-                        rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-
-
-                getViewImage(v, rotatedBitmap, true);
+                imageViewFullScreen.setImageBitmap(bitmap1);
+                dialogPreviewFullScreen.show();
+            } else {
+                NotificacionErrorDatos(this.context, "No se ha cargado un archivo para previsualizar.");
             }
         }
         catch (Exception ex){
@@ -390,9 +435,10 @@ public class UploadFileActivity extends AppCompatActivity {
 
     public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
-            //showLoading(v);
-            //idElement = getIdElementView(v);
-            String pathFileLocal = getExternalFilesDir(null)+"/"+getNameFile(v);
+            String pathFileLocal = getExternalFilesDir(null) + "/" + getNameFile(v);
+            if (fileGallery) {
+                pathFileLocal = path;
+            }
 
             java.io.File fileLocal = new java.io.File(pathFileLocal);
             int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length()/1024));
@@ -436,32 +482,6 @@ public class UploadFileActivity extends AppCompatActivity {
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
 
             getViewImage(v,rotatedBitmap,isfetch);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
-        }
-    }
-
-    public void recuperarImagenGaleria(View v, boolean isfetch, String path) {
-        try {
-            Bitmap bitmap = null;
-            try {
-                Uri imageUri = Uri.parse(path);
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(), bitmap.getHeight(), true);
-                getViewImage(v,bitmap,isfetch);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            /*Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);*/
-
-            //getViewImage(v,rotatedBitmap,isfetch);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -951,7 +971,7 @@ public class UploadFileActivity extends AppCompatActivity {
     }*/
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        recuperarFotoCargada(view);
+        //recuperarFotoCargada(view);
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PHOTO_CODE:
@@ -987,27 +1007,20 @@ public class UploadFileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         boolean isExist = false;
+                        fileGallery = false;
 
                         for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                             if(file.getType().equals(nameFile)) {
-                                isExist = true;
+                                listUpload.remove(file);
+                                break;
                             }
                         }
-
-                        if (!isExist){
-                            fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
-                            listUpload.add(fileUpload);
+                        fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
+                        listUpload.add(fileUpload);
+                        if(!isPhoto){
+                            fileGallery = true;
                         }
-
-                        //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
-                        //loadinAsyncTask.execute();
-                        //uploadFilesPresenter.uploadFiles(pathFile,this);
-                        if(isPhoto){
-                            recuperarImagen(view,false,path);
-                        }else {
-                            recuperarImagenGaleria(view,false,path);
-                        }
-
+                        recuperarImagen(view,false,path);
                         changeStatusUpload(true);
                     }
                 });
@@ -1124,64 +1137,41 @@ public class UploadFileActivity extends AppCompatActivity {
             if(isSuccessSubjectCredit){
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
-                Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
-                startActivity(intent);
+                boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
+                if(responseSaveFiles) {
+                    NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
+                }
+                else{
+                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                    startActivity(intent);
+                }
             }
             else {
-                NotificacionErrorDatos(this.context);
+                NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
             }
         }
         else {
-            NotificacionErrorDatos(this.context);
+            NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
         }
+    }
 
-        /*
-        ProcessCompletedPresenter presenter = new ProcessCompletedPresenter();
-        HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
-
-        if (model != null) {
-
-            try {
-                if(model.getCode().contains("200")){
-
-                    JSONObject objeto = (JSONObject) model.getData();
-                    setData(sharedPref, objeto);
-                    String codigoTransaccion = objeto.getString("codigoTransaccion");
-                    int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
-                    int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoContrato));
-                    int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
-                    int idPagaduria = Integer.parseInt(IdPagaduria);
-
-                    HttpResponse modelcreditSubject = presenter.PostInsertCreditSubject(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria,this.context);
-                    if (modelcreditSubject!=null){
-
-                        if(modelcreditSubject.getCode().contains("200")) {
-
-                            JSONObject objeto2 = (JSONObject) modelcreditSubject.getData();
-                            setData(sharedPref, objeto2);
-                            String idSujetoCredito = objeto2.getString("codigoTransaccion");
-                            idSujeroCredito = idSujetoCredito;
-                            isCreateUserAndSubject = true;
-                        }
-                        else{
-                            NotificacionErrorDatos(this.context);
-                        }
+    public void NotificacionErrorDatos(final Context view, String mensajeError){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
+        builder1.setMessage(mensajeError);
+        builder1.setCancelable(false);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        //Intent intent = new Intent(view, ModuleActivity.class);
+                        //startActivityForResult(intent, 0);
                     }
-                }
-                else{
-                    NotificacionErrorDatos(this.context);
-                }
-            }
-            catch (JSONException ex)
-            {
-                System.out.println("Ha ocurrido un error! "+ex.getMessage());
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona "+persona.getCedula(),ex,this);
-            }
-        }
-        else{
-            NotificacionErrorDatos(this.context);
-        }
-        */
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
+        alert11.show();
     }
 
     public void NotificacionErrorDatos(final Context view){
@@ -1249,7 +1239,7 @@ public class UploadFileActivity extends AppCompatActivity {
     public String getByNameImage(View v){
         String id = "";
         switch (v.getId()) {
-            case R.id.btnPopup1:
+            case R.id.DocPrevalidacion:
                 id = "CargueDocumentosPreValidación";
                 break;
             /*case R.id.btnPopup2:
@@ -1388,8 +1378,9 @@ public class UploadFileActivity extends AppCompatActivity {
     }
 
     //OpenGallery
-    private void checkPermissionGallery(View view) {
+    public void checkPermissionGallery(View view) {
         this.view = view;
+        idElement = getByNameImage(view);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery(view);
         } else {
@@ -1417,5 +1408,27 @@ public class UploadFileActivity extends AppCompatActivity {
         java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
+    }
+
+    public void ShowDialog(View view) {
+        viewActivityActual = view;
+        idElement = getByNameImage(view);
+        bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch ( view.getId()){
+            case R.id.tomarFoto:
+                checkPermissionCamera(viewActivityActual);
+                break;
+            case R.id.vistaPrevia:
+                recuperarFotoCargada(viewActivityActual);
+                break;
+            case R.id.abrirGaleria:
+                checkPermissionGallery(viewActivityActual);
+                break;
+        }
+        bottomSheetDialog.cancel();
     }
 }

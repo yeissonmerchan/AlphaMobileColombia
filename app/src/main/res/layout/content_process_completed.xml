@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="80dp"
+    android:layout_marginTop="30dp"
+    android:layout_gravity="center"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mvp.activity.ProcessCompletedActivity"
     tools:showIn="@layout/activity_process_completed">
@@ -13,49 +14,34 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:orientation="vertical">
+            android:paddingRight="30dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "center"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="80dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
+                android:src="@mipmap/tigre3" />
+            <TextView
                 android:id="@+id/txttitle"
-                android:textAlignment="center"
-                android:text="@string/title_activity_process_completed"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="@dimen/size_subtitle"
-                android:textColor="@color/colorHeaderBack"
-                android:scrollbars = "vertical"/>
-
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "center"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="60dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtUser"
-                android:textAlignment="center"
-                android:text="@string/info_activity_final"
-                android:longClickable="true"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="@string/title_activity_process_completed"
+                android:textAlignment="center"
+                android:textColor="@color/colorHeaderBack"
                 android:textSize="@dimen/size_subtitle"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
+                android:typeface="serif" />
 
 
             <Button
@@ -66,15 +52,14 @@
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorHeader"
-                android:text="Finalizar"
                 android:onClick="onClickBtnUpdFiles"
+                android:text="Finalizar"
                 android:textColor="@color/colorSubtext"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edt_password"
                 app:layout_constraintVertical_bias="0.2" />
-
 
 
         </LinearLayout>
