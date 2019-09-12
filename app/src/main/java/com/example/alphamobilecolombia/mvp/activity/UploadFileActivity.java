@@ -180,8 +180,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         isCreateUserAndSubject = false;
-
-        cleanInitImages();
         CreateBottomSheetDialog();
         /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
@@ -201,15 +199,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String value = busqueda.getValue();*/
 
         // View PopupMenu
-        btnCloseView1 = (ImageButton) findViewById(R.id.btnCloseView1);
-        //btnCloseView2 = (ImageButton) findViewById(R.id.btnCloseView2);
-        btnCloseView3 = (ImageButton) findViewById(R.id.btnCloseView3);
-        btnCloseView4 = (ImageButton) findViewById(R.id.btnCloseView4);
-        btnCloseView5 = (ImageButton) findViewById(R.id.btnCloseView5);
-        btnCloseView6 = (ImageButton) findViewById(R.id.btnCloseView6);
-        btnCloseView7 = (ImageButton) findViewById(R.id.btnCloseView7);
-        btnCloseView8 = (ImageButton) findViewById(R.id.btnCloseView8);
-        btnCloseView9 = (ImageButton) findViewById(R.id.btnCloseView9);
     }
 
 
@@ -480,8 +469,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
             Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
-
-            getViewImage(v,rotatedBitmap,isfetch);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -660,204 +647,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    public void cleanInitImages(){
-        ImageView imagen1 = findViewById(R.id.imageView1);
-        imagen1.setImageBitmap(null);
-
-        //ImageView imagen2 = findViewById(R.id.imageView2);
-        //imagen2.setImageBitmap(null);
-
-        ImageView imagen3 = findViewById(R.id.imageView3);
-        imagen3.setImageBitmap(null);
-
-        ImageView imagen4 = findViewById(R.id.imageView4);
-        imagen4.setImageBitmap(null);
-
-        ImageView imagen5 = findViewById(R.id.imageView5);
-        imagen5.setImageBitmap(null);
-
-        ImageView imagen6 = findViewById(R.id.imageView6);
-        imagen6.setImageBitmap(null);
-
-        ImageView imagen7 = findViewById(R.id.imageView7);
-        imagen7.setImageBitmap(null);
-
-        ImageView imagen8 = findViewById(R.id.imageView8);
-        imagen8.setImageBitmap(null);
-
-        ImageView imagen9 = findViewById(R.id.imageView9);
-        imagen9.setImageBitmap(null);
-    }
-
-    public void getViewImage(View v, Bitmap bitmap, boolean isFetch){
-        int idButton = v.getId();
-        if (isFetch)
-        {
-            idButton = getIdViewImage(idElement);
-
-            /*ImageView imagen1 = findViewById(R.id.imageView);
-            if(imagen1.getVisibility() == View.GONE && isFetch){
-                imagen1.setImageBitmap(bitmap);
-                imagen1.setVisibility(View.VISIBLE);
-            }
-            else if(imagen1.getVisibility() == View.VISIBLE){
-                imagen1.setImageBitmap(null);
-                imagen1.setVisibility(View.GONE);
-            }*/
-            switch (idButton) {
-                case R.id.imageView1:
-                    ImageView imagen1 = findViewById(R.id.imageView1);
-                    if(imagen1.getVisibility() == View.GONE && isFetch){
-                        imagen1.setImageBitmap(bitmap);
-                        imagen1.setVisibility(View.VISIBLE);
-                        btnCloseView1.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen1.getVisibility() == View.VISIBLE){
-                        imagen1.setImageBitmap(null);
-                        imagen1.setVisibility(View.GONE);
-                        btnCloseView1.setVisibility(View.GONE);
-                    }
-                    break;
-               /* case R.id.imageView2:
-                    ImageView imagen2 = findViewById(R.id.imageView2);
-                    if(imagen2.getVisibility() == View.GONE && isFetch){
-                        imagen2.setImageBitmap(bitmap);
-                        imagen2.setVisibility(View.VISIBLE);
-                        btnCloseView2.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen2.getVisibility() == View.VISIBLE){
-                        imagen2.setImageBitmap(null);
-                        imagen2.setVisibility(View.GONE);
-                    }
-                    break;*/
-                case R.id.imageView3:
-                    ImageView imagen3 = findViewById(R.id.imageView3);
-                    if(imagen3.getVisibility() == View.GONE && isFetch){
-                        imagen3.setImageBitmap(bitmap);
-                        imagen3.setVisibility(View.VISIBLE);
-                        btnCloseView3.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen3.getVisibility() == View.VISIBLE){
-                        imagen3.setImageBitmap(null);
-                        imagen3.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView4:
-                    ImageView imagen4 = findViewById(R.id.imageView4);
-                    if(imagen4.getVisibility() == View.GONE && isFetch){
-                        imagen4.setImageBitmap(bitmap);
-                        imagen4.setVisibility(View.VISIBLE);
-                        btnCloseView4.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen4.getVisibility() == View.VISIBLE){
-                        imagen4.setImageBitmap(null);
-                        imagen4.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView5:
-                    ImageView imagen5 = findViewById(R.id.imageView5);
-                    if(imagen5.getVisibility() == View.GONE && isFetch){
-                        imagen5.setImageBitmap(bitmap);
-                        imagen5.setVisibility(View.VISIBLE);
-                        btnCloseView5.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen5.getVisibility() == View.VISIBLE){
-                        imagen5.setImageBitmap(null);
-                        imagen5.setVisibility(View.GONE);
-                    }
-                    break;
-                case R.id.imageView6:
-                    ImageView imagen6 = findViewById(R.id.imageView6);
-                    if(imagen6.getVisibility() == View.GONE && isFetch){
-                        imagen6.setImageBitmap(bitmap);
-                        imagen6.setVisibility(View.VISIBLE);
-                        btnCloseView6.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen6.getVisibility() == View.VISIBLE){
-                        imagen6.setImageBitmap(null);
-                        imagen6.setVisibility(View.GONE);
-                    }
-                    break;
-                case R.id.imageView7:
-                    ImageView imagen7 = findViewById(R.id.imageView7);
-                    if(imagen7.getVisibility() == View.GONE && isFetch){
-                        imagen7.setImageBitmap(bitmap);
-                        imagen7.setVisibility(View.VISIBLE);
-                        btnCloseView7.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen7.getVisibility() == View.VISIBLE){
-                        imagen7.setImageBitmap(null);
-                        imagen7.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView8:
-                    ImageView imagen8 = findViewById(R.id.imageView8);
-                    if(imagen8.getVisibility() == View.GONE && isFetch){
-                        imagen8.setImageBitmap(bitmap);
-                        imagen8.setVisibility(View.VISIBLE);
-                        btnCloseView8.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen8.getVisibility() == View.VISIBLE){
-                        imagen8.setImageBitmap(null);
-                        imagen8.setVisibility(View.GONE);
-
-                    }
-                    break;
-
-                case R.id.imageView9:
-                    ImageView imagen9 = findViewById(R.id.imageView9);
-                    if(imagen9.getVisibility() == View.GONE && isFetch){
-                        imagen9.setImageBitmap(bitmap);
-                        imagen9.setVisibility(View.VISIBLE);
-                        btnCloseView9.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen9.getVisibility() == View.VISIBLE){
-                        imagen9.setImageBitmap(null);
-                        imagen9.setVisibility(View.GONE);
-                    }
-                    break;
-            }
-        }
-
-    }
-
-    public String getIdElementView(View v){
-        String id = "";
-        switch (v.getId()) {
-            /*case R.id.btnView1:
-                id = "CargueDocumentosPreValidación";
-                break;
-            case R.id.btnView2:
-                id = "SolicitudCreditoCara2";
-                break;
-            case R.id.btnView3:
-                id = "CedulaCara1";
-                break;
-            case R.id.btnView4:
-                id = "CedulaCara2";
-                break;
-            case R.id.btnView5:
-                id = "Desprendible1";
-                break;
-            case R.id.btnView6:
-                id = "Desprendible2";
-                break;
-            case R.id.btnView7:
-                id = "Desprendible3";
-                break;
-            case R.id.btnView8:
-                id = "Desprendible4";
-                break;
-            case R.id.btnView9:
-                id = "TratamientoDatosPersonales";
-                break;*/
-        }
-        return id;
-
-    }
 
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
@@ -900,75 +689,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         return true;
     }
-
-    public int getIdViewImage(String typeFile){
-        int id = 0;
-        switch (typeFile) {
-            case "CargueDocumentosPreValidación":
-                id = R.id.imageView1;
-                break;
-            /*case "SolicitudCreditoCara2":
-                id = R.id.imageView2;
-                break;*/
-            case "CedulaCara1":
-                id = R.id.imageView3;
-                break;
-            case "CedulaCara2":
-                id = R.id.imageView4;
-                break;
-            case "Desprendible1":
-                id = R.id.imageView5;
-                break;
-            case "Desprendible2":
-                id = R.id.imageView6;
-                break;
-            case "Desprendible3":
-                id = R.id.imageView7;
-                break;
-            case "Desprendible4":
-                id = R.id.imageView8;
-                break;
-            case "TratamientoDatosPersonales":
-                id = R.id.imageView9;
-                break;
-        }
-        return id;
-
-    }
-
-    /*public String getIdElementUpload(View v){
-        String id = "";
-        switch (v.getId()) {
-            case R.id.btnUpload:
-                id = "CargueDocumentosPreValidación";
-                break;
-            case R.id.btnUpload2:
-                id = "SolicitudCreditoCara2";
-                break;
-            case R.id.btnUpload3:
-                id = "CedulaCara1";
-                break;
-            case R.id.btnUpload4:
-                id = "CedulaCara2";
-                break;
-            case R.id.btnUpload5:
-                id = "Desprendible1";
-                break;
-            case R.id.btnUpload6:
-                id = "Desprendible2";
-                break;
-            case R.id.btnUpload7:
-                id = "Desprendible3";
-                break;
-            case R.id.btnUpload8:
-                id = "Desprendible4";
-                break;
-            case R.id.btnUpload9:
-                id = "TratamientoDatosPersonales";
-                break;
-        }
-        return id;
-    }*/
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //recuperarFotoCargada(view);
@@ -1302,79 +1022,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
         });
         popup.show();
-
-        closeButtonImage(view, popup);
-
-    }
-
-    private void closeButtonImage(View view, PopupMenu popup){
-        switch (view.getId()){
-            case R.id.btnCloseView1:
-                btnCloseView1.setVisibility(View.GONE);
-                ImageView imagen1 = findViewById(R.id.imageView1);
-                imagen1.setImageBitmap(null);
-                imagen1.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            /*case R.id.btnCloseView2:
-                btnCloseView2.setVisibility(View.GONE);
-
-                ImageView imagen2 = findViewById(R.id.imageView2);
-                imagen2.setImageBitmap(null);
-                imagen2.setVisibility(View.GONE);
-                popup.dismiss();
-                break;*/
-
-            case R.id.btnCloseView3:
-                btnCloseView3.setVisibility(View.GONE);
-                ImageView imagen3 = findViewById(R.id.imageView3);
-                imagen3.setImageBitmap(null);
-                imagen3.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView4:
-                btnCloseView4.setVisibility(View.GONE);
-                ImageView imagen4 = findViewById(R.id.imageView4);
-                imagen4.setImageBitmap(null);
-                imagen4.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView5:
-                btnCloseView5.setVisibility(View.GONE);
-                ImageView imagen5 = findViewById(R.id.imageView5);
-                imagen5.setImageBitmap(null);
-                imagen5.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView6:
-                btnCloseView6.setVisibility(View.GONE);
-                ImageView imagen6 = findViewById(R.id.imageView6);
-                imagen6.setImageBitmap(null);
-                imagen6.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView7:
-                btnCloseView7.setVisibility(View.GONE);
-                ImageView imagen7 = findViewById(R.id.imageView7);
-                imagen7.setImageBitmap(null);
-                imagen7.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView8:
-                btnCloseView8.setVisibility(View.GONE);
-                ImageView imagen8 = findViewById(R.id.imageView8);
-                imagen8.setImageBitmap(null);
-                imagen8.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView9:
-                btnCloseView9.setVisibility(View.GONE);
-                ImageView imagen9 = findViewById(R.id.imageView9);
-                imagen9.setImageBitmap(null);
-                imagen9.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-        }
     }
 
     //OpenGallery

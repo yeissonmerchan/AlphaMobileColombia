@@ -39,37 +39,44 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txt_modulo"
-                    android:layout_width="207dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="Previsualización de Imagenes"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorHeader"
-                    android:textSize="18dp"
-                    app:autoSizeTextType="uniform" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Vista Previa"
+                        android:textSize="18dp"
+                        app:autoSizeTextType="uniform"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textColor="@color/colorHeader" />
+
+
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_marginRight="13dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_marginRight="13dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
 
                     <com.github.clans.fab.FloatingActionButton
                         android:id="@+id/closeFullScreenDialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top|center"
+                        android:layout_gravity="top|right"
                         android:onClick="ShowDialog"
                         android:src="@drawable/ic_close_white_24dp"
                         app:fab_colorNormal="#1986C0"
@@ -77,20 +84,19 @@
                         app:fab_colorRipple="#99FFFFFF"
                         app:fab_label="Tomar Foto"
                         app:fab_size="mini" />
+
                     <TextView
                         android:id="@+id/txt_name"
-                        android:textSize="13dp"
                         android:layout_width="match_parent"
                         android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:text="Regresar"
                         android:textColor="@color/colorButtonUpdate"
-                        android:text="Regresar" />
+                        android:textSize="13dp" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
+            </RelativeLayout>
 
 
         </LinearLayout>
@@ -98,5 +104,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="4dp"
+        android:layout_margin="4dp"
         android:id="@+id/imageFullScreen" />
 </RelativeLayout>
