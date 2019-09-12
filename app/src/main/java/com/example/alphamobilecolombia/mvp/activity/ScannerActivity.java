@@ -215,6 +215,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
+                cal.add(cal.DAY_OF_MONTH, -1);
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -228,8 +229,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                 Calendar FechaMaxima = Calendar.getInstance();
                 FechaMaxima.set(year - 18, month, day);
+                /*FechaMaxima.add(FechaMaxima.DAY_OF_MONTH, -1);*/
                 dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
-
                 dialog.show();
             }
         });

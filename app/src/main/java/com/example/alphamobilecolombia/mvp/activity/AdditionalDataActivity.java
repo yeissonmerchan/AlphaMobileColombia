@@ -168,6 +168,9 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
                 dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());
 
+
+
+
                 dialog.show();
             }
         });

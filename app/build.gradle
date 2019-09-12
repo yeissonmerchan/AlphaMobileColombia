@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.alphacredit.alphamobilecolombia"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 21
         versionName "1.1.7"
