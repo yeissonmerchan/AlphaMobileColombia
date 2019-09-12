@@ -96,13 +96,17 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
+
+
+/*
         startService(new Intent(this, ImagesBackGroundReceiver.class));
+*/
 
         //******************************************** BroadcastReceiver
 
-        IntentFilter filter = new IntentFilter();
+/*        IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(new ImagesBackGroundReceiver(), filter);
+        registerReceiver(new ImagesBackGroundReceiver(), filter);*/
 
         //******************************************** Service
 

@@ -274,7 +274,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             }
         }
 
-
         //***********************************************************************
 
     }
