@@ -11,13 +11,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,7 +128,59 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         /*startService(new Intent(this, ImagesBackgroundService.class));*/
 
         //********************************************
+
+        edt_password = (EditText) findViewById(R.id.edt_password);
+
+        ImageView show_pass_btn = (ImageView) findViewById(R.id.show_pass_btn);
+
+        edt_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null && s.length() > 0) {
+                    show_pass_btn.setVisibility(View.VISIBLE);
+                } else {
+                    show_pass_btn.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
+
+
+    EditText edt_password;
+
+    public void ShowHidePass(View view) {
+
+        if (view.getId() == R.id.show_pass_btn) {
+
+            if (edt_password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+                ((ImageView) (view)).setImageResource(R.drawable.hide_password);
+
+                //Show Password
+                edt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                edt_password.setSelection(edt_password.length());
+            } else {
+                ((ImageView) (view)).setImageResource(R.drawable.show_password);
+
+                //Hide Password
+                edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                edt_password.setSelection(edt_password.length());
+
+            }
+        }
+    }
+
 
     public Context getCtx() {
         return Contexto;
