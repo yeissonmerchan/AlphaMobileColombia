@@ -8,6 +8,8 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCred
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.ClientDescription;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
+import java.text.DecimalFormat;
+
 public class ClientDescriptionViewHolder extends ChildViewHolder {
 
     private TextView estadoText;
@@ -19,6 +21,7 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
     private TextView fechaPrevalidacionText;
     private TextView observacionPrevaText;
     private TextView observacionCreditoText;
+    private DecimalFormat format = new DecimalFormat("$###,###.##");
 
     public ClientDescriptionViewHolder(View itemView) {
         super(itemView);
@@ -35,14 +38,14 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
     }
 
     public void bind(PostQueryCredit creditDescription) {
-        estadoText.setText( creditDescription.getGeneralState());
-        pagaduriaText.setText( creditDescription.getPagaduria());
-        fechaEnvioPrevaText.setText( creditDescription.getFechaEnvioPrevalidacion());
-        montoSugeridoText.setText( creditDescription.getMontoSugerido());
-        cuotaSugText.setText( creditDescription.getCuotaSug());
-        plazoSugeridoText.setText( creditDescription.getPlazoSugerido());
+        estadoText.setText(creditDescription.getGeneralState());
+        pagaduriaText.setText(creditDescription.getPagaduria());
+        fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
+        montoSugeridoText.setText(format.format(Integer.parseInt(creditDescription.getMontoSugerido())));
+        cuotaSugText.setText(format.format(Integer.parseInt(creditDescription.getCuotaSug())));
+        plazoSugeridoText.setText(String.format("%1s Meses", creditDescription.getPlazoSugerido()));
         fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
-        observacionPrevaText.setText( creditDescription.getObsPrevalidacion());
-        observacionCreditoText.setText( creditDescription.getObservacionCredito());
+        observacionPrevaText.setText(creditDescription.getObsPrevalidacion());
+        observacionCreditoText.setText(creditDescription.getObservacionCredito());
     }
 }

@@ -59,6 +59,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     //Nuevo
     private String pValor = "3";
     EditText searchEditext;
+    TextView count_rows;
 
     public QueryCreditActivity() {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
@@ -87,7 +88,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         }
 
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        // user = sharedPref.getString("idUser", "");
+        //user = sharedPref.getString("idUser", "");
         user = "1";
         typeQuery = "4";
 
@@ -102,35 +103,20 @@ public class QueryCreditActivity extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         typeQuery = "4";
-                        QueryCreditActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
-                            }
-                        });
+                        refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
                         break;
                     case 1:
                         typeQuery = "4";
-                        QueryCreditActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
-                            }
-                        });
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
+
                         break;
                     case 2:
                         typeQuery = "4";
-                        try{
-                            Date initDateMonth = dateFormat.parse("2019-01-11");
-                            int maxMonths = monthsBetweenDates(initDateMonth,date);
-                                    QueryCreditActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
-                                        }
-                                    });
-
-                        }catch(ParseException ex){
+                        try {
+                            Date initDateMonth = dateFormat.parse("2019-01-01");
+                            int maxMonths = monthsBetweenDates(initDateMonth, date);
+                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
+                        } catch (ParseException ex) {
                             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                         }
 
@@ -149,9 +135,7 @@ public class QueryCreditActivity extends AppCompatActivity {
             }
         });
 
-        //endDate = dateFormat.format(date);
         endDate = "2019-09-11";
-        //initDate = "2019-01-11";
         initDate = dateFormat.format(operarFecha(date, -3, 1));
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -165,12 +149,12 @@ public class QueryCreditActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (searchEditext.getText().length() > 0){
+                    if (searchEditext.getText().length() > 0) {
                         typeQuery = "2";
                         pValor = searchEditext.getText().toString();
                         refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
-                    }else {
-                        Toast toast1 = Toast.makeText(getApplicationContext(), "Por favor digite un numero de cedula valido", Toast.LENGTH_LONG);
+                    } else {
+                        Toast toast1 = Toast.makeText(getApplicationContext(), "Por favor digite un número de cédula válido", Toast.LENGTH_LONG);
                         toast1.show();
                     }
                     return true;
@@ -184,12 +168,12 @@ public class QueryCreditActivity extends AppCompatActivity {
         searchEditext.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
                     //detecta la tecla de borrar en el teclado
-                    if(searchEditext.getText().length() == 0){
+                    if (searchEditext.getText().length() == 0) {
                         typeQuery = "4";
-                        LinearLayout tabStrip = ((LinearLayout)tabFilters.getChildAt(0));
-                        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                        LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
+                        for (int i = 0; i < tabStrip.getChildCount(); i++) {
                             tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                                 @Override
                                 public boolean onTouch(View v, MotionEvent event) {
@@ -198,10 +182,10 @@ public class QueryCreditActivity extends AppCompatActivity {
                             });
                         }
                     }
-                }else {
+                } else {
                     typeQuery = "2";
-                    LinearLayout tabStrip = ((LinearLayout)tabFilters.getChildAt(0));
-                    for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                    LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
+                    for (int i = 0; i < tabStrip.getChildCount(); i++) {
                         tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
@@ -215,6 +199,10 @@ public class QueryCreditActivity extends AppCompatActivity {
         });
 
         refreshData(user, typeQuery, initDate, endDate);
+
+        // Counts_rows
+        count_rows = findViewById(R.id.count_rows);
+
 
         //configurerView(model);
     }
@@ -240,6 +228,7 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         //RecyclerView
         RecyclerView recyclerCredits = findViewById(R.id.recyclerCredits);
+        RecyclerAdapterQueryCredit adapter = null;
         recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<Client> clients = new ArrayList<>();
@@ -249,16 +238,21 @@ public class QueryCreditActivity extends AppCompatActivity {
         if (model != null && model.length > 0) {
             for (int j = 0; j < model.length; j++) {
                 List<PostQueryCredit> modelAux = new ArrayList<>();
-                title = String.format("Cedula: %s1 \nNombre: %s2 \nNo solicitud: %s3", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
+                title = String.format("Cedula: %s1 \nNombre: %s2 \nNº solicitud: %s3", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
                 modelAux.add(model[j]);
 
                 client = new Client(title, modelAux);
                 clients.add(client);
             }
 
-            RecyclerAdapterQueryCredit adapter = new RecyclerAdapterQueryCredit(clients);
+            adapter = new RecyclerAdapterQueryCredit(clients);
             recyclerCredits.setAdapter(adapter);
+            count_rows.setText(String.format("%1s Resultados", model.length));
+
         } else {
+            adapter = new RecyclerAdapterQueryCredit(clients);
+            recyclerCredits.setAdapter(adapter);
+            count_rows.setText(String.format("%1s Resultados", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
         }
         myDialog.dismiss();
@@ -277,7 +271,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
-    public int monthsBetweenDates(Date startDate, Date endDate){
+    public int monthsBetweenDates(Date startDate, Date endDate) {
 
         Calendar start = Calendar.getInstance();
         start.setTime(startDate);
@@ -286,22 +280,21 @@ public class QueryCreditActivity extends AppCompatActivity {
         end.setTime(endDate);
 
         int monthsBetween = 0;
-        int dateDiff = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
 
-        if(dateDiff<0) {
+        if (dateDiff < 0) {
             int borrrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
-            dateDiff = (end.get(Calendar.DAY_OF_MONTH)+borrrow)-start.get(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH) + borrrow) - start.get(Calendar.DAY_OF_MONTH);
             monthsBetween--;
 
-            if(dateDiff>0) {
+            if (dateDiff > 0) {
                 monthsBetween++;
             }
-        }
-        else {
+        } else {
             monthsBetween++;
         }
-        monthsBetween += end.get(Calendar.MONTH)-start.get(Calendar.MONTH);
-        monthsBetween  += (end.get(Calendar.YEAR)-start.get(Calendar.YEAR))*12;
+        monthsBetween += end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+        monthsBetween += (end.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12;
         return monthsBetween;
     }
 

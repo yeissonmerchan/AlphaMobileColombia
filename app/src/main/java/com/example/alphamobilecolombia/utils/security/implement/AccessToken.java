@@ -39,11 +39,11 @@ public class AccessToken implements IAccessToken {
                 if (token != null) {
                     isValid = token;
                 } else {
-                    throw new Exception("El token no es valido!");
+                    throw new Exception("El token no es válido!");
                 }
             }
             else{
-                throw new Exception("El token no es valido!");
+                throw new Exception("El token no es válido!");
             }
         } catch (Exception e) {
             e.printStackTrace();
