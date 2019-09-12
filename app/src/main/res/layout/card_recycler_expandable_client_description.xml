@@ -26,6 +26,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldEstado"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -51,6 +52,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldPagaduria"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -76,6 +78,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldFechaEnvio"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -101,6 +104,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldMontoSugerido"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -126,6 +130,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldCuotaSugerida"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -152,6 +157,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldPlazoSugerido"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -177,6 +183,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldFechaPrevalidacion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -202,6 +209,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldObsPrevalidacion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -227,6 +235,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/fieldObsCredito"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
