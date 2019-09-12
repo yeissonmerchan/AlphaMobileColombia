@@ -60,7 +60,7 @@ public class Formulario {
     //<pagina>Define la pagina que tiene los controles a validar</pagina>
     //<actividad>Define la actividad a llamar en el caso de que no hayan errores en los campos</actividad>
     //<arrayId>Define los Ids de los campos a obtener de la pagina especificada</arrayId>
-    public boolean Validar(AppCompatActivity pagina, Class<?> clase, String[] arrayId) {
+    public boolean Validar(AppCompatActivity pagina, Class<?> clase, String[] arrayId, String[] arrayOptionals) {
 
         List<Parameter> ListaValores = new ArrayList<>(); //Define la lista de valores
         ArrayList<String> ListaErrores = new ArrayList<String>(); //Define la lista de errores
@@ -108,11 +108,49 @@ public class Formulario {
             }
         }
 
+
+
+
         //Si hay errores entonces
         if (ListaErrores.size() > 0) {
             Toast.makeText(pagina.getApplicationContext(), ListaErrores.get(0), Toast.LENGTH_LONG).show(); //Muestra el mensaje
             return false; //Retorna falso
         } else {
+
+            /************************************************** CAMPOS OPCIONALES*/
+
+            for(String CampoOpcional : arrayOptionals)
+            {
+                int Id = pagina.getResources().getIdentifier(CampoOpcional, "id", pagina.getPackageName()); //Obtiene el Id del recurso del Control
+
+                View Control = pagina.findViewById(Id); //Obtiene el control
+
+                if (Control != null) {
+
+                    String Texto = "";
+
+                    //Si el control x es un TextView entonces
+                    if (Control instanceof TextView) {
+                        Texto = ((TextView) Control).getText().toString();
+                        //Si el control x es un EditText entonces
+                    } else if (Control instanceof EditText) {
+                        Texto = ((EditText) Control).getText().toString();
+                        //Si el control x es Spinner entonces
+                    } else if (Control instanceof Spinner && ((Spinner) Control).getSelectedItem() != null) {
+                        //Texto = ((Spinner) Control).getSelectedItem().toString();
+                        Texto = String.valueOf(_iSelectList.GetValueByCodeField(((Spinner) Control).getSelectedItem().toString()));
+                    } else if (Control instanceof SearchView) {
+                        SearchView searchView = (SearchView) Control;
+                    }
+
+                        Parameter Parametro = new Parameter();
+                        Parametro.setKey(CampoOpcional);
+                        Parametro.setValue(Texto);
+                        ListaValores.add(Parametro);
+                }
+            }
+
+            /************************************************** FIN CAMPOS OPCIONALES*/
 
             //Guardar en Realm
             IRealmInstance iRealmInstance = new RealmInstance(pagina.getApplicationContext(), new RSA(pagina.getApplicationContext()));
@@ -127,6 +165,9 @@ public class Formulario {
             pagina.startActivityForResult(intent, 0);
             return true; //Retorna verdadero
         }
+
+
+
     }
 
     //Carga el Spinner especificado

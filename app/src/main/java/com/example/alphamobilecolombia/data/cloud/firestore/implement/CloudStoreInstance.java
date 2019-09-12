@@ -19,10 +19,12 @@ import com.example.alphamobilecolombia.data.cloud.firestore.entity.VariableMotor
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.notification.local.INotification;
 import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,53 +36,72 @@ import io.realm.RealmObject;
 
 import static io.fabric.sdk.android.Fabric.TAG;
 
+//Gestiona la sincronización entre FireBase y Realm
 public class CloudStoreInstance implements ICloudStoreInstance {
+
+    //Define el contexto
     Context _context;
+
     INotification _iNotification;
+
+    //Define el almacenamiento local
     IRealmInstance _iRealmInstance;
-    public CloudStoreInstance(INotification iNotification, IRealmInstance iRealmInstance, Context context){
-        _context = context;
-        _iNotification = iNotification;
-        _iRealmInstance = iRealmInstance;
+
+    //CONSTRUCTOR: Inicializa las propiedades de esta clase
+    public CloudStoreInstance(INotification iNotification, IRealmInstance iRealmInstance, Context context) {
+        _context = context; //Establece el contexto
+        _iNotification = iNotification; //Establece la notificación
+        _iRealmInstance = iRealmInstance; //Establece el almacenamiento local
     }
 
-    public FirebaseFirestore instanceDb(){
+    //Obtiene la instancia de FireBase
+    public FirebaseFirestore instanceDb() {
+
         FirebaseFirestoreSettings fireStoreSettings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
                 .build();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.setFirestoreSettings(fireStoreSettings);
+
         return db;
     }
 
-    public Task<QuerySnapshot> syncCollection(String nameCollection){
-        try {
-            FirebaseFirestore db = instanceDb();
-            Task<QuerySnapshot> collectionSimulator = db.collection(nameCollection)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
-                            if (objects != null)
-                            {
-                                ParametrizacionMotor parametrizacionMotor = objects.get(0);
-                                uploadConfiguration(parametrizacionMotor);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    });
+    //Sincroniza la colección
+    public Task<QuerySnapshot> syncCollection(String nameCollection) {
 
-            return collectionSimulator;
-        }
-        catch (Exception ex){
+        //Define la colección a retornar
+        Task<QuerySnapshot> collectionSimulator = null;
+
+        try {
+
+            FirebaseFirestore db = instanceDb();
+
+            collectionSimulator = db.collection(nameCollection)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
+                                if (objects != null && objects.size() > 0) {
+                                    ParametrizacionMotor parametrizacionMotor = objects.get(0);
+                                    uploadConfiguration(parametrizacionMotor);
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        });
+
+        } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+/*            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "syncCollection: nameCollection=" + nameCollection, ex, _context);*/
         }
+        return collectionSimulator;
     }
 
-    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor){
+    //Carga la configuración
+    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor) {
         LocalNotification localNotification = new LocalNotification();
         try {
             if (parametrizacionMotor != null) {
@@ -102,13 +123,12 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                 localNotification.setTitle("Check!");
 
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "uploadConfiguration: parametrizacionMotor", ex, _context);
             localNotification.setMessage("Error en la sincronización de la configuración del app.");
             localNotification.setTitle("Check!");
-        }
-        finally {
+        } finally {
             _iNotification.ShowNotification(localNotification);
         }
     }

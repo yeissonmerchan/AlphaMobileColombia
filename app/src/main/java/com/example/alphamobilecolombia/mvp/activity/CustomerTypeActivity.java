@@ -460,7 +460,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
             Campos.add("search_tipo_contrato");
 
             //Valida los campos
-            formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]));
+            formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]), new String[] {});
 
             //************************************************************
 
