@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
+import com.example.alphamobilecolombia.services.FileStorageService;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,9 @@ public class BrandingActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
+
+        Intent startServiceIntent = new Intent(BrandingActivity.this, FileStorageService.class);
+        startService(startServiceIntent);
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 

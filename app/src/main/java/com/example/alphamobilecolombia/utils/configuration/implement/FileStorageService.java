@@ -26,6 +26,17 @@ public class FileStorageService implements IFileStorageService {
         return isValid;
     }
 
+    public List<FileStorage> GetListForAll(){
+        List<FileStorage> returnValue = new ArrayList<>();
+        try {
+            returnValue = _iRealmInstance.GetAll(new FileStorage());
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return returnValue;
+    }
+
     public boolean DeleteForCreditSubject(int idSubjectCredit){
         boolean returnValue = false;
         try {
