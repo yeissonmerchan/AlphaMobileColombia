@@ -2,6 +2,7 @@ package com.example.alphamobilecolombia.mvp.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -238,7 +239,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         if (model != null && model.length > 0) {
             for (int j = 0; j < model.length; j++) {
                 List<PostQueryCredit> modelAux = new ArrayList<>();
-                title = String.format("Cedula: %s1 \nNombre: %s2 \nNº solicitud: %s3", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
+                title = String.format("Cedula: %1s \nNombre: %2s \nNº solicitud: %3s", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
                 modelAux.add(model[j]);
 
                 client = new Client(title, modelAux);
