@@ -274,7 +274,7 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
             String[] Campos = new String[]{"search_ciudad_expedicion_cedula", "edt_fecha_expedicion_cedula"}; //"spinner_pagaduria"
 
-            formulario.Validar(this, PaymentActivity.class, Campos);
+            formulario.Validar(this, PaymentActivity.class, Campos, new String[] {});
         } else {
             Toast.makeText(this.getApplicationContext(), "Debe seleccionar una ciudad de expedición de cédula valida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }

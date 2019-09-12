@@ -72,7 +72,7 @@ public class VoucherDataActivity extends AppCompatActivity implements AdapterVie
 
         String[] Campos = new String[]{"edt_ingresos", "edt_salud", "edt_pension"};
 
-        formulario.Validar(this, VoucherDiscountActivity.class, Campos);
+        formulario.Validar(this, VoucherDiscountActivity.class, Campos, new String[] {});
     }
 }
 

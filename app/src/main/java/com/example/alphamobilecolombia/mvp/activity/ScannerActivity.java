@@ -319,8 +319,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         if (!TextUtils.isEmpty(Error)) {
             Toast.makeText(this.getApplicationContext(), Error, Toast.LENGTH_LONG).show(); //Muestra el mensaje
         } else {
-            String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
-            formulario.Validar(this, AdditionalDataActivity.class, Campos);
+            formulario.Validar(this, AdditionalDataActivity.class,
+                    new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"},
+                    new String[] {"edt_names2", "edt_lastNames2"});
         }
     }
 

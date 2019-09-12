@@ -68,7 +68,7 @@ public class PaymentsThirdPartiesActivity extends AppCompatActivity implements A
 
         String[] Campos = new String[]{}; //"spinner_pago_a_terceros";
 
-        formulario.Validar(this, CreditSimulatorActivity.class, Campos);
+        formulario.Validar(this, CreditSimulatorActivity.class, Campos, new String[] {});
     }
 }
 

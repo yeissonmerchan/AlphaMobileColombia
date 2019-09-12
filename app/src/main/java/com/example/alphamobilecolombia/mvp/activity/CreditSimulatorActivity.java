@@ -107,7 +107,7 @@ public class CreditSimulatorActivity extends AppCompatActivity implements Adapte
 
         String[] Campos = new String[]{"edt_monto_a_desembolsar", "edt_cuota"};
 
-        formulario.Validar(this, ConditionsSummaryActivity.class, Campos);
+        formulario.Validar(this, ConditionsSummaryActivity.class, Campos, new String[] {});
     }
 }
 

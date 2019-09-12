@@ -207,7 +207,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
         if (Correcto) {
             String[] Campos = new String[]{"search_pagaduria", "spinner_destino_credito"}; //"spinner_pagaduria"
 
-            formulario.Validar(this, CustomerTypeActivity.class, Campos);
+            formulario.Validar(this, CustomerTypeActivity.class, Campos, new String[] {});
         } else {
             Toast.makeText(this.getApplicationContext(), "Debe seleccionar una pagaduría valida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }

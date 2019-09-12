@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.mvp.activity;
 import android.app.ActivityManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -97,29 +98,27 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         startService(new Intent(this, ImagesBackGroundReceiver.class));
 
+        //******************************************** BroadcastReceiver
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(new ImagesBackGroundReceiver(), filter);
 
-        //scheduleJob();
-/*
+        //******************************************** Service
 
-        Servicio = new ImagesBackgroundService(this);
+/*        Servicio = new ImagesBackgroundService(this);
         Intencion = new Intent(this, Servicio.getClass());
-
         if (!isMyServiceRunning(Servicio.getClass())) {
             startService(Intencion);
-
         } else {
             Toast.makeText(this, "El servicio ya está corriendo", Toast.LENGTH_LONG).show();
-        }
+        }*/
 
-*/
+        //******************************************** scheduleJob
 
+        /*startService(new Intent(this, ImagesBackgroundService.class));*/
 
-        /*        startService(new Intent(this, ImagesBackgroundService.class));*/
-
+        //********************************************
     }
 
     public Context getCtx() {
