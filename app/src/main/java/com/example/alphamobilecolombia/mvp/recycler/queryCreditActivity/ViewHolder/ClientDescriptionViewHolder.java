@@ -38,14 +38,38 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
     }
 
     public void bind(PostQueryCredit creditDescription) {
-        estadoText.setText(creditDescription.getGeneralState());
+
+        String estado = creditDescription.getGeneralState();
+        if (estado.equals("")){
+            estadoText.setVisibility(View.GONE);
+        }else{
+            estadoText.setText(estado);
+        }
+
         pagaduriaText.setText(creditDescription.getPagaduria());
         fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
         montoSugeridoText.setText(format.format(Integer.parseInt(creditDescription.getMontoSugerido())));
         cuotaSugText.setText(format.format(Integer.parseInt(creditDescription.getCuotaSug())));
         plazoSugeridoText.setText(String.format("%1s Meses", creditDescription.getPlazoSugerido()));
         fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
-        observacionPrevaText.setText(creditDescription.getObsPrevalidacion());
-        observacionCreditoText.setText(creditDescription.getObservacionCredito());
+        //observacionPrevaText.setText(creditDescription.getObsPrevalidacion());
+        //observacionCreditoText.setText(creditDescription.getObservacionCredito());
+
+
+
+        String obsPreva = creditDescription.getObsPrevalidacion();
+        if (obsPreva.equals("")){
+            observacionPrevaText.setVisibility(View.GONE);
+        }else{
+            observacionPrevaText.setText(obsPreva);
+        }
+
+        String obsCredrit = creditDescription.getObservacionCredito();
+        if (obsCredrit !=null){
+            observacionCreditoText.setText(obsCredrit);
+        }else{
+            observacionCreditoText.setVisibility(View.GONE);
+        }
     }
+
 }
