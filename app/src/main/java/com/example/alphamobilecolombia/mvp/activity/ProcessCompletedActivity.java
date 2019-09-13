@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
+import com.example.alphamobilecolombia.services.FileStorageService;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 
 public class ProcessCompletedActivity extends AppCompatActivity {
@@ -33,7 +34,8 @@ public class ProcessCompletedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Intent startServiceIntent = new Intent(ProcessCompletedActivity.this, FileStorageService.class);
+        startService(startServiceIntent);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_process_completed);
         Window window = this.getWindow();

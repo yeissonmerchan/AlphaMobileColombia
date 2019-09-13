@@ -219,6 +219,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
+                cal.add(cal.DAY_OF_MONTH, -1);
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -232,8 +233,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                 Calendar FechaMaxima = Calendar.getInstance();
                 FechaMaxima.set(year - 18, month, day);
+                /*FechaMaxima.add(FechaMaxima.DAY_OF_MONTH, -1);*/
                 dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
-
                 dialog.show();
             }
         });
@@ -276,7 +277,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         .initiateScan();
             }
         }
-
 
         //***********************************************************************
 
@@ -322,8 +322,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         if (!TextUtils.isEmpty(Error)) {
             Toast.makeText(this.getApplicationContext(), Error, Toast.LENGTH_LONG).show(); //Muestra el mensaje
         } else {
-            String[] Campos = new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"};
-            formulario.Validar(this, AdditionalDataActivity.class, Campos);
+            formulario.Validar(this, AdditionalDataActivity.class,
+                    new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"},
+                    new String[] {"edt_names2", "edt_lastNames2"});
         }
     }
 

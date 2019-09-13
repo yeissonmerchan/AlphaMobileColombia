@@ -122,7 +122,7 @@ public class DependencyInjectionContainer {
         return new CloudStoreInstance(injectINotification(context), injectIRealmInstance(context),context);
     }
 
-    private IFileStorageService injectIFileStorageService(Context context){return new FileStorageService(injectIRealmInstance(context));}
+    public IFileStorageService injectIFileStorageService(Context context){return new FileStorageService(injectIRealmInstance(context));}
 
     public ISelectList injectISelectList(Context context){return new SelectList(injectIRealmInstance(context));}
 
@@ -144,7 +144,7 @@ public class DependencyInjectionContainer {
 
     private IDevice injectIDevice(){return new Device();}
 
-    private INotification injectINotification(Context context){
+    public INotification injectINotification(Context context){
         return new Notification(context);
     }
 
@@ -152,6 +152,6 @@ public class DependencyInjectionContainer {
 
     private IRealmInstance injectIRealmInstance(Context context){return new RealmInstance(context,injectIRSA(context)); }
 
-    private IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
+    public IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
     //End Configurations
 }

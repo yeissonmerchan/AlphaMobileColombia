@@ -1,7 +1,14 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.ActivityManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -31,6 +38,7 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.example.alphamobilecolombia.utils.security.IAccessToken;
 import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -48,8 +56,10 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     ILoginPresenter _iLoginPresenter;
+    IAccessToken _iAccessToken;
 
     public LoginActivity(){
+        _iAccessToken = diContainer.injectIAccessToken(this);
         _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
     }
 
@@ -63,6 +73,13 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
     private Validator validator;
     private boolean validationResult = false;
 
+
+    Intent Intencion;
+    private ImagesBackgroundService Servicio;
+    Context Contexto;
+
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,18 +87,63 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         initView();
         validator = new Validator(this);
         validator.setValidationListener(this);
-
+        _iAccessToken.CleanToken();
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorHeader));
         }
 
         EditText edt_names = (EditText) findViewById(R.id.edt_username);
         edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+
+
+/*
+        startService(new Intent(this, ImagesBackGroundReceiver.class));
+*/
+
+        //******************************************** BroadcastReceiver
+
+/*        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(new ImagesBackGroundReceiver(), filter);*/
+
+        //******************************************** Service
+
+/*        Servicio = new ImagesBackgroundService(this);
+        Intencion = new Intent(this, Servicio.getClass());
+        if (!isMyServiceRunning(Servicio.getClass())) {
+            startService(Intencion);
+        } else {
+            Toast.makeText(this, "El servicio ya está corriendo", Toast.LENGTH_LONG).show();
+        }*/
+
+        //******************************************** scheduleJob
+
+        /*startService(new Intent(this, ImagesBackgroundService.class));*/
+
+        //********************************************
     }
+
+    public Context getCtx() {
+        return Contexto;
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i("isMyServiceRunning?", true + "");
+                return true;
+            }
+        }
+        Log.i("isMyServiceRunning?", false + "");
+        return false;
+    }
+
 
     @Override
     public void onPause() {
@@ -99,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onDestroy() {
+        //stopService(Intencion);
         super.onDestroy();
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
@@ -129,10 +192,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validationResult = false;
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             this.moveTaskToBack(true);
             return true;
         }
@@ -141,25 +202,24 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     public void onClickBtn(View view) {
         validator.validate();
-        if(validationResult) {
+        if (validationResult) {
             TextView message = findViewById(R.id.txt_message);
             String userText = editTextUsername.getText().toString();
             String passwordText = editTextPassword.getText().toString();
             Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
-            if (isValid){
+            if (isValid) {
                 Intent intent = new Intent(view.getContext(), ModuleActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivityForResult(intent, 0);
-            }
-            else{
+            } else {
                 TextView txt_message = findViewById(R.id.txt_message);
                 txt_message.setText(_iLoginPresenter.MessageError());
-                errorNotification(view,_iLoginPresenter.MessageError());
+                errorNotification(view, _iLoginPresenter.MessageError());
             }
         }
     }
 
-    public void errorNotification(final View view, String message){
+    public void errorNotification(final View view, String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage(message);
         builder1.setCancelable(true);
@@ -174,4 +234,31 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
+    public void scheduleJob() {
+        ComponentName componentName = new ComponentName(this, ImagesBackgroundJob.class);
+        JobInfo info = new JobInfo.Builder(123, componentName)
+                .setRequiresCharging(true)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setPersisted(true)
+                .setPeriodic(15 * 60 * 1000)
+                .build();
+
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        int resultCode = scheduler.schedule(info);
+        if (resultCode == JobScheduler.RESULT_SUCCESS) {
+            Log.d(TAG, "Job scheduled");
+        } else {
+            Log.d(TAG, "Job scheduling failed");
+        }
+    }
+
+    public void cancelJob(View v) {
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+        scheduler.cancel(123);
+        Log.d(TAG, "Job cancelled");
+    }
+
+
 }

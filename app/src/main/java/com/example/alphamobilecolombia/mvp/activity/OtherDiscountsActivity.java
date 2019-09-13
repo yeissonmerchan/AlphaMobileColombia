@@ -72,7 +72,7 @@ public class OtherDiscountsActivity extends AppCompatActivity implements Adapter
 
         String[] Campos = new String[]{"edt_medicina_prepagada", "edt_fondo_pension_voluntario", "edt_ahorro", "edt_otros"};
 
-        formulario.Validar(this, PaymentsThirdPartiesActivity.class, Campos);
+        formulario.Validar(this, PaymentsThirdPartiesActivity.class, Campos, new String[] {});
     }
 }
 

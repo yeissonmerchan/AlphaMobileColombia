@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -20,6 +21,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+<!--    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />-->
+
     <application xmlns:tools="http://schemas.android.com/tools"
         android:allowBackup="true"
         android:hasCode="true"
@@ -32,6 +36,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
+        <service
+            android:name=".services.FileStorageService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+
+
+
         <activity
             android:name=".mvp.activity.BrandingActivity"
             android:label="@string/title_activity_login"
@@ -39,98 +51,95 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".mvp.activity.ImagesBackgroundService"
+            android:enabled="true"
+            />
+
+        <receiver
+            android:name=".mvp.activity.ImagesBackGroundReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".mvp.activity.ImagesBackgroundJob"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
 
         <!--*************************************************************************** MODULOS-->
 
         <!--SCANNER-->
         <activity
             android:name=".mvp.activity.ScannerActivity"
-            android:label="@string/title_activity_scanner"
             android:alwaysRetainTaskState="true"
+            android:label="@string/title_activity_scanner"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <!--android:launchMode="singleTask"-->
-
-        <!--DATOS ADICIONALES-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:launchMode="singleTask" -->
+        <!-- DATOS ADICIONALES -->
         <activity
             android:name=".mvp.activity.AdditionalDataActivity"
+            android:alwaysRetainTaskState="true"
             android:label=""
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:alwaysRetainTaskState="true"
-            android:launchMode="singleInstance"
-            android:windowSoftInputMode="adjustPan"
-            />
-
-        <!--PAGADURÍA-->
+            android:windowSoftInputMode="adjustPan" /> <!-- PAGADURÍA -->
         <activity
             android:name=".mvp.activity.PaymentActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            />
-
-        <!--TIPO CLIENTE-->
+            android:windowSoftInputMode="adjustPan" /> <!-- TIPO CLIENTE -->
         <activity
             android:name=".mvp.activity.CustomerTypeActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan"
-            />
-
-        <!--DATOS DESPRENDIBLES-->
+            android:windowSoftInputMode="adjustPan" /> <!-- DATOS DESPRENDIBLES -->
         <activity
             android:name=".mvp.activity.VoucherDataActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--DESCUENTOS POR DESPRENDIBLE-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- DESCUENTOS POR DESPRENDIBLE -->
         <activity
             android:name=".mvp.activity.VoucherDiscountActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" /> <!--HACE QUE EL DISEÑO NO SE ENCOJA CUANDO EL TECLADO APARECE-->
-
-        <!--OTROS DESCUENTOS-->
+            android:windowSoftInputMode="adjustPan" /> <!-- HACE QUE EL DISEÑO NO SE ENCOJA CUANDO EL TECLADO APARECE -->
+        <!-- OTROS DESCUENTOS -->
         <activity
             android:name=".mvp.activity.OtherDiscountsActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" /> <!--HACE QUE EL CAMPO "OTROS" NO PIERDA EL FOCO CUANDO EL TECLADO APARECE-->
-
-        <!--PAGOS A TERCEROS-->
+            android:windowSoftInputMode="adjustPan" /> <!-- HACE QUE EL CAMPO "OTROS" NO PIERDA EL FOCO CUANDO EL TECLADO APARECE -->
+        <!-- PAGOS A TERCEROS -->
         <activity
             android:name=".mvp.activity.PaymentsThirdPartiesActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--SIMULADOR DE CREDITO-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- SIMULADOR DE CREDITO -->
         <activity
             android:name=".mvp.activity.CreditSimulatorActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--RESUMEN DE CONDICIONES-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- RESUMEN DE CONDICIONES -->
         <activity
             android:name=".mvp.activity.ConditionsSummaryActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--***************************************************************************-->
-
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- *************************************************************************** -->
         <activity
             android:name=".mvp.activity.VersionUpdateActivity"
             android:label="@string/title_activity_version_update"
@@ -145,9 +154,6 @@
             android:label="@string/title_activity_process_completed"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
-
         <activity
             android:name=".mvp.activity.ModuleActivity"
             android:label="@string/title_activity_modulo"
@@ -163,6 +169,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <service
+            android:name=".services.FileStorageService"
+            android:enabled="true"
+            android:exported="true"></service>
+
     </application>
 
 </manifest>
