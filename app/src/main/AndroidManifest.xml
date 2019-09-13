@@ -36,7 +36,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
-        <activity android:name=".mvp.activity.YouTubeVideoActivity"></activity>
         <service
             android:name=".services.FileStorageService"
             android:enabled="true"
