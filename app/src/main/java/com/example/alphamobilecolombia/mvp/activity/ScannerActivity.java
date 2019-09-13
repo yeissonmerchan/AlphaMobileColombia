@@ -124,7 +124,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** SEGUNDO NOMBRE */
@@ -145,7 +146,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** PRIMER APELLIDO */
@@ -166,7 +168,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** SEGUNDO APELLIDO */
@@ -187,7 +190,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** NUMERO IDENTIFICACIÓN */
