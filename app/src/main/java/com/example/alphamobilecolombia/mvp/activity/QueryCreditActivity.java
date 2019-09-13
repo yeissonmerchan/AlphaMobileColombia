@@ -113,9 +113,8 @@ public class QueryCreditActivity extends AppCompatActivity {
                         });
                     }
                     catch (JSONException ex) {
-                        // TODO Auto-generated catch block
                         ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Mapeo consultas",ex,getBaseContext());
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"onCreate",ex,getBaseContext());
                     }
                 }
                 myDialog.show();

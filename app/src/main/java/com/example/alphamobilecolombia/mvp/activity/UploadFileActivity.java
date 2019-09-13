@@ -273,6 +273,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         catch (Exception ex){
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "finalizacion", ex, this);
         }
     }
 
@@ -408,6 +409,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperarFotoCargada", e, this);
                     }
                 }
                 imageViewFullScreen.setImageBitmap(bitmap1);
@@ -417,8 +419,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperarFotoCargada: " + getNameFile(v),ex,this);
         }
     }
 
@@ -472,7 +474,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         catch (Exception ex){
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperarImagen: " + getNameFile(v),ex,this);
         }
     }
 
@@ -486,7 +488,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         catch (Exception ex){
             documentNumber = getIntent().getStringExtra("PERSONA_Documento");
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"nombre archivo "+documentNumber,ex,this);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"getNameFile: " + documentNumber,ex,this);
         }
 
         return documentNumber+nameFile+".jpg";
@@ -837,6 +839,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         }
         catch (Exception ex){
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SavePersonAndSubject", ex, this);
             persona.setCedula("1052407752");
             persona.setNombre("Yeisson");
             persona.setNombre2("Andres");

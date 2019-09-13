@@ -64,7 +64,8 @@ public class QueryCreditPresenter {
         }
         catch (Exception ex){
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),idUsuario,ex,context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Post: " + idUsuario,ex,context);
         }
         return null;
     }

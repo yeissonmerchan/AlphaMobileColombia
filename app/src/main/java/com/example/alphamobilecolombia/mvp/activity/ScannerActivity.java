@@ -380,7 +380,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         AlertMsg.show();
                     } catch (Exception ex) {
                         ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Prevalidaciones", ex, this);
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ValidarPrevalidacionesActivas", ex, this);
                     }
                 } else {
                     ValidarCampos();
@@ -421,7 +421,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onActivityResult", ex, this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
                 }
@@ -482,9 +483,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             }
 
         } catch (Exception ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
-            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "getReadBarCode", ex, this);
+            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             NotificacionErrorDatos(this);
         }
     }
