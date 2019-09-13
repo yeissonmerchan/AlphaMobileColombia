@@ -42,9 +42,6 @@
             android:enabled="true"
             android:exported="true"></service>
 
-
-
-
         <activity
             android:name=".mvp.activity.BrandingActivity"
             android:label="@string/title_activity_login"
@@ -72,11 +69,14 @@
 
         <service
             android:name=".mvp.activity.ImagesBackgroundJob"
+            android:enabled="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
 
 
         <!--*************************************************************************** MODULOS-->
+        <activity android:name=".mvp.activity.YouTubeVideoActivity">
+        </activity>
 
         <!--SCANNER-->
         <activity

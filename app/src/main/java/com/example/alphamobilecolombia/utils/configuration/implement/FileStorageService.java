@@ -40,7 +40,7 @@ public class FileStorageService implements IFileStorageService {
     public boolean DeleteForCreditSubject(int idSubjectCredit){
         boolean returnValue = false;
         try {
-            returnValue = _iRealmInstance.DeleteByKey(new FileStorage(),"IdCreditSubject", String.valueOf(idSubjectCredit));
+            returnValue = _iRealmInstance.DeleteByKey(new FileStorage(),"IdCreditSubject", idSubjectCredit);
         }
         catch (Exception ex){
             ex.printStackTrace();

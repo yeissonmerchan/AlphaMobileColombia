@@ -30,7 +30,7 @@ public class FileStorageService extends Service {
 
     @Override
     public void onCreate() {
-        Toast.makeText(this, "Invoke background service onCreate method.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Invoke background service onCreate method.", Toast.LENGTH_LONG).show();
         FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter,iFileStorageService,iNotification);
         fileStorageJob.SendFilesToStorage();
         super.onCreate();
@@ -39,13 +39,13 @@ public class FileStorageService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Invoke background service onStartCommand method.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Invoke background service onStartCommand method.", Toast.LENGTH_LONG).show();
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "Invoke background service onDestroy method.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Invoke background service onDestroy method.", Toast.LENGTH_LONG).show();
     }
 }
