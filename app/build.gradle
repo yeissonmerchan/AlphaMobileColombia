@@ -97,6 +97,11 @@ dependencies {
     //implementation 'com.google.firebase:firebase-admin:6.8.1'
     implementation 'com.google.firebase:firebase-firestore:21.0.0'
 
+    //Firebase RemoteConfig
+
+    implementation 'com.google.firebase:firebase-config:19.0.1'
+
+    //Material Design
     implementation "com.android.support:design:28.0.0-alpha1"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation "com.android.support:support-compat:28.0.0"
@@ -105,6 +110,13 @@ dependencies {
 
     //Cards
     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
+
+    //Youtube
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

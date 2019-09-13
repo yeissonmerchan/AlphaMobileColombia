@@ -2,45 +2,79 @@ package com.example.alphamobilecolombia.mvp.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Response.PostConsultarReporteCreditoResponse;
-import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;
+import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
+import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
+import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Adapter.RecyclerAdapterQueryCredit;
+import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class QueryCreditActivity extends AppCompatActivity {
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    IQueryCreditPresenter _iQueryCreditPresenter;
+    private String initDate = "";
+    private String endDate = "";
+    private String typeQuery = "";
+    private String user;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private Date date = new Date();
+
+    //Nuevo
+    private String pValor = "3";
+    EditText searchEditext;
+    TextView count_rows;
+    ImageView iconCancel;
+
+    public QueryCreditActivity() {
+        _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
+    }
 
     Dialog myDialog;
     RealmStorage storage = new RealmStorage();
+    private TabLayout tabFilters;
+    //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,70 +91,254 @@ public class QueryCreditActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorHeader));
         }
 
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        String user = sharedPref.getString("idUser", "");
+        //user = sharedPref.getString("idUser", "");
+        user = "1";
+        typeQuery = "4";
 
+        tabFilters = (TabLayout) findViewById(R.id.tabFilters);
+        tabFilters.addTab(tabFilters.newTab().setText("3 DÍAS"));
+        tabFilters.addTab(tabFilters.newTab().setText("2 SEMANAS"));
+        tabFilters.addTab(tabFilters.newTab().setText("MÁS DE 2 SEMANAS"));
+
+        tabFilters.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        typeQuery = "4";
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                        break;
+                    case 1:
+                        typeQuery = "4";
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
+
+                        break;
+                    case 2:
+                        typeQuery = "4";
+                        try {
+                            Date initDateMonth = dateFormat.parse("2019-01-01");
+                            int maxMonths = monthsBetweenDates(initDateMonth, date);
+                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
+                        } catch (ParseException ex) {
+                            // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
+                        }
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        endDate = "2019-09-11";
+        initDate = dateFormat.format(operarFecha(date, -3, 1));
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
 
-        List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
+        //List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
 
-        new Thread(new Runnable() {
+        //Metodo para buscar con el boton del teclado
+        searchEditext = findViewById(R.id.searchEditext);
+        iconCancel = findViewById(R.id.icon_cancel);
+        searchEditext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void run() {
-                QueryCreditPresenter presenter = new QueryCreditPresenter();
-                HttpResponse model = presenter.Post(user,getBaseContext());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (searchEditext.getText().length() > 0) {
+                        typeQuery = "2";
+                        pValor = searchEditext.getText().toString();
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                    } else {
 
-                if (model != null) {
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
-                    JSONObject data = (JSONObject) model.getData();
+        searchEditext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    try {
+            }
 
-                        JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-                        PostConsultarReporteCreditoResponse ReporteCreditoResponse;
-                        for (int i = 0; i < jSONArray.length(); i++) {
-                            ReporteCreditoResponse = new PostConsultarReporteCreditoResponse();
-                            JSONObject object = (JSONObject) jSONArray.get(i);
-                            ReporteCreditoResponse.setEstadoGeneral(object.getString("estadoGeneral"));
-                            ReporteCreditoResponse.setRegional(object.getString("regional"));
-                            ReporteCreditoResponse.setOficina(object.getString("oficina"));
-                            ReporteCreditoResponse.setCoordinador(object.getString("coordinador"));
-                            ReporteCreditoResponse.setAsesor(object.getString("asesor"));
-                            ReporteCreditoResponse.setPagaduria(object.getString("pagaduria"));
-                            ReporteCreditoResponse.setDocumentoCliente(object.getString("documentoCliente"));
-                            ReporteCreditoResponse.setCliente(object.getString("cliente"));
-                            ReporteCreditoResponse.setFechaEnvioPrevalidacion(object.getString("fechaEnvioPrevalidacion"));
-                            ReporteCreditoResponse.setMontoSugerido(object.getString("montoSugerido"));
-                            ReporteCreditoResponse.setCuotaSug(object.getString("cuotaSug"));
-                            ReporteCreditoResponse.setPlazoSugerido(object.getString("plazoSugerido"));
-                            ReporteCreditoResponse.setFechaPrevalidacion(object.getString("fechaPrevalidacion"));
-                            ReporteCreditoResponse.setObservacionCredito(object.getString("observacionCredito"));
-                            ReporteCreditoResponse.setNumeroSolicitud(object.getString("numeroSolicitud"));
-                            ReporteCreditoResponse.setTipoCr(object.getString("tipoCr"));
-                            ReporteCredito.add(ReporteCreditoResponse);
-                        }
-                        runOnUiThread(new Runnable() {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() == 0) {
+                    iconCancel.setVisibility(View.GONE);
+                    tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGray),
+                            getResources().getColor(R.color.colorBlack));
+                    typeQuery = "4";
+                    LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
+                    for (int j = 0; j < tabStrip.getChildCount(); j++) {
+                        tabStrip.getChildAt(j).setOnTouchListener(new View.OnTouchListener() {
                             @Override
-                            public void run() {
-                                generateControls(ReporteCredito);
-                                myDialog.dismiss();
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return false;
                             }
                         });
                     }
-                    catch (JSONException ex) {
-                        // TODO Auto-generated catch block
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Mapeo consultas",ex,getBaseContext());
+                } else {
+                    iconCancel.setVisibility(View.VISIBLE);
+                    typeQuery = "2";
+                    LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
+                    for (int j = 0; j < tabStrip.getChildCount(); j++) {
+                        tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGrayLight),
+                                getResources().getColor(R.color.ColorGrayLight));
+                        tabStrip.getChildAt(j).setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return true;
+                            }
+                        });
                     }
                 }
-                myDialog.show();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        refreshData(user, typeQuery, initDate, endDate);
+
+        // Counts_rows
+        count_rows = findViewById(R.id.count_rows);
+
+
+        //configurerView(model);
+    }
+
+    private void refreshData(String user, String typeQuery, String initDate, String endDate) {
+        myDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                QueryCreditActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, pValor, "18", user, initDate, endDate);
+                        configurerView(model);
+                    }
+                });
+
             }
         }).start();
+    }
+
+    public void configurerView(PostQueryCredit[] model) {
+
+        //RecyclerView
+        RecyclerView recyclerCredits = findViewById(R.id.recyclerCredits);
+        RecyclerAdapterQueryCredit adapter = null;
+        recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
+
+        ArrayList<Client> clients = new ArrayList<>();
+        String title = "";
+
+        Client client;
+        if (model != null && model.length > 0) {
+            for (int j = 0; j < model.length; j++) {
+                List<PostQueryCredit> modelAux = new ArrayList<>();
+                title = String.format("Cedula: %1s \nNombre: %2s \nNº solicitud: %3s", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
+                String cedula = model[j].getDocumentoCliente();
+                String name = model[j].getCliente();
+                String solicitud = model[j].getNumeroSolicitud();
+                modelAux.add(model[j]);
+
+                client = new Client(cedula, name, solicitud, modelAux);
+                clients.add(client);
+            }
+
+            adapter = new RecyclerAdapterQueryCredit(clients);
+            recyclerCredits.setAdapter(adapter);
+            count_rows.setText(String.format("%1s Solicitudes", model.length));
+
+        } else {
+            adapter = new RecyclerAdapterQueryCredit(clients);
+            recyclerCredits.setAdapter(adapter);
+            count_rows.setText(String.format("%1s Solicitudes", clients.size()));
+            showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
+        }
+        myDialog.dismiss();
+    }
+
+
+    public Date operarFecha(Date fecha, int valor, int type) {
+        Calendar calendar = Calendar.getInstance();
+        if (type == 1) {
+            calendar.setTime(fecha);
+            calendar.add(Calendar.DAY_OF_YEAR, valor);
+        } else if (type == 2) {
+            calendar.setTime(fecha);
+            calendar.add(Calendar.MONTH, valor);
+        }
+        return calendar.getTime();
+    }
+
+    public int monthsBetweenDates(Date startDate, Date endDate) {
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
+        int monthsBetween = 0;
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
+
+        if (dateDiff < 0) {
+            int borrrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH) + borrrow) - start.get(Calendar.DAY_OF_MONTH);
+            monthsBetween--;
+
+            if (dateDiff > 0) {
+                monthsBetween++;
+            }
+        } else {
+            monthsBetween++;
+        }
+        monthsBetween += end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+        monthsBetween += (end.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12;
+        return monthsBetween;
+    }
+
+    private void showDialog(String title, String mensaje) {
+        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+        Alert.setTitle(title);
+        Alert.setMessage(mensaje);
+        Alert.setCancelable(false);
+
+        Alert.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //myDialog.dismiss();
+                        dialog.cancel();
+                    }
+                });
+
+
+        AlertDialog AlertMsg = Alert.create();
+        AlertMsg.setCanceledOnTouchOutside(false);
+        AlertMsg.show();
+
     }
 
     @Override
@@ -144,169 +362,12 @@ public class QueryCreditActivity extends AppCompatActivity {
         Log.d("Lifecycle", "onDestroy()");
     }
 
-    public void generateControls(List data){
-
-        //Se elimina la data anterior
-        storage.deleteInfoConsultaCreditro(this);
-        //Se guarda la data en el Storage
-        storage.saveConsultaCreditro(this,data);
-
-        for (int i = 0; i < data.size(); i++) {
-
-            List<PostConsultarReporteCreditoResponse> ReporteCredito2;
-
-            ReporteCredito2 = data;
-
-            String Documento = ReporteCredito2.get(i).getDocumentoCliente(); //object.getString("documentoCliente");
-            String NombreCliente = ReporteCredito2.get(i).getCliente(); //object.getString("cliente");
-            String Estado = ReporteCredito2.get(i).getEstadoGeneral(); //object.getString("estadoGeneral");
-
-            Context context = null;
-
-            TableLayout tableLayout = (TableLayout)findViewById(R.id.Tabla);
-
-            context = getApplicationContext();
-
-            // Create a new table row.
-            TableRow tableRow = new TableRow(context);
-            tableRow.setPadding(0,10,0,10);
-            tableRow.setBackgroundColor(Color.rgb(235,238,255));
-
-            // Set new table row layout parameters.
-            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-            tableRow.setLayoutParams(layoutParams);
-
-            // Add a TextView in the first column.
-            TextView TextViewDoc = new TextView(context);
-            TextViewDoc.setText(Documento);
-            TextViewDoc.setTextColor(Color.rgb(91,91,91));
-            TextViewDoc.setPadding(15,0,0,0);
-            TextViewDoc.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-            tableRow.addView(TextViewDoc, 0);
-
-            // Add a TextView in the second column
-            TextView TextViewNom = new TextView(context);
-            TextViewNom.setPadding(0,0,20,0);
-            TextViewNom.setText(NombreCliente);
-            TextViewNom.setTextColor(Color.rgb(91,91,91));
-            TextViewNom.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-            tableRow.addView(TextViewNom, 1);
-
-            // Add a TextView in the second column
-            TextView TextViewEst = new TextView(context);
-            TextViewEst.setText(Estado);
-            TextViewEst.setTextColor(Color.rgb(91,91,91));
-            TextViewEst.setPadding(0,0,15,0);
-            TextViewEst.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-            tableRow.addView(TextViewEst, 2);
-
-            // Add a button in the third column
-
-            Button[] my_button = new Button[data.size()];
-            int Index = i;
-
-            my_button[Index] = new Button(context);
-            /*my_button[Index].setBackgroundResource(R.mipmap.logo_lupa);
-            my_button[Index].setMaxHeight(35);
-            my_button[Index].setMaxWidth(30);*/
-            my_button[Index].setText("Ver");
-            my_button[Index].setId(Index);
-
-            my_button[Index].setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("WrongConstant")
-                @Override
-                public void onClick(View v) {
-                    if (my_button[Index].getId() == ((Button) v).getId()){
-                        //Toast.makeText(getBaseContext(), (Integer) data.get(Index), 0).show();
-
-                        //Se obtienen los datos almacenados en el storage
-                        List<PostConsultarReporteCreditoResponse> ConsultaResponse = storage.getConsultaCreditro(getApplicationContext());
-
-                        if (ConsultaResponse == null)
-                        {
-                            Toast.makeText(getBaseContext(),"Se presento un error al obtener el detalle",1).show();
-                            return;
-                        }
-
-                        TextView txtclose;
-                        TextView numeroSolicitud;
-                        TextView tipoCr;
-                        TextView estadoGeneral;
-                        TextView regional;
-                        TextView oficina;
-                        TextView coordinador;
-                        TextView asesor;
-                        TextView pagaduria;
-                        TextView documentoCliente;
-                        TextView cliente;
-                        TextView fechaEnvioPrevalidacion;
-                        TextView montoSugerido;
-                        TextView cuotaSug;
-                        TextView plazoSugerido;
-                        TextView fechaPrevalidacion;
-                        TextView observacionCredito;
-
-                        myDialog.setContentView(R.layout.query_credit_poppup);
-
-                        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
-
-                        numeroSolicitud =(TextView) myDialog.findViewById(R.id.numeroSolicitud);
-                        tipoCr =(TextView) myDialog.findViewById(R.id.tipoCr);
-                        estadoGeneral =(TextView) myDialog.findViewById(R.id.estadoGeneral);
-                        regional =(TextView) myDialog.findViewById(R.id.regional);
-                        oficina =(TextView) myDialog.findViewById(R.id.oficina);
-                        coordinador =(TextView) myDialog.findViewById(R.id.coordinador);
-                        asesor =(TextView) myDialog.findViewById(R.id.asesor);
-                        pagaduria =(TextView) myDialog.findViewById(R.id.pagaduria);
-                        documentoCliente =(TextView) myDialog.findViewById(R.id.documentoCliente);
-                        cliente =(TextView) myDialog.findViewById(R.id.cliente);
-                        fechaEnvioPrevalidacion =(TextView) myDialog.findViewById(R.id.fechaEnvioPrevalidacion);
-                        montoSugerido =(TextView) myDialog.findViewById(R.id.montoSugerido);
-                        cuotaSug =(TextView) myDialog.findViewById(R.id.cuotaSug);
-                        plazoSugerido =(TextView) myDialog.findViewById(R.id.plazoSugerido);
-                        fechaPrevalidacion =(TextView) myDialog.findViewById(R.id.fechaPrevalidacion);
-                        observacionCredito =(TextView) myDialog.findViewById(R.id.observacionCredito);
-
-                        numeroSolicitud.setText(ConsultaResponse.get(Index).getNumeroSolicitud());
-                        tipoCr.setText(ConsultaResponse.get(Index).getTipoCr());
-                        estadoGeneral.setText(ConsultaResponse.get(Index).getEstadoGeneral());
-                        regional.setText(ConsultaResponse.get(Index).getRegional());
-                        oficina.setText(ConsultaResponse.get(Index).getOficina());
-                        coordinador.setText(ConsultaResponse.get(Index).getCoordinador());
-                        asesor.setText(ConsultaResponse.get(Index).getAsesor());
-                        pagaduria.setText(ConsultaResponse.get(Index).getPagaduria());
-                        documentoCliente.setText(ConsultaResponse.get(Index).getDocumentoCliente());
-                        cliente.setText(ConsultaResponse.get(Index).getCliente());
-                        fechaEnvioPrevalidacion.setText(ConsultaResponse.get(Index).getFechaEnvioPrevalidacion());
-                        montoSugerido.setText(ConsultaResponse.get(Index).getMontoSugerido());
-                        cuotaSug.setText(ConsultaResponse.get(Index).getCuotaSug());
-                        plazoSugerido.setText(ConsultaResponse.get(Index).getPlazoSugerido());
-                        fechaPrevalidacion.setText(ConsultaResponse.get(Index).getFechaPrevalidacion());
-                        observacionCredito.setText(ConsultaResponse.get(Index).getObservacionCredito());
-
-                        txtclose.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                myDialog.dismiss();
-                            }
-                        });
-                        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        myDialog.show();
-
-                    }
-                }
-            });
-            tableRow.addView(my_button[Index], 3);
-
-            tableLayout.addView(tableRow);
-
-        }
-
-    }
-
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         startActivityForResult(intent, 0);
     }
 
+    public void onClickCancel(View view) {
+        searchEditext.setText("");
+    }
 }
