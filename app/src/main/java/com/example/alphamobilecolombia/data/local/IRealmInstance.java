@@ -16,5 +16,6 @@ public interface IRealmInstance {
     <T> T GetByAttribute(RealmObject object, String key, String value);
     <T> boolean DeleteObject(RealmObject object);
     <T> boolean DeleteByKey(RealmObject object, String key, String value);
+    <T> boolean DeleteByKey(RealmObject object, String key, int value);
     Realm InitLocalStorage();
 }
