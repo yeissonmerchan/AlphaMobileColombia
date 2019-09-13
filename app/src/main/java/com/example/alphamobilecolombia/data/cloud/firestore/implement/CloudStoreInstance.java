@@ -95,7 +95,6 @@ public class CloudStoreInstance implements ICloudStoreInstance {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-/*            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "syncCollection: nameCollection=" + nameCollection, ex, _context);*/
         }
         return collectionSimulator;
     }

@@ -52,7 +52,8 @@ public class RSA implements IRSA {
             return bytes;
 
         } catch (Exception ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Crear llaves",ex,_context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"createKeyStorage",ex,_context);
             Log.e("Key Realm", Log.getStackTraceString(ex));
         }
         return null;

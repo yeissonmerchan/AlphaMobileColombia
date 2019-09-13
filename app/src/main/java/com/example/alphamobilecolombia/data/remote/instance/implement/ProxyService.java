@@ -4,6 +4,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.entity.Token;
 import com.example.alphamobilecolombia.data.remote.instance.IProxyService;
 import com.example.alphamobilecolombia.mvp.adapter.IProxyServiceAdapter;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.security.IAccessToken;
 
 public class ProxyService implements IProxyService {

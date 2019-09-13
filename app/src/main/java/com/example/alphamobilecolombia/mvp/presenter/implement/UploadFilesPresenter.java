@@ -285,7 +285,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         }
         catch (InterruptedException ex){
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Error en arbol de hilos ",ex,_context);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"SendFileList",ex,_context);
         }
         return isValid;
     }
