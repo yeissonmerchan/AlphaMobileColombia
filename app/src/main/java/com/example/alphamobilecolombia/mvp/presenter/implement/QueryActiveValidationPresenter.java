@@ -6,6 +6,7 @@ import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.configuration.environment.ApiEnviroment;
 import com.example.alphamobilecolombia.data.remote.EndPoint.GetPrevalidacionActiva;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import org.json.JSONObject;
 
@@ -47,6 +48,8 @@ public class QueryActiveValidationPresenter {
         }
         catch (Exception ex){
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Get", ex, context);
         }
         return null;
     }

@@ -4,6 +4,7 @@ import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
 import com.example.alphamobilecolombia.utils.configuration.IParameterField;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 public class ParameterField implements IParameterField {
     IRealmInstance _iRealmInstance;
