@@ -35,7 +35,6 @@ public class ModuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_module);
-
         myDialog = new Dialog(this);
         Window window = this.getWindow();
 
