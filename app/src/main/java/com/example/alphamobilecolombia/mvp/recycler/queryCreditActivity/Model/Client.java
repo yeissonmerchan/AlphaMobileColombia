@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Client extends ExpandableGroup <PostQueryCredit>{
 
-    public Client(String title, List<PostQueryCredit> items) {
-        super(title, items);
+    public Client(String cedula,String name,String solicitud, List<PostQueryCredit> items) {
+        super(String.format("%s,%s,%s", cedula, name, solicitud), items);
     }
 
 }

@@ -25,10 +25,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/relative"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_below="@+id/tabFilters"
                 android:layout_marginTop="5dp">
 
@@ -36,25 +38,32 @@
                     android:id="@+id/icon_search"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/ic_search"
                     android:padding="5dp" />
 
                 <EditText
                     android:id="@+id/searchEditext"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toRightOf="@+id/icon_search"
                     android:hint="@string/hint_search"
                     android:imeOptions="actionSearch"
                     android:inputType="number"
                     android:textColor="@color/colorBlack"
                     android:windowSoftInputMode="stateHidden" />
 
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/icon_cancel"
+                    android:layout_width="0dp"
+                    android:layout_weight=".2"
+                    android:onClick="onClickCancel"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout

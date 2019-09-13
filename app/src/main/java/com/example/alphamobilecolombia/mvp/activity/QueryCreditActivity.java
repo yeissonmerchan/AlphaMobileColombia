@@ -12,6 +12,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -20,6 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +65,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     private String pValor = "3";
     EditText searchEditext;
     TextView count_rows;
+    ImageView iconCancel;
 
     public QueryCreditActivity() {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
@@ -106,7 +110,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         typeQuery = "4";
-                        refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
                         break;
                     case 1:
                         typeQuery = "4";
@@ -148,6 +152,7 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         //Metodo para buscar con el boton del teclado
         searchEditext = findViewById(R.id.searchEditext);
+        iconCancel = findViewById(R.id.icon_cancel);
         searchEditext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -155,10 +160,9 @@ public class QueryCreditActivity extends AppCompatActivity {
                     if (searchEditext.getText().length() > 0) {
                         typeQuery = "2";
                         pValor = searchEditext.getText().toString();
-                        refreshData(user, typeQuery, initDate, dateFormat.format(operarFecha(date, -3, 1)));
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
                     } else {
-                        //Toast toast1 = Toast.makeText(getApplicationContext(), "Por favor digite un número de cédula válido", Toast.LENGTH_LONG);
-                        //toast1.show();
+
                     }
                     return true;
                 }
@@ -166,34 +170,36 @@ public class QueryCreditActivity extends AppCompatActivity {
             }
         });
 
-
-        //Metodo para detectar cuando hace alguna accion con el teclado
-        searchEditext.setOnKeyListener(new View.OnKeyListener() {
+        searchEditext.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    //detecta la tecla de borrar en el teclado
-                    if (searchEditext.getText().length() == 0) {
-                        tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGray),
-                               getResources().getColor(R.color.colorBlack));
-                        typeQuery = "4";
-                        LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
-                        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-                            tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
-                                @Override
-                                public boolean onTouch(View v, MotionEvent event) {
-                                    return false;
-                                }
-                            });
-                        }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() == 0) {
+                    iconCancel.setVisibility(View.GONE);
+                    tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGray),
+                            getResources().getColor(R.color.colorBlack));
+                    typeQuery = "4";
+                    LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
+                    for (int j = 0; j < tabStrip.getChildCount(); j++) {
+                        tabStrip.getChildAt(j).setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return false;
+                            }
+                        });
                     }
                 } else {
+                    iconCancel.setVisibility(View.VISIBLE);
                     typeQuery = "2";
                     LinearLayout tabStrip = ((LinearLayout) tabFilters.getChildAt(0));
-                    for (int i = 0; i < tabStrip.getChildCount(); i++) {
+                    for (int j = 0; j < tabStrip.getChildCount(); j++) {
                         tabFilters.setTabTextColors(getResources().getColor(R.color.ColorGrayLight),
                                 getResources().getColor(R.color.ColorGrayLight));
-                        tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                        tabStrip.getChildAt(j).setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
                                 return true;
@@ -201,9 +207,14 @@ public class QueryCreditActivity extends AppCompatActivity {
                         });
                     }
                 }
-                return false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
+
 
         refreshData(user, typeQuery, initDate, endDate);
 
@@ -246,20 +257,23 @@ public class QueryCreditActivity extends AppCompatActivity {
             for (int j = 0; j < model.length; j++) {
                 List<PostQueryCredit> modelAux = new ArrayList<>();
                 title = String.format("Cedula: %1s \nNombre: %2s \nNº solicitud: %3s", model[j].getDocumentoCliente(), model[j].getCliente(), model[j].getNumeroSolicitud());
+                String cedula = model[j].getDocumentoCliente();
+                String name = model[j].getCliente();
+                String solicitud = model[j].getNumeroSolicitud();
                 modelAux.add(model[j]);
 
-                client = new Client(title, modelAux);
+                client = new Client(cedula, name, solicitud, modelAux);
                 clients.add(client);
             }
 
             adapter = new RecyclerAdapterQueryCredit(clients);
             recyclerCredits.setAdapter(adapter);
-            count_rows.setText(String.format("%1s Resultados", model.length));
+            count_rows.setText(String.format("%1s Solicitudes", model.length));
 
         } else {
             adapter = new RecyclerAdapterQueryCredit(clients);
             recyclerCredits.setAdapter(adapter);
-            count_rows.setText(String.format("%1s Resultados", clients.size()));
+            count_rows.setText(String.format("%1s Solicitudes", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
         }
         myDialog.dismiss();
@@ -353,4 +367,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+    public void onClickCancel(View view) {
+        searchEditext.setText("");
+    }
 }

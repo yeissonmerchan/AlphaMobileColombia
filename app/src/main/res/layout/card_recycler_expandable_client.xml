@@ -19,29 +19,103 @@
             android:layout_height="wrap_content"
             android:padding="10dp">
 
-
-            <TextView
-                android:id="@+id/cedulaText"
+            <LinearLayout
+                android:id="@+id/linear_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Cédula"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/colorBlueLight"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="6dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/arrow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent">
 
+                <LinearLayout
+                    android:id="@+id/linear_cedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight=".4"
+                        android:text="Cédula:"
+                        android:textColor="@color/colorBlueLight"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/cedulaText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight=".4"
+                        android:text="Nombre:"
+                        android:textColor="@color/colorBlueLight"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/nombreText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_solicitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight=".4"
+                        android:text="Solicitud:"
+                        android:textColor="@color/colorBlueLight"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/solicitudText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow"
-                app:layout_constraintBottom_toBottomOf="@+id/cedulaText"
+                app:layout_constraintBottom_toBottomOf="@+id/linear_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cedulaText">
+                app:layout_constraintTop_toTopOf="@+id/linear_content">
 
             </ImageView>
         </androidx.constraintlayout.widget.ConstraintLayout>

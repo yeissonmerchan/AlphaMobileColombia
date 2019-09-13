@@ -12,21 +12,32 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ObjectExpandi
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ClientViewHolder extends GroupViewHolder {
     private TextView cedulaText;
+    private TextView name;
+    private TextView num_solicitud;
     private ImageView arrow;
 
     public ClientViewHolder(View itemView) {
         super(itemView);
-
         arrow = itemView.findViewById(R.id.arrow);
         cedulaText = itemView.findViewById(R.id.cedulaText);
+        name = itemView.findViewById(R.id.nombreText);
+        num_solicitud = itemView.findViewById(R.id.solicitudText);
 
     }
 
     public void bind(Client credit) {
+        List<String> arrayList = Arrays.asList(credit.getTitle().split("\\s*,\\s*"));
+        cedulaText.setText(arrayList.get(0));
+        name.setText(arrayList.get(1));
+        num_solicitud.setText(arrayList.get(2));
 
-        cedulaText.setText(credit.getTitle());
+
     }
 
     @Override
