@@ -61,63 +61,67 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
     public void bind(PostQueryCredit creditDescription) {
 
         String estado = creditDescription.getGeneralState();
-        if (estado.equals("")){
+        if (estado != null && estado.equals("")) {
             fieldEstado.setVisibility(View.GONE);
-        }else{
+        } else {
             estadoText.setText(estado);
         }
 
-        if (creditDescription.getPagaduria().equals("")){
-            fieldPagaduria.setVisibility(View.GONE);
-        }else{
-            pagaduriaText.setText(creditDescription.getPagaduria());
-        }
+        if (creditDescription.getPagaduria() != null)
+            if (creditDescription.getPagaduria().equals("")) {
+                fieldPagaduria.setVisibility(View.GONE);
+            } else {
+                pagaduriaText.setText(creditDescription.getPagaduria());
+            }
 
-        if (creditDescription.getFechaEnvioPrevalidacion().equals("")){
-            fieldFechaEnvio.setVisibility(View.GONE);
-        }else{
-            fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
-        }
+        if (creditDescription.getFechaEnvioPrevalidacion() != null)
+            if (creditDescription.getFechaEnvioPrevalidacion().equals("")) {
+                fieldFechaEnvio.setVisibility(View.GONE);
+            } else {
+                fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
+            }
 
         String montoSugerido = format.format(Integer.parseInt(creditDescription.getMontoSugerido()));
-        if (montoSugerido.equals("")){
-            fieldMontoSugerido.setVisibility(View.GONE);
-        }else{
-            montoSugeridoText.setText(montoSugerido);
-        }
+        if (montoSugerido != null)
+            if (montoSugerido.equals("")) {
+                fieldMontoSugerido.setVisibility(View.GONE);
+            } else {
+                montoSugeridoText.setText(montoSugerido);
+            }
 
         String cuotaSugerida = format.format(Integer.parseInt(creditDescription.getCuotaSug()));
-        if (cuotaSugerida.equals("")){
-            fieldCuotaSugerida.setVisibility(View.GONE);
-        }else{
-            cuotaSugText.setText(cuotaSugerida);
-        }
+        if (cuotaSugerida != null)
+            if (cuotaSugerida.equals("")) {
+                fieldCuotaSugerida.setVisibility(View.GONE);
+            } else {
+                cuotaSugText.setText(cuotaSugerida);
+            }
 
         String plazoSugerido = String.format("%1s Meses", creditDescription.getPlazoSugerido());
-        if (plazoSugerido.equals("")){
+        if (plazoSugerido.equals("")) {
             fieldPlazoSugerido.setVisibility(View.GONE);
-        }else{
+        } else {
             plazoSugeridoText.setText(plazoSugerido);
         }
 
-        if (creditDescription.getFechaPrevalidacion().equals("")){
-            fieldFechaPrevalidacion.setVisibility(View.GONE);
-        }else{
-            fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
-        }
-
+        if (creditDescription.getFechaPrevalidacion() != null)
+            if (creditDescription.getFechaPrevalidacion().equals("")) {
+                fieldFechaPrevalidacion.setVisibility(View.GONE);
+            } else {
+                fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
+            }
 
         String obsPreva = creditDescription.getObsPrevalidacion();
-        if (obsPreva.equals("") || obsPreva == null){
+        if (obsPreva == null || obsPreva.equals("")) {
             fieldObsPrevalidacion.setVisibility(View.GONE);
-        }else{
+        } else {
             observacionPrevaText.setText(obsPreva);
         }
 
-       String obsCredrit = creditDescription.getObservacionCredito();
-        if (obsCredrit !=null){
+        String obsCredrit = creditDescription.getObservacionCredito();
+        if (obsCredrit != null && !obsCredrit.equals("")) {
             observacionCreditoText.setText(obsCredrit);
-        }else{
+        } else {
             fieldObsCredito.setVisibility(View.GONE);
         }
     }
