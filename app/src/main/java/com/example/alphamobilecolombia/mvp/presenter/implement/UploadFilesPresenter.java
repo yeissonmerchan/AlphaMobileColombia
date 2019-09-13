@@ -1,25 +1,32 @@
 package com.example.alphamobilecolombia.mvp.presenter.implement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.alphamobilecolombia.data.local.entity.FileStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocumentRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
+import com.example.alphamobilecolombia.mvp.activity.ProcessCompletedActivity;
 import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
+import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
+import com.example.alphamobilecolombia.utils.configuration.IFileStorageService;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
+import com.google.api.BackendOrBuilder;
+import com.google.gson.Gson;
 
 
 import org.json.JSONArray;
@@ -33,6 +40,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
 
     IUploadFileAdapter _iUploadFileAdapter;
     IFileStorage _iFileStorage;
+    IFileStorageService _iFileStorageService;
     Context _context;
 
     CountDownLatch executionCompleted;
@@ -40,9 +48,10 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
     List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();
     List<com.example.alphamobilecolombia.mvp.models.File> listFiles = null;
 
-    public UploadFilesPresenter(IUploadFileAdapter iUploadFileAdapter, IFileStorage iFileStorage, Context context){
+    public UploadFilesPresenter(IUploadFileAdapter iUploadFileAdapter, IFileStorage iFileStorage, IFileStorageService iFileStorageService, Context context){
         _iUploadFileAdapter = iUploadFileAdapter;
         _iFileStorage = iFileStorage;
+        _iFileStorageService = iFileStorageService;
         _context = context;
     }
 
@@ -50,6 +59,9 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         int idDocument = 0;
 
         switch(name){
+            case "CargueDocumentosPreValidación":
+                idDocument = 27;
+                break;
             case "SolicitudCreditoCara1":
                 idDocument = 66;
                 break;
@@ -91,6 +103,54 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return idDocument;
     }
 
+    private String GetNameDocument(int idDocument){
+        String nameDocument = null;
+
+        switch(idDocument){
+            case 27:
+                nameDocument = "CargueDocumentosPreValidación";
+                break;
+            case 66:
+                nameDocument = "SolicitudCreditoCara1";
+                break;
+            case 67:
+                nameDocument = "SolicitudCreditoCara2";
+                break;
+            case 68:
+                nameDocument = "CedulaCara1";
+                break;
+            case 69:
+                nameDocument = "CedulaCara2";
+                break;
+            case 70:
+                nameDocument = "Desprendible1";
+                break;
+            case 71:
+                nameDocument = "Desprendible2";
+                break;
+            case 72:
+                nameDocument = "Desprendible3";
+                break;
+            case 73:
+                nameDocument = "Desprendible4";
+                break;
+            case 74:
+                nameDocument = "FormatoFirmaRuego";
+                break;
+            case 75:
+                nameDocument = "SelloNotariaFirmaRuego";
+                break;
+            case 76:
+                nameDocument = "CedulaTestigoFirmaRuego";
+                break;
+            case 77:
+                nameDocument = "TratamientoDatosPersonales";
+                break;
+        }
+
+        return nameDocument;
+    }
+
     private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile){
         String base64 = _iFileStorage.GetFile(fileUpload.getName(),codeCreditSubject,pathFile);
         String pathFileLocal = pathFile+"/"+fileUpload.getName();
@@ -99,7 +159,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         String user = sharedPref.getString("idUser", "");
 
         PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
-        newDocument.setRutaArchivo(fileUpload.getName());
+        //newDocument.setRutaArchivo(fileUpload.getName());
         newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
         newDocument.setTipoArchivoID(GetIdDocument(fileUpload.getType()));
         newDocument.setTipoArchivoNombre(fileUpload.getType());
@@ -111,6 +171,65 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         updateUploadFileName(fileUpload.getType(),fileUpload.getName());
 
        return _iUploadFileAdapter.Post(newDocument);
+    }
+
+    private boolean SaveFilesLocalStorage(ApiResponse insertList, String pathFiles, String documentNumber){
+        boolean isValid = false;
+        List<FileStorage> fileStorages = new ArrayList<>();
+        try{
+            if(insertList.getCodigoRespuesta() == 200) {
+                String data = insertList.getData().toString();
+                JSONArray jsonObject = new JSONArray(data);
+                PostSaveDocumentRequest[] httpResponse = new Gson().fromJson(jsonObject.toString(), PostSaveDocumentRequest[].class);
+
+                for(PostSaveDocumentRequest file : httpResponse) {
+                    FileStorage fileStorage = new FileStorage();
+                    fileStorage.setIdPerson(file.getUsuarioRegistroID());
+                    fileStorage.setIdCreditSubject(file.getSujetoCreditoID());
+                    fileStorage.setIdTypeFile(file.getTipoArchivoID());
+                    fileStorage.setDocumentNumber(Integer.parseInt(documentNumber));
+                    fileStorage.setNameType(GetNameDocument(file.getTipoArchivoID()));
+                    fileStorage.setName(file.getNombreArchivo());
+                    fileStorage.setRequired(true);
+                    fileStorage.setUpload(false);
+                    fileStorage.setFilePath(pathFiles);
+                    fileStorages.add(fileStorage);
+                }
+
+                isValid = _iFileStorageService.InsertFilesForCreditSubject(fileStorages);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return isValid;
+    }
+
+    public boolean SaveListTotalFiles(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFiles, String documentNumber) {
+        try {
+            List<PostSaveDocumentRequest> listSendRequest = new ArrayList<>();
+            SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            String user = sharedPref.getString("idUser", "");
+            for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
+                //newDocument.setRutaArchivo(file.getName());
+                newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
+                newDocument.setTipoArchivoID(GetIdDocument(file.getType()));
+                newDocument.setTipoArchivoNombre(file.getType());
+                newDocument.setUsuarioRegistroID(Integer.parseInt(user));
+                newDocument.setExtensionArchivo(".jpg");
+                newDocument.setNombreArchivo(file.getName());
+                listSendRequest.add(newDocument);
+            }
+
+            ApiResponse resultFiles = _iUploadFileAdapter.Post(listSendRequest);
+            return SaveFilesLocalStorage(resultFiles,pathFiles,documentNumber);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            //LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
+        }
+        return false;
     }
 
     public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile) {

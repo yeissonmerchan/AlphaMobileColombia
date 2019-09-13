@@ -24,6 +24,7 @@ import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
@@ -37,6 +38,8 @@ import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -47,6 +50,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -72,7 +76,7 @@ import id.zelory.compressor.Compressor;
 import io.realm.RealmObject;
 
 
-public class UploadFileActivity extends AppCompatActivity {
+public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener {
     List<com.example.alphamobilecolombia.mvp.models.File> listUpload = new ArrayList<com.example.alphamobilecolombia.mvp.models.File>();
     RealmStorage storage = new RealmStorage();
     View view;
@@ -106,12 +110,56 @@ public class UploadFileActivity extends AppCompatActivity {
 
     String nameUriPath;
 
+    //Varible para identificar si el archivo viene de galeria
+    private boolean fileGallery = false;
+
+    //Variable para administrar bottom Dialog
+    private LinearLayout tomarFotoLayout, vistaPreviaLayout, abrirGaleriaLayout;
+    private BottomSheetDialog bottomSheetDialog;
+    private View viewActivityActual;
+    private Dialog dialogPreviewFullScreen;
+    private ImageView imageViewFullScreen;
+    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;
+
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
         _iPersonPresenter = diContainer.injectDIIPersonPresenter(this);
         _iParameterField = diContainer.injectIParameterField(this);
         _iSelectList = diContainer.injectISelectList(this);
+    }
+
+    private void CreateBottomSheetDialog() {
+        if(bottomSheetDialog == null) {
+            View view = LayoutInflater.from(this).inflate(R.layout.option_upload_file_dialog, null);
+            tomarFotoLayout = view.findViewById(R.id.tomarFoto);
+            vistaPreviaLayout = view.findViewById(R.id.vistaPrevia);
+            abrirGaleriaLayout = view.findViewById(R.id.abrirGaleria);
+
+            //Evento Click
+            tomarFotoLayout.setOnClickListener(this);
+            vistaPreviaLayout.setOnClickListener(this);
+            abrirGaleriaLayout.setOnClickListener(this);
+
+            bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(view);
+
+            //Inicia full screen dialog
+            View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
+            imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
+            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+
+            dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+            dialogPreviewFullScreen.setContentView(viewFullScreen);
+
+            btnCloseFullScreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogPreviewFullScreen.dismiss();
+                }
+            });
+
+        }
     }
 
     @Override
@@ -132,9 +180,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         isCreateUserAndSubject = false;
-
-        cleanInitImages();
-
+        CreateBottomSheetDialog();
         /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
@@ -153,15 +199,6 @@ public class UploadFileActivity extends AppCompatActivity {
         String value = busqueda.getValue();*/
 
         // View PopupMenu
-        btnCloseView1 = (ImageButton) findViewById(R.id.btnCloseView1);
-        //btnCloseView2 = (ImageButton) findViewById(R.id.btnCloseView2);
-        btnCloseView3 = (ImageButton) findViewById(R.id.btnCloseView3);
-        btnCloseView4 = (ImageButton) findViewById(R.id.btnCloseView4);
-        btnCloseView5 = (ImageButton) findViewById(R.id.btnCloseView5);
-        btnCloseView6 = (ImageButton) findViewById(R.id.btnCloseView6);
-        btnCloseView7 = (ImageButton) findViewById(R.id.btnCloseView7);
-        btnCloseView8 = (ImageButton) findViewById(R.id.btnCloseView8);
-        btnCloseView9 = (ImageButton) findViewById(R.id.btnCloseView9);
     }
 
 
@@ -302,8 +339,8 @@ public class UploadFileActivity extends AppCompatActivity {
 
     // Method Permission Camera
 
-    private void checkPermissionCamera(View v) {
-
+    public void checkPermissionCamera(View v) {
+        idElement = getByNameImage(v);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             tomarFoto(v);
         } else {
@@ -334,6 +371,7 @@ public class UploadFileActivity extends AppCompatActivity {
     }
 
 
+
     public static class ExistFile{
         public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;
@@ -346,7 +384,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
     public void recuperarFotoCargada(View v) {
         try {
-            //idElement = getIdElementView(v);
+            idElement = getByNameImage(v);
             boolean isExist = false;
             boolean isPhoto = false;
             String path = "";
@@ -360,26 +398,22 @@ public class UploadFileActivity extends AppCompatActivity {
             }
 
             if(isExist) {
-                Matrix matrix = new Matrix();
-                matrix.postRotate(90);
-                Bitmap rotatedBitmap = null;
-                //Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+                Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
                 if (isPhoto){
-                    Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-                    rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                    bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
                 }else {
                     try {
                         Uri imageUri = Uri.parse(path);
-                        Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
-                        rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-
-
-                getViewImage(v, rotatedBitmap, true);
+                imageViewFullScreen.setImageBitmap(bitmap1);
+                dialogPreviewFullScreen.show();
+            } else {
+                NotificacionErrorDatos(this.context, "No se ha cargado un archivo para previsualizar.");
             }
         }
         catch (Exception ex){
@@ -390,9 +424,10 @@ public class UploadFileActivity extends AppCompatActivity {
 
     public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
-            //showLoading(v);
-            //idElement = getIdElementView(v);
-            String pathFileLocal = getExternalFilesDir(null)+"/"+getNameFile(v);
+            String pathFileLocal = getExternalFilesDir(null) + "/" + getNameFile(v);
+            if (fileGallery) {
+                pathFileLocal = path;
+            }
 
             java.io.File fileLocal = new java.io.File(pathFileLocal);
             int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length()/1024));
@@ -434,34 +469,6 @@ public class UploadFileActivity extends AppCompatActivity {
 
             Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
-
-            getViewImage(v,rotatedBitmap,isfetch);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
-        }
-    }
-
-    public void recuperarImagenGaleria(View v, boolean isfetch, String path) {
-        try {
-            Bitmap bitmap = null;
-            try {
-                Uri imageUri = Uri.parse(path);
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(), bitmap.getHeight(), true);
-                getViewImage(v,bitmap,isfetch);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            /*Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);*/
-
-            //getViewImage(v,rotatedBitmap,isfetch);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -640,204 +647,6 @@ public class UploadFileActivity extends AppCompatActivity {
 
     }
 
-    public void cleanInitImages(){
-        ImageView imagen1 = findViewById(R.id.imageView1);
-        imagen1.setImageBitmap(null);
-
-        //ImageView imagen2 = findViewById(R.id.imageView2);
-        //imagen2.setImageBitmap(null);
-
-        ImageView imagen3 = findViewById(R.id.imageView3);
-        imagen3.setImageBitmap(null);
-
-        ImageView imagen4 = findViewById(R.id.imageView4);
-        imagen4.setImageBitmap(null);
-
-        ImageView imagen5 = findViewById(R.id.imageView5);
-        imagen5.setImageBitmap(null);
-
-        ImageView imagen6 = findViewById(R.id.imageView6);
-        imagen6.setImageBitmap(null);
-
-        ImageView imagen7 = findViewById(R.id.imageView7);
-        imagen7.setImageBitmap(null);
-
-        ImageView imagen8 = findViewById(R.id.imageView8);
-        imagen8.setImageBitmap(null);
-
-        ImageView imagen9 = findViewById(R.id.imageView9);
-        imagen9.setImageBitmap(null);
-    }
-
-    public void getViewImage(View v, Bitmap bitmap, boolean isFetch){
-        int idButton = v.getId();
-        if (isFetch)
-        {
-            idButton = getIdViewImage(idElement);
-
-            /*ImageView imagen1 = findViewById(R.id.imageView);
-            if(imagen1.getVisibility() == View.GONE && isFetch){
-                imagen1.setImageBitmap(bitmap);
-                imagen1.setVisibility(View.VISIBLE);
-            }
-            else if(imagen1.getVisibility() == View.VISIBLE){
-                imagen1.setImageBitmap(null);
-                imagen1.setVisibility(View.GONE);
-            }*/
-            switch (idButton) {
-                case R.id.imageView1:
-                    ImageView imagen1 = findViewById(R.id.imageView1);
-                    if(imagen1.getVisibility() == View.GONE && isFetch){
-                        imagen1.setImageBitmap(bitmap);
-                        imagen1.setVisibility(View.VISIBLE);
-                        btnCloseView1.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen1.getVisibility() == View.VISIBLE){
-                        imagen1.setImageBitmap(null);
-                        imagen1.setVisibility(View.GONE);
-                        btnCloseView1.setVisibility(View.GONE);
-                    }
-                    break;
-               /* case R.id.imageView2:
-                    ImageView imagen2 = findViewById(R.id.imageView2);
-                    if(imagen2.getVisibility() == View.GONE && isFetch){
-                        imagen2.setImageBitmap(bitmap);
-                        imagen2.setVisibility(View.VISIBLE);
-                        btnCloseView2.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen2.getVisibility() == View.VISIBLE){
-                        imagen2.setImageBitmap(null);
-                        imagen2.setVisibility(View.GONE);
-                    }
-                    break;*/
-                case R.id.imageView3:
-                    ImageView imagen3 = findViewById(R.id.imageView3);
-                    if(imagen3.getVisibility() == View.GONE && isFetch){
-                        imagen3.setImageBitmap(bitmap);
-                        imagen3.setVisibility(View.VISIBLE);
-                        btnCloseView3.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen3.getVisibility() == View.VISIBLE){
-                        imagen3.setImageBitmap(null);
-                        imagen3.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView4:
-                    ImageView imagen4 = findViewById(R.id.imageView4);
-                    if(imagen4.getVisibility() == View.GONE && isFetch){
-                        imagen4.setImageBitmap(bitmap);
-                        imagen4.setVisibility(View.VISIBLE);
-                        btnCloseView4.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen4.getVisibility() == View.VISIBLE){
-                        imagen4.setImageBitmap(null);
-                        imagen4.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView5:
-                    ImageView imagen5 = findViewById(R.id.imageView5);
-                    if(imagen5.getVisibility() == View.GONE && isFetch){
-                        imagen5.setImageBitmap(bitmap);
-                        imagen5.setVisibility(View.VISIBLE);
-                        btnCloseView5.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen5.getVisibility() == View.VISIBLE){
-                        imagen5.setImageBitmap(null);
-                        imagen5.setVisibility(View.GONE);
-                    }
-                    break;
-                case R.id.imageView6:
-                    ImageView imagen6 = findViewById(R.id.imageView6);
-                    if(imagen6.getVisibility() == View.GONE && isFetch){
-                        imagen6.setImageBitmap(bitmap);
-                        imagen6.setVisibility(View.VISIBLE);
-                        btnCloseView6.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen6.getVisibility() == View.VISIBLE){
-                        imagen6.setImageBitmap(null);
-                        imagen6.setVisibility(View.GONE);
-                    }
-                    break;
-                case R.id.imageView7:
-                    ImageView imagen7 = findViewById(R.id.imageView7);
-                    if(imagen7.getVisibility() == View.GONE && isFetch){
-                        imagen7.setImageBitmap(bitmap);
-                        imagen7.setVisibility(View.VISIBLE);
-                        btnCloseView7.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen7.getVisibility() == View.VISIBLE){
-                        imagen7.setImageBitmap(null);
-                        imagen7.setVisibility(View.GONE);
-
-                    }
-                    break;
-                case R.id.imageView8:
-                    ImageView imagen8 = findViewById(R.id.imageView8);
-                    if(imagen8.getVisibility() == View.GONE && isFetch){
-                        imagen8.setImageBitmap(bitmap);
-                        imagen8.setVisibility(View.VISIBLE);
-                        btnCloseView8.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen8.getVisibility() == View.VISIBLE){
-                        imagen8.setImageBitmap(null);
-                        imagen8.setVisibility(View.GONE);
-
-                    }
-                    break;
-
-                case R.id.imageView9:
-                    ImageView imagen9 = findViewById(R.id.imageView9);
-                    if(imagen9.getVisibility() == View.GONE && isFetch){
-                        imagen9.setImageBitmap(bitmap);
-                        imagen9.setVisibility(View.VISIBLE);
-                        btnCloseView9.setVisibility(View.VISIBLE);
-                    }
-                    else if(imagen9.getVisibility() == View.VISIBLE){
-                        imagen9.setImageBitmap(null);
-                        imagen9.setVisibility(View.GONE);
-                    }
-                    break;
-            }
-        }
-
-    }
-
-    public String getIdElementView(View v){
-        String id = "";
-        switch (v.getId()) {
-            /*case R.id.btnView1:
-                id = "CargueDocumentosPreValidación";
-                break;
-            case R.id.btnView2:
-                id = "SolicitudCreditoCara2";
-                break;
-            case R.id.btnView3:
-                id = "CedulaCara1";
-                break;
-            case R.id.btnView4:
-                id = "CedulaCara2";
-                break;
-            case R.id.btnView5:
-                id = "Desprendible1";
-                break;
-            case R.id.btnView6:
-                id = "Desprendible2";
-                break;
-            case R.id.btnView7:
-                id = "Desprendible3";
-                break;
-            case R.id.btnView8:
-                id = "Desprendible4";
-                break;
-            case R.id.btnView9:
-                id = "TratamientoDatosPersonales";
-                break;*/
-        }
-        return id;
-
-    }
 
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
@@ -881,77 +690,8 @@ public class UploadFileActivity extends AppCompatActivity {
         return true;
     }
 
-    public int getIdViewImage(String typeFile){
-        int id = 0;
-        switch (typeFile) {
-            case "CargueDocumentosPreValidación":
-                id = R.id.imageView1;
-                break;
-            /*case "SolicitudCreditoCara2":
-                id = R.id.imageView2;
-                break;*/
-            case "CedulaCara1":
-                id = R.id.imageView3;
-                break;
-            case "CedulaCara2":
-                id = R.id.imageView4;
-                break;
-            case "Desprendible1":
-                id = R.id.imageView5;
-                break;
-            case "Desprendible2":
-                id = R.id.imageView6;
-                break;
-            case "Desprendible3":
-                id = R.id.imageView7;
-                break;
-            case "Desprendible4":
-                id = R.id.imageView8;
-                break;
-            case "TratamientoDatosPersonales":
-                id = R.id.imageView9;
-                break;
-        }
-        return id;
-
-    }
-
-    /*public String getIdElementUpload(View v){
-        String id = "";
-        switch (v.getId()) {
-            case R.id.btnUpload:
-                id = "CargueDocumentosPreValidación";
-                break;
-            case R.id.btnUpload2:
-                id = "SolicitudCreditoCara2";
-                break;
-            case R.id.btnUpload3:
-                id = "CedulaCara1";
-                break;
-            case R.id.btnUpload4:
-                id = "CedulaCara2";
-                break;
-            case R.id.btnUpload5:
-                id = "Desprendible1";
-                break;
-            case R.id.btnUpload6:
-                id = "Desprendible2";
-                break;
-            case R.id.btnUpload7:
-                id = "Desprendible3";
-                break;
-            case R.id.btnUpload8:
-                id = "Desprendible4";
-                break;
-            case R.id.btnUpload9:
-                id = "TratamientoDatosPersonales";
-                break;
-        }
-        return id;
-    }*/
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        recuperarFotoCargada(view);
+        //recuperarFotoCargada(view);
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PHOTO_CODE:
@@ -987,27 +727,20 @@ public class UploadFileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         boolean isExist = false;
+                        fileGallery = false;
 
                         for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                             if(file.getType().equals(nameFile)) {
-                                isExist = true;
+                                listUpload.remove(file);
+                                break;
                             }
                         }
-
-                        if (!isExist){
-                            fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
-                            listUpload.add(fileUpload);
+                        fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
+                        listUpload.add(fileUpload);
+                        if(!isPhoto){
+                            fileGallery = true;
                         }
-
-                        //LoadinAsyncTask loadinAsyncTask = new LoadinAsyncTask();
-                        //loadinAsyncTask.execute();
-                        //uploadFilesPresenter.uploadFiles(pathFile,this);
-                        if(isPhoto){
-                            recuperarImagen(view,false,path);
-                        }else {
-                            recuperarImagenGaleria(view,false,path);
-                        }
-
+                        recuperarImagen(view,false,path);
                         changeStatusUpload(true);
                     }
                 });
@@ -1124,64 +857,41 @@ public class UploadFileActivity extends AppCompatActivity {
             if(isSuccessSubjectCredit){
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
-                Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
-                startActivity(intent);
+                boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
+                if(responseSaveFiles) {
+                    NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
+                }
+                else{
+                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                    startActivity(intent);
+                }
             }
             else {
-                NotificacionErrorDatos(this.context);
+                NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
             }
         }
         else {
-            NotificacionErrorDatos(this.context);
+            NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
         }
+    }
 
-        /*
-        ProcessCompletedPresenter presenter = new ProcessCompletedPresenter();
-        HttpResponse model = presenter.PostInsertPerson(persona, user,this.context);
-
-        if (model != null) {
-
-            try {
-                if(model.getCode().contains("200")){
-
-                    JSONObject objeto = (JSONObject) model.getData();
-                    setData(sharedPref, objeto);
-                    String codigoTransaccion = objeto.getString("codigoTransaccion");
-                    int IdTypeEmployee = Integer.parseInt(getCodeTipoEmpleado(IdTipoEmpleado));
-                    int IdTypeCont = Integer.parseInt(getCodeTipoContrato(IdTipoContrato));
-                    int IdTypeDest = Integer.parseInt(getCodeDestinoCredito(IdDestinoCredito));
-                    int idPagaduria = Integer.parseInt(IdPagaduria);
-
-                    HttpResponse modelcreditSubject = presenter.PostInsertCreditSubject(persona, codigoTransaccion, IdTypeEmployee, IdTypeCont, IdTypeDest,user, idPagaduria,this.context);
-                    if (modelcreditSubject!=null){
-
-                        if(modelcreditSubject.getCode().contains("200")) {
-
-                            JSONObject objeto2 = (JSONObject) modelcreditSubject.getData();
-                            setData(sharedPref, objeto2);
-                            String idSujetoCredito = objeto2.getString("codigoTransaccion");
-                            idSujeroCredito = idSujetoCredito;
-                            isCreateUserAndSubject = true;
-                        }
-                        else{
-                            NotificacionErrorDatos(this.context);
-                        }
+    public void NotificacionErrorDatos(final Context view, String mensajeError){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
+        builder1.setMessage(mensajeError);
+        builder1.setCancelable(false);
+        builder1.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        //Intent intent = new Intent(view, ModuleActivity.class);
+                        //startActivityForResult(intent, 0);
                     }
-                }
-                else{
-                    NotificacionErrorDatos(this.context);
-                }
-            }
-            catch (JSONException ex)
-            {
-                System.out.println("Ha ocurrido un error! "+ex.getMessage());
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona "+persona.getCedula(),ex,this);
-            }
-        }
-        else{
-            NotificacionErrorDatos(this.context);
-        }
-        */
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.setCanceledOnTouchOutside(false);
+        alert11.show();
     }
 
     public void NotificacionErrorDatos(final Context view){
@@ -1249,7 +959,7 @@ public class UploadFileActivity extends AppCompatActivity {
     public String getByNameImage(View v){
         String id = "";
         switch (v.getId()) {
-            case R.id.btnPopup1:
+            case R.id.DocPrevalidacion:
                 id = "CargueDocumentosPreValidación";
                 break;
             /*case R.id.btnPopup2:
@@ -1312,84 +1022,12 @@ public class UploadFileActivity extends AppCompatActivity {
             }
         });
         popup.show();
-
-        closeButtonImage(view, popup);
-
-    }
-
-    private void closeButtonImage(View view, PopupMenu popup){
-        switch (view.getId()){
-            case R.id.btnCloseView1:
-                btnCloseView1.setVisibility(View.GONE);
-                ImageView imagen1 = findViewById(R.id.imageView1);
-                imagen1.setImageBitmap(null);
-                imagen1.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            /*case R.id.btnCloseView2:
-                btnCloseView2.setVisibility(View.GONE);
-
-                ImageView imagen2 = findViewById(R.id.imageView2);
-                imagen2.setImageBitmap(null);
-                imagen2.setVisibility(View.GONE);
-                popup.dismiss();
-                break;*/
-
-            case R.id.btnCloseView3:
-                btnCloseView3.setVisibility(View.GONE);
-                ImageView imagen3 = findViewById(R.id.imageView3);
-                imagen3.setImageBitmap(null);
-                imagen3.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView4:
-                btnCloseView4.setVisibility(View.GONE);
-                ImageView imagen4 = findViewById(R.id.imageView4);
-                imagen4.setImageBitmap(null);
-                imagen4.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView5:
-                btnCloseView5.setVisibility(View.GONE);
-                ImageView imagen5 = findViewById(R.id.imageView5);
-                imagen5.setImageBitmap(null);
-                imagen5.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView6:
-                btnCloseView6.setVisibility(View.GONE);
-                ImageView imagen6 = findViewById(R.id.imageView6);
-                imagen6.setImageBitmap(null);
-                imagen6.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView7:
-                btnCloseView7.setVisibility(View.GONE);
-                ImageView imagen7 = findViewById(R.id.imageView7);
-                imagen7.setImageBitmap(null);
-                imagen7.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView8:
-                btnCloseView8.setVisibility(View.GONE);
-                ImageView imagen8 = findViewById(R.id.imageView8);
-                imagen8.setImageBitmap(null);
-                imagen8.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-            case R.id.btnCloseView9:
-                btnCloseView9.setVisibility(View.GONE);
-                ImageView imagen9 = findViewById(R.id.imageView9);
-                imagen9.setImageBitmap(null);
-                imagen9.setVisibility(View.GONE);
-                popup.dismiss();
-                break;
-        }
     }
 
     //OpenGallery
-    private void checkPermissionGallery(View view) {
+    public void checkPermissionGallery(View view) {
         this.view = view;
+        idElement = getByNameImage(view);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery(view);
         } else {
@@ -1417,5 +1055,27 @@ public class UploadFileActivity extends AppCompatActivity {
         java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
+    }
+
+    public void ShowDialog(View view) {
+        viewActivityActual = view;
+        idElement = getByNameImage(view);
+        bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch ( view.getId()){
+            case R.id.tomarFoto:
+                checkPermissionCamera(viewActivityActual);
+                break;
+            case R.id.vistaPrevia:
+                recuperarFotoCargada(viewActivityActual);
+                break;
+            case R.id.abrirGaleria:
+                checkPermissionGallery(viewActivityActual);
+                break;
+        }
+        bottomSheetDialog.cancel();
     }
 }
