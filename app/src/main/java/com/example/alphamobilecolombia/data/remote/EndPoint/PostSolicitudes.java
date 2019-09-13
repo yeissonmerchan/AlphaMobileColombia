@@ -5,12 +5,12 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public interface PostSolicitudes
-{
-        String API_ROUTE = "/Generic/api/ConsultarReporteCredito/GetList";
+public interface PostSolicitudes {
+    String API_ROUTE = "/Generic/api/ConsultarReporteCredito/GetList";
 
-        @POST(API_ROUTE)
-        Call<String> GetListSolicitudes(
-                @Body RequestBody body
-        );
+    //@Header("Authorization", your key);
+    @POST(API_ROUTE)
+    Call<String> GetListSolicitudes(
+            @Body RequestBody body
+    );
 }

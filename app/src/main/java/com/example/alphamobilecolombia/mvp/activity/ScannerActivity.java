@@ -130,7 +130,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** SEGUNDO NOMBRE */
@@ -151,7 +152,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** PRIMER APELLIDO */
@@ -172,7 +174,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** SEGUNDO APELLIDO */
@@ -193,7 +196,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         }
                         return cs.toString().replaceAll("[^A-Za-zñÑáéíóúÁÉÍÓÚ ]", "");
                     }
-                }
+                },
+                new InputFilter.AllCaps()
         });
 
         /********************************************************************** NUMERO IDENTIFICACIÓN */
@@ -284,12 +288,6 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
-
-
-
-
-
-
     //Se prodcue cuando se presiona el botón Continuar
     public void onClickBtnNextTerms(View view) throws JSONException {
         ValidarPrevalidacionesActivas(edt_numberIdentification.getText().toString(), person);
@@ -297,7 +295,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    public void ValidarCampos() {
+    public void ValidarCampos(){
         //Define el error
         String Error = "";
 
@@ -332,16 +330,30 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } else {
             formulario.Validar(this, AdditionalDataActivity.class,
                     new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"},
-                    new String[]{"edt_names2", "edt_lastNames2"});
+                    new String[] {"edt_names2", "edt_lastNames2"});
         }
     }
 
 
-    //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
     public void ValidarPrevalidacionesActivas(String Documento, Person person) throws JSONException {
 
         QueryActiveValidationPresenter presenter = new QueryActiveValidationPresenter();
-        HttpResponse model = presenter.Get(Documento, getBaseContext());
+        HttpResponse model = presenter.Get(Documento,getBaseContext());
 
         if (model != null) {
 
@@ -349,16 +361,16 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
             JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
 
-            if (jSONArray.length() > 0) {
+            if (jSONArray.length()>0){
 
                 JSONObject object = (JSONObject) jSONArray.get(0);
 
                 boolean accion;
                 accion = Boolean.parseBoolean(object.getString("accion"));
 
-                if (accion) {
+                if(accion){
 
-                    try {
+                    try{
 
                         AlertDialog.Builder Alert = new AlertDialog.Builder(this);
                         Alert.setTitle("IMPORTANTE");
@@ -378,20 +390,48 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                         AlertDialog AlertMsg = Alert.create();
                         AlertMsg.setCanceledOnTouchOutside(false);
                         AlertMsg.show();
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex){
                         ex.printStackTrace();
                         LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ValidarPrevalidacionesActivas", ex, this);
                     }
-                } else {
+                }else {
                     ValidarCampos();
                 }
-            } else {
+            }else {
                 ValidarCampos();
             }
-        } else {
+        }else {
             ValidarCampos();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override
@@ -547,7 +587,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected Dialog onCreateDialog(int id) {
         final Dialog dialog;
-        switch (id) {
+        switch(id) {
             case DIALOG_REALLY_EXIT_ID:
                 dialog = new AlertDialog.Builder(this).setMessage(
                         "¿ Desea terminar el proceso ?")

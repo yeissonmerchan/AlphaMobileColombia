@@ -151,13 +151,15 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return nameDocument;
     }
 
-    private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile){
-        String base64 = _iFileStorage.GetFile(fileUpload.getName(),codeCreditSubject,pathFile);
-        String pathFileLocal = pathFile+"/"+fileUpload.getName();
+    private String getNameFile(String documentNumber, String typeFile){
+        return documentNumber+typeFile+".jpg";
+    }
+
+    private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile, String documentNumber){
+        String base64 = _iFileStorage.GetFile(getNameFile(documentNumber,fileUpload.getType()),codeCreditSubject,pathFile);
 
         SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
-
         PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
         //newDocument.setRutaArchivo(fileUpload.getName());
         newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
@@ -168,7 +170,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         newDocument.setNombreArchivo(fileUpload.getName());
         newDocument.setArchivo(base64);
 
-        updateUploadFileName(fileUpload.getType(),fileUpload.getName());
+        //updateUploadFileName(fileUpload.getType(),fileUpload.getName());
 
        return _iUploadFileAdapter.Post(newDocument);
     }
@@ -237,30 +239,30 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return false;
     }
 
-    public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile) {
+    public boolean SendFileList(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFile, String documentNumber) {
         boolean isValid = false;
         try {
             List<com.example.alphamobilecolombia.mvp.models.File> listSend = new ArrayList<>();
-            if(listFiles != null){
+            /*if(listFiles != null){
                 if(pendingUpload().size()>0){
                     listSend = pendingUpload();
                 }
             }
             else{
                 listSend = listUpload;
-            }
-
-            executionCompleted = new CountDownLatch(listSend.size());
+            }*/
+            listSend = listUpload;
+            //executionCompleted = new CountDownLatch(listSend.size());
             for (com.example.alphamobilecolombia.mvp.models.File file : listSend) {
                 try {
-                    new Thread() {
+                    /*new Thread() {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
-                        public void run() {
-                            System.out.println("Thread number :" + Thread.currentThread().getName());
-                            ApiResponse apiResponse = Upload(file, codeCreditSubject,pathFile);
+                        public void run() {*/
+                            //System.out.println("Thread number :" + Thread.currentThread().getName());
+                            ApiResponse apiResponse = Upload(file, codeCreditSubject,pathFile,documentNumber);
                             // One thread has completed its job
-                            executionCompleted.countDown();
+                            //executionCompleted.countDown();
                             if (apiResponse != null) {
                                 HttpResponse httpResponse = new HttpResponse();
                                 httpResponse.setCode(apiResponse.getCodigoRespuesta().toString());
@@ -268,22 +270,27 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                                 httpResponse.setMessage(apiResponse.getMensaje());
                                 httpResponse.setNameFile(file.getType());
                                 listResponses.add(httpResponse);
+
+                                if (apiResponse.getCodigoRespuesta() == 200){
+                                    isValid = true;
+                                }
                             }
-                        }
-                    }.start();
+                        /*}
+                    }.start();*/
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SendFileList: " + file.getName(), ex, _context);
                 }
             }
-            executionCompleted.await();
+            //executionCompleted.await();
             // Wait till the count down latch opens.In the given case till five
             // times countDown method is invoked
             System.out.println("All over");
             System.out.println("Cantidad de respuestas " + listResponses.size());
-            isValid = ReadResponse(codeCreditSubject,pathFile);
+
+            //isValid = ReadResponse(codeCreditSubject,pathFile);
         }
-        catch (InterruptedException ex){
+        catch (Exception ex){
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"SendFileList",ex,_context);
         }

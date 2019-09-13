@@ -87,10 +87,13 @@ public class Formulario {
                     Texto = String.valueOf(_iSelectList.GetValueByCodeField(((Spinner) Control).getSelectedItem().toString()));
                 } else if (Control instanceof SearchView) {
                     SearchView searchView = (SearchView)Control;
-
                     Texto = searchView.getQuery().toString();
-
-                    Texto = String.valueOf(_iSelectList.GetValueByCodeField(searchView.getQuery().toString()));
+                    if(arrayId[Indice] == "search_tipo_contrato" && Texto.trim().equals("")){
+                        Texto = "15";
+                    }
+                    else{
+                        Texto = String.valueOf(_iSelectList.GetValueByCodeField(Texto));
+                    }
                 }
 
                 //Si el texto es vacío entonces

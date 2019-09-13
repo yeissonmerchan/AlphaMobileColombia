@@ -17,12 +17,14 @@ import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.ILoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IProxyServiceAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IQueryCreditAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IVersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.CreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.LoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.PersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.ProxyServiceAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.implement.QueryCreditAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.UploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.VersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
@@ -30,6 +32,7 @@ import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IModulePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IVersionUpdatePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.CreditSubjectPresenter;
@@ -37,6 +40,7 @@ import com.example.alphamobilecolombia.mvp.presenter.implement.LoginPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ModulePresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.PersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
+import com.example.alphamobilecolombia.mvp.presenter.implement.QueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.UploadFilesPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.VersionUpdatePresenter;
 import com.example.alphamobilecolombia.utils.configuration.IDevice;
@@ -90,9 +94,17 @@ public class DependencyInjectionContainer {
     {
         return new PersonPresenter(injectDIIPersonAdapter(context),context);
     }
+
+    public IQueryCreditPresenter injectDIIQueryCreditPresenter(Context context){
+        return new QueryCreditPresenter(injectDIIQueryCreditAdapter(context));
+    }
     //End Presenters
 
     //Start Adapters
+    public IQueryCreditAdapter injectDIIQueryCreditAdapter(Context context){
+        return new QueryCreditAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
+    }
+
     private IUploadFileAdapter injectDIIUploadFileAdapter(Context context){
         return new UploadFileAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
@@ -122,7 +134,7 @@ public class DependencyInjectionContainer {
         return new CloudStoreInstance(injectINotification(context), injectIRealmInstance(context),context);
     }
 
-    private IFileStorageService injectIFileStorageService(Context context){return new FileStorageService(injectIRealmInstance(context));}
+    public IFileStorageService injectIFileStorageService(Context context){return new FileStorageService(injectIRealmInstance(context));}
 
     public ISelectList injectISelectList(Context context){return new SelectList(injectIRealmInstance(context));}
 
@@ -144,7 +156,7 @@ public class DependencyInjectionContainer {
 
     private IDevice injectIDevice(){return new Device();}
 
-    private INotification injectINotification(Context context){
+    public INotification injectINotification(Context context){
         return new Notification(context);
     }
 
@@ -152,6 +164,6 @@ public class DependencyInjectionContainer {
 
     private IRealmInstance injectIRealmInstance(Context context){return new RealmInstance(context,injectIRSA(context)); }
 
-    private IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
+    public IAccessToken injectIAccessToken(Context context){return new AccessToken(injectIRealmInstance(context));}
     //End Configurations
 }

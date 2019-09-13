@@ -119,7 +119,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private View viewActivityActual;
     private Dialog dialogPreviewFullScreen;
     private ImageView imageViewFullScreen;
-    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;
+/*    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;*/
 
     public UploadFileActivity(){
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
@@ -147,17 +147,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //Inicia full screen dialog
             View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
             imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
-            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+/*            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);*/
 
             dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
             dialogPreviewFullScreen.setContentView(viewFullScreen);
 
-            btnCloseFullScreen.setOnClickListener(new View.OnClickListener() {
+/*            btnCloseFullScreen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialogPreviewFullScreen.dismiss();
                 }
-            });
+            });*/
 
         }
     }
@@ -273,12 +273,11 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         catch (Exception ex){
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "finalizacion", ex, this);
         }
     }
 
     public void saveFiles(View view){
-        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1);
+        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1,null);
 
         if(!isValidSendFiles){
             ValidacionCargueDocumentos(view);
@@ -409,7 +408,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperarFotoCargada", e, this);
                     }
                 }
                 imageViewFullScreen.setImageBitmap(bitmap1);
@@ -419,8 +417,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
         }
         catch (Exception ex){
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperarFotoCargada: " + getNameFile(v),ex,this);
         }
     }
 
@@ -474,7 +472,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
         catch (Exception ex){
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperarImagen: " + getNameFile(v),ex,this);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
         }
     }
 
@@ -488,7 +486,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         catch (Exception ex){
             documentNumber = getIntent().getStringExtra("PERSONA_Documento");
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"getNameFile: " + documentNumber,ex,this);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"nombre archivo "+documentNumber,ex,this);
         }
 
         return documentNumber+nameFile+".jpg";
@@ -822,13 +820,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //int tipoContratoId = _iSelectList.GetValueByIdField(tipoContrato);
 
             String tipoCliente = _iParameterField.GetValueByIdField("spinner_tipo_cliente");
+            if (tipoCliente == null)
+                tipoCliente = "2";
             //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
 
             persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));
             persona.setNombre(_iParameterField.GetValueByIdField("edt_names"));
-            persona.setNombre2(_iParameterField.GetValueByIdField("edt_names"));
+            persona.setNombre2(_iParameterField.GetValueByIdField("edt_names2"));
             persona.setApellido1(_iParameterField.GetValueByIdField("edt_lastNames"));
-            persona.setApellido2(_iParameterField.GetValueByIdField("edt_lastNames"));
+            persona.setApellido2(_iParameterField.GetValueByIdField("edt_lastNames2"));
             persona.setFechaNacimiento(_iParameterField.GetValueByIdField("edt_birthDate"));
             persona.setGenero(String.valueOf(genero));
             persona.setCelular("0000000000");
@@ -839,9 +839,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         }
         catch (Exception ex){
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SavePersonAndSubject", ex, this);
-            persona.setCedula("1052407752");
+            /*persona.setCedula("1052407752");
             persona.setNombre("Yeisson");
             persona.setNombre2("Andres");
             persona.setApellido1("Merchan");
@@ -852,7 +850,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             IdTipoEmpleado = 1;
             IdTipoContrato = 2;
             IdDestinoCredito = 1;
-            IdPagaduria = 35;
+            IdPagaduria = 35;*/
+            ex.printStackTrace();
         }
 
         boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona,user);
@@ -862,7 +861,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
                 boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
-                if(responseSaveFiles) {
+                if(!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 }
                 else{

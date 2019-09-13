@@ -27,10 +27,21 @@ public class FileStorageService implements IFileStorageService {
         return isValid;
     }
 
+    public List<FileStorage> GetListForAll(){
+        List<FileStorage> returnValue = new ArrayList<>();
+        try {
+            returnValue = _iRealmInstance.GetAll(new FileStorage());
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return returnValue;
+    }
+
     public boolean DeleteForCreditSubject(int idSubjectCredit){
         boolean returnValue = false;
         try {
-            returnValue = _iRealmInstance.DeleteByKey(new FileStorage(),"IdCreditSubject", String.valueOf(idSubjectCredit));
+            returnValue = _iRealmInstance.DeleteByKey(new FileStorage(),"IdCreditSubject", idSubjectCredit);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -41,7 +52,7 @@ public class FileStorageService implements IFileStorageService {
     public List<FileStorage> GetListForCreditSubject(int idSubjectCredit){
         List<FileStorage> returnValue = new ArrayList<>();
         try {
-            returnValue = _iRealmInstance.GetAllByAttribute(new FileStorage(),"IdCreditSubject", String.valueOf(idSubjectCredit));
+            returnValue = _iRealmInstance.GetAllByAttribute(new FileStorage(),"IdCreditSubject", idSubjectCredit);
         }
         catch (Exception ex){
             ex.printStackTrace();
