@@ -209,7 +209,7 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
             formulario.Validar(this, CustomerTypeActivity.class, Campos, new String[] {});
         } else {
-            Toast.makeText(this.getApplicationContext(), "Debe seleccionar una pagaduría valida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
+            Toast.makeText(this.getApplicationContext(), "Debe seleccionar una pagaduría válida", Toast.LENGTH_LONG).show(); //Muestra el mensaje
         }
     }
 

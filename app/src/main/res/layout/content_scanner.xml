@@ -71,7 +71,7 @@
                 android:inputType="textNoSuggestions|text"
                 android:maxLength="15"
                 android:tag="primer nombre"
-                android:textSize="@dimen/size_text" />
+                android:textSize="@dimen/size_text"/>
 
             <TextView
                 android:id="@+id/txtNombres2"
