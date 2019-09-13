@@ -15,6 +15,8 @@ public class FileStorageJob {
     IUploadFilesPresenter _iUploadFilesPresenter;
     IFileStorageService _iFileStorageService;
     INotification _iNotification;
+    int countStop = 3;
+    int countTrans = 1;
     public FileStorageJob(IUploadFilesPresenter iUploadFilesPresenter, IFileStorageService iFileStorageService, INotification iNotification){
         _iUploadFilesPresenter = iUploadFilesPresenter;
         _iFileStorageService = iFileStorageService;
@@ -49,14 +51,15 @@ public class FileStorageJob {
             for (FileStorage itemFile : fileStoragesForCreditSubject) {
                 documentNumber = itemFile.getDocumentNumber();
                 File newFile = new File(itemFile.getIdTypeFile(),itemFile.getName(),itemFile.isRequired(),itemFile.getNameType(),itemFile.isUpload(),itemFile.getFilePath(),true);
+                listUpload = new ArrayList<>();
                 listUpload.add(newFile);
 
                 if (!itemFile.isUpload()) {
-                    boolean isValidSend = _iUploadFilesPresenter.SendFileList(listUpload, creditSubject, itemFile.getFilePath());
-                    if (isValidSend) {
+                    _iUploadFilesPresenter.SendFileList(listUpload, creditSubject, itemFile.getFilePath(), String.valueOf(documentNumber));
+                    /*if (isValidSend) {
                         itemFile.setUpload(true);
                         _iFileStorageService.UpdateState(itemFile);
-                    }
+                    }*/
                 }
             }
 
@@ -66,10 +69,12 @@ public class FileStorageJob {
                 _iFileStorageService.DeleteForCreditSubject(Integer.parseInt(creditSubject));
                 LocalNotification localNotification = new LocalNotification();
                 localNotification.setTitle("Proceso finalizado.");
-                localNotification.setMessage("La solicitud de crédito para el cliente con número de documento " +documentNumber+" . Ha finalizado.");
+                localNotification.setMessage(creditSubject + " La solicitud de crédito para el cliente con número de documento " +documentNumber+" . Ha finalizado.");
                 _iNotification.ShowNotification(localNotification);
             } else {
-                SendFile(creditSubject);
+                countTrans = countTrans +1;
+                if(countTrans <= countStop)
+                    SendFile(creditSubject);
             }
 
             return true;

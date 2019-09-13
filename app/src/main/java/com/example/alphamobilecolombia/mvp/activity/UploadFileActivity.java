@@ -277,7 +277,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void saveFiles(View view){
-        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1);
+        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1,null);
 
         if(!isValidSendFiles){
             ValidacionCargueDocumentos(view);
