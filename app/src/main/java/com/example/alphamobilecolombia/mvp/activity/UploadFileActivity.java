@@ -277,7 +277,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void saveFiles(View view){
-        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1);
+        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1,null);
 
         if(!isValidSendFiles){
             ValidacionCargueDocumentos(view);
@@ -820,13 +820,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //int tipoContratoId = _iSelectList.GetValueByIdField(tipoContrato);
 
             String tipoCliente = _iParameterField.GetValueByIdField("spinner_tipo_cliente");
+            if (tipoCliente == null)
+                tipoCliente = "2";
             //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
 
             persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));
             persona.setNombre(_iParameterField.GetValueByIdField("edt_names"));
-            persona.setNombre2(_iParameterField.GetValueByIdField("edt_names"));
+            persona.setNombre2(_iParameterField.GetValueByIdField("edt_names2"));
             persona.setApellido1(_iParameterField.GetValueByIdField("edt_lastNames"));
-            persona.setApellido2(_iParameterField.GetValueByIdField("edt_lastNames"));
+            persona.setApellido2(_iParameterField.GetValueByIdField("edt_lastNames2"));
             persona.setFechaNacimiento(_iParameterField.GetValueByIdField("edt_birthDate"));
             persona.setGenero(String.valueOf(genero));
             persona.setCelular("0000000000");
@@ -837,7 +839,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         }
         catch (Exception ex){
-            persona.setCedula("1052407752");
+            /*persona.setCedula("1052407752");
             persona.setNombre("Yeisson");
             persona.setNombre2("Andres");
             persona.setApellido1("Merchan");
@@ -848,7 +850,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             IdTipoEmpleado = 1;
             IdTipoContrato = 2;
             IdDestinoCredito = 1;
-            IdPagaduria = 35;
+            IdPagaduria = 35;*/
+            ex.printStackTrace();
         }
 
         boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona,user);
@@ -858,7 +861,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
                 boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
-                if(responseSaveFiles) {
+                if(!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 }
                 else{

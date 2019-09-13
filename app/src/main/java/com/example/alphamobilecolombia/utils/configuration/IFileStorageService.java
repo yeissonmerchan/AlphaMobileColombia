@@ -10,4 +10,5 @@ public interface IFileStorageService {
     List<FileStorage> GetListForCreditSubject(int idSubjectCredit);
     boolean UpdateState(FileStorage fileStorage);
     boolean CleanCreditValidation();
+    List<FileStorage> GetListForAll();
 }
