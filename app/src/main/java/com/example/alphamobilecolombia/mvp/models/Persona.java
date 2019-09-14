@@ -25,6 +25,8 @@ public class Persona extends RealmObject {
     private String fechaVencimiento;
     private String factorRh;
     private String celular;
+    private String fechaExpedicion;
+    private String ciudad;
 
     public Persona() {
 
@@ -128,5 +130,21 @@ public class Persona extends RealmObject {
                 this.fechaVencimiento + " " +
                 this.factorRh + " " +
                 this.genero;
+    }
+
+    public String getFechaExpedicion() {
+        return fechaExpedicion;
+    }
+
+    public void setFechaExpedicion(String fechaExpedicion) {
+        this.fechaExpedicion = fechaExpedicion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 }

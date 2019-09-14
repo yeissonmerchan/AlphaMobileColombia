@@ -5,6 +5,8 @@ import android.app.job.JobService;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+
 public class ImagesBackgroundJob extends JobService {
 
     private static final String TAG = "ExampleJobService";

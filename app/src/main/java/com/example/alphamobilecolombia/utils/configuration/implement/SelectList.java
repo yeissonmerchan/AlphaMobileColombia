@@ -3,6 +3,7 @@ package com.example.alphamobilecolombia.utils.configuration.implement;
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
 import com.example.alphamobilecolombia.utils.configuration.ISelectList;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -35,6 +35,7 @@ public class RealmStorage {
                     .build();
         } catch (KeyStoreException e) {
             e.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "initLocalStorage", e, context);
         }
         try {
             File file = new File(context.getFilesDir(), "alphaStorage.realm");
@@ -52,7 +53,8 @@ public class RealmStorage {
             }
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"initLocalStorage",ex,context);
             Realm.deleteRealm(config);
             Realm.getInstance(config);
             return null;
@@ -76,7 +78,8 @@ public class RealmStorage {
             realm.close();
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona",ex,context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"savePerson",ex,context);
         }
     }
 
@@ -92,7 +95,8 @@ public class RealmStorage {
             return findPerson.first();
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Obtener persona",ex,context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"getPerson",ex,context);
             return null;
         }
     }
@@ -110,8 +114,9 @@ public class RealmStorage {
             realm.close();
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"saveConsultaCreditro",ex,context);
+
         }
     }
 
@@ -127,8 +132,8 @@ public class RealmStorage {
             return data;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista creditos",ex,context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"getConsultaCreditro",ex,context);
         }
         return null;
     }
@@ -150,8 +155,8 @@ public class RealmStorage {
         }
         catch (Exception ex)
         {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Delete credito",ex,context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"deleteInfoConsultaCreditro",ex,context);
         }
     }
 
@@ -169,8 +174,8 @@ public class RealmStorage {
         }
         catch (Exception ex)
         {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminar persona ",ex,context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"deleteTable",ex,context);
         }
     }
 
@@ -204,8 +209,9 @@ public class RealmStorage {
                 return bytes;
 
         } catch (Exception ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Crear llaves",ex,context);
+            ex.printStackTrace();
             Log.e("Key Realm", Log.getStackTraceString(ex));
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"createNewKeys",ex,context);
         }
         return null;
     }

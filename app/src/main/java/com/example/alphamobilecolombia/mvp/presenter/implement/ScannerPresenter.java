@@ -53,7 +53,8 @@ public class ScannerPresenter {
 
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Pagaduría",ex,context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"getPaying",ex,context);
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
         }
         return null;
