@@ -125,11 +125,11 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
         }
 
         String plazoSugerido = String.format("%1s Meses", creditDescription.getPlazoSugerido());
-        if (!plazoSugerido.equals("") || !plazoSugerido.equals("0 Meses") ) {
-                plazoSugeridoText.setText(plazoSugerido);
-            } else{
+        if (plazoSugerido.equals("") || plazoSugerido.equals("0 Meses") ) {
                 fieldPlazoSugerido.setVisibility(View.GONE);
                 linear6.setVisibility(View.GONE);
+            } else{
+                plazoSugeridoText.setText(plazoSugerido);
             }
 
 

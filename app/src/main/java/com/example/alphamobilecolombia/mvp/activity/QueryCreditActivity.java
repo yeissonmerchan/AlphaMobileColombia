@@ -68,6 +68,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     TextView count_rows;
     ImageView iconCancel;
     private ImageView arrow;
+    private int tabSelect = 0;
 
     public QueryCreditActivity() {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
@@ -109,6 +110,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         tabFilters.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                tabSelect = tab.getPosition();
                 switch (tab.getPosition()) {
                     case 0:
                         typeQuery = "4";
@@ -373,7 +375,31 @@ public class QueryCreditActivity extends AppCompatActivity {
 
 
     public void onClickCancel(View view) {
+        myDialog.show();
         searchEditext.setText("");
+        switch (tabSelect) {
+            case 0:
+                typeQuery = "4";
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                break;
+            case 1:
+                typeQuery = "4";
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
+
+                break;
+            case 2:
+                typeQuery = "4";
+                try {
+                    Date initDateMonth = dateFormat.parse("2019-01-01");
+                    int maxMonths = monthsBetweenDates(initDateMonth, date);
+                    refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
+                } catch (ParseException ex) {
+                    // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
+                }
+
+                break;
+        }
+
     }
 
 
