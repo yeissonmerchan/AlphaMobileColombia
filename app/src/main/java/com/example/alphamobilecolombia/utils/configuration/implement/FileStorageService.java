@@ -5,6 +5,7 @@ import com.example.alphamobilecolombia.data.local.entity.FileStorage;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
 import com.example.alphamobilecolombia.utils.configuration.IFileStorageService;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import java.util.ArrayList;
 import java.util.List;

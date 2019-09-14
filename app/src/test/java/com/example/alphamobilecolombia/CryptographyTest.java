@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 
 import org.junit.Test;
