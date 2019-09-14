@@ -131,7 +131,7 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
                 fieldPlazoSugerido.setVisibility(View.GONE);
                 linear6.setVisibility(View.GONE);
             }
-        
+
 
         if (creditDescription.getFechaPrevalidacion() != null && !creditDescription.getFechaPrevalidacion().equals("")) {
             fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());
