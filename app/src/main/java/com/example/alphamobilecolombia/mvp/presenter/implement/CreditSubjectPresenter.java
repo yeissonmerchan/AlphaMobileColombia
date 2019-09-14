@@ -40,7 +40,8 @@ public class CreditSubjectPresenter implements ICreditSubjectPresenter {
         catch (Exception ex)
         {
             System.out.println("Ha ocurrido un error! "+ex.getMessage());
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Guardar persona " +person.getCedula(),ex,_context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"SaveCreditSubject" +person.getCedula(),ex,_context);
         }
         return result;
     }

@@ -2,6 +2,7 @@ package com.example.alphamobilecolombia.utils.security.implement;
 
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.remote.Models.entity.Token;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.security.IAccessToken;
 
 import java.util.List;

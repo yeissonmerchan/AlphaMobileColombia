@@ -203,16 +203,21 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         }
         catch (Exception ex){
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SaveFilesLocalStorage", ex, _context);
         }
         return isValid;
     }
 
     public boolean SaveListTotalFiles(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFiles, String documentNumber) {
+
+        String Nombre = "";
+
         try {
             List<PostSaveDocumentRequest> listSendRequest = new ArrayList<>();
             SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             String user = sharedPref.getString("idUser", "");
             for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                Nombre = file.getName();
                 PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
                 //newDocument.setRutaArchivo(file.getName());
                 newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
@@ -229,7 +234,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            //LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SaveListTotalFiles: " + Nombre, ex, _context);
         }
         return false;
     }
@@ -273,9 +278,8 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                         /*}
                     }.start();*/
                 } catch (Exception ex) {
-                    // TODO Auto-generated catch block
                     ex.printStackTrace();
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SendFileList: " + file.getName(), ex, _context);
                 }
             }
             //executionCompleted.await();
@@ -288,7 +292,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         }
         catch (Exception ex){
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Error en arbol de hilos ",ex,_context);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"SendFileList",ex,_context);
         }
         return isValid;
     }
@@ -335,7 +339,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                                 }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
-                                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Procesando respuesta " + httpResponse.getNameFile(), ex, _context);
+                                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ReadResponse: " + httpResponse.getNameFile(), ex, _context);
                             }
                         }
                     }
@@ -393,7 +397,8 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización "+httpResponse.getNameFile(),ex,_context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"sendErrorFailedUpload: " + httpResponse.getNameFile(),ex,_context);
         }
     }
 

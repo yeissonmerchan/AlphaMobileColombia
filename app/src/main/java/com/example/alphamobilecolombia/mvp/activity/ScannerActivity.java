@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,13 +14,18 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -365,6 +371,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                 if(accion){
 
                     try{
+
                         AlertDialog.Builder Alert = new AlertDialog.Builder(this);
                         Alert.setTitle("IMPORTANTE");
                         Alert.setMessage(object.getString("mensaje"));
@@ -386,7 +393,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
                     }
                     catch (Exception ex){
                         ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ValidarPrevalidacionesActivas", ex, this);
                     }
                 }else {
                     ValidarCampos();
@@ -454,7 +461,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onActivityResult", ex, this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
                 }
@@ -515,9 +523,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             }
 
         } catch (Exception ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
-            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "getReadBarCode", ex, this);
+            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             NotificacionErrorDatos(this);
         }
     }
