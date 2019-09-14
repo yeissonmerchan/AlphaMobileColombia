@@ -832,6 +832,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             persona.setFechaNacimiento(_iParameterField.GetValueByIdField("edt_birthDate"));
             persona.setGenero(String.valueOf(genero));
             persona.setCelular("0000000000");
+            persona.setCiudad(_iParameterField.GetValueByIdField("search_ciudad_expedicion_cedula"));
+            persona.setFechaExpedicion(_iParameterField.GetValueByIdField("edt_fecha_expedicion_cedula"));
             IdTipoEmpleado = Integer.parseInt(tipoCliente);
             IdTipoContrato = Integer.parseInt(tipoContrato);
             IdDestinoCredito = Integer.parseInt(destinoCredito);
