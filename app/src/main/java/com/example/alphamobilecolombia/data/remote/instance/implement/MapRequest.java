@@ -4,6 +4,7 @@ import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.instance.IMapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.IProxyService;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

@@ -56,10 +56,10 @@ public class LoginPresenter implements ILoginPresenter {
             }
             catch (JSONException e) {
                 e.printStackTrace();
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),txtUser,e,_context);
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"LoginCheck: " + txtUser,e,_context);
             } catch (Exception e) {
                 e.printStackTrace();
-                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),txtUser,e,_context);
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"LoginCheck: " + txtUser,e,_context);
             }
         }
         messageError = apiResponse.getMensaje();

@@ -272,6 +272,11 @@ public class PaymentActivity extends AppCompatActivity implements AdapterView.On
 
     /*********************************************************************************/
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 }
 
 

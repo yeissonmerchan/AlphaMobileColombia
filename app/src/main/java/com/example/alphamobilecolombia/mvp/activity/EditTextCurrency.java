@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -87,7 +89,8 @@ class CurrencyTextWatcher implements TextWatcher {
                 editText.setText("$" + format);
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
+                //LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "afterTextChanged", e, this);
             }
         } else {
             editText.setText(format);

@@ -359,6 +359,11 @@ public class AdditionalDataActivity extends AppCompatActivity implements Adapter
 
     /*********************************************************************************/
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 }
 
 /*        String[] Campos = new String[]{"edt_fecha_expedicion_cedula"}; //"spinner_departamento_expedicion_cedula", "spinner_ciudad_expedicion_cedula",

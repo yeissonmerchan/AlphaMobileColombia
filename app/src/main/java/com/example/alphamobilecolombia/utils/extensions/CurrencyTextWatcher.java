@@ -12,6 +12,8 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.widget.EditText;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+
 public class CurrencyTextWatcher implements TextWatcher {
 
     private final static String DS = "."; //Decimal Separator
@@ -55,6 +57,7 @@ public class CurrencyTextWatcher implements TextWatcher {
                 format = format.replace("0", "");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                e.printStackTrace();
             }
 
             editText.setText(format);

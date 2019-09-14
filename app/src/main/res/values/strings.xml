@@ -1,7 +1,7 @@
 <resources>
 
     <string name="environment_release">PRE</string>
-    <string name="environment_development">DEV</string>
+    <string name="environment_development">QA</string>
 
     <!-- Ips de dev -->
     <string name="dev_ip_api_authentication">http://181.57.145.20:8081/Security/</string>
@@ -60,7 +60,7 @@
 
 
     <string name="terms_title">Autorización</string>
-    <string name="terms_info">A continuación usted aceptara los términos y condiciones del proceso.</string>
+    <string name="terms_info">A continuación usted aceptará los términos y condiciones del proceso.</string>
 
     <string name="info_activity_final">En las próximas horas podrás consultar el estado de esta solicitud.</string>
 
@@ -69,7 +69,7 @@
     <string name="local_storage_Key">"3A7HL_561/8fJSb5nW5k"</string>
 
     <string name="title_activity_upload_files"></string>
-    <string name="title_activity_process_completed">Te notificaremos cuando se hayan cargados los archivos.</string>
+    <string name="title_activity_process_completed">Te notificaremos cuando se hayan cargado los archivos.</string>
     <string name="title_activity_scanner"></string>
     <string name="title_activity_personal_information"></string>
     <string name="title_activity_modulo"></string>

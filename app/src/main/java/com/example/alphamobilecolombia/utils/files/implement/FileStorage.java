@@ -30,9 +30,9 @@ public class FileStorage implements IFileStorage {
             base64 = Base64.encodeToString(buffer, 0, length,
                     Base64.DEFAULT);
         } catch (Exception ex) {
+            ex.printStackTrace();
             LogError.SendErrorCrashlytics(_context.getClass().getSimpleName(),codeCreditSubject,ex,_context);
             System.out.println("Ha ocurrido un error en la lectura del archivo! "+ex.getMessage());
-            ex.printStackTrace();
         }
         return base64;
     }

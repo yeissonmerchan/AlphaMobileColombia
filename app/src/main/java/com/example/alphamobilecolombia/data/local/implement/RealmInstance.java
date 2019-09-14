@@ -53,8 +53,8 @@ public class RealmInstance implements IRealmInstance {
             isSuccess = true;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Insert",ex,_context);
         }
         return isSuccess;
     }
@@ -75,8 +75,8 @@ public class RealmInstance implements IRealmInstance {
             isSuccess = true;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Insert",ex,_context);
         }
         return isSuccess;
     }
@@ -97,8 +97,8 @@ public class RealmInstance implements IRealmInstance {
             isSuccess = true;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Consulta credito",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Update",ex,_context);
         }
         return isSuccess;
     }
@@ -113,8 +113,8 @@ public class RealmInstance implements IRealmInstance {
             return data;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista creditos",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"GetAll",ex,_context);
         }
         return null;
     }
@@ -129,8 +129,8 @@ public class RealmInstance implements IRealmInstance {
             return data;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"GetAllGeneric",ex,_context);
         }
         return null;
     }
@@ -145,8 +145,8 @@ public class RealmInstance implements IRealmInstance {
             return data;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Lista",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"GetAllByAttribute",ex,_context);
         }
         return null;
     }
@@ -177,8 +177,8 @@ public class RealmInstance implements IRealmInstance {
             return data;
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"objeto por id",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"GetByAttribute",ex,_context);
         }
         return null;
     }
@@ -200,8 +200,8 @@ public class RealmInstance implements IRealmInstance {
         }
         catch (Exception ex)
         {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminar persona ",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"DeleteObject",ex,_context);
         }
         return isSuccess;
     }
@@ -240,8 +240,8 @@ public class RealmInstance implements IRealmInstance {
         }
         catch (Exception ex)
         {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Eliminar persona ",ex,_context);
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"DeleteByKey",ex,_context);
         }
         return isSuccess;
     }
@@ -269,7 +269,8 @@ public class RealmInstance implements IRealmInstance {
             }
         }
         catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Creación de storage",ex,_context);
+            ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"InitLocalStorage",ex,_context);
             Realm.deleteRealm(config);
             Realm.getInstance(config);
             return null;

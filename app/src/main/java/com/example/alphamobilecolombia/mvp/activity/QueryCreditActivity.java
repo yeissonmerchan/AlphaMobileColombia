@@ -20,12 +20,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +67,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     EditText searchEditext;
     TextView count_rows;
     ImageView iconCancel;
+    private ImageView arrow;
 
     public QueryCreditActivity() {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
@@ -95,8 +97,8 @@ public class QueryCreditActivity extends AppCompatActivity {
         }
 
         SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        //user = sharedPref.getString("idUser", "");
-        user = "1";
+        user = sharedPref.getString("idUser", "");
+        //user = "1";
         typeQuery = "4";
 
         tabFilters = (TabLayout) findViewById(R.id.tabFilters);
@@ -220,7 +222,7 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         // Counts_rows
         count_rows = findViewById(R.id.count_rows);
-
+        arrow = (ImageView) findViewById(R.id.arrow);
 
         //configurerView(model);
     }
@@ -270,6 +272,7 @@ public class QueryCreditActivity extends AppCompatActivity {
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", model.length));
 
+
         } else {
             adapter = new RecyclerAdapterQueryCredit(clients);
             recyclerCredits.setAdapter(adapter);
@@ -277,6 +280,7 @@ public class QueryCreditActivity extends AppCompatActivity {
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
         }
         myDialog.dismiss();
+
     }
 
 
@@ -367,7 +371,10 @@ public class QueryCreditActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+
     public void onClickCancel(View view) {
         searchEditext.setText("");
     }
+
+
 }

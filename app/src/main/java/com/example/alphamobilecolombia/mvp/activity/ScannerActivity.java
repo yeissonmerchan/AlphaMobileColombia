@@ -1,5 +1,6 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,13 +14,18 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -30,8 +36,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
+import com.example.alphamobilecolombia.data.remote.Models.Response.ActiveValidationResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.models.Person;
+import com.example.alphamobilecolombia.mvp.presenter.IQueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.implement.QueryActiveValidationPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
@@ -54,9 +62,11 @@ import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIAL
 public class ScannerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     Formulario formulario;
+    IQueryActiveValidationPresenter iQueryActiveValidationPresenter;
 
     public ScannerActivity() {
         formulario = new Formulario(diContainer.injectISelectList(this));
+        iQueryActiveValidationPresenter = diContainer.injectDIIQueryActiveValidationPresenter(this);
     }
     //************************** LECTOR
 
@@ -289,7 +299,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
-    public void ValidarCampos(){
+    public void ValidarCampos() {
         //Define el error
         String Error = "";
 
@@ -324,107 +334,69 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } else {
             formulario.Validar(this, AdditionalDataActivity.class,
                     new String[]{"edt_names", "edt_lastNames", "edt_numberIdentification", "edt_birthDate", "spinner_genero"},
-                    new String[] {"edt_names2", "edt_lastNames2"});
+                    new String[]{"edt_names2", "edt_lastNames2"});
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
+    //
     public void ValidarPrevalidacionesActivas(String Documento, Person person) throws JSONException {
 
-        QueryActiveValidationPresenter presenter = new QueryActiveValidationPresenter();
-        HttpResponse model = presenter.Get(Documento,getBaseContext());
+        ActiveValidationResponse accion = iQueryActiveValidationPresenter.IsActiveValidation(Documento);
 
-        if (model != null) {
+        //QueryActiveValidationPresenter presenter = new QueryActiveValidationPresenter();
+        //HttpResponse model = presenter.Get(Documento,getBaseContext());
 
+        /*if (model != null) {
             JSONObject data = (JSONObject) model.getData();
-
             JSONArray jSONArray = (JSONArray) data.getJSONArray("data");
-
             if (jSONArray.length()>0){
-
                 JSONObject object = (JSONObject) jSONArray.get(0);
 
                 boolean accion;
                 accion = Boolean.parseBoolean(object.getString("accion"));
+                */
+        if (accion != null) {
+            if (accion.getAccion()) {
+                try {
 
-                if(accion){
+                    AlertDialog.Builder Alert = new AlertDialog.Builder(this);
+                    Alert.setTitle("IMPORTANTE");
+                    Alert.setMessage(accion.getMensaje());
+                    Alert.setCancelable(false);
 
-                    try{
-                        AlertDialog.Builder Alert = new AlertDialog.Builder(this);
-                        Alert.setTitle("IMPORTANTE");
-                        Alert.setMessage(object.getString("mensaje"));
-                        Alert.setCancelable(false);
-
-                        Alert.setPositiveButton(
-                                "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                        ValidarCampos();
-                                    }
-                                });
+                    Alert.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    ValidarCampos();
+                                }
+                            });
 
 
-                        AlertDialog AlertMsg = Alert.create();
-                        AlertMsg.setCanceledOnTouchOutside(false);
-                        AlertMsg.show();
-                    }
-                    catch (Exception ex){
-                        ex.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Prevalidaciones",ex,this);
-                    }
-                }else {
-                    ValidarCampos();
+                    AlertDialog AlertMsg = Alert.create();
+                    AlertMsg.setCanceledOnTouchOutside(false);
+                    AlertMsg.show();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ValidarPrevalidacionesActivas", ex, this);
                 }
+            } else {
+                ValidarCampos();
+            }
+        } else {
+            ValidarCampos();
+        }
+                /*
             }else {
                 ValidarCampos();
             }
         }else {
             ValidarCampos();
         }
+        }*/
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -454,7 +426,8 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
 
                     //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
+                    ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onActivityResult", ex, this);
                     //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
                     NotificacionErrorDatos(this);
                 }
@@ -515,9 +488,9 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
             }
 
         } catch (Exception ex) {
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Escaneo", ex, this);
-            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "getReadBarCode", ex, this);
+            //Toast.makeText(this, "Error: No se pudo hacer el parse"+e.toString(), Toast.LENGTH_LONG).show();
             NotificacionErrorDatos(this);
         }
     }
@@ -579,7 +552,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected Dialog onCreateDialog(int id) {
         final Dialog dialog;
-        switch(id) {
+        switch (id) {
             case DIALOG_REALLY_EXIT_ID:
                 dialog = new AlertDialog.Builder(this).setMessage(
                         "¿ Desea terminar el proceso ?")

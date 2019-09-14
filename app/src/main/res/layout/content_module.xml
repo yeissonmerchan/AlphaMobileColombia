@@ -20,13 +20,24 @@
             android:paddingRight="30dp"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/cv_video_tutorial"
+                android:visibility="gone"
+                android:layout_marginTop="30dp"
+                android:onClick="onClickBtnTutorial"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_help"
+                />
 
             <ImageView
                 android:id="@+id/logo_segundari"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:src="@mipmap/logo_segundario"/>
 
             <Button
@@ -34,7 +45,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="60dp"
                 android:background="@color/colorHeader"
                 android:text="@string/btn_new_request"
                 android:onClick="onClickBtnNewRequest"
@@ -63,25 +74,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_password"
                 app:layout_constraintVertical_bias="0.2" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_video_tutorial"
+
+            <TextView
+                android:id="@+id/txtLema"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="60dp"
-                android:visibility="gone"
-                app:cardUseCompatPadding="true"
-                app:cardCornerRadius="5dp"
-                android:onClick="onClickBtnTutorial"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_marginTop="20dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Check!.... Nuestra nueva forma de originar"
+                android:textColor="@color/colorText"
+                android:textSize="16dp"
+                android:typeface="serif" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_margin="10dp"
-                    android:text="Tutorial"/>
 
-            </androidx.cardview.widget.CardView>
+
+
 
         </LinearLayout>
 
