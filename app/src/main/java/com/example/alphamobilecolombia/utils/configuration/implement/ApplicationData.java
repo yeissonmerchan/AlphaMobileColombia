@@ -109,7 +109,7 @@ public class ApplicationData {
         ClearData(context);
     }
 
-    public void ClearDirectoryTemp(Context context){
+    private void ClearDirectoryTemp(Context context){
         ClearUserData(context);
     }
 

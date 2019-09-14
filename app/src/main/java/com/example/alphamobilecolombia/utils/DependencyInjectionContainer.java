@@ -13,18 +13,22 @@ import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
 import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
 import com.example.alphamobilecolombia.data.remote.instance.implement.ProxyService;
 import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.mvp.adapter.ICompletedSubjectCredit;
 import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.ILoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IProxyServiceAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IQueryCreditAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IQueryPendingFilesAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IVersionUpdateAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.implement.CompletedSubjectCreditAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.CreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.LoginAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.PersonAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.ProxyServiceAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.QueryCreditAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.implement.QueryPendingFilesAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.UploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.implement.VersionUpdateAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
@@ -66,7 +70,7 @@ import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 public class DependencyInjectionContainer {
     //Start Presenters
     public IUploadFilesPresenter injectDIIUploadFilesPresenter(Context context){
-        return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),injectIFileStorageService(context),context);
+        return new UploadFilesPresenter(injectDIIUploadFileAdapter(context),injectIFileStorage(context),injectIFileStorageService(context),context,injectDIIQueryPendingFilesAdapter(context),injectDIICompletedSubjectCredit(context));
     }
 
     public IModulePresenter injectDIIModulePresenter(Context context){
@@ -107,6 +111,14 @@ public class DependencyInjectionContainer {
 
     private IUploadFileAdapter injectDIIUploadFileAdapter(Context context){
         return new UploadFileAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
+    }
+
+    private ICompletedSubjectCredit injectDIIQueryPendingFilesAdapter(Context context){
+        return new CompletedSubjectCreditAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
+    }
+
+    private IQueryPendingFilesAdapter injectDIICompletedSubjectCredit(Context context){
+        return new QueryPendingFilesAdapter(injectIRetrofitInstance(context),injectIMapRequest(context),context);
     }
 
     private IVersionUpdateAdapter injectDIIVersionUpdateAdapter (Context context){

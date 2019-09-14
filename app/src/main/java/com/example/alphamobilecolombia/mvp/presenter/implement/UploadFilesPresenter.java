@@ -10,12 +10,16 @@ import androidx.annotation.RequiresApi;
 
 import com.example.alphamobilecolombia.data.local.entity.FileStorage;
 import com.example.alphamobilecolombia.data.remote.Models.Request.PostSaveDocumentRequest;
+import com.example.alphamobilecolombia.data.remote.Models.Request.PostUserRequest;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostRetriesModelResponse;
+import com.example.alphamobilecolombia.data.remote.Models.entity.UserRoleInformation;
 import com.example.alphamobilecolombia.mvp.activity.ProcessCompletedActivity;
+import com.example.alphamobilecolombia.mvp.adapter.ICompletedSubjectCredit;
 import com.example.alphamobilecolombia.mvp.adapter.ICreditSubjectAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IPersonAdapter;
+import com.example.alphamobilecolombia.mvp.adapter.IQueryPendingFilesAdapter;
 import com.example.alphamobilecolombia.mvp.adapter.IUploadFileAdapter;
 import com.example.alphamobilecolombia.mvp.models.File;
 import com.example.alphamobilecolombia.mvp.models.Person;
@@ -30,6 +34,7 @@ import com.google.gson.Gson;
 
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,23 +47,27 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
     IFileStorage _iFileStorage;
     IFileStorageService _iFileStorageService;
     Context _context;
+    ICompletedSubjectCredit _iCompletedSubjectCredit;
+    IQueryPendingFilesAdapter _iQueryPendingFilesAdapter;
 
     CountDownLatch executionCompleted;
     List<HttpResponse> listResponses = new ArrayList<>();
     List<PostRetriesModelResponse> lisReintentos = new ArrayList<>();
     List<com.example.alphamobilecolombia.mvp.models.File> listFiles = null;
 
-    public UploadFilesPresenter(IUploadFileAdapter iUploadFileAdapter, IFileStorage iFileStorage, IFileStorageService iFileStorageService, Context context){
+    public UploadFilesPresenter(IUploadFileAdapter iUploadFileAdapter, IFileStorage iFileStorage, IFileStorageService iFileStorageService, Context context, ICompletedSubjectCredit iCompletedSubjectCredit, IQueryPendingFilesAdapter iQueryPendingFilesAdapter) {
         _iUploadFileAdapter = iUploadFileAdapter;
         _iFileStorage = iFileStorage;
         _iFileStorageService = iFileStorageService;
         _context = context;
+        _iCompletedSubjectCredit = iCompletedSubjectCredit;
+        _iQueryPendingFilesAdapter = iQueryPendingFilesAdapter;
     }
 
-    private int GetIdDocument(String name){
+    private int GetIdDocument(String name) {
         int idDocument = 0;
 
-        switch(name){
+        switch (name) {
             case "CargueDocumentosPreValidación":
                 idDocument = 27;
                 break;
@@ -103,10 +112,10 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return idDocument;
     }
 
-    private String GetNameDocument(int idDocument){
+    private String GetNameDocument(int idDocument) {
         String nameDocument = null;
 
-        switch(idDocument){
+        switch (idDocument) {
             case 27:
                 nameDocument = "CargueDocumentosPreValidación";
                 break;
@@ -151,12 +160,46 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return nameDocument;
     }
 
-    private String getNameFile(String documentNumber, String typeFile){
-        return documentNumber+typeFile+".jpg";
+    private String getNameFile(String documentNumber, String typeFile) {
+        return documentNumber + typeFile + ".jpg";
     }
 
-    private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile, String documentNumber){
-        String base64 = _iFileStorage.GetFile(getNameFile(documentNumber,fileUpload.getType()),codeCreditSubject,pathFile);
+    public boolean PendingFiles(String idSujetoCredito) {
+        boolean isValid = true;
+        ApiResponse apiResponse = _iQueryPendingFilesAdapter.Get(idSujetoCredito);
+        if (apiResponse.getCodigoRespuesta() == 200) {
+            try {
+                String data = apiResponse.getData().toString();
+                JSONArray jsonObject = new JSONArray(data);
+                PostSaveDocumentRequest[] httpResponse = new Gson().fromJson(jsonObject.toString(), PostSaveDocumentRequest[].class);
+
+                if (httpResponse != null) {
+                    if (httpResponse.length == 0) {
+                        isValid = false;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), idSujetoCredito, e, _context);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), idSujetoCredito, e, _context);
+            }
+        }
+        return isValid;
+    }
+
+    public boolean CompleteCredit(String idSujetoCredito) {
+        boolean isValid = false;
+        ApiResponse apiResponse = _iCompletedSubjectCredit.Get(idSujetoCredito);
+        if (apiResponse.getCodigoRespuesta() == 200) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    private ApiResponse Upload(com.example.alphamobilecolombia.mvp.models.File fileUpload, String codeCreditSubject, String pathFile, String documentNumber) {
+        String base64 = _iFileStorage.GetFile(getNameFile(documentNumber, fileUpload.getType()), codeCreditSubject, pathFile);
 
         SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
         String user = sharedPref.getString("idUser", "");
@@ -172,19 +215,19 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
 
         //updateUploadFileName(fileUpload.getType(),fileUpload.getName());
 
-       return _iUploadFileAdapter.Post(newDocument);
+        return _iUploadFileAdapter.Post(newDocument);
     }
 
-    private boolean SaveFilesLocalStorage(ApiResponse insertList, String pathFiles, String documentNumber){
+    private boolean SaveFilesLocalStorage(ApiResponse insertList, String pathFiles, String documentNumber) {
         boolean isValid = false;
         List<FileStorage> fileStorages = new ArrayList<>();
-        try{
-            if(insertList.getCodigoRespuesta() == 200) {
+        try {
+            if (insertList.getCodigoRespuesta() == 200) {
                 String data = insertList.getData().toString();
                 JSONArray jsonObject = new JSONArray(data);
                 PostSaveDocumentRequest[] httpResponse = new Gson().fromJson(jsonObject.toString(), PostSaveDocumentRequest[].class);
 
-                for(PostSaveDocumentRequest file : httpResponse) {
+                for (PostSaveDocumentRequest file : httpResponse) {
                     FileStorage fileStorage = new FileStorage();
                     fileStorage.setIdPerson(file.getUsuarioRegistroID());
                     fileStorage.setIdCreditSubject(file.getSujetoCreditoID());
@@ -200,8 +243,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
 
                 isValid = _iFileStorageService.InsertFilesForCreditSubject(fileStorages);
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return isValid;
@@ -212,7 +254,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             List<PostSaveDocumentRequest> listSendRequest = new ArrayList<>();
             SharedPreferences sharedPref = _context.getSharedPreferences("Login", Context.MODE_PRIVATE);
             String user = sharedPref.getString("idUser", "");
-            for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+            for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                 PostSaveDocumentRequest newDocument = new PostSaveDocumentRequest();
                 //newDocument.setRutaArchivo(file.getName());
                 newDocument.setSujetoCreditoID(Integer.parseInt(codeCreditSubject));
@@ -225,9 +267,8 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             }
 
             ApiResponse resultFiles = _iUploadFileAdapter.Post(listSendRequest);
-            return SaveFilesLocalStorage(resultFiles,pathFiles,documentNumber);
-        }
-        catch (Exception ex) {
+            return SaveFilesLocalStorage(resultFiles, pathFiles, documentNumber);
+        } catch (Exception ex) {
             ex.printStackTrace();
             //LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Hilo almacenamiento " + file.getName(), ex, _context);
         }
@@ -254,22 +295,22 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {*/
-                            //System.out.println("Thread number :" + Thread.currentThread().getName());
-                            ApiResponse apiResponse = Upload(file, codeCreditSubject,pathFile,documentNumber);
-                            // One thread has completed its job
-                            //executionCompleted.countDown();
-                            if (apiResponse != null) {
-                                HttpResponse httpResponse = new HttpResponse();
-                                httpResponse.setCode(apiResponse.getCodigoRespuesta().toString());
-                                httpResponse.setData(apiResponse.getData());
-                                httpResponse.setMessage(apiResponse.getMensaje());
-                                httpResponse.setNameFile(file.getType());
-                                listResponses.add(httpResponse);
+                    //System.out.println("Thread number :" + Thread.currentThread().getName());
+                    ApiResponse apiResponse = Upload(file, codeCreditSubject, pathFile, documentNumber);
+                    // One thread has completed its job
+                    //executionCompleted.countDown();
+                    if (apiResponse != null) {
+                        HttpResponse httpResponse = new HttpResponse();
+                        httpResponse.setCode(apiResponse.getCodigoRespuesta().toString());
+                        httpResponse.setData(apiResponse.getData());
+                        httpResponse.setMessage(apiResponse.getMensaje());
+                        httpResponse.setNameFile(file.getType());
+                        listResponses.add(httpResponse);
 
-                                if (apiResponse.getCodigoRespuesta() == 200){
-                                    isValid = true;
-                                }
-                            }
+                        if (apiResponse.getCodigoRespuesta() == 200) {
+                            isValid = true;
+                        }
+                    }
                         /*}
                     }.start();*/
                 } catch (Exception ex) {
@@ -285,15 +326,14 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             System.out.println("Cantidad de respuestas " + listResponses.size());
 
             //isValid = ReadResponse(codeCreditSubject,pathFile);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Error en arbol de hilos ",ex,_context);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Error en arbol de hilos ", ex, _context);
         }
         return isValid;
     }
 
-    private boolean ReadResponse(String codeCreditSubject,String pathFile){
+    private boolean ReadResponse(String codeCreditSubject, String pathFile) {
         boolean isValidSendFiles = false;
 
         if (listResponses.size() > 0) {
@@ -329,8 +369,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                                     postRetriesModelResponse.setNameFile(nombreAnterior);
                                     lisReintentos.add(postRetriesModelResponse);
                                     sendErrorFailedUpload(httpResponse);
-                                }
-                                else{
+                                } else {
                                     updateUploadFile(httpResponse.getNameFile());
                                 }
                             } catch (Exception ex) {
@@ -343,17 +382,17 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             }
         }
 
-        if(pendingUpload().size()==0){
+        if (pendingUpload().size() == 0) {
             isValidSendFiles = true;
         }
 
         return isValidSendFiles;
     }
 
-    private List<com.example.alphamobilecolombia.mvp.models.File> pendingUpload(){
+    private List<com.example.alphamobilecolombia.mvp.models.File> pendingUpload() {
         List<com.example.alphamobilecolombia.mvp.models.File> pendingFiles = new ArrayList<>();
         for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
-            if (!file.isUpload() && file.isRequired()){
+            if (!file.isUpload() && file.isRequired()) {
                 pendingFiles.add(file);
             }
         }
@@ -361,39 +400,36 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
         return pendingFiles;
     }
 
-    private void updateUploadFileName(String fileType,String nameFile){
-        if(listFiles == null)
+    private void updateUploadFileName(String fileType, String nameFile) {
+        if (listFiles == null)
             listFiles = _iFileStorage.GetListFiles();
 
         for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
 
-            if(file.getType().equals(fileType))
-            {
+            if (file.getType().equals(fileType)) {
                 file.setName(nameFile);
             }
         }
     }
 
 
-    private void updateUploadFile(String nameFile){
-        if(listFiles == null)
+    private void updateUploadFile(String nameFile) {
+        if (listFiles == null)
             listFiles = _iFileStorage.GetListFiles();
 
         for (com.example.alphamobilecolombia.mvp.models.File file : listFiles) {
 
-            if(file.getType().equals(nameFile))
-            {
+            if (file.getType().equals(nameFile)) {
                 file.setUpload(true);
             }
         }
     }
 
-    private void sendErrorFailedUpload(HttpResponse httpResponse){
+    private void sendErrorFailedUpload(HttpResponse httpResponse) {
         try {
-            throw new Exception("Error de envio de archivo: "+ httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
-        }
-        catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"Fallo de sincronización "+httpResponse.getNameFile(),ex,_context);
+            throw new Exception("Error de envio de archivo: " + httpResponse.getNameFile() + ". Error: " + httpResponse.getMessage());
+        } catch (Exception ex) {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "Fallo de sincronización " + httpResponse.getNameFile(), ex, _context);
         }
     }
 

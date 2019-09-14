@@ -1,5 +1,7 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,9 +42,11 @@ public class BrandingActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
         }
+        /*if (!isMyServiceRunning(FileStorageService.class, this)) {
+            Intent startServiceIntent = new Intent(BrandingActivity.this, FileStorageService.class);
+            startService(startServiceIntent);
+        }*/
 
-        //Intent startServiceIntent = new Intent(BrandingActivity.this, FileStorageService.class);
-        //startService(startServiceIntent);
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 
@@ -62,6 +66,16 @@ public class BrandingActivity extends AppCompatActivity {
                     startActivity(intentFailed);
                 }
             }},2000);
+    }
+
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

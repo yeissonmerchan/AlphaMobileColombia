@@ -75,6 +75,7 @@ public class SelectList implements ISelectList {
     public List<String> GetArrayByIdField(String idField){
         ArrayList<String> listReturn = new ArrayList<String>();
         List<SelectionOption> selectionOption = _iRealmInstance.GetAllByAttribute(new SelectionOption(),"IdField",idField);
+        List<SelectionOption> selectionOption22 = _iRealmInstance.GetAllGeneric(new SelectionOption());
         for (SelectionOption selectionOption1 : selectionOption){
             listReturn.add(selectionOption1.getNameOption());
         }

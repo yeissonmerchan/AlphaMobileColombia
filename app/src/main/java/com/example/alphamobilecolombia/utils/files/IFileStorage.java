@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IFileStorage {
     String GetFile(String nameFile, String codeCreditSubject,String pathFile);
-    boolean DeleteFile();
+    //boolean DeleteFile();
     List<File> GetListFiles();
 }

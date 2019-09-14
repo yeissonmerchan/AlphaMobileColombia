@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.mvp.presenter.IModulePresenter;
+import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,9 +33,11 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 public class ModuleActivity extends AppCompatActivity {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IModulePresenter _iModulePresenter;
+    IProcessCompletedPresenter _iProcessCompletedPresenter;
 
     public ModuleActivity() {
         _iModulePresenter = diContainer.injectDIIModulePresenter(this);
+        _iProcessCompletedPresenter = diContainer.injectDIIProcessCompletedPresenter(this);
     }
 
     private static final String ID_VIDEO_PROPERTY = "idVideoProperty";
@@ -65,6 +68,7 @@ public class ModuleActivity extends AppCompatActivity {
         PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         validateRemoteConfigParams();
+        _iProcessCompletedPresenter.CleanCreditInformation();
     }
 
 

@@ -46,6 +46,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -62,6 +63,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,16 +95,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private String pathNewFile1;
     final Context context = this;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
+    private String cedulaAux;
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
-    IRealmInstance iRealmInstance =new RealmInstance(this, new RSA(this));
+    IRealmInstance iRealmInstance = new RealmInstance(this, new RSA(this));
     ICreditSubjectPresenter _iCreditSubjectPresenter;
     IPersonPresenter _iPersonPresenter;
     IParameterField _iParameterField;
     ISelectList _iSelectList;
     // PopupMenu
-    ImageButton btnCloseView1,btnCloseView2,btnCloseView3,btnCloseView4,btnCloseView5,btnCloseView6,btnCloseView7,btnCloseView8,btnCloseView9;
+    ImageButton btnCloseView1, btnCloseView2, btnCloseView3, btnCloseView4, btnCloseView5, btnCloseView6, btnCloseView7, btnCloseView8, btnCloseView9;
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private final int SELECT_PICTURE = 200;
@@ -121,7 +124,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private ImageView imageViewFullScreen;
     private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;
 
-    public UploadFileActivity(){
+    public UploadFileActivity() {
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         _iCreditSubjectPresenter = diContainer.injectDIICreditSubjectPresenter(this);
         _iPersonPresenter = diContainer.injectDIIPersonPresenter(this);
@@ -130,7 +133,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void CreateBottomSheetDialog() {
-        if(bottomSheetDialog == null) {
+        if (bottomSheetDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.option_upload_file_dialog, null);
             tomarFotoLayout = view.findViewById(R.id.tomarFoto);
             vistaPreviaLayout = view.findViewById(R.id.vistaPrevia);
@@ -181,6 +184,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         isCreateUserAndSubject = false;
         CreateBottomSheetDialog();
+        cedulaAux = "";
         /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
@@ -199,6 +203,22 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String value = busqueda.getValue();*/
 
         // View PopupMenu
+
+        deleteFolder();
+    }
+
+    private void deleteFolder() {
+        java.io.File dir = new java.io.File(pathFile());
+        try {
+            FileUtils.deleteDirectory(dir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        java.io.File myPicDirectory = new java.io.File(pathFile());
+        if (!myPicDirectory.exists()) {
+            myPicDirectory.mkdirs();
+        }
+
     }
 
 
@@ -243,14 +263,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
 
-                            if(result){
-                                if(!isCreateUserAndSubject){
+                            if (result) {
+                                if (!isCreateUserAndSubject) {
                                     SavePersonAndSubject();
                                 }
 
                                 //saveFiles(view);
-                            }
-                            else{
+                            } else {
                                 NotificacionArchivospendientes(view);
                                 myDialog.dismiss();
                             }
@@ -270,19 +289,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             alert11.setCanceledOnTouchOutside(false);
             alert11.show();
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void saveFiles(View view){
-        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload,idSujeroCredito,pathNewFile1,null);
+    public void saveFiles(View view) {
+        boolean isValidSendFiles = _iUploadFilesPresenter.SendFileList(listUpload, idSujeroCredito, pathNewFile1, null);
 
-        if(!isValidSendFiles){
+        if (!isValidSendFiles) {
             ValidacionCargueDocumentos(view);
-        }
-        else{
+        } else {
             Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
             startActivity(intent);
         }
@@ -291,17 +308,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public boolean compareLists(List<File> modelList) {
         List<com.example.alphamobilecolombia.mvp.models.File> filesRequired = new ArrayList<File>();
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(27,"",true,"CargueDocumentosPreValidación",false,"",true));
-       // filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false,"",true));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68,"",true,"CedulaCara1",false,"",true));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69,"",true,"CedulaCara2",false,"",true));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70,"",true,"Desprendible1",false,"",true));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71,"",true,"Desprendible2",false,"",true));
-        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77,"",true,"TratamientoDatosPersonales",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(27, "", true, "CargueDocumentosPreValidación", false, "", true));
+        // filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(67,"",true,"SolicitudCreditoCara2",false,"",true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(68, "", true, "CedulaCara1", false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(69, "", true, "CedulaCara2", false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(70, "", true, "Desprendible1", false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(71, "", true, "Desprendible2", false, "", true));
+        filesRequired.add(new com.example.alphamobilecolombia.mvp.models.File(77, "", true, "TratamientoDatosPersonales", false, "", true));
 
         ExistFile existFile = new ExistFile();
 
-        if(listUpload.size()>0) {
+        if (listUpload.size() > 0) {
             for (com.example.alphamobilecolombia.mvp.models.File file : modelList) {
                 switch (file.getType()) {
                     case "CargueDocumentosPreValidación":
@@ -325,14 +342,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         }
-        if(existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
+        if (existFile.CedulaCara1 && existFile.CedulaCara2 && existFile.CargueDocumentosPreValidación && existFile.Desprendible1 && existFile.Desprendible2 && existFile.TratamientoDatosPersonales)
         //if(existFile.SolicitudCreditoCara1 && existFile.SolicitudCreditoCara2)
         //if(existFile.SolicitudCreditoCara1)
         {
             return true;
-        }
-        else{
-            validStatusUpload(existFile.CargueDocumentosPreValidación, existFile.SolicitudCreditoCara2, existFile.CedulaCara1, existFile.CedulaCara2,  existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
+        } else {
+            validStatusUpload(existFile.CargueDocumentosPreValidación, existFile.SolicitudCreditoCara2, existFile.CedulaCara1, existFile.CedulaCara2, existFile.Desprendible1, existFile.Desprendible2, existFile.TratamientoDatosPersonales);
             return false;
         }
     }
@@ -353,7 +369,25 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
                 tomarFoto(v);
             }
+        }
 
+        return;
+    }
+
+    public void checkPermissionStorage(View v) {
+        idElement = getByNameImage(v);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            //tomarFoto(v);
+        } else {
+
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+                //tomarFoto(v);
+            }
         }
 
         return;
@@ -361,18 +395,22 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public void tomarFoto(View v) {
         //idElement = getIdElementUpload(v);
-        view = v;
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
-        intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-        startActivityForResult(intento1,PHOTO_CODE);
+        try {
+            checkPermissionStorage(v);
+            view = v;
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
+            intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
+            startActivityForResult(intento1, PHOTO_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
-
-    public static class ExistFile{
+    public static class ExistFile {
         public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;
         public boolean CedulaCara1 = false;
@@ -388,8 +426,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             boolean isExist = false;
             boolean isPhoto = false;
             String path = "";
-            for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
-                if(file.getType().equals(idElement)) {
+            for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                if (file.getType().equals(idElement)) {
                     isExist = true;
                     isPhoto = file.getPhoto();
                     path = file.getFilePath();
@@ -397,15 +435,15 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 }
             }
 
-            if(isExist) {
-                Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
-                if (isPhoto){
+            if (isExist) {
+                Bitmap bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
+                if (isPhoto) {
                     bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-                }else {
+                } else {
                     try {
                         Uri imageUri = Uri.parse(path);
                         bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                        bitmap1 = Bitmap.createScaledBitmap(bitmap1,bitmap1.getWidth(), bitmap1.getHeight(), true);
+                        bitmap1 = Bitmap.createScaledBitmap(bitmap1, bitmap1.getWidth(), bitmap1.getHeight(), true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -415,22 +453,29 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             } else {
                 NotificacionErrorDatos(this.context, "No se ha cargado un archivo para previsualizar.");
             }
-        }
-        catch (Exception ex){
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
+        } catch (Exception ex) {
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
             ex.printStackTrace();
         }
     }
 
+    public String pathFile() {
+        //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        //return root + "/check";
+        cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
+        String pathFile = "/sdcard/"+cedulaAux;
+        return pathFile;
+    }
+
     public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
-            String pathFileLocal = getExternalFilesDir(null) + "/" + getNameFile(v);
+            String pathFileLocal = pathFile() + "/" + getNameFile(v);
             if (fileGallery) {
                 pathFileLocal = path;
             }
 
             java.io.File fileLocal = new java.io.File(pathFileLocal);
-            int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length()/1024));
+            int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
             System.out.println("file_size_original " + file_size_original);
             java.io.File file = new Compressor(context)
                     .setQuality(60)
@@ -440,12 +485,12 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             fileLocal.delete();
             file.getParentFile().mkdirs();
             file.createNewFile();
-            int file_size_compress = Integer.parseInt(String.valueOf(file.length()/1024));
+            int file_size_compress = Integer.parseInt(String.valueOf(file.length() / 1024));
             System.out.println("file_size_compress " + file_size_compress);
             pathNewFile1 = file.getParent();
-            String pathFileLocalCompress = pathNewFile1+"/"+getNameFile(v);
+            String pathFileLocalCompress = pathNewFile1 + "/" + getNameFile(v);
 
-            java.io.File f = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+            java.io.File f = new java.io.File(pathFile(), getNameFile(v));
             f.createNewFile();
             Bitmap bitmap = BitmapFactory.decodeFile(pathFileLocalCompress);
             //Convert bitmap to byte array
@@ -458,56 +503,45 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
-            int file_size_final = Integer.parseInt(String.valueOf(file.length()/1024));
+            int file_size_final = Integer.parseInt(String.valueOf(file.length() / 1024));
             System.out.println("file_size_final " + file_size_final);
             file.delete();
 
-            pathNewFile1 = getExternalFilesDir(null).getAbsolutePath();
+            pathNewFile1 = pathFile();
 
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
 
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(v));
+            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"recuperando archivo "+getNameFile(v),ex,this);
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
         }
     }
 
-    public String getNameFile(View view){
-        String documentNumber;
+    public String getNameFile(View view) {
+        String documentNumber = cedulaAux;
         String nameFile = idElement;
-        try {
-            Person person = storage.getPerson(view.getContext());
-            documentNumber = person.getNumber();
-        }
-        catch (Exception ex){
-            documentNumber = getIntent().getStringExtra("PERSONA_Documento");
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"nombre archivo "+documentNumber,ex,this);
-        }
 
-        return documentNumber+nameFile+".jpg";
+        return documentNumber + nameFile + ".jpg";
     }
 
-    public void changeStatusUpload(boolean status){
+    public void changeStatusUpload(boolean status) {
 
         // Se obtiene el bitmap1 para saber si ya hay una imagen cargada, si no encuentra ninguna imagen la variable queda nula
-        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1+"/"+getNameFile(view));
-        if (bitmap1 != null){
+        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(view));
+        if (bitmap1 != null) {
             status = true;
             bitmap1 = null;
         }
 
         switch (idElement) {
             case "CargueDocumentosPreValidación":
-                LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
-                if(status){
+                LinearLayout rl = (LinearLayout) findViewById(R.id.lyt_cargue1);
+                if (status) {
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
@@ -521,66 +555,59 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;*/
             case "CedulaCara1":
-                LinearLayout rl3 = (LinearLayout)findViewById(R.id.lyt_cargue3);
-                if(status){
+                LinearLayout rl3 = (LinearLayout) findViewById(R.id.lyt_cargue3);
+                if (status) {
                     rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "CedulaCara2":
-                LinearLayout rl4 = (LinearLayout)findViewById(R.id.lyt_cargue4);
-                if(status){
+                LinearLayout rl4 = (LinearLayout) findViewById(R.id.lyt_cargue4);
+                if (status) {
                     rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "Desprendible1":
-                LinearLayout rl5 = (LinearLayout)findViewById(R.id.lyt_cargue5);
-                if(status){
+                LinearLayout rl5 = (LinearLayout) findViewById(R.id.lyt_cargue5);
+                if (status) {
                     rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "Desprendible2":
-                LinearLayout rl6 = (LinearLayout)findViewById(R.id.lyt_cargue6);
-                if(status){
+                LinearLayout rl6 = (LinearLayout) findViewById(R.id.lyt_cargue6);
+                if (status) {
                     rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "Desprendible3":
-                LinearLayout rl7 = (LinearLayout)findViewById(R.id.lyt_cargue7);
-                if(status){
+                LinearLayout rl7 = (LinearLayout) findViewById(R.id.lyt_cargue7);
+                if (status) {
                     rl7.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     //rl7.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
             case "Desprendible4":
-                LinearLayout rl8 = (LinearLayout)findViewById(R.id.lyt_cargue8);
-                if(status){
+                LinearLayout rl8 = (LinearLayout) findViewById(R.id.lyt_cargue8);
+                if (status) {
                     rl8.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     //rl8.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
 
             case "TratamientoDatosPersonales":
-                LinearLayout rl9 = (LinearLayout)findViewById(R.id.lyt_cargue9);
-                if(status){
+                LinearLayout rl9 = (LinearLayout) findViewById(R.id.lyt_cargue9);
+                if (status) {
                     rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-                }
-                else{
+                } else {
                     rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }
                 break;
@@ -588,12 +615,11 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void validStatusUpload(boolean status1, boolean status2, boolean status3, boolean status4, boolean status5, boolean status6, boolean status7){
-        LinearLayout rl = (LinearLayout)findViewById(R.id.lyt_cargue1);
-        if(status1){
+    public void validStatusUpload(boolean status1, boolean status2, boolean status3, boolean status4, boolean status5, boolean status6, boolean status7) {
+        LinearLayout rl = (LinearLayout) findViewById(R.id.lyt_cargue1);
+        if (status1) {
             rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
@@ -605,43 +631,38 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                     rl2.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
                 }*/
 
-        LinearLayout rl3 = (LinearLayout)findViewById(R.id.lyt_cargue3);
-        if(status3){
+        LinearLayout rl3 = (LinearLayout) findViewById(R.id.lyt_cargue3);
+        if (status3) {
             rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl3.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
-        LinearLayout rl4 = (LinearLayout)findViewById(R.id.lyt_cargue4);
-        if(status4){
+        LinearLayout rl4 = (LinearLayout) findViewById(R.id.lyt_cargue4);
+        if (status4) {
             rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl4.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
-        LinearLayout rl5 = (LinearLayout)findViewById(R.id.lyt_cargue5);
-        if(status5){
+        LinearLayout rl5 = (LinearLayout) findViewById(R.id.lyt_cargue5);
+        if (status5) {
             rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl5.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
-        LinearLayout rl6 = (LinearLayout)findViewById(R.id.lyt_cargue6);
-        if(status6){
+        LinearLayout rl6 = (LinearLayout) findViewById(R.id.lyt_cargue6);
+        if (status6) {
             rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl6.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
-        LinearLayout rl9 = (LinearLayout)findViewById(R.id.lyt_cargue9);
-        if(status7){
+        LinearLayout rl9 = (LinearLayout) findViewById(R.id.lyt_cargue9);
+        if (status7) {
             rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.success_bar));
-        }
-        else{
+        } else {
             rl9.setBackground(ContextCompat.getDrawable(view.getContext(), R.drawable.failed_bar));
         }
 
@@ -656,7 +677,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected Dialog onCreateDialog(int id) {
         final Dialog dialog;
-        switch(id) {
+        switch (id) {
             case DIALOG_REALLY_EXIT_ID:
                 dialog = new AlertDialog.Builder(this).setMessage(
                         "¿ Desea terminar el proceso ?")
@@ -695,10 +716,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PHOTO_CODE:
-            case 0 :
+            case 0:
                 if (resultCode != 0) {
-                    String path = pathNewFile1+"/"+getNameFile(view);
-                    ConfirmacionImagen(view, path,true);
+                    String path = pathNewFile1 + "/" + getNameFile(view);
+                    ConfirmacionImagen(view, path, true);
 
                 }
                 break;
@@ -707,13 +728,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 if (resultCode == RESULT_OK) {
                     //ConfirmacionImagen(view);
                     Uri selectedImageUri = data.getData();
-                    ConfirmacionImagen(view,selectedImageUri.toString(),false);
+                    ConfirmacionImagen(view, selectedImageUri.toString(), false);
                 }
         }
 
     }
 
-    public void ConfirmacionImagen(final View view,final String path,final Boolean isPhoto){
+    public void ConfirmacionImagen(final View view, final String path, final Boolean isPhoto) {
         //AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
@@ -729,18 +750,18 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         boolean isExist = false;
                         fileGallery = false;
 
-                        for(com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
-                            if(file.getType().equals(nameFile)) {
+                        for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
+                            if (file.getType().equals(nameFile)) {
                                 listUpload.remove(file);
                                 break;
                             }
                         }
-                        fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view),false, nameFile,true,path,isPhoto);
+                        fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view), false, nameFile, true, path, isPhoto);
                         listUpload.add(fileUpload);
-                        if(!isPhoto){
+                        if (!isPhoto) {
                             fileGallery = true;
                         }
-                        recuperarImagen(view,false,path);
+                        recuperarImagen(view, false, path);
                         changeStatusUpload(true);
                     }
                 });
@@ -762,7 +783,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void ValidacionCargueDocumentos(final View view){
+    public void ValidacionCargueDocumentos(final View view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Hubo un problema al cargar los archivos. Por favor inténtalo de nuevo");
         builder1.setCancelable(false);
@@ -784,7 +805,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         myDialog.show();
     }
 
-    public void NotificacionArchivospendientes(final View view){
+    public void NotificacionArchivospendientes(final View view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
         builder1.setMessage("Aun faltan archivos por cargar..");
         builder1.setCancelable(false);
@@ -825,6 +846,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
 
             persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));
+            cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
             persona.setNombre(_iParameterField.GetValueByIdField("edt_names"));
             persona.setNombre2(_iParameterField.GetValueByIdField("edt_names2"));
             persona.setApellido1(_iParameterField.GetValueByIdField("edt_lastNames"));
@@ -837,8 +859,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             IdDestinoCredito = Integer.parseInt(destinoCredito);
             IdPagaduria = Integer.parseInt(pagaduria);
 
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             /*persona.setCedula("1052407752");
             persona.setNombre("Yeisson");
             persona.setNombre2("Andres");
@@ -854,31 +875,28 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             ex.printStackTrace();
         }
 
-        boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona,user);
-        if (isSuccessPerson){
-            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona,user,_iPersonPresenter.GetIdPerson(),IdTipoEmpleado,IdTipoContrato,IdDestinoCredito,IdPagaduria);
-            if(isSuccessSubjectCredit){
+        boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona, user);
+        if (isSuccessPerson) {
+            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria);
+            if (isSuccessSubjectCredit) {
                 idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                 isCreateUserAndSubject = true;
                 boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
-                if(!responseSaveFiles) {
+                if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
-                }
-                else{
+                } else {
                     Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
                     startActivity(intent);
                 }
+            } else {
+                NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
             }
-            else {
-                NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
-            }
-        }
-        else {
-            NotificacionErrorDatos(this.context,"Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
+        } else {
+            NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");
         }
     }
 
-    public void NotificacionErrorDatos(final Context view, String mensajeError){
+    public void NotificacionErrorDatos(final Context view, String mensajeError) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
         builder1.setMessage(mensajeError);
         builder1.setCancelable(false);
@@ -897,7 +915,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         alert11.show();
     }
 
-    public void NotificacionErrorDatos(final Context view){
+    public void NotificacionErrorDatos(final Context view) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view);
         builder1.setMessage("Ha ocurrido un error inesperado. Intentalo mas tarde.");
         builder1.setCancelable(false);
@@ -927,7 +945,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     private String getCodeDestinoCredito(String name) {
         int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_credit_destination)) {
+        for (String cc : getResources().getStringArray(R.array.spinner_credit_destination)) {
             i++;
             if (cc.equals(name))
                 break;
@@ -938,7 +956,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     private String getCodeTipoContrato(String name) {
         int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_all_type_contract_employee)) {
+        for (String cc : getResources().getStringArray(R.array.spinner_all_type_contract_employee)) {
             i++;
             if (cc.equals(name))
                 break;
@@ -949,7 +967,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     private String getCodeTipoEmpleado(String name) {
         int i = -1;
-        for (String cc: getResources().getStringArray(R.array.spinner_employee_type)) {
+        for (String cc : getResources().getStringArray(R.array.spinner_employee_type)) {
             i++;
             if (cc.equals(name))
                 break;
@@ -959,7 +977,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     // inflate_PopupMenu
 
-    public String getByNameImage(View v){
+    public String getByNameImage(View v) {
         String id = "";
         switch (v.getId()) {
             case R.id.DocPrevalidacion:
@@ -1050,12 +1068,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void openGallery(View v) {
+        //pathFile()
         view = v;
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+        java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
     }
@@ -1068,7 +1087,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch ( view.getId()){
+        switch (view.getId()) {
             case R.id.tomarFoto:
                 checkPermissionCamera(viewActivityActual);
                 break;

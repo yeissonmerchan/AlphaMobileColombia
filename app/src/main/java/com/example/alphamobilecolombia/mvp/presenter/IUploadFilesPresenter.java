@@ -9,4 +9,9 @@ public interface IUploadFilesPresenter {
     boolean SendFileList(List<File> listUpload, String codeCreditSubject, String pathFile, String documentNumber);
 
     boolean SaveListTotalFiles(List<com.example.alphamobilecolombia.mvp.models.File> listUpload, String codeCreditSubject, String pathFiles, String documentNumber);
+
+    boolean CompleteCredit(String idSujetoCredito);
+
+    boolean PendingFiles(String idSujetoCredito);
+
 }
