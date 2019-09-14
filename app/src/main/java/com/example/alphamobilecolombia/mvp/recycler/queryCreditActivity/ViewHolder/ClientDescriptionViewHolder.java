@@ -80,12 +80,16 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
             fieldEstado.setVisibility(View.GONE);
         }
 
-        if (creditDescription.getPagaduria() != null)
+        if (creditDescription.getPagaduria() != null) {
             if (!creditDescription.getPagaduria().equals("")) {
                 pagaduriaText.setText(creditDescription.getPagaduria());
             } else {
                 fieldPagaduria.setVisibility(View.GONE);
             }
+        } else {
+            pagaduriaText.setText(creditDescription.getPagaduria());
+        }
+
 
         if (creditDescription.getFechaEnvioPrevalidacion() != null && !creditDescription.getFechaEnvioPrevalidacion().equals("")) {
             fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
@@ -95,29 +99,39 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
         }
 
         String montoSugerido = format.format(Integer.parseInt(creditDescription.getMontoSugerido()));
-        if (montoSugerido != null && !montoSugerido.equals("")) {
+        if (montoSugerido != null) {
+            if (!montoSugerido.equals("$0")) {
                 montoSugeridoText.setText(montoSugerido);
             } else {
                 fieldMontoSugerido.setVisibility(View.GONE);
                 linear4.setVisibility(View.GONE);
             }
+        }else{
+            fieldMontoSugerido.setVisibility(View.GONE);
+            linear4.setVisibility(View.GONE);
+        }
 
         String cuotaSugerida = format.format(Integer.parseInt(creditDescription.getCuotaSug()));
-        if (cuotaSugerida != null)
-            if (!cuotaSugerida.equals("")) {
+        if (cuotaSugerida != null) {
+            if (!cuotaSugerida.equals("$0")) {
                 cuotaSugText.setText(cuotaSugerida);
             } else {
                 fieldCuotaSugerida.setVisibility(View.GONE);
                 linear5.setVisibility(View.GONE);
             }
+        }else {
+            fieldCuotaSugerida.setVisibility(View.GONE);
+            linear5.setVisibility(View.GONE);
+        }
 
         String plazoSugerido = String.format("%1s Meses", creditDescription.getPlazoSugerido());
-        if (plazoSugerido.equals("")) {
-            fieldPlazoSugerido.setVisibility(View.GONE);
-            linear6.setVisibility(View.GONE);
-        } else {
-            plazoSugeridoText.setText(plazoSugerido);
-        }
+        if (!plazoSugerido.equals("") || !plazoSugerido.equals("0 Meses") ) {
+                plazoSugeridoText.setText(plazoSugerido);
+            } else{
+                fieldPlazoSugerido.setVisibility(View.GONE);
+                linear6.setVisibility(View.GONE);
+            }
+        
 
         if (creditDescription.getFechaPrevalidacion() != null && !creditDescription.getFechaPrevalidacion().equals("")) {
             fechaPrevalidacionText.setText(creditDescription.getFechaPrevalidacion());

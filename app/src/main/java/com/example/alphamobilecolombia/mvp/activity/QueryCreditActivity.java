@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -376,29 +377,4 @@ public class QueryCreditActivity extends AppCompatActivity {
     }
 
 
-   /*@Override
-    public void expand() {
-        animateExpand();
-    }
-
-    @Override
-    public void collapse() {
-        animateCollapse();
-    }
-
-    private void animateExpand() {
-        RotateAnimation rotate =
-                new RotateAnimation(360, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(300);
-        rotate.setFillAfter(true);
-        arrow.setAnimation(rotate);
-    }
-
-    private void animateCollapse() {
-        RotateAnimation rotate =
-                new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(300);
-        rotate.setFillAfter(true);
-        arrow.setAnimation(rotate);
-    }*/
 }
