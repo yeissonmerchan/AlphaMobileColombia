@@ -146,7 +146,7 @@ public class QueryCreditActivity extends AppCompatActivity {
             }
         });
 
-        endDate = "2019-09-11";
+        endDate = dateFormat.format(date);
         initDate = dateFormat.format(operarFecha(date, -3, 1));
         myDialog.setContentView(R.layout.loading_page);
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

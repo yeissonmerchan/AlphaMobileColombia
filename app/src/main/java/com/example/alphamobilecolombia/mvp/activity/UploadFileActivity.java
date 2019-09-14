@@ -122,7 +122,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private View viewActivityActual;
     private Dialog dialogPreviewFullScreen;
     private ImageView imageViewFullScreen;
-    /*    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;*/
+    private com.github.clans.fab.FloatingActionButton closeFullScreenDialog;
 
     public UploadFileActivity() {
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
@@ -150,7 +150,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //Inicia full screen dialog
             View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
             imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
-            /*            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);*/
+            closeFullScreenDialog = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+            closeFullScreenDialog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogPreviewFullScreen.dismiss();
+                }
+            });
 
             dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
             dialogPreviewFullScreen.setContentView(viewFullScreen);

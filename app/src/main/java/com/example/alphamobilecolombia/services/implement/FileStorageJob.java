@@ -72,7 +72,7 @@ public class FileStorageJob {
                     _iFileStorageService.DeleteForCreditSubject(Integer.parseInt(creditSubject));
                     LocalNotification localNotification = new LocalNotification();
                     localNotification.setTitle("Proceso finalizado.");
-                    localNotification.setMessage(creditSubject + " La solicitud de crédito para el cliente con número de documento " + documentNumber + " . Ha finalizado.");
+                    localNotification.setMessage(/*creditSubject + */" La solicitud de crédito para el cliente con número de documento " + documentNumber + " . Ha finalizado.");
                     _iNotification.ShowNotification(localNotification);
                 }
             }
