@@ -31,11 +31,13 @@ public class ApplicationData {
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ClearCacheApp", ex, context);
                     }
                 }
             }
         }
         catch (Exception ex){
+            ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"ClearCacheApp",ex,context);
         }
     }
@@ -61,6 +63,7 @@ public class ApplicationData {
             }
         }
         catch (Exception ex){
+            ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"ClearUserData",ex,context);
         }
     }
@@ -73,10 +76,12 @@ public class ApplicationData {
                 }
                 catch (Exception ex){
                     ex.printStackTrace();
+                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "ClearData", ex, context);
                 }
             }
         }
         catch (Exception ex){
+            ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"ClearData",ex,context);
         }
     }

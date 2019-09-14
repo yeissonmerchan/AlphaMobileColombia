@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class ModuleActivity extends AppCompatActivity {
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private String link_tutorial;
     private boolean show_tutorial;
-    private CardView cardTutorial;
+    private ImageView cardTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,11 +7,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+
 public class ImagesBackGroundReceiver extends BroadcastReceiver {
+
+    Context _Context;
 
     //
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        _Context = context;
 
         try {
             if (isOnline(context)) {
@@ -21,6 +27,7 @@ public class ImagesBackGroundReceiver extends BroadcastReceiver {
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onReceive", e, context);
         }
 
         //if (context != null)
@@ -38,6 +45,7 @@ public class ImagesBackGroundReceiver extends BroadcastReceiver {
             return (netInfo != null && netInfo.isConnected());
         } catch (NullPointerException e) {
             e.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "isOnline", e, _Context);
             return false;
         }
     }

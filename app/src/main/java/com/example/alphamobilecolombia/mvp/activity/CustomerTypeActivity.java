@@ -594,6 +594,11 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
     /*********************************************************************************/
 
+    public void onclickExit(View view) {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 }
 
 /*

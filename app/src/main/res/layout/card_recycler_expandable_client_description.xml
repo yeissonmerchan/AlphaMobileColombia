@@ -73,6 +73,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -84,7 +85,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Fecha envió:"
+                    android:text="Fecha envio:"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 
@@ -99,6 +100,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -125,6 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -152,6 +155,7 @@
 
 
             <LinearLayout
+                android:id="@+id/linear6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -178,6 +182,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -204,6 +209,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -230,6 +236,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

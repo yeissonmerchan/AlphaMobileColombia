@@ -2,6 +2,7 @@ package com.example.alphamobilecolombia.data.remote.instance.implement;
 
 import com.example.alphamobilecolombia.data.remote.Models.entity.Token;
 import com.example.alphamobilecolombia.data.remote.instance.IRetrofitInstance;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.security.IAccessToken;
 
 import java.io.IOException;

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "filter", ex, mContext);
         }
 
         return false;
