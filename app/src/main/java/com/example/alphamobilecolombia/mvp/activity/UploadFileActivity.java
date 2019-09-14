@@ -264,9 +264,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                             dialog.cancel();
 
                             if (result) {
-                                if (!isCreateUserAndSubject) {
+                                //if (!isCreateUserAndSubject) {
                                     SavePersonAndSubject();
-                                }
+                                //}
+
 
                                 //saveFiles(view);
                             } else {
@@ -881,8 +882,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         if (isSuccessPerson) {
             boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria);
             if (isSuccessSubjectCredit) {
-                idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
-                isCreateUserAndSubject = true;
+                if(!isCreateUserAndSubject) {
+                    idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
+                    isCreateUserAndSubject = true;
+                }
                 boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
                 if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");

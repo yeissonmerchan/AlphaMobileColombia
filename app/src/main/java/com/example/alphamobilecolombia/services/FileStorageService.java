@@ -1,6 +1,7 @@
 package com.example.alphamobilecolombia.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -26,6 +27,7 @@ public class FileStorageService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+
         // TODO: Return the communication channel to the service.
         StartService("B");
 
@@ -46,21 +48,13 @@ public class FileStorageService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void StartService(String process){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                    Log.d("service", "onStartCommand callback called");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // your logic that service will perform will be placed here
-                FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification);
-                fileStorageJob.SendFilesToStorage();
-            }
-        }).start();
+    public void StartService(String process) {
+        Context mContext = this;
+
+        // your logic that service will perform will be placed here
+        FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification);
+        fileStorageJob.SendFilesToStorage();
+
     }
 
     @Override
