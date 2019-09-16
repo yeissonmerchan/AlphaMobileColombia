@@ -1,197 +1,164 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-class ConnectionHelper {
-
-    public static long lastNoConnectionTs = -1;
-    public static boolean isOnline = true;
-
-    public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        return activeNetwork != null && activeNetwork.isConnected();
-    }
-
-    public static boolean isConnectedOrConnecting(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-    }
-
-}
-
+//Gestiona el segundo plano, entre este Servicio y el BroadcastReceiver ImagesBackGroundReceiver
 public class ImagesBackgroundService extends Service {
 
-    static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
-    NotificationManager manager;
+    //Define el contador
+    private int counter = 0;
 
-
-    public int counter = 0;
+    //Define el temporizador
     private Timer timer;
+
+    //Define la tarea del temporizador
     private TimerTask timerTask;
-    long oldTime = 0;
 
+    //Define el contexto
+    private static Context _context;
 
-    Context ctx;
-
-
+    //Se produce cuando se inicia este servicio
     public ImagesBackgroundService() {
     }
 
-
-    public ImagesBackgroundService(Context applicationContext) {
-        super();
-        ctx = applicationContext;
-        Log.i("HERE", "here I am!");
+    //Se produce cuando se inicia este servicio
+    public ImagesBackgroundService(Context context) {
+        super(); //Invoca la clase base
+        if (context != null)
+            _context = context; //Establece el contexto
     }
 
+    //Ejecuta el Foreground
+    //Se produce al crearse esta actividad
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startMyOwnForeground();
+        }
+    }
 
+    //Se produce cuando se inicia este servicio
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        startTimer();
+        return START_STICKY;
+    }
+
+    //Se produce al destruir este servicio
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Intent broadcastIntent = new Intent(this, ImagesBackGroundReceiver.class);
+        sendBroadcast(broadcastIntent);
+        stoptimertask();
+    }
+
+    //No hace nada actualmente pero se debe implementar
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        super.onStartCommand(intent, flags, startId);
-        startTimer();
-
-
-        Toast.makeText(this, "Imprimir", Toast.LENGTH_LONG).show();
-        /*IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        BroadcastReceiver receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (CONNECTIVITY_CHANGE_ACTION.equals(action)) {
-                    //check internet connection
-                    if (!ConnectionHelper.isConnectedOrConnecting(context)) {
-                        if (context != null) {
-                            boolean show = false;
-                            if (ConnectionHelper.lastNoConnectionTs == -1) {//first time
-                                show = true;
-                                ConnectionHelper.lastNoConnectionTs = System.currentTimeMillis();
-                            } else {
-                                if (System.currentTimeMillis() - ConnectionHelper.lastNoConnectionTs > 1000) {
-                                    show = true;
-                                    ConnectionHelper.lastNoConnectionTs = System.currentTimeMillis();
-                                }
-                            }
-
-                            if (show && ConnectionHelper.isOnline) {
-                                ConnectionHelper.isOnline = false;
-                                Log.i("NETWORK123","Connection lost");
-                                Toast.makeText(context, "Connection lost", Toast.LENGTH_LONG).show();
-                                //manager.cancelAll();
-                            }
-                        }
-                    } else {
-                        Log.i("NETWORK123", "Connected");
-                        Toast.makeText(context, "It is working", Toast.LENGTH_LONG).show();
-                        // Perform your actions here
-                        ConnectionHelper.isOnline = true;
-                    }
-                }
-            }
-        };
-        registerReceiver(receiver, filter);
-*/
-
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-
-        super.onDestroy();
-        Log.i("EXIT", "ondestroy!");
-
-        if (ctx != null) {
-            Intent broadcastIntent = new Intent(ctx, ImagesBackGroundReceiver.class);
-            sendBroadcast(broadcastIntent);
-            stoptimertask();
-        }
-    }
-
-
+    //Configura el temporizador
     public void startTimer() {
-        //set a new Timer
-        timer = new Timer();
-
-        //initialize the TimerTask's job
-        initializeTimerTask();
-
-        //schedule the timer, to wake up every 1 second
-        timer.schedule(timerTask, 1000, 1000); //
+        timer = new Timer(); //Inicializa el temporizador
+        initializeTimerTask(); //Inicializa la configuración del temporizador
+        timer.schedule(timerTask, 1000, 1000); //Establece la tiempo de ejecución del temporizador
     }
 
-    /**
-     * it sets the timer to print the counter every x seconds
-     */
+    //Inicializa la tarea del temporizador
     public void initializeTimerTask() {
         timerTask = new TimerTask() {
             public void run() {
                 Log.i("in timer", "in timer ++++  " + (counter++));
-                if (ctx != null)
-                    Toast.makeText(ctx, "El servicio ya está corriendo: " + (counter++), Toast.LENGTH_LONG).show();
+
+                if (_context != null) {
+                    try {
+                        if (isOnline(_context)) {
+                            Log.i("in timer", "Regresó el internet");
+                            /*Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
+                        } else {
+                            Log.i("in timer", "Se fue el internet");
+                            /*Toast.makeText(_context, "Se fue el internet", Toast.LENGTH_LONG).show();*/
+                        }
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "initializeTimerTask", e, _context);
+                    }
+                }
             }
         };
     }
 
-    /**
-     * not needed
-     */
+    //Se produce cuando se destruye el servicio
     public void stoptimertask() {
-        //stop the timer, if it's not already null
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
     }
 
+    //Ejecuta el Foreground personalizado
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startMyOwnForeground() {
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
 
-
-
-
-
-/*    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+/*                .setSmallIcon(R.drawable.icon_1)*/
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(2, notification);
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Service started by user.", Toast.LENGTH_LONG).show();
-        return START_STICKY;
+
+    //Verifica si hay internet
+    private boolean isOnline(Context context) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            //should check null because in airplane mode it will be null
+            return (netInfo != null && netInfo.isConnected());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "isOnline", e, _context);
+            return false;
+        }
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "Service destroyed by user.", Toast.LENGTH_LONG).show();
-    }*/
 
 }

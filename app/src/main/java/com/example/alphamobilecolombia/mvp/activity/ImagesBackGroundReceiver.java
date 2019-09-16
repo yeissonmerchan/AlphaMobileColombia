@@ -5,53 +5,53 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.widget.Toast;
 
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 
+//Gestiona el segundo plano, entre este BroadCastReceiver y el Servicio ImagesBackgroundService
+//Cuando el Servicio ImagesBackgroundService muere, ejecuta este BroadcastReceiver y este a su vez vuelve a crear un servicio
 public class ImagesBackGroundReceiver extends BroadcastReceiver {
 
-    Context _Context;
+    //Define el contexto
+    private static Context _context;
 
-    //
+    //Ejecuta el servicio
+    //Se produce cuando el servicio ImagesBackgroundService Muere
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (context != null)
+        _context = context; //Establece el contexto
+        execute(); //Ejecuta el servicio
+    }
 
-        _Context = context;
-
+    //Comienza el servicio ImagesBackgroundService
+    //Se ejecuta de manera recursiva cuando se revienta
+    public void execute() {
         try {
-            if (isOnline(context)) {
-                Toast.makeText(context, "Regresó el internet", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Si la version es mayor o igual que la 26 (OREO) entonces
+                _context.startForegroundService(new Intent(_context, ImagesBackgroundService.class));
             } else {
-                Toast.makeText(context, "Se fue el internet", Toast.LENGTH_LONG).show();
+                _context.startService(new Intent(_context, ImagesBackgroundService.class));
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onReceive", e, context);
-        }
-
-        //if (context != null)
-        //context.startService(new Intent(context, ImagesBackgroundService.class));
-
-
-    }
-
-
-    private boolean isOnline(Context context) {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            //should check null because in airplane mode it will be null
-            return (netInfo != null && netInfo.isConnected());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "isOnline", e, _Context);
-            return false;
+        } catch (Exception ex) {
+            execute(); //Se llama así mismo para intentar nuevamente ejecutar el servicio
         }
     }
-
-
 }
 
+//if (context != null)
+//context.startService(new Intent(context, ImagesBackgroundService.class));
+
+/*
+
+*/
+/*
 
 
+
+
+
+
+*/
