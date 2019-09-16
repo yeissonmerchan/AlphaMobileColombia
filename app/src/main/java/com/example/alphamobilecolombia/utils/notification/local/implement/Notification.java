@@ -26,6 +26,7 @@ public class Notification implements INotification {
         PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, new Intent(),0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context,"default")
                 .setLargeIcon(bitmapLogo)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message.getMessage()))
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(message.getTitle())
                 .setContentText(message.getMessage())

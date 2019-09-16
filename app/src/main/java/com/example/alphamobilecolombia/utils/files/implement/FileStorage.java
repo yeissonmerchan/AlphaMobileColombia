@@ -39,7 +39,7 @@ public class FileStorage implements IFileStorage {
 
     public boolean DeleteFile(){
         ApplicationData applicationData = new ApplicationData();
-        applicationData.ClearDirectoryTemp(_context);
+        //applicationData.ClearDirectoryTemp(_context);
         return true;
     }
 

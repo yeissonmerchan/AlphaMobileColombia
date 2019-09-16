@@ -1,8 +1,10 @@
 package com.example.alphamobilecolombia.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
@@ -16,6 +18,7 @@ public class FileStorageService extends Service {
     IUploadFilesPresenter iUploadFilesPresenter;
     IFileStorageService iFileStorageService;
     INotification iNotification;
+
     public FileStorageService() {
         iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
         iFileStorageService = diContainer.injectIFileStorageService(this);
@@ -24,27 +27,39 @@ public class FileStorageService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+
         // TODO: Return the communication channel to the service.
+        StartService("B");
+
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public void onCreate() {
         //Toast.makeText(this, "Invoke background service onCreate method.", Toast.LENGTH_LONG).show();
-        FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter,iFileStorageService,iNotification);
-        fileStorageJob.SendFilesToStorage();
+        StartService("C");
         super.onCreate();
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Toast.makeText(this, "Invoke background service onStartCommand method.", Toast.LENGTH_LONG).show();
+        Log.d("Restart |    ", "onStartCommand callback called");
+        StartService("SC");
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public void StartService(String process) {
+        Context mContext = this;
+
+        // your logic that service will perform will be placed here
+        FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification);
+        fileStorageJob.SendFilesToStorage();
+
     }
 
     @Override
     public void onDestroy() {
+        StartService("D");
         super.onDestroy();
         //Toast.makeText(this, "Invoke background service onDestroy method.", Toast.LENGTH_LONG).show();
     }

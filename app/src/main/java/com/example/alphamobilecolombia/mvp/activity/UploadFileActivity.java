@@ -46,6 +46,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -62,6 +63,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,6 +95,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private String pathNewFile1;
     final Context context = this;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
+    private String cedulaAux;
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
@@ -119,7 +122,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private View viewActivityActual;
     private Dialog dialogPreviewFullScreen;
     private ImageView imageViewFullScreen;
-    /*    private com.github.clans.fab.FloatingActionButton btnCloseFullScreen;*/
+    private com.github.clans.fab.FloatingActionButton closeFullScreenDialog;
 
     public UploadFileActivity() {
         _iUploadFilesPresenter = diContainer.injectDIIUploadFilesPresenter(this);
@@ -147,7 +150,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //Inicia full screen dialog
             View viewFullScreen = LayoutInflater.from(this).inflate(R.layout.preview_file_full_screen, null);
             imageViewFullScreen = (ImageView) viewFullScreen.findViewById(R.id.imageFullScreen);
-            /*            btnCloseFullScreen = viewFullScreen.findViewById(R.id.closeFullScreenDialog);*/
+            closeFullScreenDialog = viewFullScreen.findViewById(R.id.closeFullScreenDialog);
+            closeFullScreenDialog.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogPreviewFullScreen.dismiss();
+                }
+            });
 
             dialogPreviewFullScreen = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
             dialogPreviewFullScreen.setContentView(viewFullScreen);
@@ -181,6 +190,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         idSujeroCredito = getIntent().getStringExtra("IdSujetoCredito");
         isCreateUserAndSubject = false;
         CreateBottomSheetDialog();
+        cedulaAux = "";
         /*Parameter newParameter = new Parameter();
         newParameter.setKey("campo1");
         newParameter.setValue("fgfgfhfghfghgfhgfhgfhfg");
@@ -199,6 +209,22 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String value = busqueda.getValue();*/
 
         // View PopupMenu
+
+        deleteFolder();
+    }
+
+    private void deleteFolder() {
+        java.io.File dir = new java.io.File(pathFile());
+        try {
+            FileUtils.deleteDirectory(dir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        java.io.File myPicDirectory = new java.io.File(pathFile());
+        if (!myPicDirectory.exists()) {
+            myPicDirectory.mkdirs();
+        }
+
     }
 
 
@@ -244,9 +270,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                             dialog.cancel();
 
                             if (result) {
-                                if (!isCreateUserAndSubject) {
+                                //if (!isCreateUserAndSubject) {
                                     SavePersonAndSubject();
-                                }
+                                //}
+
 
                                 //saveFiles(view);
                             } else {
@@ -349,7 +376,25 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
                 tomarFoto(v);
             }
+        }
 
+        return;
+    }
+
+    public void checkPermissionStorage(View v) {
+        idElement = getByNameImage(v);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            //tomarFoto(v);
+        } else {
+
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+                //tomarFoto(v);
+            }
         }
 
         return;
@@ -357,13 +402,18 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
     public void tomarFoto(View v) {
         //idElement = getIdElementUpload(v);
-        view = v;
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
-        intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-        startActivityForResult(intento1, PHOTO_CODE);
+        try {
+            checkPermissionStorage(v);
+            view = v;
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            Intent intento1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
+            intento1.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
+            startActivityForResult(intento1, PHOTO_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -393,7 +443,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             }
 
             if (isExist) {
-                Bitmap bitmap1 = BitmapFactory.decodeFile(getExternalFilesDir(null) + "/" + getNameFile(v));
+                Bitmap bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
                 if (isPhoto) {
                     bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
                 } else {
@@ -416,9 +466,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public String pathFile() {
+        //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        //return root + "/check";
+        cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
+        String pathFile = "/sdcard/"+cedulaAux;
+        return pathFile;
+    }
+
     public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
-            String pathFileLocal = getExternalFilesDir(null) + "/" + getNameFile(v);
+            String pathFileLocal = pathFile() + "/" + getNameFile(v);
             if (fileGallery) {
                 pathFileLocal = path;
             }
@@ -439,7 +497,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             pathNewFile1 = file.getParent();
             String pathFileLocalCompress = pathNewFile1 + "/" + getNameFile(v);
 
-            java.io.File f = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+            java.io.File f = new java.io.File(pathFile(), getNameFile(v));
             f.createNewFile();
             Bitmap bitmap = BitmapFactory.decodeFile(pathFileLocalCompress);
             //Convert bitmap to byte array
@@ -456,7 +514,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             System.out.println("file_size_final " + file_size_final);
             file.delete();
 
-            pathNewFile1 = getExternalFilesDir(null).getAbsolutePath();
+            pathNewFile1 = pathFile();
 
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
@@ -470,16 +528,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     public String getNameFile(View view) {
-        String documentNumber;
+        String documentNumber = cedulaAux;
         String nameFile = idElement;
-        try {
-            Person person = storage.getPerson(view.getContext());
-            documentNumber = person.getNumber();
-        } catch (Exception ex) {
-            documentNumber = getIntent().getStringExtra("PERSONA_Documento");
-            ex.printStackTrace();
-            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "nombre archivo " + documentNumber, ex, this);
-        }
 
         return documentNumber + nameFile + ".jpg";
     }
@@ -487,12 +537,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     public void changeStatusUpload(boolean status) {
 
         // Se obtiene el bitmap1 para saber si ya hay una imagen cargada, si no encuentra ninguna imagen la variable queda nula
-
-        String Ruta = pathNewFile1 + "/" + getNameFile(view);
-
-        Bitmap bitmap1 = BitmapFactory.decodeFile(Ruta);
+        Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(view));
         if (bitmap1 != null) {
-            //status = true;
+            /*status = true;*/
             bitmap1 = null;
         }
 
@@ -806,6 +853,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             //int tipoClienteId = _iSelectList.GetValueByIdField(tipoCliente);
 
             persona.setCedula(_iParameterField.GetValueByIdField("edt_numberIdentification"));
+            cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
             persona.setNombre(_iParameterField.GetValueByIdField("edt_names"));
             persona.setNombre2(_iParameterField.GetValueByIdField("edt_names2"));
             persona.setApellido1(_iParameterField.GetValueByIdField("edt_lastNames"));
@@ -813,6 +861,8 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             persona.setFechaNacimiento(_iParameterField.GetValueByIdField("edt_birthDate"));
             persona.setGenero(String.valueOf(genero));
             persona.setCelular("0000000000");
+            persona.setCiudad(_iParameterField.GetValueByIdField("search_ciudad_expedicion_cedula"));
+            persona.setFechaExpedicion(_iParameterField.GetValueByIdField("edt_fecha_expedicion_cedula"));
             IdTipoEmpleado = Integer.parseInt(tipoCliente);
             IdTipoContrato = Integer.parseInt(tipoContrato);
             IdDestinoCredito = Integer.parseInt(destinoCredito);
@@ -838,8 +888,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         if (isSuccessPerson) {
             boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria);
             if (isSuccessSubjectCredit) {
-                idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
-                isCreateUserAndSubject = true;
+                if(!isCreateUserAndSubject) {
+                    idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
+                    isCreateUserAndSubject = true;
+                }
                 boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
                 if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
@@ -1027,12 +1079,13 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void openGallery(View v) {
+        //pathFile()
         view = v;
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        java.io.File foto = new java.io.File(getExternalFilesDir(null), getNameFile(v));
+        java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
     }

@@ -19,7 +19,7 @@ public class PostPersonaInsertarRequest {
     final String iD_TP_MunicipioExpedicion;
     final String iD_TP_UsuarioRegistro;
 
-    public PostPersonaInsertarRequest(String cedula, String pNombre, String sNombre, String pApellido, String sApellido, String genero, String fechaNacimiento, String celular, String usuarioRegistro)
+    public PostPersonaInsertarRequest(String cedula, String pNombre, String sNombre, String pApellido, String sApellido, String genero, String fechaNacimiento, String celular, String fechaExpedicion, String ciudad, String usuarioRegistro)
     {
 
         this.iD_TS_TipoDocumento = "1";
@@ -36,9 +36,9 @@ public class PostPersonaInsertarRequest {
         this.direccion = "";
         this.telefono = "";
         this.celular = celular;
-        this.fechaExpedicion = "1900-01-01";
+        this.fechaExpedicion = fechaExpedicion;
         //this.fechaExpedicion = "";
-        this.iD_TP_MunicipioExpedicion = "918";
+        this.iD_TP_MunicipioExpedicion = ciudad;
         this.iD_TP_UsuarioRegistro = usuarioRegistro;
 
     }

@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         initView();
         validator = new Validator(this);
         validator.setValidationListener(this);
-        _iAccessToken.CleanToken();
+        //_iAccessToken.CleanToken();
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

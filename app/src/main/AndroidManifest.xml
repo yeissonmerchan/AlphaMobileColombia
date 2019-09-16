@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -43,8 +44,38 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- *************************************************************************** MODULOS -->
-        <!-- SCANNER -->
+        </activity>
+
+        <service android:name=".mvp.activity.ImagesBackgroundService"
+            android:enabled="true"
+            />
+
+        <receiver
+            android:name=".mvp.activity.ImagesBackGroundReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".services.implement.BootBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".mvp.activity.ImagesBackgroundJob"
+            android:enabled="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
+
+        <!--*************************************************************************** MODULOS-->
+
+        <!--SCANNER-->
         <activity
             android:name=".mvp.activity.ScannerActivity"
             android:alwaysRetainTaskState="true"
@@ -136,6 +167,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <service
+            android:name=".services.FileStorageService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+
     </application>
 
 </manifest>
