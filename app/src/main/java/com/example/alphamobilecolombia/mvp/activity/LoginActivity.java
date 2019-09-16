@@ -112,9 +112,9 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
         //******************************************** BroadcastReceiver
 
-/*        IntentFilter filter = new IntentFilter();
+        IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(new ImagesBackGroundReceiver(), filter);*/
+        registerReceiver(new ImagesBackGroundReceiver(), filter);
 
         //******************************************** Service
 
