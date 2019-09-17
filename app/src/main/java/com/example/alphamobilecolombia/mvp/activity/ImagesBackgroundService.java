@@ -89,7 +89,7 @@ public class ImagesBackgroundService extends Service {
     public void startTimer() {
         timer = new Timer(); //Inicializa el temporizador
         initializeTimerTask(); //Inicializa la configuración del temporizador
-        timer.schedule(timerTask, 1000, 1000); //Establece la tiempo de ejecución del temporizador
+        timer.schedule(timerTask, 1000, 60000); //Establece la tiempo de ejecución del temporizador
     }
 
     //Inicializa la tarea del temporizador
@@ -98,29 +98,17 @@ public class ImagesBackgroundService extends Service {
             public void run() {
                 Log.i("in timer", "in timer ++++  " + (counter++));
 
-                if (_context != null) {
-                    try {
-/*                        if (isOnline(_context)) {
-                            Log.i("in timer", "Regresó el internet");*/
 
-                        IntentFilter filter = new IntentFilter();
-                        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-                        registerReceiver(new ImagesBackGroundReceiver2(), filter);
+                try {
+                    IntentFilter filter = new IntentFilter();
+                    filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                    registerReceiver(new ImagesBackGroundReceiver2(), filter);
 
-                        /* Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
-/*                        } else {
-                            Log.i("in timer", "Se fue el internet");
 
-                            IntentFilter filter = new IntentFilter();
-                            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-                            registerReceiver(new ImagesBackGroundReceiver2(), filter);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+//                    LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "initializeTimerTask", e, _context);
 
-                            *//*Toast.makeText(_context, "Se fue el internet", Toast.LENGTH_LONG).show();*//*
-                        }*/
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                        LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "initializeTimerTask", e, _context);
-                    }
                 }
             }
         };
