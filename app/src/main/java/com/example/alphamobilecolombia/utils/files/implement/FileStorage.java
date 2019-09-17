@@ -6,6 +6,7 @@ import android.util.Base64;
 import com.example.alphamobilecolombia.utils.configuration.implement.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
+import com.squareup.otto.Bus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class FileStorage implements IFileStorage {
     Context _context;
+    private Bus bus;
     public FileStorage(Context context){
         _context = context;
     }
@@ -33,6 +35,7 @@ public class FileStorage implements IFileStorage {
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(_context.getClass().getSimpleName(),codeCreditSubject,ex,_context);
             System.out.println("Ha ocurrido un error en la lectura del archivo! "+ex.getMessage());
+            bus.post("FAIL");
         }
         return base64;
     }

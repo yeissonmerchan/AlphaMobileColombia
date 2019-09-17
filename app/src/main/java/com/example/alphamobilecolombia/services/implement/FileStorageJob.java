@@ -7,6 +7,7 @@ import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
 import com.example.alphamobilecolombia.utils.configuration.IFileStorageService;
 import com.example.alphamobilecolombia.utils.notification.local.INotification;
 import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
+import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class FileStorageJob {
     INotification _iNotification;
     int countStop = 3;
     int countTrans = 1;
+    private Bus bus;
 
     public FileStorageJob(IUploadFilesPresenter iUploadFilesPresenter, IFileStorageService iFileStorageService, INotification iNotification) {
         _iUploadFilesPresenter = iUploadFilesPresenter;
@@ -74,9 +76,10 @@ public class FileStorageJob {
                     localNotification.setTitle("Proceso finalizado.");
                     localNotification.setMessage(/*creditSubject + */" La solicitud de crédito para el cliente con número de documento " + documentNumber + " . Ha finalizado.");
                     _iNotification.ShowNotification(localNotification);
+                }else {
+                    bus.post("FAIL");
                 }
-            }
-            else{
+            } else {
                 countTrans = countTrans + 1;
                 if (countTrans <= countStop)
                     SendFile(creditSubject);

@@ -31,6 +31,7 @@ import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.files.IFileStorage;
 import com.google.api.BackendOrBuilder;
 import com.google.gson.Gson;
+import com.squareup.otto.Bus;
 
 
 import org.json.JSONArray;
@@ -49,6 +50,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
     Context _context;
     ICompletedSubjectCredit _iCompletedSubjectCredit;
     IQueryPendingFilesAdapter _iQueryPendingFilesAdapter;
+    private Bus bus;
 
     CountDownLatch executionCompleted;
     List<HttpResponse> listResponses = new ArrayList<>();
@@ -320,6 +322,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                     }.start();*/
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    bus.post("FAIL");
                     LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "SendFileList: " + file.getName(), ex, _context);
                 }
             }
@@ -332,6 +335,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
             //isValid = ReadResponse(codeCreditSubject,pathFile);
         } catch (Exception ex) {
             ex.printStackTrace();
+            bus.post("FAIL");
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),"SendFileList",ex,_context);
         }
         return isValid;
