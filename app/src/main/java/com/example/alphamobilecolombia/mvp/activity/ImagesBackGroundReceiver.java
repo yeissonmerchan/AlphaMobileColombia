@@ -30,6 +30,7 @@ public class ImagesBackGroundReceiver extends BroadcastReceiver {
     //Se ejecuta de manera recursiva cuando se revienta
     public void execute() {
         try {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //Si la version es mayor o igual que la 26 (OREO) entonces
                 _context.startForegroundService(new Intent(_context, ImagesBackgroundService.class));
             } else {

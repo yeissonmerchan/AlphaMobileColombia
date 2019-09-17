@@ -38,7 +38,7 @@ public class ImagesBackgroundService extends Service {
     private TimerTask timerTask;
 
     //Define el contexto
-    private static Context _context;
+    public static Context _context;
 
     //Se produce cuando se inicia este servicio
     public ImagesBackgroundService() {
@@ -73,7 +73,7 @@ public class ImagesBackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Intent broadcastIntent = new Intent(this, ImagesBackGroundReceiver.class);
+        Intent broadcastIntent = new Intent(_context, ImagesBackGroundReceiver.class);
         sendBroadcast(broadcastIntent);
         stoptimertask();
     }
@@ -102,9 +102,19 @@ public class ImagesBackgroundService extends Service {
                     try {
                         if (isOnline(_context)) {
                             Log.i("in timer", "Regresó el internet");
-                            /*Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
+
+                            IntentFilter filter = new IntentFilter();
+                            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                            registerReceiver(new ImagesBackGroundReceiver2(), filter);
+
+                           /* Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
                         } else {
                             Log.i("in timer", "Se fue el internet");
+
+                            IntentFilter filter = new IntentFilter();
+                            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                            registerReceiver(new ImagesBackGroundReceiver2(), filter);
+
                             /*Toast.makeText(_context, "Se fue el internet", Toast.LENGTH_LONG).show();*/
                         }
                     } catch (NullPointerException e) {
@@ -145,7 +155,6 @@ public class ImagesBackgroundService extends Service {
                 .build();
         startForeground(2, notification);
     }
-
 
     //Verifica si hay internet
     private boolean isOnline(Context context) {
