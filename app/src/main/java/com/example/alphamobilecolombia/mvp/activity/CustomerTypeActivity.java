@@ -430,11 +430,11 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
                     /******************* CARGA SPINNER TIPO CONTRATO */
 
-                    /*ListaTipoContrato.clear();*/
+                    ListaTipoContrato.clear();
 
-                    /*ListaTipoContrato.add("PENSIONADO");*/
+                    ListaTipoContrato.add("PENSIONADO");
 
-                    /*adapter = new ListViewAdapter(this, ListaTipoContrato);*/
+                    adapter = new ListViewAdapter(this, ListaTipoContrato);
 
                     /* listview_tipo_contrato.setAdapter(adapter);*/
 
@@ -443,8 +443,8 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
                     /******************* CARGA SEARCH TIPO CONTRATO */
 
-                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);
-                    spinner_tipo_contrato.setAdapter(adapter2);
+                    /*ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_retired, android.R.layout.simple_spinner_item);*/
+                    spinner_tipo_contrato.setAdapter(adapter);
 
                     /********************/
 
