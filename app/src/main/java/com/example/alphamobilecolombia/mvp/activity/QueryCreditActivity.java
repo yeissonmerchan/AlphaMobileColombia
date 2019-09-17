@@ -1,13 +1,10 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -20,8 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,7 +36,6 @@ import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Adapter.RecyclerAdapterQueryCredit;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.ParseException;
@@ -77,6 +71,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     Dialog myDialog;
     RealmStorage storage = new RealmStorage();
     private TabLayout tabFilters;
+    RecyclerView recyclerCredits;
     //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
 
     @Override
@@ -249,7 +244,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     public void configurerView(PostQueryCredit[] model) {
 
         //RecyclerView
-        RecyclerView recyclerCredits = findViewById(R.id.recyclerCredits);
+        recyclerCredits = findViewById(R.id.recyclerCredits);
         RecyclerAdapterQueryCredit adapter = null;
         recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
 
@@ -270,13 +265,13 @@ public class QueryCreditActivity extends AppCompatActivity {
                 clients.add(client);
             }
 
-            adapter = new RecyclerAdapterQueryCredit(clients);
+            adapter = new RecyclerAdapterQueryCredit(clients,recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", model.length));
 
 
         } else {
-            adapter = new RecyclerAdapterQueryCredit(clients);
+            adapter = new RecyclerAdapterQueryCredit(clients,recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
@@ -401,6 +396,4 @@ public class QueryCreditActivity extends AppCompatActivity {
         }
 
     }
-
-
 }

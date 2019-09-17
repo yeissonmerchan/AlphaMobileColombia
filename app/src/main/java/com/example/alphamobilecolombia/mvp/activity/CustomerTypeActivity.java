@@ -223,7 +223,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                 dialog.getDatePicker().setMaxDate(cal.getTimeInMillis());*/
 
                 Calendar FechaMaxima = Calendar.getInstance();
-                FechaMaxima.set(year - 18, month, day);
+                FechaMaxima.set(year, month, day);
                 /*FechaMaxima.add(FechaMaxima.DAY_OF_MONTH, -1);*/
                 dialog.getDatePicker().setMaxDate(FechaMaxima.getTimeInMillis());
 
