@@ -12,34 +12,25 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
-import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
 import com.example.alphamobilecolombia.data.local.implement.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
 import com.example.alphamobilecolombia.mvp.presenter.ICreditSubjectPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IPersonPresenter;
 import com.example.alphamobilecolombia.mvp.presenter.IUploadFilesPresenter;
-import com.example.alphamobilecolombia.mvp.presenter.implement.ProcessCompletedPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
 import com.example.alphamobilecolombia.utils.configuration.IParameterField;
 import com.example.alphamobilecolombia.utils.configuration.ISelectList;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.mvp.models.File;
-import com.example.alphamobilecolombia.mvp.models.Person;
 import com.example.alphamobilecolombia.mvp.models.Persona;
 import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import androidx.annotation.RequiresApi;
@@ -49,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -59,26 +51,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import id.zelory.compressor.Compressor;
-import io.realm.RealmObject;
+
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
 
 public class UploadFileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -99,6 +97,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     final Context context = this;
     private static final int DIALOG_REALLY_EXIT_ID = 0;
     private String cedulaAux;
+    private final int PICK_IMAGE_REQUEST = 1;
 
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IUploadFilesPresenter _iUploadFilesPresenter;
@@ -113,6 +112,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private final int SELECT_PICTURE = 200;
     private final int PHOTO_CODE = 100;
+    public static final int IMAGE_GALLERY_REQUEST = 49374;
 
     String nameUriPath;
 
@@ -222,7 +222,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             if (dir.exists()) {
                 FileUtils.deleteDirectory(dir);
                 dir.mkdirs();
-            }else {
+            } else {
                 dir.mkdirs();
             }
         } catch (IOException e) {
@@ -472,7 +472,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
             if (isExist) {
                 Bitmap bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
-                if (isPhoto) {
+                /*if (isPhoto) {
                     bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
                 } else {
                     try {
@@ -482,7 +482,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
                 imageViewFullScreen.setImageBitmap(bitmap1);
                 dialogPreviewFullScreen.show();
             } else {
@@ -498,23 +498,47 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String root = Environment.getExternalStorageDirectory().getAbsolutePath();
         //String root = Environment.getRootDirectory().getAbsolutePath();
         cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
-        String pathFile = root+"/check/" + cedulaAux;
+        String pathFile = root + "/check/" + cedulaAux;
         return pathFile;
     }
 
-    public void recuperarImagen(View v, boolean isfetch, String path) {
+    public void recuperarImagen(View v, boolean isfetch, String path, Bitmap bitmapGallery) {
         try {
             String pathFileLocal = pathFile() + "/" + getNameFile(v);
             pathNewFile1 = pathFile();
+            java.io.File fileLocal;
             if (fileGallery) {
-                pathFileLocal = path;
+                //pathFileLocal = path;
+                String pathGallery = Environment.getExternalStorageDirectory().toString()+"/Pictures/"+getNameFile(v);
+                fileLocal = new java.io.File(pathFileLocal);
+                fileLocal.getParentFile().mkdirs();
+                fileLocal.createNewFile();
+
+                int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
+                System.out.println("file_size_original " + file_size_original);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmapGallery.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = new FileOutputStream(fileLocal);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+
+            }
+            else{
+                fileLocal = new java.io.File(pathFileLocal);
+                int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
+                System.out.println("file_size_original " + file_size_original);
             }
 
-            java.io.File fileLocal = new java.io.File(pathFileLocal);
-            int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
-            System.out.println("file_size_original " + file_size_original);
+            //java.io.File fileLocal = new java.io.File(pathFileLocal);
+            //int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
+            //System.out.println("file_size_original " + file_size_original);
             java.io.File file = new Compressor(context)
-                    .setQuality(60)
+                    .setQuality(80)
                     .setCompressFormat(Bitmap.CompressFormat.WEBP)
                     .compressToFile(fileLocal);
 
@@ -752,25 +776,42 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             case 0:
                 if (resultCode != 0) {
                     String path = pathNewFile1 + "/" + getNameFile(view);
-                    ConfirmacionImagen(view, path, true);
-
+                    ConfirmacionImagen(view, path, true, null);
                 }
                 break;
 
+            case IMAGE_GALLERY_REQUEST:
             case SELECT_PICTURE:
                 if (resultCode == RESULT_OK) {
+
                     //ConfirmacionImagen(view);
                     Uri selectedImageUri = data.getData();
                     //String picturePath = getRealPathFromNAME(selectedImageUri);
-                    String getRealPathFromURI = getRealPathFromURI(selectedImageUri);
-                    String getRealPathFromURI_API19 = getRealPathFromURI_API19(this,selectedImageUri);
+                    //String getRealPathFromURI = getRealPathFromURI(selectedImageUri);
+                    //String getRealPathFromURI_API19 = getRealPathFromURI_API19(this, selectedImageUri);
                     //String getRealPathFromURI_API11to18 = getRealPathFromURI_API11to18(this,selectedImageUri);
                     //String getRealPathFromURI_BelowAPI11 = getRealPathFromURI_BelowAPI11(this,selectedImageUri);
-                    ConfirmacionImagen(view, getRealPathFromURI, false);
+                    // the address of the image on the SD Card.
+                    Uri imageUri = data.getData();
+                    Bitmap bitmap = null;
+                    try {
+                        InputStream stream = getContentResolver().openInputStream(
+                                data.getData());
+                        bitmap = BitmapFactory.decodeStream(stream);
+                        stream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ConfirmacionImagen(view, "", false, bitmap);
                 }
         }
-
     }
+
+
 
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -821,8 +862,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 filePath = cursor.getString(columnIndex);
             }
             cursor.close();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return filePath;
@@ -873,7 +913,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         return result;
     }
 
-    public void ConfirmacionImagen(final View view, final String path, final Boolean isPhoto) {
+    public void ConfirmacionImagen(final View view, final String path, final Boolean isPhoto, Bitmap bitmap) {
         //AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
@@ -900,7 +940,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         if (!isPhoto) {
                             fileGallery = true;
                         }
-                        recuperarImagen(view, false, path);
+                        recuperarImagen(view, false, path, bitmap);
                         changeStatusUpload(true);
                     }
                 });
@@ -1214,12 +1254,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         view = v;
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
-        startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
+        startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);*/
 
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void ShowDialog(View view) {
