@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -49,6 +50,7 @@ import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -222,7 +224,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             if (dir.exists()) {
                 FileUtils.deleteDirectory(dir);
                 dir.mkdirs();
-            }else {
+            } else {
                 dir.mkdirs();
             }
         } catch (IOException e) {
@@ -408,30 +410,11 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         return;
     }
 
-    public void checkPermissionStorage2(View v) {
-        idElement = getByNameImage(v);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            //tomarFoto(v);
-        } else {
-
-            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-
-            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
-                //tomarFoto(v);
-            }
-        }
-
-        return;
-    }
 
     public void tomarFoto(View v) {
         //idElement = getIdElementUpload(v);
         try {
             checkPermissionStorage(v);
-            checkPermissionStorage2(v);
             view = v;
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -498,7 +481,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         String root = Environment.getExternalStorageDirectory().getAbsolutePath();
         //String root = Environment.getRootDirectory().getAbsolutePath();
         cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
-        String pathFile = root+"/check/" + cedulaAux;
+        String pathFile = root + "/check/" + cedulaAux;
         return pathFile;
     }
 
@@ -763,7 +746,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                     Uri selectedImageUri = data.getData();
                     //String picturePath = getRealPathFromNAME(selectedImageUri);
                     String getRealPathFromURI = getRealPathFromURI(selectedImageUri);
-                    String getRealPathFromURI_API19 = getRealPathFromURI_API19(this,selectedImageUri);
+                    String getRealPathFromURI_API19 = getRealPathFromURI_API19(this, selectedImageUri);
                     //String getRealPathFromURI_API11to18 = getRealPathFromURI_API11to18(this,selectedImageUri);
                     //String getRealPathFromURI_BelowAPI11 = getRealPathFromURI_BelowAPI11(this,selectedImageUri);
                     ConfirmacionImagen(view, getRealPathFromURI, false);
@@ -821,8 +804,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 filePath = cursor.getString(columnIndex);
             }
             cursor.close();
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return filePath;
@@ -1028,8 +1010,29 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 } else {
-                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
-                    startActivity(intent);
+                    IntentFilter filter = new IntentFilter();
+                    filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                    registerReceiver(new ImagesBackGroundReceiver(), filter);
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myDialog.dismiss();
+                                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    }, 2000);
+
+
+                    /*Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                    startActivity(intent);*/
                 }
             } else {
                 NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");

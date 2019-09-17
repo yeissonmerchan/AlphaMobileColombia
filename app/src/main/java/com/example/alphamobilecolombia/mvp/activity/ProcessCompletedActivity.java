@@ -1,9 +1,12 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -17,15 +20,21 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.mvp.presenter.IProcessCompletedPresenter;
 import com.example.alphamobilecolombia.services.FileStorageService;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.bus.BusProvider;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 public class ProcessCompletedActivity extends AppCompatActivity {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IProcessCompletedPresenter _iProcessCompletedPresenter;
+
+    private Bus bus;
 
     public ProcessCompletedActivity() {
         _iProcessCompletedPresenter = diContainer.injectDIIProcessCompletedPresenter(this);
@@ -38,6 +47,7 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_process_completed);
         Window window = this.getWindow();
+        this.bus = BusProvider.getBus();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -47,6 +57,9 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Finalización");
         _iProcessCompletedPresenter.CleanCreditInformation();
+
+
+
 
 
         /*ProcessCompletedActivity.this.runOnUiThread(new Runnable() {
@@ -84,6 +97,7 @@ public class ProcessCompletedActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        bus.unregister(this);
         Log.d("Lifecycle", "onPause()");
 
     }
@@ -93,6 +107,12 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         super.onStop();
         Log.d("Lifecycle", "onStop()");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bus.register(this);
     }
 
     @Override
@@ -110,6 +130,18 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         return true;
     }
 
+    @Subscribe
+    public void validateUploadFiles(String msj) {
+        switch (msj) {
+            case "FAIL":
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "fallo!!!", Toast.LENGTH_SHORT).show();
+                });
+                break;
+        }
+
+    }
+
     public void onclickExit(View view) {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         startActivityForResult(intent, 0);
@@ -121,6 +153,7 @@ public class ProcessCompletedActivity extends AppCompatActivity {
     }
 
     public void onClickBtnUpdFiles(View view) {
+
         Intent intent = new Intent(view.getContext(), ModuleActivity.class);
         startActivityForResult(intent, 0);
     }
