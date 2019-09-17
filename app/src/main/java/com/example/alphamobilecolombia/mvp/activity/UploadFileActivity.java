@@ -1064,7 +1064,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona, user);
         if (isSuccessPerson) {
-            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria);
+            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria,_iParameterField.GetValueByIdField("edt_fecha_ingreso"));
             if (isSuccessSubjectCredit) {
                 if (!isCreateUserAndSubject) {
                     idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());

@@ -22,10 +22,10 @@ public class CreditSubjectPresenter implements ICreditSubjectPresenter {
         _context = context;
     }
 
-    public boolean SaveCreditSubject(Persona person, String idUser, int idPerson, int typeEmployee, int typeContract, int creditDestination, int codePayMaster){
+    public boolean SaveCreditSubject(Persona person, String idUser, int idPerson, int typeEmployee, int typeContract, int creditDestination, int codePayMaster, String fechaIngreso){
         boolean result = false;
         try {
-            ApiResponse apiResponse = _iCreditSubjectAdapter.Post(person, String.valueOf(idPerson),typeEmployee,typeContract,creditDestination,idUser,codePayMaster);
+            ApiResponse apiResponse = _iCreditSubjectAdapter.Post(person, String.valueOf(idPerson),typeEmployee,typeContract,creditDestination,idUser,codePayMaster, fechaIngreso);
             if (apiResponse.getCodigoRespuesta() == 200) {
                 String data = apiResponse.getData().toString();
                 JSONArray jsonObject = new JSONArray(data);
