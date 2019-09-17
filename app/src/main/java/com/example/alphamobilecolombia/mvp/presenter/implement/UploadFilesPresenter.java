@@ -232,7 +232,7 @@ public class UploadFilesPresenter implements IUploadFilesPresenter {
                     fileStorage.setIdPerson(file.getUsuarioRegistroID());
                     fileStorage.setIdCreditSubject(file.getSujetoCreditoID());
                     fileStorage.setIdTypeFile(file.getTipoArchivoID());
-                    fileStorage.setDocumentNumber(Integer.parseInt(documentNumber));
+                    fileStorage.setDocumentNumber(documentNumber);
                     fileStorage.setNameType(GetNameDocument(file.getTipoArchivoID()));
                     fileStorage.setName(file.getNombreArchivo());
                     fileStorage.setRequired(true);

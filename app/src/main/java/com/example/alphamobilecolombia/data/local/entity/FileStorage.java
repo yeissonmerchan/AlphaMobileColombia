@@ -6,7 +6,7 @@ public class FileStorage extends RealmObject {
     private int IdPerson;
     private int IdCreditSubject;
     private int IdTypeFile;
-    private int DocumentNumber;
+    private String DocumentNumber;
     private String NameType;
     private String Name;
     private boolean IsRequired;
@@ -47,11 +47,11 @@ public class FileStorage extends RealmObject {
         IdTypeFile = idTypeFile;
     }
 
-    public int getDocumentNumber() {
+    public String getDocumentNumber() {
         return DocumentNumber;
     }
 
-    public void setDocumentNumber(int documentNumber) {
+    public void setDocumentNumber(String documentNumber) {
         DocumentNumber = documentNumber;
     }
 
