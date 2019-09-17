@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -40,6 +41,7 @@ import androidx.core.content.ContextCompat;
 import androidx.loader.content.CursorLoader;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
@@ -1068,8 +1070,25 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 } else {
-                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
-                    startActivity(intent);
+                    IntentFilter filter = new IntentFilter();
+                    filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                    registerReceiver(new ImagesBackGroundReceiver2(), filter);
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    myDialog.dismiss();
+                                    Intent intent = new Intent(view.getContext(), ProcessCompletedActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    }, 2000);
                 }
             } else {
                 NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el proceso. Intentalo más tarde.");

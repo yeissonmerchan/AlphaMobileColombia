@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.alphamobilecolombia.R;
 import com.example.alphamobilecolombia.data.remote.Models.Response.ObjectExpandible;
 import com.example.alphamobilecolombia.data.remote.Models.Response.PostQueryCredit;
@@ -18,8 +20,26 @@ import java.util.List;
 
 public class RecyclerAdapterQueryCredit extends ExpandableRecyclerViewAdapter <ClientViewHolder, ClientDescriptionViewHolder>  {
 
-    public RecyclerAdapterQueryCredit(List<? extends ExpandableGroup> groups) {
+    RecyclerView recyclerView;
+
+    public RecyclerAdapterQueryCredit(List<? extends ExpandableGroup> groups, RecyclerView recyclerView) {
         super(groups);
+        this.recyclerView = recyclerView;
+    }
+
+    @Override
+    public void onGroupExpanded(int positionStart, int itemCount) {
+        super.onGroupExpanded(positionStart, itemCount);
+        int counter;
+        for(int index = 0; index < getGroups().size(); index++){
+            if(isGroupExpanded(getGroups().get(index))){
+                counter = getGroups().get(index).getItemCount();
+                int groupIndex = expandableList.getUnflattenedPosition(positionStart).groupPos;
+                if ((groupIndex == (getGroups().size() - 1))) {
+                    recyclerView.smoothScrollToPosition(positionStart + counter);
+                }
+            }
+        }
     }
 
 

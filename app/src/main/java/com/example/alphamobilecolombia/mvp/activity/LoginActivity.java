@@ -1,14 +1,9 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
 import android.app.ActivityManager;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,65 +26,65 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.alphamobilecolombia.R;
-import com.example.alphamobilecolombia.data.local.implement.RealmInstance;
-import com.example.alphamobilecolombia.data.remote.Models.Request.GetPagaduriasRequest;
-import com.example.alphamobilecolombia.data.remote.Models.Response.ApiResponse;
-import com.example.alphamobilecolombia.data.remote.Models.Response.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.instance.implement.MapRequest;
-import com.example.alphamobilecolombia.data.remote.instance.implement.RetrofitInstance;
-import com.example.alphamobilecolombia.mvp.adapter.implement.PayingAdapter;
 import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
-import com.example.alphamobilecolombia.mvp.presenter.implement.ScannerPresenter;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.cryptography.implement.RSA;
 import com.example.alphamobilecolombia.utils.security.IAccessToken;
-import com.example.alphamobilecolombia.utils.security.implement.AccessToken;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
+//Define la actividad del Login
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    //************************************************************************************ INYECCION
+
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     ILoginPresenter _iLoginPresenter;
     IAccessToken _iAccessToken;
 
-    public LoginActivity(){
+    //************************************************************************************ CAMPOS
+
+    //Define el campo usuario
+    @NotEmpty(message = "Ingrese un valor valido")
+    @Length(min = 6, max = 20, message = "La longitud no es correcta")
+    private EditText edt_username;
+
+    //Define el campo contraseña
+    @NotEmpty(message = "Ingrese un valor valido")
+    @Length(min = 6, max = 50, message = "La longitud no es correcta")
+    private EditText edt_password;
+
+    //************************************************************************************ VALIDACIÓN
+
+    private Validator validator;
+
+    private boolean validationResult = false;
+
+    private static final String TAG = "MainActivity";
+
+    //************************************************************************************ CONSTRUCTOR
+
+    //Se produce cuando se inicia esta actividad
+    public LoginActivity() {
         _iAccessToken = diContainer.injectIAccessToken(this);
         _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
     }
 
-    @NotEmpty(message = "Ingrese un valor valido")
-    @Length(min = 6, max = 20, message = "La longitud no es correcta")
-    EditText editTextUsername;
+    //************************************************************************************ INICIO
 
-    @NotEmpty(message = "Ingrese un valor valido")
-    @Length(min = 6, max = 50, message = "La longitud no es correcta")
-    EditText editTextPassword;
-    private Validator validator;
-    private boolean validationResult = false;
-
-
-    Intent Intencion;
-    private ImagesBackgroundService Servicio;
-    Context Contexto;
-
-    private static final String TAG = "MainActivity";
-
+    //Se produce al crearse esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();
+
+
         validator = new Validator(this);
         validator.setValidationListener(this);
         //_iAccessToken.CleanToken();
@@ -101,68 +96,68 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorHeader));
         }
 
-        EditText edt_names = (EditText) findViewById(R.id.edt_username);
-        edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        //************************************************************************************ USUARIO
 
+        edt_username = (EditText) findViewById(R.id.edt_username);
+        edt_username.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
+        //************************************************************************************ CONTRASEÑA
 
-/*
-        startService(new Intent(this, ImagesBackGroundReceiver.class));
-*/
+        edt_password = (EditText) findViewById(R.id.edt_password); //Obtiene el campo contraseña
 
-        //******************************************** BroadcastReceiver
+        ImageView show_pass_btn = (ImageView) findViewById(R.id.show_pass_btn); //Obtiene el icono del ojito de la contraseña
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(new ImagesBackGroundReceiver(), filter);
-
-        //******************************************** Service
-
-/*        Servicio = new ImagesBackgroundService(this);
-        Intencion = new Intent(this, Servicio.getClass());
-        if (!isMyServiceRunning(Servicio.getClass())) {
-            startService(Intencion);
-        } else {
-            Toast.makeText(this, "El servicio ya está corriendo", Toast.LENGTH_LONG).show();
-        }*/
-
-        //******************************************** scheduleJob
-
-        /*startService(new Intent(this, ImagesBackgroundService.class));*/
-
-        //********************************************
-
-        edt_password = (EditText) findViewById(R.id.edt_password);
-
-        ImageView show_pass_btn = (ImageView) findViewById(R.id.show_pass_btn);
-
+        //Establece el evento de cambio de texto del campo contraseña
         edt_password.addTextChangedListener(new TextWatcher() {
+
+            //Se produce antes de cambiar el texto
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
+            //Se produce en el momento de cambiar el texto
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
+            //Se produce cuando se cambia el texto del campo contraseña
             @Override
-            public void afterTextChanged(Editable s) {
-                if (s != null && s.length() > 0) {
-                    show_pass_btn.setVisibility(View.VISIBLE);
+            public void afterTextChanged(Editable valor) {
+                if (valor != null && valor.length() > 0) { //Si campo contraseña contiene texto entonces
+                    show_pass_btn.setVisibility(View.VISIBLE); //Muestra el ojito
                 } else {
-                    show_pass_btn.setVisibility(View.GONE);
+                    show_pass_btn.setVisibility(View.GONE); //Oculta el ojito
                 }
             }
         });
 
+        //************************************************************************************ SERVICIO SEGUNDO PLANO
 
+        ImagesBackgroundService Servicio = new ImagesBackgroundService(this); //Define el servicio en segundo plano
+        Intent Intencion = new Intent(this, Servicio.getClass()); //Define la intención del servicio en segundo plano
+        if (!isMyServiceRunning(Servicio.getClass())) { //Si el servicio en segundo plano no está corriendo entonces
+            startService(Intencion); //Ejecuta la intención del servicio en segundo plano
+        }
+
+        //************************************************************************************
     }
 
+    //************************************************************************************ SERVICIO SEGUNDO PLANO
 
-    EditText edt_password;
+    //Comprueba si el servicio ya está corriendo
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    //************************************************************************************ CONTRASEÑA
+
+    //Cambia el icono del ojito de la contraseña al ser presionado
     public void ShowHidePass(View view) {
 
         if (view.getId() == R.id.show_pass_btn) {
@@ -184,23 +179,7 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         }
     }
 
-
-    public Context getCtx() {
-        return Contexto;
-    }
-
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i("isMyServiceRunning?", true + "");
-                return true;
-            }
-        }
-        Log.i("isMyServiceRunning?", false + "");
-        return false;
-    }
-
+    //************************************************************************************
 
     @Override
     public void onPause() {
@@ -222,11 +201,6 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         super.onDestroy();
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
-    }
-
-    private void initView() {
-        editTextUsername = findViewById(R.id.edt_username);
-        editTextPassword = findViewById(R.id.edt_password);
     }
 
     @Override
@@ -261,8 +235,8 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validator.validate();
         if (validationResult) {
             TextView message = findViewById(R.id.txt_message);
-            String userText = editTextUsername.getText().toString();
-            String passwordText = editTextPassword.getText().toString();
+            String userText = edt_username.getText().toString();
+            String passwordText = edt_password.getText().toString();
             Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
             if (isValid) {
                 Intent intent = new Intent(view.getContext(), ModuleActivity.class);
@@ -291,31 +265,5 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-
-
-/*    public void scheduleJob() {
-        ComponentName componentName = new ComponentName(this, ImagesBackgroundJob.class);
-        JobInfo info = new JobInfo.Builder(123, componentName)
-                .setRequiresCharging(true)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
-                .build();
-
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = scheduler.schedule(info);
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.d(TAG, "Job scheduled");
-        } else {
-            Log.d(TAG, "Job scheduling failed");
-        }
-    }
-
-    public void cancelJob(View v) {
-        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        scheduler.cancel(123);
-        Log.d(TAG, "Job cancelled");
-    }*/
-
 
 }
