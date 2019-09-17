@@ -82,7 +82,7 @@ dependencies {
     //Libreria de ecsaneo de códigos pdf47
     implementation 'com.github.bobekos:SimpleBarcodeScanner:1.0.23'
 
-    //Botones flotantes
+    //Botones flotantess
     //implementation 'com.github.JediBurrell:customFloatingActionButton:-SNAPSHOT'
     implementation 'commons-io:commons-io:2.4'
     implementation 'com.github.clans:fab:1.6.4'

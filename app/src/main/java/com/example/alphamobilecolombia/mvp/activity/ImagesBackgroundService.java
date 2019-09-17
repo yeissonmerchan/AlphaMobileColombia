@@ -100,23 +100,23 @@ public class ImagesBackgroundService extends Service {
 
                 if (_context != null) {
                     try {
-                        if (isOnline(_context)) {
-                            Log.i("in timer", "Regresó el internet");
+/*                        if (isOnline(_context)) {
+                            Log.i("in timer", "Regresó el internet");*/
 
-                            IntentFilter filter = new IntentFilter();
-                            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-                            registerReceiver(new ImagesBackGroundReceiver2(), filter);
+                        IntentFilter filter = new IntentFilter();
+                        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                        registerReceiver(new ImagesBackGroundReceiver2(), filter);
 
-                           /* Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
-                        } else {
+                        /* Toast.makeText(_context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
+/*                        } else {
                             Log.i("in timer", "Se fue el internet");
 
                             IntentFilter filter = new IntentFilter();
                             filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
                             registerReceiver(new ImagesBackGroundReceiver2(), filter);
 
-                            /*Toast.makeText(_context, "Se fue el internet", Toast.LENGTH_LONG).show();*/
-                        }
+                            *//*Toast.makeText(_context, "Se fue el internet", Toast.LENGTH_LONG).show();*//*
+                        }*/
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                         LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "initializeTimerTask", e, _context);
@@ -156,7 +156,7 @@ public class ImagesBackgroundService extends Service {
         startForeground(2, notification);
     }
 
-    //Verifica si hay internet
+/*    //Verifica si hay internet
     private boolean isOnline(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -168,6 +168,6 @@ public class ImagesBackgroundService extends Service {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "isOnline", e, _context);
             return false;
         }
-    }
+    }*/
 
 }

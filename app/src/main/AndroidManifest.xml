@@ -18,6 +18,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:remove="android:maxSdkVersion" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -33,7 +34,10 @@
     <!--Permiso para los servicios en segundo plano desde API 26 (OREO)-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <application xmlns:tools="http://schemas.android.com/tools"
+        android:hardwareAccelerated="true" android:largeHeap="true"
         android:allowBackup="true"
         android:hasCode="true"
         android:icon="@mipmap/ic_launcher"
@@ -58,9 +62,9 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".mvp.activity.ImagesBackgroundService"
-            android:enabled="true" />
+        <service android:name=".mvp.activity.ImagesBackgroundService"
+            android:enabled="true"
+            />
 
         <receiver
             android:name=".mvp.activity.ImagesBackGroundReceiver"

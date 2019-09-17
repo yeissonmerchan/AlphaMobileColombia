@@ -13,7 +13,6 @@ public class ImagesBackGroundReceiver2 extends BroadcastReceiver {
 
     Context _Context;
 
-    //
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -21,21 +20,15 @@ public class ImagesBackGroundReceiver2 extends BroadcastReceiver {
 
         try {
             if (isOnline(context)) {
-                Toast.makeText(context, "Regresó el internet", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(context, "Regresó el internet", Toast.LENGTH_LONG).show();*/
             } else {
-                Toast.makeText(context, "Se fue el internet", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(context, "Se fue el internet", Toast.LENGTH_LONG).show();*/
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "onReceive", e, context);
         }
-
-        //if (context != null)
-        //context.startService(new Intent(context, ImagesBackgroundService.class));
-
-
     }
-
 
     private boolean isOnline(Context context) {
         try {
@@ -49,6 +42,4 @@ public class ImagesBackGroundReceiver2 extends BroadcastReceiver {
             return false;
         }
     }
-
-
 }

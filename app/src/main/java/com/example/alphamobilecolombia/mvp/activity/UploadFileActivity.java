@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -45,9 +46,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.loader.content.CursorLoader;
 
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -216,14 +219,19 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     private void deleteFolder() {
         java.io.File dir = new java.io.File(pathFile());
         try {
-            FileUtils.deleteDirectory(dir);
+            if (dir.exists()) {
+                FileUtils.deleteDirectory(dir);
+                dir.mkdirs();
+            }else {
+                dir.mkdirs();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        java.io.File myPicDirectory = new java.io.File(pathFile());
+        /*java.io.File myPicDirectory = new java.io.File(pathFile());
         if (!myPicDirectory.exists()) {
             myPicDirectory.mkdirs();
-        }
+        }*/
 
     }
 
@@ -271,7 +279,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
                             if (result) {
                                 //if (!isCreateUserAndSubject) {
-                                    SavePersonAndSubject();
+                                SavePersonAndSubject();
                                 //}
 
 
@@ -400,10 +408,30 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         return;
     }
 
+    public void checkPermissionStorage2(View v) {
+        idElement = getByNameImage(v);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            //tomarFoto(v);
+        } else {
+
+            int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            } else if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+                //tomarFoto(v);
+            }
+        }
+
+        return;
+    }
+
     public void tomarFoto(View v) {
         //idElement = getIdElementUpload(v);
         try {
             checkPermissionStorage(v);
+            checkPermissionStorage2(v);
             view = v;
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -445,7 +473,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             if (isExist) {
                 Bitmap bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
                 if (isPhoto) {
-                    bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
+                    bitmap1 = BitmapFactory.decodeFile(pathFile() + "/" + getNameFile(v));
                 } else {
                     try {
                         Uri imageUri = Uri.parse(path);
@@ -467,16 +495,17 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
     public String pathFile() {
-        //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        //return root + "/check";
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //String root = Environment.getRootDirectory().getAbsolutePath();
         cedulaAux = _iParameterField.GetValueByIdField("edt_numberIdentification");
-        String pathFile = "/sdcard/"+cedulaAux;
+        String pathFile = root+"/check/" + cedulaAux;
         return pathFile;
     }
 
     public void recuperarImagen(View v, boolean isfetch, String path) {
         try {
             String pathFileLocal = pathFile() + "/" + getNameFile(v);
+            pathNewFile1 = pathFile();
             if (fileGallery) {
                 pathFileLocal = path;
             }
@@ -494,12 +523,12 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             file.createNewFile();
             int file_size_compress = Integer.parseInt(String.valueOf(file.length() / 1024));
             System.out.println("file_size_compress " + file_size_compress);
-            pathNewFile1 = file.getParent();
+            //pathNewFile1 = file.getParent();
             String pathFileLocalCompress = pathNewFile1 + "/" + getNameFile(v);
 
             java.io.File f = new java.io.File(pathFile(), getNameFile(v));
             f.createNewFile();
-            Bitmap bitmap = BitmapFactory.decodeFile(pathFileLocalCompress);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             //Convert bitmap to byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
@@ -514,13 +543,10 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             System.out.println("file_size_final " + file_size_final);
             file.delete();
 
-            pathNewFile1 = pathFile();
-
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-
-            Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+            //Matrix matrix = new Matrix();
+            //matrix.postRotate(90);
+            //Bitmap bitmap1 = BitmapFactory.decodeFile(pathNewFile1 + "/" + getNameFile(v));
+            //Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
         } catch (Exception ex) {
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
@@ -735,10 +761,116 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 if (resultCode == RESULT_OK) {
                     //ConfirmacionImagen(view);
                     Uri selectedImageUri = data.getData();
-                    ConfirmacionImagen(view, selectedImageUri.toString(), false);
+                    //String picturePath = getRealPathFromNAME(selectedImageUri);
+                    String getRealPathFromURI = getRealPathFromURI(selectedImageUri);
+                    String getRealPathFromURI_API19 = getRealPathFromURI_API19(this,selectedImageUri);
+                    //String getRealPathFromURI_API11to18 = getRealPathFromURI_API11to18(this,selectedImageUri);
+                    //String getRealPathFromURI_BelowAPI11 = getRealPathFromURI_BelowAPI11(this,selectedImageUri);
+                    ConfirmacionImagen(view, getRealPathFromURI, false);
                 }
         }
 
+    }
+
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if (cursor != null) {
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
+    }
+
+    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index
+                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+        String filePath = "";
+        try {
+            String wholeID = DocumentsContract.getDocumentId(uri);
+
+            // Split at colon, use second item in the array
+            String id = wholeID.split(":")[1];
+
+            String[] column = {MediaStore.Images.Media.DATA};
+
+            // where id is equal to
+            String sel = MediaStore.Images.Media._ID + "=?";
+
+            Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    column, sel, new String[]{id}, null);
+
+            int columnIndex = cursor.getColumnIndex(column[0]);
+
+            if (cursor.moveToFirst()) {
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return filePath;
+    }
+
+    private String getRealPathFromNAME(Uri contentNAME) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentNAME, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentNAME.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
     }
 
     public void ConfirmacionImagen(final View view, final String path, final Boolean isPhoto) {
@@ -888,11 +1020,11 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         if (isSuccessPerson) {
             boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria);
             if (isSuccessSubjectCredit) {
-                if(!isCreateUserAndSubject) {
+                if (!isCreateUserAndSubject) {
                     idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
                     isCreateUserAndSubject = true;
                 }
-                boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathNewFile1, persona.getCedula());
+                boolean responseSaveFiles = _iUploadFilesPresenter.SaveListTotalFiles(listUpload, idSujeroCredito, pathFile(), persona.getCedula());
                 if (!responseSaveFiles) {
                     NotificacionErrorDatos(this.context, "Ha ocurrido un error inesperado en el envío de los archivos. Intentalo más tarde.");
                 } else {
@@ -1063,7 +1195,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery(view);
         } else {
-
             int hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
             if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
@@ -1088,6 +1219,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         java.io.File foto = new java.io.File(pathFile(), getNameFile(v));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(foto));
         startActivityForResult(intent.createChooser(intent, "Selecciona app imagen"), SELECT_PICTURE);
+
     }
 
     public void ShowDialog(View view) {

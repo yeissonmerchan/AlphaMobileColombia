@@ -41,18 +41,3 @@ public class ImagesBackGroundReceiver extends BroadcastReceiver {
         }
     }
 }
-
-//if (context != null)
-//context.startService(new Intent(context, ImagesBackgroundService.class));
-
-/*
-
-*/
-/*
-
-
-
-
-
-
-*/
