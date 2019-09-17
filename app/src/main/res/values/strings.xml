@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="environment_release">PRE</string>
-    <string name="environment_development">QA</string>
+    <string name="environment_release">DEV</string>
+    <string name="environment_development">DEV</string>
 
     <!-- Ips de dev -->
     <string name="dev_ip_api_authentication">http://181.57.145.20:8081/Security/</string>
