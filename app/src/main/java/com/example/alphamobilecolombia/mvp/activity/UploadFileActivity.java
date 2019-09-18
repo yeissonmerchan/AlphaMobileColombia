@@ -447,6 +447,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+
     public static class ExistFile {
         public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;

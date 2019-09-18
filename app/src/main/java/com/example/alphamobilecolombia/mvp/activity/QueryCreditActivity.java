@@ -46,6 +46,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
+
 public class QueryCreditActivity extends AppCompatActivity {
     DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
     IQueryCreditPresenter _iQueryCreditPresenter;
@@ -55,7 +57,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     private String user;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private Date date = new Date();
-
+    private String documentNumber;
     //Nuevo
     private String pValor = "3";
     EditText searchEditext;
@@ -109,11 +111,11 @@ public class QueryCreditActivity extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         typeQuery = "4";
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
                         break;
                     case 1:
                         typeQuery = "4";
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date),pValor);
 
                         break;
                     case 2:
@@ -121,7 +123,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                         try {
                             Date initDateMonth = dateFormat.parse("2019-01-01");
                             int maxMonths = monthsBetweenDates(initDateMonth, date);
-                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
+                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date),pValor);
                         } catch (ParseException ex) {
                             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                         }
@@ -159,7 +161,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                     if (searchEditext.getText().length() > 0) {
                         typeQuery = "2";
                         pValor = searchEditext.getText().toString();
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
                     } else {
 
                     }
@@ -214,8 +216,18 @@ public class QueryCreditActivity extends AppCompatActivity {
             }
         });
 
+        Bundle dataqr = this.getIntent().getExtras();
+        if (dataqr != null) {
+            documentNumber = dataqr.getString("DocumentNumber");
+        }
 
-        refreshData(user, typeQuery, initDate, endDate);
+        if (documentNumber != null){
+            refreshData(user, "2", initDate, endDate,documentNumber);
+        }
+        else {
+            refreshData(user, typeQuery, initDate, endDate,pValor);
+        }
+
 
         // Counts_rows
         count_rows = findViewById(R.id.count_rows);
@@ -224,7 +236,17 @@ public class QueryCreditActivity extends AppCompatActivity {
         //configurerView(model);
     }
 
-    private void refreshData(String user, String typeQuery, String initDate, String endDate) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(this, ModuleActivity.class); //ScannerActivity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivityForResult(intent, 0);
+        }
+        return true;
+    }
+
+    private void refreshData(String user, String typeQuery, String initDate, String endDate, String documentNumber) {
         myDialog.show();
         new Thread(new Runnable() {
             @Override
@@ -232,7 +254,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                 QueryCreditActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, pValor, "18", user, initDate, endDate);
+                        PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, documentNumber, "18", user, initDate, endDate);
                         configurerView(model);
                     }
                 });
@@ -375,11 +397,11 @@ public class QueryCreditActivity extends AppCompatActivity {
         switch (tabSelect) {
             case 0:
                 typeQuery = "4";
-                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date));
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
                 break;
             case 1:
                 typeQuery = "4";
-                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date));
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date),pValor);
 
                 break;
             case 2:
@@ -387,7 +409,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                 try {
                     Date initDateMonth = dateFormat.parse("2019-01-01");
                     int maxMonths = monthsBetweenDates(initDateMonth, date);
-                    refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date));
+                    refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date),pValor);
                 } catch (ParseException ex) {
                     // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                 }

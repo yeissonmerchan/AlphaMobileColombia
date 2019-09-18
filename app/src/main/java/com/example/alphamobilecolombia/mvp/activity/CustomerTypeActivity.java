@@ -358,6 +358,8 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     //Tipo de Contrato
                     txttipo_contrato.setVisibility(View.VISIBLE);
 
+                    textview_fecha_ingreso.setText("");
+
                     /******************* CARGA SPINNER TIPO CONTRATO */
 
 /*                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
@@ -423,6 +425,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     //Fecha de Ingreso
                     txtfecha_ingreso.setVisibility(View.GONE);
                     textview_fecha_ingreso.setVisibility(View.GONE);
+                    textview_fecha_ingreso.setText("");
 
                     /*panel_campos.setVisibility(View.GONE);*/
                     /*txtfecha_ingreso.setText("Fecha de ingreso");*/
@@ -500,6 +503,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         //Define la lista de campos a validar
         ArrayList<String> Campos = new ArrayList<String>();
 
+        //Define la lista de campos a validar
+        ArrayList<String> CamposOpcionales = new ArrayList<String>();
+
         //************************************************************ Si el empleado es activo entonces
 
         if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
@@ -527,6 +533,11 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
 
             Campos.add("search_tipo_contrato");
             //Agrega los campos a validar
+
+            Campos.add("spinner_tipo_cliente");
+            Campos.add("search_tipo_contrato");
+            CamposOpcionales.add("edt_fecha_ingreso");
+
             /*            Campos.add("edt_antiguedad_en_meses");*/
         }
 
@@ -535,7 +546,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         /*Campos.add("search_tipo_contrato");*/
 
         //Valida los campos
-        formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]), new String[]{});
+        formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]), CamposOpcionales.toArray(new String[CamposOpcionales.size()]));
 
         //************************************************************
 
