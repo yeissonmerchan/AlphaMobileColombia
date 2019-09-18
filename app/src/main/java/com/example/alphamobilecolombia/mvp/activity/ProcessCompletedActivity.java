@@ -49,13 +49,13 @@ public class ProcessCompletedActivity extends AppCompatActivity {
         _iProcessCompletedPresenter.CleanCreditInformation();
 
 
-        ProcessCompletedActivity.this.runOnUiThread(new Runnable() {
+        /*ProcessCompletedActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Intent startServiceIntent = new Intent(ProcessCompletedActivity.this, FileStorageService.class);
                 startService(startServiceIntent);
             }
-        });
+        });*/
     }
 
     @Override
