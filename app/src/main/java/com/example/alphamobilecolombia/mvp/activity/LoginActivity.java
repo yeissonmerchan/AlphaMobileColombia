@@ -163,13 +163,13 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         if (view.getId() == R.id.show_pass_btn) {
 
             if (edt_password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-                ((ImageView) (view)).setImageResource(R.drawable.hide_password);
+                ((ImageView) (view)).setImageResource(R.mipmap.ocultar_password);
 
                 //Show Password
                 edt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 edt_password.setSelection(edt_password.length());
             } else {
-                ((ImageView) (view)).setImageResource(R.drawable.show_password);
+                ((ImageView) (view)).setImageResource(R.mipmap.mostrar_password);
 
                 //Hide Password
                 edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
