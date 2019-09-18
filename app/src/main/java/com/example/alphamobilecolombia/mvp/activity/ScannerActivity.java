@@ -322,7 +322,7 @@ public class ScannerActivity extends AppCompatActivity implements AdapterView.On
         } else if (!TextUtils.isEmpty(edt_lastNames2.getText()) && (edt_lastNames2.getText().toString().length() < 3 || edt_lastNames2.getText().toString().length() > 20)) {
             Error = "El campo segundo apellido debe tener entre 3 y 20 caracteres";
         } else if (!TextUtils.isEmpty(edt_numberIdentification.getText()) && (edt_numberIdentification.getText().toString().length() < 6 || edt_numberIdentification.getText().toString().length() > 11)) {
-            Error = "El campo número de identificación debe tener entre 6 y 11 caracteres";
+            Error = "El campo número de identificación debe tener entre 6 y 10 caracteres";
         } else if (edt_numberIdentification.getText().toString().startsWith("0")) {
             Error = "El campo número de identificación No debe comenzar con cero";
         }
