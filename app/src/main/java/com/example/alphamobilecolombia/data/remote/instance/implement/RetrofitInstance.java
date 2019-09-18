@@ -6,6 +6,7 @@ import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.security.IAccessToken;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -33,6 +34,10 @@ public class RetrofitInstance implements IRetrofitInstance {
             Token token = _iAccessToken.RefreshAccess();
             if (token != null) {
                 OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+                okHttpClientBuilder.connectTimeout(60, TimeUnit.SECONDS)
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .writeTimeout(60, TimeUnit.SECONDS);
+
                 okHttpClientBuilder
                         .addInterceptor(new Interceptor() {
                             @Override
