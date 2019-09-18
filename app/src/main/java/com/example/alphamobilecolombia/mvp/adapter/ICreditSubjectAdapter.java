@@ -6,6 +6,6 @@ import com.example.alphamobilecolombia.mvp.models.Persona;
 import retrofit2.Call;
 
 public interface ICreditSubjectAdapter {
-    ApiResponse Post(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster);
-    Call<String> PostAsync(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster);
+    ApiResponse Post(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster, String fechaIngreso);
+    Call<String> PostAsync(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster, String fechaIngreso);
 }

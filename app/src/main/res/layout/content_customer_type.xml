@@ -93,15 +93,16 @@
                         android:textSize="18dp"
                         android:typeface="serif" />
 
-<!--                    <Spinner
-                        android:id="@+id/spinner_tipo_contrato"
+                    <!--OJO CAMBIAR NOMBRE POR spinner_tipo_contrato -->
+                    <Spinner
+                        android:id="@+id/search_tipo_contrato"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:tag="tipo de contrato" />-->
+                        android:tag="tipo de contrato" />
 
-                    <SearchView
+<!--                    <SearchView
                         android:id="@+id/search_tipo_contrato"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,7 +111,7 @@
                         android:searchIcon="@null">
                         android:tag="tipo de contrato"
                         <requestFocus />
-                    </SearchView>
+                    </SearchView>-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -192,12 +193,12 @@
 
                         </LinearLayout>
 
-                        <ListView
+<!--                        <ListView
                             android:id="@+id/listview_tipo_contrato"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
-                            android:visibility="gone" />
+                            android:visibility="gone" />-->
 
                     </RelativeLayout>
 

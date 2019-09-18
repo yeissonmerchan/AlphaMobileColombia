@@ -40,14 +40,14 @@ public class PostSujetoInsertarRequest {
     final String fechaResolucion;
     final String codigoMesada;
 
-    public PostSujetoInsertarRequest(String iD_tp_persona, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro, int idPagaduria) {
+    public PostSujetoInsertarRequest(String iD_tp_persona, int iD_ts_tipoEmpleado, int iD_tp_tipoContrato, int iD_ts_destinoCredito, String iD_TP_UsuarioRegistro, int idPagaduria, String fechaIngreso) {
         iD_TP_Persona = iD_tp_persona;
         iD_TS_Pagaduria = idPagaduria;
         iD_TP_Sucursal = "1";
         iD_TS_Regional = "1";
         iD_TP_Asesor = "1";
         iD_TP_Coordinador = "1";
-        this.fechaIngreso = "1999/01/01";
+        this.fechaIngreso = fechaIngreso;
         this.tiempoServicioMeses = "1";
         this.tiempoServicioAnos = "1";
         this.codigoEmpleado = "";

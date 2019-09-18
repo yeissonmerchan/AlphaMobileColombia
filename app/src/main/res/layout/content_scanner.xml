@@ -199,7 +199,7 @@
                 android:layout_marginBottom="10dp"
                 android:hint="Número identificación"
                 android:inputType="number"
-                android:maxLength="11"
+                android:maxLength="10"
                 android:tag="número de identificación"
                 android:textSize="@dimen/size_text" />
 
