@@ -32,7 +32,7 @@ public class ImagesBackGroundReceiver2 extends BroadcastReceiver {
         try {
             if (isOnline(context)) {
 //                Toast.makeText(context, "Regresó el internet", Toast.LENGTH_LONG).show();
-                FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification);
+                FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification,context);
                 fileStorageJob.SendFilesToStorage();
             } else {
 //                Toast.makeText(context, "Se fue el internet", Toast.LENGTH_LONG).show();
