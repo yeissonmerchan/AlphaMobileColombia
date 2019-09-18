@@ -85,7 +85,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Fecha envio:"
+                    android:text="Fecha envío:"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 
