@@ -51,20 +51,20 @@ public class ClientViewHolder extends GroupViewHolder {
     }
 
     private void animateExpand() {
-        /*RotateAnimation rotate =
-                new RotateAnimation(360, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        RotateAnimation rotate =
+                new RotateAnimation(180, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(300);
         rotate.setFillAfter(true);
-        arrow.setAnimation(rotate);*/
+        arrow.setAnimation(rotate);
         arrow.setRotation(180);
     }
 
     private void animateCollapse() {
-        /*RotateAnimation rotate =
+        RotateAnimation rotate =
                 new RotateAnimation(180, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(300);
         rotate.setFillAfter(true);
-        arrow.setAnimation(rotate);*/
+        arrow.setAnimation(rotate);
         arrow.setRotation(360);
     }
 }
