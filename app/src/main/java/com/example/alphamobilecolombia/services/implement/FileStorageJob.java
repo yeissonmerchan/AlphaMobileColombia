@@ -48,7 +48,7 @@ public class FileStorageJob {
 
     private boolean SendFile(String creditSubject) {
         try {
-            int documentNumber = 0;
+            String documentNumber = "";
             List<File> listUpload = new ArrayList<>();
             List<FileStorage> fileStoragesForCreditSubject = _iFileStorageService.GetListForCreditSubject(Integer.parseInt(creditSubject));
             for (FileStorage itemFile : fileStoragesForCreditSubject) {

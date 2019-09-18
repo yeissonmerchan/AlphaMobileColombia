@@ -33,24 +33,24 @@ public class CreditSubjectAdapter implements ICreditSubjectAdapter {
         _context = context;
     }
 
-    public ApiResponse Post(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster){
+    public ApiResponse Post(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster,String fechaIngreso){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         PostSujetoCredito service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSujetoCredito.class);
 
         Gson gson = new Gson();
-        String data = gson.toJson(new PostSujetoInsertarRequest(codeTransaction, typeEmployee, typeContract, creditDestination,  registryUser, codePayMaster));
+        String data = gson.toJson(new PostSujetoInsertarRequest(codeTransaction, typeEmployee, typeContract, creditDestination,  registryUser, codePayMaster, fechaIngreso));
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 
         Call<String> call = service.Insertar(body);
         return _iMapRequest.SynchronousRequest(call);
     }
 
-    public Call<String> PostAsync(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster){
+    public Call<String> PostAsync(Persona persona, String codeTransaction, int typeEmployee, int typeContract, int creditDestination, String registryUser, int codePayMaster,String fechaIngreso){
         String urlApi = ApiEnviroment.GetIpAddressApi(_context.getResources().getString(R.string.api_generic),_context);//Obtener Ip a partir de configuración
         Gson gson = new Gson();
-        String data = gson.toJson(new PostSujetoInsertarRequest(codeTransaction, typeEmployee, typeContract, creditDestination,  registryUser, codePayMaster));
+        String data = gson.toJson(new PostSujetoInsertarRequest(codeTransaction, typeEmployee, typeContract, creditDestination,  registryUser, codePayMaster, fechaIngreso));
         RequestBody body = RequestBody.create( MediaType.parse("application/json"), data);
 
         PostSujetoCredito service = _iRetrofitInstance.getRetrofitInstance(urlApi).create(PostSujetoCredito.class);
