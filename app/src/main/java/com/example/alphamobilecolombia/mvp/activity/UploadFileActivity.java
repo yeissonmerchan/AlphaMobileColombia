@@ -577,6 +577,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
         }
+        finally {
+            myDialog.dismiss();
+        }
     }
 
     public String getNameFile(View view) {
@@ -942,6 +945,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                         if (!isPhoto) {
                             fileGallery = true;
                         }
+                        myDialog.show();
                         recuperarImagen(view, false, path, bitmap);
                         changeStatusUpload(true);
                     }
