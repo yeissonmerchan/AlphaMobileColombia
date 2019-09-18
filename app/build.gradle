@@ -124,6 +124,11 @@ dependencies {
 
     //Youtube
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    //ACProgressLite
+    implementation 'cc.cloudist.acplibrary:library:1.2.1'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

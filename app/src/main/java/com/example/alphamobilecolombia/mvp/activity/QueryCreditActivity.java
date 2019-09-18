@@ -46,6 +46,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
+
 import static com.example.alphamobilecolombia.utils.validaciones.Formulario.DIALOG_REALLY_EXIT_ID;
 
 public class QueryCreditActivity extends AppCompatActivity {
@@ -70,7 +73,8 @@ public class QueryCreditActivity extends AppCompatActivity {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
     }
 
-    Dialog myDialog;
+    //Dialog myDialog;
+    ACProgressFlower dialog;
     RealmStorage storage = new RealmStorage();
     private TabLayout tabFilters;
     RecyclerView recyclerCredits;
@@ -81,10 +85,15 @@ public class QueryCreditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_credit);
 
-        myDialog = new Dialog(this);
+        //myDialog = new Dialog(this);
+        dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .text("Title is here")
+                .themeColor(Color.WHITE)
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
 
         Window window = this.getWindow();
-
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Mis solicitudes");
 
@@ -145,9 +154,10 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         endDate = dateFormat.format(date);
         initDate = dateFormat.format(operarFecha(date, -3, 1));
-        myDialog.setContentView(R.layout.loading_page);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
+        //myDialog.setContentView(R.layout.loading_page);
+        //myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //dialog.show();
+        dialog.show();
 
         //List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
 
@@ -247,7 +257,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     }
 
     private void refreshData(String user, String typeQuery, String initDate, String endDate, String documentNumber) {
-        myDialog.show();
+        dialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -298,7 +308,7 @@ public class QueryCreditActivity extends AppCompatActivity {
             count_rows.setText(String.format("%1s Solicitudes", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
         }
-        myDialog.dismiss();
+        dialog.dismiss();
 
     }
 
@@ -392,7 +402,7 @@ public class QueryCreditActivity extends AppCompatActivity {
 
 
     public void onClickCancel(View view) {
-        myDialog.show();
+        dialog.show();
         searchEditext.setText("");
         switch (tabSelect) {
             case 0:
