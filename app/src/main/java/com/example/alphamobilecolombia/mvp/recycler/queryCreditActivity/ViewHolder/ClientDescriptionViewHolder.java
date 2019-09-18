@@ -95,11 +95,7 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
 
         // Campo fecha envio
         String fechaEnvioPrevalidacion = creditDescription.getFechaEnvioPrevalidacion();
-        fechaEnvioPrevaText.setText(fechaEnvioPrevalidacion);
-        fieldFechaEnvio.setVisibility(View.VISIBLE);
-        fechaEnvioPrevaText.setVisibility(View.VISIBLE);
-        linear3.setVisibility(View.VISIBLE);
-        /*if (fechaEnvioPrevalidacion != null) {
+        if (fechaEnvioPrevalidacion != null) {
             if(!fechaEnvioPrevalidacion.equals("")){
                 fechaEnvioPrevaText.setText(creditDescription.getFechaEnvioPrevalidacion());
                 fieldFechaEnvio.setVisibility(View.VISIBLE);
@@ -111,7 +107,11 @@ public class ClientDescriptionViewHolder extends ChildViewHolder {
         } else {
             fieldFechaEnvio.setVisibility(View.GONE);
             linear3.setVisibility(View.GONE);
-        }*/
+        }
+        /*fechaEnvioPrevaText.setText(fechaEnvioPrevalidacion);
+        fieldFechaEnvio.setVisibility(View.VISIBLE);
+        fechaEnvioPrevaText.setVisibility(View.VISIBLE);
+        linear3.setVisibility(View.VISIBLE);*/
 
 
         // Campo monto sugerido
