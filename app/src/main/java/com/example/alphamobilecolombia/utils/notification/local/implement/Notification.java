@@ -12,24 +12,32 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.mvp.activity.QueryCreditActivity;
 import com.example.alphamobilecolombia.utils.notification.local.INotification;
 import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
 
+import java.util.Random;
+
 public class Notification implements INotification {
     Context _context;
+    String GROUP_KEY_WORK_EMAIL = "com.alphacredit.alphamobilecolombia";
     public Notification(Context context){
         _context = context;
     }
 
-    public boolean ShowNotification(LocalNotification message) {
+    public boolean ShowNotification(LocalNotification message, Intent intent) {
+        Random random = new Random();
+        int idNotification = random.nextInt(9999 - 1000) + 1000;
+
         Bitmap bitmapLogo = BitmapFactory.decodeResource(_context.getResources(), R.mipmap.ico);
-        PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, new Intent(),0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, intent,0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context,"default")
                 .setLargeIcon(bitmapLogo)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message.getMessage()))
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(message.getTitle())
                 .setContentText(message.getMessage())
+                .setGroup(GROUP_KEY_WORK_EMAIL)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent);
@@ -37,19 +45,19 @@ public class Notification implements INotification {
         NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId("YOUR_PACKAGE_NAME");
+            builder.setChannelId("com.alphacredit.alphamobilecolombia");
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    "YOUR_PACKAGE_NAME",
-                    "YOUR_APP_NAME",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    "com.alphacredit.alphamobilecolombia",
+                    "check",
+                    NotificationManager.IMPORTANCE_HIGH
             );
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
             }
         }
-        notificationManager.notify(1,builder.build());
+        notificationManager.notify(idNotification,builder.build());
 
         return true;
     }
