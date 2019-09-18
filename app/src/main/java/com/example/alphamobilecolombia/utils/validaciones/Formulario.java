@@ -84,7 +84,16 @@ public class Formulario {
                     //Si el control x es Spinner entonces
                 } else if (Control instanceof Spinner && ((Spinner) Control).getSelectedItem() != null) {
                     //Texto = ((Spinner) Control).getSelectedItem().toString();
-                    Texto = String.valueOf(_iSelectList.GetValueByCodeField(((Spinner) Control).getSelectedItem().toString()));
+
+                    Texto = ((Spinner) Control).getSelectedItem().toString();
+
+                    if(arrayId[Indice] == "search_tipo_contrato" && Texto.trim().equals("PENSIONADO")){
+                        Texto = "15";
+                    }
+                    else{
+                        Texto = String.valueOf(_iSelectList.GetValueByCodeField(Texto));
+                    }
+
                 } else if (Control instanceof SearchView) {
                     SearchView searchView = (SearchView)Control;
                     Texto = searchView.getQuery().toString();
@@ -110,9 +119,6 @@ public class Formulario {
                 }
             }
         }
-
-
-
 
         //Si hay errores entonces
         if (ListaErrores.size() > 0) {
@@ -168,9 +174,6 @@ public class Formulario {
             pagina.startActivityForResult(intent, 0);
             return true; //Retorna verdadero
         }
-
-
-
     }
 
     //Carga el Spinner especificado
