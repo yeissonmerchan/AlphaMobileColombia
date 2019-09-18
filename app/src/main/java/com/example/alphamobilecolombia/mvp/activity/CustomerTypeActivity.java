@@ -530,6 +530,8 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         //************************************************************ Si el empleado es pensionado entonces
         /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
         else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
+
+            Campos.add("search_tipo_contrato");
             //Agrega los campos a validar
 
             Campos.add("spinner_tipo_cliente");

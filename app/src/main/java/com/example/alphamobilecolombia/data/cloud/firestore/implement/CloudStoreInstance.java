@@ -129,7 +129,7 @@ public class CloudStoreInstance implements ICloudStoreInstance {
             localNotification.setMessage("Error en la sincronización de la configuración del app.");
             localNotification.setTitle("Check!");
         } finally {
-            _iNotification.ShowNotification(localNotification);
+            _iNotification.ShowNotification(localNotification, new Intent());
         }
     }
 

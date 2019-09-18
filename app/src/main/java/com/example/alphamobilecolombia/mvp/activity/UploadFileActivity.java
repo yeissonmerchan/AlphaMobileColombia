@@ -266,7 +266,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             this.view = view;
             boolean result = compareLists(listUpload);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-            builder1.setMessage("¿ Deseas guardar este sujeto ?");
+            builder1.setMessage("¿ Deseas guardar esta solicitud ?");
             builder1.setCancelable(false);
             myDialog.setContentView(R.layout.loading_page);
             myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

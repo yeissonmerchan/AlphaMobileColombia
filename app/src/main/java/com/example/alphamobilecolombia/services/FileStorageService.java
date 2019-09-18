@@ -52,7 +52,7 @@ public class FileStorageService extends Service {
         Context mContext = this;
 
         // your logic that service will perform will be placed here
-        FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification);
+        FileStorageJob fileStorageJob = new FileStorageJob(iUploadFilesPresenter, iFileStorageService, iNotification,this);
         fileStorageJob.SendFilesToStorage();
 
     }
