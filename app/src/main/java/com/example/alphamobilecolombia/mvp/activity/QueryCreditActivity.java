@@ -74,6 +74,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     RealmStorage storage = new RealmStorage();
     private TabLayout tabFilters;
     RecyclerView recyclerCredits;
+    RecyclerAdapterQueryCredit adapter;
     //List<PostConsultarReporteCreditoResponse> listReporteCredito = new ArrayList<>();
 
     @Override
@@ -84,7 +85,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         myDialog = new Dialog(this);
 
         Window window = this.getWindow();
-
+        adapter = new RecyclerAdapterQueryCredit(new ArrayList<>(), recyclerCredits);
         TextView modulo = findViewById(R.id.txt_modulo);
         modulo.setText("Mis solicitudes");
 
@@ -111,11 +112,11 @@ public class QueryCreditActivity extends AppCompatActivity {
                 switch (tab.getPosition()) {
                     case 0:
                         typeQuery = "4";
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date), pValor);
                         break;
                     case 1:
                         typeQuery = "4";
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date),pValor);
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date), pValor);
 
                         break;
                     case 2:
@@ -123,7 +124,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                         try {
                             Date initDateMonth = dateFormat.parse("2019-01-01");
                             int maxMonths = monthsBetweenDates(initDateMonth, date);
-                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date),pValor);
+                            refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date), pValor);
                         } catch (ParseException ex) {
                             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                         }
@@ -161,7 +162,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                     if (searchEditext.getText().length() > 0) {
                         typeQuery = "2";
                         pValor = searchEditext.getText().toString();
-                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
+                        refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date), pValor);
                     } else {
 
                     }
@@ -221,11 +222,10 @@ public class QueryCreditActivity extends AppCompatActivity {
             documentNumber = dataqr.getString("DocumentNumber");
         }
 
-        if (documentNumber != null){
-            refreshData(user, "2", initDate, endDate,documentNumber);
-        }
-        else {
-            refreshData(user, typeQuery, initDate, endDate,pValor);
+        if (documentNumber != null) {
+            refreshData(user, "2", initDate, endDate, documentNumber);
+        } else {
+            refreshData(user, typeQuery, initDate, endDate, pValor);
         }
 
 
@@ -267,7 +267,6 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         //RecyclerView
         recyclerCredits = findViewById(R.id.recyclerCredits);
-        RecyclerAdapterQueryCredit adapter = null;
         recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<Client> clients = new ArrayList<>();
@@ -287,13 +286,13 @@ public class QueryCreditActivity extends AppCompatActivity {
                 clients.add(client);
             }
 
-            adapter = new RecyclerAdapterQueryCredit(clients,recyclerCredits);
+            adapter = new RecyclerAdapterQueryCredit(clients, recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", model.length));
 
 
         } else {
-            adapter = new RecyclerAdapterQueryCredit(clients,recyclerCredits);
+            adapter = new RecyclerAdapterQueryCredit(clients, recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
@@ -397,11 +396,11 @@ public class QueryCreditActivity extends AppCompatActivity {
         switch (tabSelect) {
             case 0:
                 typeQuery = "4";
-                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date),pValor);
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date), pValor);
                 break;
             case 1:
                 typeQuery = "4";
-                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date),pValor);
+                refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date), pValor);
 
                 break;
             case 2:
@@ -409,7 +408,7 @@ public class QueryCreditActivity extends AppCompatActivity {
                 try {
                     Date initDateMonth = dateFormat.parse("2019-01-01");
                     int maxMonths = monthsBetweenDates(initDateMonth, date);
-                    refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date),pValor);
+                    refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -maxMonths, 2)), dateFormat.format(date), pValor);
                 } catch (ParseException ex) {
                     // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
                 }

@@ -7,7 +7,7 @@
     </entry>
     <entry>
         <key>show_tutorial</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
 </defaultsMap>
     <!-- END remote_config_defaults -->

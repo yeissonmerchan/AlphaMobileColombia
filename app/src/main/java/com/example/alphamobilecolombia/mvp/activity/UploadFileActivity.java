@@ -447,7 +447,6 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-
     public static class ExistFile {
         public boolean CargueDocumentosPreValidación = false;
         public boolean SolicitudCreditoCara2 = false;
@@ -510,10 +509,9 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             String pathFileLocal = pathFile() + "/" + getNameFile(v);
             pathNewFile1 = pathFile();
             java.io.File fileLocal;
-            if (fileGallery) {
-                //pathFileLocal = path;
-                String pathGallery = Environment.getExternalStorageDirectory().toString()+"/Pictures/"+getNameFile(v);
-                fileLocal = new java.io.File(pathFileLocal);
+            java.io.File file;
+            //if (fileGallery) {
+                /*fileLocal = new java.io.File(pathFileLocal);
                 fileLocal.getParentFile().mkdirs();
                 fileLocal.createNewFile();
 
@@ -521,7 +519,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 System.out.println("file_size_original " + file_size_original);
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bitmapGallery.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                bitmapGallery.compress(Bitmap.CompressFormat.PNG, 0 , bos);
                 byte[] bitmapdata = bos.toByteArray();
 
                 //write the bytes in file
@@ -530,17 +528,24 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                 fos.flush();
                 fos.close();
 
-            }
-            else{
-                fileLocal = new java.io.File(pathFileLocal);
-                int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
-                System.out.println("file_size_original " + file_size_original);
-            }
+                file = new java.io.File(pathFileLocal);
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmapGallery.compress(Bitmap.CompressFormat.WEBP, 80 , bos);
+                byte[] bitmapdata = bos.toByteArray();
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
 
-            //java.io.File fileLocal = new java.io.File(pathFileLocal);
-            //int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
-            //System.out.println("file_size_original " + file_size_original);
-            java.io.File file = new Compressor(context)
+            }
+            else{*/
+            fileLocal = new java.io.File(pathFileLocal);
+            int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
+            System.out.println("file_size_original " + file_size_original);
+
+            file = new Compressor(context)
                     .setQuality(80)
                     .setCompressFormat(Bitmap.CompressFormat.WEBP)
                     .compressToFile(fileLocal);
@@ -548,14 +553,25 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             fileLocal.delete();
             file.getParentFile().mkdirs();
             file.createNewFile();
+            //}
+
+            //java.io.File fileLocal = new java.io.File(pathFileLocal);
+            //int file_size_original = Integer.parseInt(String.valueOf(fileLocal.length() / 1024));
+            //System.out.println("file_size_original " + file_size_original);
+
+
             int file_size_compress = Integer.parseInt(String.valueOf(file.length() / 1024));
             System.out.println("file_size_compress " + file_size_compress);
             //pathNewFile1 = file.getParent();
             String pathFileLocalCompress = pathNewFile1 + "/" + getNameFile(v);
 
-            java.io.File f = new java.io.File(pathFile(), getNameFile(v));
-            f.createNewFile();
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            file.delete();
+
+            java.io.File f = new java.io.File(pathFile(), getNameFile(v));
+            f.getParentFile().mkdirs();
+            f.createNewFile();
+
             //Convert bitmap to byte array
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
@@ -568,7 +584,20 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             fos.close();
             int file_size_final = Integer.parseInt(String.valueOf(file.length() / 1024));
             System.out.println("file_size_final " + file_size_final);
-            file.delete();
+
+
+            Bitmap bitmap1 = BitmapFactory.decodeFile(pathFileLocal);
+            if (bitmap1 != null) {
+                String nameFile = idElement;
+                for (com.example.alphamobilecolombia.mvp.models.File fileUpload : listUpload) {
+                    if (fileUpload.getType().equals(nameFile)) {
+                        listUpload.remove(fileUpload);
+                        break;
+                    }
+                }
+                fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view), false, nameFile, true, path, true);
+                listUpload.add(fileUpload);
+            }
 
             //Matrix matrix = new Matrix();
             //matrix.postRotate(90);
@@ -577,8 +606,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         } catch (Exception ex) {
             ex.printStackTrace();
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
-        }
-        finally {
+        } finally {
             myDialog.dismiss();
         }
     }
@@ -801,10 +829,24 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                     Uri imageUri = data.getData();
                     Bitmap bitmap = null;
                     try {
-                        InputStream stream = getContentResolver().openInputStream(
-                                data.getData());
+                        InputStream stream = getContentResolver().openInputStream(data.getData());
                         bitmap = BitmapFactory.decodeStream(stream);
                         stream.close();
+
+                        saveFile(bitmap);
+
+                        /*String pathFileLocal = pathFile() + "/" + getNameFile(null);
+                        java.io.File file = new java.io.File(pathFileLocal);
+                        file.getParentFile().mkdirs();
+                        file.createNewFile();
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, bos);
+                        byte[] bitmapdata = bos.toByteArray();
+                        FileOutputStream fos = new FileOutputStream(file);
+                        fos.write(bitmapdata);
+                        fos.flush();
+                        fos.close();*/
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -817,6 +859,36 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+
+    private void saveFile(Bitmap bitmap) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String pathFileLocal = pathFile() + "/" + getNameFile(null);
+                            java.io.File file = new java.io.File(pathFileLocal);
+                            file.getParentFile().mkdirs();
+                            file.createNewFile();
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.WEBP, 80, bos);
+                            byte[] bitmapdata = bos.toByteArray();
+                            FileOutputStream fos = new FileOutputStream(file);
+                            fos.write(bitmapdata);
+                            fos.flush();
+                            fos.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }, 500);
+
+    }
 
 
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
@@ -925,16 +997,18 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
         builder1.setMessage("¿ Deseas guardar esta imagen ?");
         builder1.setCancelable(false);
 
-        final String nameFile = idElement;
+
         builder1.setPositiveButton(
                 "Sí",
                 new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     public void onClick(DialogInterface dialog, int id) {
+                        myDialog.dismiss();
                         dialog.cancel();
                         boolean isExist = false;
                         fileGallery = false;
 
+                        /*String nameFile = idElement;
                         for (com.example.alphamobilecolombia.mvp.models.File file : listUpload) {
                             if (file.getType().equals(nameFile)) {
                                 listUpload.remove(file);
@@ -942,7 +1016,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
                             }
                         }
                         fileUpload = new com.example.alphamobilecolombia.mvp.models.File(0, getNameFile(view), false, nameFile, true, path, isPhoto);
-                        listUpload.add(fileUpload);
+                        listUpload.add(fileUpload);*/
                         if (!isPhoto) {
                             fileGallery = true;
                         }
@@ -1065,7 +1139,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
 
         boolean isSuccessPerson = _iPersonPresenter.SavePerson(persona, user);
         if (isSuccessPerson) {
-            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria,_iParameterField.GetValueByIdField("edt_fecha_ingreso"));
+            boolean isSuccessSubjectCredit = _iCreditSubjectPresenter.SaveCreditSubject(persona, user, _iPersonPresenter.GetIdPerson(), IdTipoEmpleado, IdTipoContrato, IdDestinoCredito, IdPagaduria, _iParameterField.GetValueByIdField("edt_fecha_ingreso"));
             if (isSuccessSubjectCredit) {
                 if (!isCreateUserAndSubject) {
                     idSujeroCredito = String.valueOf(_iCreditSubjectPresenter.GetIdSubjectCredit());
