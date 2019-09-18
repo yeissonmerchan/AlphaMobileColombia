@@ -500,6 +500,9 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         //Define la lista de campos a validar
         ArrayList<String> Campos = new ArrayList<String>();
 
+        //Define la lista de campos a validar
+        ArrayList<String> CamposOpcionales = new ArrayList<String>();
+
         //************************************************************ Si el empleado es activo entonces
 
         if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("EMPLEADO")) {
@@ -525,6 +528,11 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
         else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
             //Agrega los campos a validar
+
+            Campos.add("spinner_tipo_cliente");
+            Campos.add("search_tipo_contrato");
+            CamposOpcionales.add("edt_fecha_ingreso");
+
             /*            Campos.add("edt_antiguedad_en_meses");*/
         }
 
@@ -533,7 +541,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         /*Campos.add("search_tipo_contrato");*/
 
         //Valida los campos
-        formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]), new String[]{});
+        formulario.Validar(this, UploadFileActivity.class, Campos.toArray(new String[Campos.size()]), CamposOpcionales.toArray(new String[CamposOpcionales.size()]));
 
         //************************************************************
 
