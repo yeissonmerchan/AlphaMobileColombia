@@ -358,6 +358,8 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     //Tipo de Contrato
                     txttipo_contrato.setVisibility(View.VISIBLE);
 
+                    textview_fecha_ingreso.setText("");
+
                     /******************* CARGA SPINNER TIPO CONTRATO */
 
 /*                    ArrayAdapter adapter2 = ArrayAdapter.createFromResource(this, R.array.spinner_type_contract_employee, android.R.layout.simple_spinner_item);
@@ -423,6 +425,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
                     //Fecha de Ingreso
                     txtfecha_ingreso.setVisibility(View.GONE);
                     textview_fecha_ingreso.setVisibility(View.GONE);
+                    textview_fecha_ingreso.setText("");
 
                     /*panel_campos.setVisibility(View.GONE);*/
                     /*txtfecha_ingreso.setText("Fecha de ingreso");*/
