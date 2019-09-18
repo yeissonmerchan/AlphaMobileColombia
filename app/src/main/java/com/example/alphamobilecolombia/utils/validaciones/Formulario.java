@@ -83,8 +83,8 @@ public class Formulario {
                     Texto = ((EditText) Control).getText().toString();
                     //Si el control x es Spinner entonces
                 } else if (Control instanceof Spinner && ((Spinner) Control).getSelectedItem() != null) {
-                    //Texto = ((Spinner) Control).getSelectedItem().toString();
-                    if(arrayId[Indice] == "search_tipo_contrato" && Texto.trim().equals("")){
+                    Texto = ((Spinner) Control).getSelectedItem().toString();
+                    if(arrayId[Indice] == "search_tipo_contrato" && Texto.trim().equals("PENSIONADO")){
                         Texto = "15";
                     }
                     else{
