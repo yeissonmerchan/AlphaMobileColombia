@@ -19,6 +19,7 @@ import com.example.alphamobilecolombia.data.cloud.firestore.entity.VariableMotor
 import com.example.alphamobilecolombia.data.local.IRealmInstance;
 import com.example.alphamobilecolombia.data.local.entity.Parameter;
 import com.example.alphamobilecolombia.data.local.entity.SelectionOption;
+import com.example.alphamobilecolombia.utils.configuration.implement.ApplicationData;
 import com.example.alphamobilecolombia.utils.crashlytics.LogError;
 import com.example.alphamobilecolombia.utils.notification.local.INotification;
 import com.example.alphamobilecolombia.utils.notification.model.LocalNotification;
@@ -87,7 +88,7 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                                 List<ParametrizacionMotor> objects = task.getResult().toObjects(ParametrizacionMotor.class);
                                 if (objects != null && objects.size() > 0) {
                                     ParametrizacionMotor parametrizacionMotor = objects.get(0);
-                                    uploadConfiguration(parametrizacionMotor);
+                                    uploadConfiguration(parametrizacionMotor, nameCollection);
                                 }
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
@@ -101,14 +102,16 @@ public class CloudStoreInstance implements ICloudStoreInstance {
     }
 
     //Carga la configuración
-    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor) {
+    private void uploadConfiguration(ParametrizacionMotor parametrizacionMotor, String nameCollection) {
         LocalNotification localNotification = new LocalNotification();
         try {
             if (parametrizacionMotor != null) {
                 List<VariableMotor> variableMotors = parametrizacionMotor.getVariables();
                 List<SelectionOption> newOptions = new ArrayList<>();
 
-                _iRealmInstance.DeleteObject(new SelectionOption());
+                boolean deleteComplete = _iRealmInstance.DeleteObject(new SelectionOption());
+                if (!deleteComplete)
+                    throw new Exception("Ah ocurrido un error en el storage, se procede a realizar la reparación inicial del app");
 
                 for (VariableMotor variableMotor : variableMotors) {
                     if (variableMotor.getListaData() != null) {
@@ -118,7 +121,10 @@ public class CloudStoreInstance implements ICloudStoreInstance {
                     }
                 }
 
-                _iRealmInstance.Insert(newOptions);
+                boolean isValidInsert = _iRealmInstance.Insert(newOptions);
+                if (!isValidInsert)
+                    throw new Exception("Ah ocurrido un error en el storage, se procede a realizar la reparación inicial del app");
+
                 localNotification.setMessage("Sincronización de configuración del app finalizada.");
                 localNotification.setTitle("Check!");
 
@@ -128,8 +134,12 @@ public class CloudStoreInstance implements ICloudStoreInstance {
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "uploadConfiguration: parametrizacionMotor", ex, _context);
             localNotification.setMessage("Error en la sincronización de la configuración del app.");
             localNotification.setTitle("Check!");
+            ApplicationData applicationData = new ApplicationData();
+            applicationData.RestartNewVersionApp(_context.getApplicationContext());
+            syncCollection(nameCollection);
         } finally {
-            _iNotification.ShowNotification(localNotification, new Intent());
+           // _iNotification.ShowNotification(localNotification, new Intent());
+            Runtime.getRuntime().gc();
         }
     }
 

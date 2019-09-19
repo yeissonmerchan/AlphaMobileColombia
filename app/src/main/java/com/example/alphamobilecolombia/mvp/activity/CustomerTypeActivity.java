@@ -531,9 +531,7 @@ public class CustomerTypeActivity extends AppCompatActivity implements AdapterVi
         /*        else if (panel_antiguedad_en_meses.getVisibility() == View.VISIBLE) {*/
         else if (spinner_tipo_cliente.getSelectedItem().toString().trim().toUpperCase().equals("PENSIONADO")) {
 
-            Campos.add("search_tipo_contrato");
             //Agrega los campos a validar
-
             Campos.add("spinner_tipo_cliente");
             Campos.add("search_tipo_contrato");
             CamposOpcionales.add("edt_fecha_ingreso");

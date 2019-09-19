@@ -94,7 +94,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorHeader"
                 android:textColor="@color/colorSubtext"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:text="Ver instrucciones"
                 android:tooltipText="Ver instrucciones" />
 
