@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "374790417148",
-    "firebase_url": "https://appalphacredit.firebaseio.com",
-    "project_id": "appalphacredit",
-    "storage_bucket": "appalphacredit.appspot.com"
+    "project_number": "1036926097203",
+    "firebase_url": "https://appalphacredit-2019.firebaseio.com",
+    "project_id": "appalphacredit-2019",
+    "storage_bucket": "appalphacredit-2019.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:374790417148:android:29b33d5ec2f4f788",
+        "mobilesdk_app_id": "1:1036926097203:android:29b33d5ec2f4f788",
         "android_client_info": {
           "package_name": "com.alphacredit.alphamobilecolombia"
         }
       },
       "oauth_client": [
         {
-          "client_id": "374790417148-qcsfptu4saia8p8bd2vqkqdeo98gm7a4.apps.googleusercontent.com",
+          "client_id": "1036926097203-57a765b8pkmlie95u44bq01hpf8nmk3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alphacredit.alphamobilecolombia",
+            "certificate_hash": "90616fee80b5bd58f36d92ed01d6bae7b2c19970"
+          }
+        },
+        {
+          "client_id": "1036926097203-buaqo19esng4vnpcd6lb2co3d9visimb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDse0ICY6fBUk6no0OLjJuD1fPoDgK7f8"
+          "current_key": "AIzaSyDeyHpUxpv1Auz9mA869L09nvKUEI4lo0Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "374790417148-qcsfptu4saia8p8bd2vqkqdeo98gm7a4.apps.googleusercontent.com",
+              "client_id": "1036926097203-buaqo19esng4vnpcd6lb2co3d9visimb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

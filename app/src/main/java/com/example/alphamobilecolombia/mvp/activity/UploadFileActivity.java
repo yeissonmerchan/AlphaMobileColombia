@@ -608,6 +608,7 @@ public class UploadFileActivity extends AppCompatActivity implements View.OnClic
             LogError.SendErrorCrashlytics(this.getClass().getSimpleName(), "recuperando archivo " + getNameFile(v), ex, this);
         } finally {
             myDialog.dismiss();
+            Runtime.getRuntime().gc();
         }
     }
 
