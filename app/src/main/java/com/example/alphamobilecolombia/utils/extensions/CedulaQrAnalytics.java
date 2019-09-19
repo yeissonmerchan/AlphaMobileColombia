@@ -3,8 +3,7 @@ package com.example.alphamobilecolombia.utils.extensions;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.example.alphamobilecolombia.utils.models.Persona;
+import com.example.alphamobilecolombia.mvp.models.Persona;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +51,9 @@ public class CedulaQrAnalytics {
             obj.put(CANCELLED, false);
         } catch (JSONException ex) {
             Log.d(LOG_TAG, "JSONException " + ex.getMessage());
+            ex.printStackTrace();
+
+
         }
 
         String nuevo = obj.getString("text").replace("\u0000", "|");
@@ -76,6 +78,7 @@ public class CedulaQrAnalytics {
             p.setFechaVencimiento(d.substring(100, 104)+"-"+d.substring(104, 106)+"-"+d.substring(106, 108));
         }
         catch (Exception e){
+            e.printStackTrace();
             p = null;
         }
         return p;
@@ -168,6 +171,7 @@ public class CedulaQrAnalytics {
 
         }
         catch (Exception e){
+            e.printStackTrace();
             p = null;
         }
         return p;

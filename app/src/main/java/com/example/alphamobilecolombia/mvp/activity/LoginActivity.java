@@ -1,97 +1,185 @@
 package com.example.alphamobilecolombia.mvp.activity;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.crashlytics.android.Crashlytics;
-import com.example.alphamobilecolombia.data.local.RealmStorage;
-import com.example.alphamobilecolombia.data.remote.Models.HttpResponse;
-import com.example.alphamobilecolombia.data.remote.Models.User;
-import com.example.alphamobilecolombia.mvp.presenter.LoginPresenter;
-import com.example.alphamobilecolombia.R;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import com.example.alphamobilecolombia.utils.crashlytics.LogError;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.gson.Gson;
+import com.example.alphamobilecolombia.R;
+import com.example.alphamobilecolombia.mvp.presenter.ILoginPresenter;
+import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.security.IAccessToken;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Checked;
-import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.Max;
-import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
-import com.mobsandgeeks.saripaar.annotation.Url;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
 
+//Define la actividad del Login
 public class LoginActivity extends AppCompatActivity implements Validator.ValidationListener {
-    private Button loginButton = null;
 
-    //**************    VALIDACIÓN DE CAMPOS     *****************//
-    //Camilo Lis - 22-06-2019
+    //************************************************************************************ INYECCION
+
+    DependencyInjectionContainer diContainer = new DependencyInjectionContainer();
+    ILoginPresenter _iLoginPresenter;
+    IAccessToken _iAccessToken;
+
+    //************************************************************************************ CAMPOS
+
+    //Define el campo usuario
     @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 20, message = "La longitud no es correcta")
-    private EditText editTextUsername;
+    private EditText edt_username;
 
-
+    //Define el campo contraseña
     @NotEmpty(message = "Ingrese un valor valido")
     @Length(min = 6, max = 50, message = "La longitud no es correcta")
-    private EditText editTextPassword;
+    private EditText edt_password;
 
-    //Validator Instance
+    //************************************************************************************ VALIDACIÓN
+
     private Validator validator;
-
 
     private boolean validationResult = false;
 
-    //***********************************************************//
+    private static final String TAG = "MainActivity";
+
+    //************************************************************************************ CONSTRUCTOR
+
+    //Se produce cuando se inicia esta actividad
+    public LoginActivity() {
+        _iAccessToken = diContainer.injectIAccessToken(this);
+        _iLoginPresenter = diContainer.injectDIILoginPresenter(this);
+    }
+
+    //************************************************************************************ INICIO
+
+    //Se produce al crearse esta actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initView();
+
+
         validator = new Validator(this);
         validator.setValidationListener(this);
-
+        //_iAccessToken.CleanToken();
         Window window = this.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorHeader));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorHeader));
         }
 
-        EditText edt_names = (EditText) findViewById(R.id.edt_username);
-        edt_names.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        //************************************************************************************ USUARIO
+
+        edt_username = (EditText) findViewById(R.id.edt_username);
+        edt_username.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+
+        //************************************************************************************ CONTRASEÑA
+
+        edt_password = (EditText) findViewById(R.id.edt_password); //Obtiene el campo contraseña
+
+        ImageView show_pass_btn = (ImageView) findViewById(R.id.show_pass_btn); //Obtiene el icono del ojito de la contraseña
+
+        //Establece el evento de cambio de texto del campo contraseña
+        edt_password.addTextChangedListener(new TextWatcher() {
+
+            //Se produce antes de cambiar el texto
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            //Se produce en el momento de cambiar el texto
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            //Se produce cuando se cambia el texto del campo contraseña
+            @Override
+            public void afterTextChanged(Editable valor) {
+                if (valor != null && valor.length() > 0) { //Si campo contraseña contiene texto entonces
+                    show_pass_btn.setVisibility(View.VISIBLE); //Muestra el ojito
+                } else {
+                    show_pass_btn.setVisibility(View.GONE); //Oculta el ojito
+                }
+            }
+        });
+
+        //************************************************************************************ SERVICIO SEGUNDO PLANO
+
+        ImagesBackgroundService Servicio = new ImagesBackgroundService(this); //Define el servicio en segundo plano
+        Intent Intencion = new Intent(this, Servicio.getClass()); //Define la intención del servicio en segundo plano
+        if (!isMyServiceRunning(Servicio.getClass())) { //Si el servicio en segundo plano no está corriendo entonces
+            startService(Intencion); //Ejecuta la intención del servicio en segundo plano
+        }
+
+        //************************************************************************************
     }
+
+    //************************************************************************************ SERVICIO SEGUNDO PLANO
+
+    //Comprueba si el servicio ya está corriendo
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //************************************************************************************ CONTRASEÑA
+
+    //Cambia el icono del ojito de la contraseña al ser presionado
+    public void ShowHidePass(View view) {
+
+        if (view.getId() == R.id.show_pass_btn) {
+
+            if (edt_password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+                ((ImageView) (view)).setImageResource(R.mipmap.ocultar_password);
+
+                //Show Password
+                edt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                edt_password.setSelection(edt_password.length());
+            } else {
+                ((ImageView) (view)).setImageResource(R.mipmap.mostrar_password);
+
+                //Hide Password
+                edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                edt_password.setSelection(edt_password.length());
+
+            }
+        }
+    }
+
+    //************************************************************************************
 
     @Override
     public void onPause() {
@@ -109,24 +197,15 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
 
     @Override
     public void onDestroy() {
+        //stopService(Intencion);
         super.onDestroy();
         Runtime.getRuntime().gc();
         Log.d("Lifecycle", "onDestroy()");
     }
 
-    //**************    VALIDACIÓN DE CAMPOS     *****************//
-
-    //Mapeo del campos del layout a las variables del activity
-    //Camilo Lis - 22-06-2019
-    private void initView() {
-        editTextUsername = findViewById(R.id.edt_username);
-        editTextPassword = findViewById(R.id.edt_password);
-        }
-
     @Override
     public void onValidationSucceeded() {
         validationResult = true;
-
     }
 
     @Override
@@ -144,11 +223,36 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         validationResult = false;
     }
 
-    //***********************************************************//
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            this.moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-    public void NotificacionErrorDatos(final View view, String menssage){
+    public void onClickBtn(View view) {
+        validator.validate();
+        if (validationResult) {
+            TextView message = findViewById(R.id.txt_message);
+            String userText = edt_username.getText().toString();
+            String passwordText = edt_password.getText().toString();
+            Boolean isValid = _iLoginPresenter.LoginCheck(userText, passwordText);
+            if (isValid) {
+                Intent intent = new Intent(view.getContext(), ModuleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivityForResult(intent, 0);
+            } else {
+                TextView txt_message = findViewById(R.id.txt_message);
+                txt_message.setText(_iLoginPresenter.MessageError());
+                errorNotification(view, _iLoginPresenter.MessageError());
+            }
+        }
+    }
+
+    public void errorNotification(final View view, String message) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(view.getContext());
-        builder1.setMessage(menssage);
+        builder1.setMessage(message);
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "Ok",
@@ -162,60 +266,4 @@ public class LoginActivity extends AppCompatActivity implements Validator.Valida
         alert11.show();
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
-            this.moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void onClickBtn(View view) {
-        validator.validate();
-
-        if(validationResult) {
-            TextView message = findViewById(R.id.txt_message);
-            final EditText user = findViewById(R.id.edt_username);
-            final EditText password = findViewById(R.id.edt_password);
-            //Toast.makeText(view.getContext(), "Button Clicked", Toast.LENGTH_LONG).show();
-            String userText = user.getText().toString();
-            String passwordText = password.getText().toString();
-
-
-                LoginPresenter presenter = new LoginPresenter();
-                HttpResponse model = presenter.PostLogin(userText, passwordText,view.getContext());
-
-                if (model != null) {
-                    if(model.getCode().contains("200")){
-                        try {
-                            User usuario = new User();
-
-                            SharedPreferences sharedPref = getSharedPreferences("Login", Context.MODE_PRIVATE);
-                            usuario.setData(sharedPref, (JSONObject) model.getData(), userText);
-                        }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                            LogError.SendErrorCrashlytics(this.getClass().getSimpleName(),userText,e,this);
-                        }
-
-                        Intent intent = new Intent(view.getContext(), ModuloActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivityForResult(intent, 0);
-                        message.setText(model.getMessage());
-
-                    }
-                    else{
-                        TextView txt_message = findViewById(R.id.txt_message);
-                        txt_message.setText(model.getMessage());
-                        NotificacionErrorDatos(view,model.getMessage());
-                    }
-                }
-            }
-
-    }
 }

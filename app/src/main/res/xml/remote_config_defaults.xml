@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START remote_config_defaults -->
+<defaultsMap>
+    <entry>
+        <key>id_video_youtube</key>
+        <value>xd6E8PQAf4w</value>
+    </entry>
+    <entry>
+        <key>show_tutorial</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>
+    <!-- END remote_config_defaults -->

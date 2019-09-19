@@ -2,22 +2,28 @@
 
     <string name="environment_release">PRO</string>
     <string name="environment_development">QA</string>
-    <bool name="isNextVersion">false</bool>
-    <!-- Ips de preproducion -->
-    <string name="pre_ip_api_autentication">http://181.57.145.20:8082/</string>
-    <string name="pre_ip_api_storage">http://181.57.145.20:8083/</string>
-    <!--<string name="pre_ip_api_storage">http://192.168.103.193:8083/swagger/</string>-->
-    <string name="pre_ip_api_generic">http://181.57.145.20:8081/</string>
 
-    <!-- Ips de producción -->
-    <string name="pro_ip_api_autentication">http://apps.vivecreditos.com:8081/</string>
-    <string name="pro_ip_api_storage">http://apps.vivecreditos.com:8083/</string>
-    <string name="pro_ip_api_generic">http://apps.vivecreditos.com:8082/</string>
+    <!-- Ips de dev -->
+    <string name="dev_ip_api_authentication">http://181.57.145.20:8081/Security/</string>
+    <string name="dev_ip_api_storage">http://181.57.145.20:8081/Storage/</string>
+    <string name="dev_ip_api_generic">http://181.57.145.20:8081/Generic/</string>
 
-    <!-- Ips de producción -->
-    <string name="api_autentication">autentication</string>
+    <!-- Ips de pre-produccion -->
+    <string name="pre_ip_api_authentication">http://181.57.145.20:8082/Security/</string>
+    <string name="pre_ip_api_storage">http://181.57.145.20:8082/Storage/</string>
+    <string name="pre_ip_api_generic">http://181.57.145.20:8082/Generic/</string>
+
+    <!-- Ips de produccion -->
+    <string name="pro_ip_api_authentication">http://apps.vivecreditos.com:8084/Security/</string>
+    <string name="pro_ip_api_storage">http://apps.vivecreditos.com:8084/Storage/</string>
+    <string name="pro_ip_api_generic">http://apps.vivecreditos.com:8084/Generic/</string>
+
+    <!-- Servicios -->
+    <string name="api_authentication">autentication</string>
     <string name="api_storage">storage</string>
     <string name="api_generic">generic</string>
+
+    <string name="url_store">https://play.google.com/store/apps/details?id=com.alphacredit.alphamobilecolombia</string>
 
     <string name="btn_add_contact"><u>Ver más ...</u></string>
     <string name="app_name">Alpha Mobile Colombia</string>
@@ -36,7 +42,7 @@
     <string name="menu_send">Send</string>
 
     <string name="name_company">AlphaCredit</string>
-    <string name="title_activity_login">Check</string>
+
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Ingresar</string>
@@ -44,53 +50,69 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">Usuario o contraseña invalido</string>
+    <string name="login_failed">Usuario o contraseña inválido</string>
     <string name="login_incorrect">Usuario o contraseña son obligatorios</string>
-    <string name="title_activity_modulo">ModuloActivity</string>
-
 
     <string name="btn_new_request">Nueva solicitud</string>
     <string name="btn_next">Continuar</string>
     <string name="btn_list_request">Ver estado solicitudes</string>
-    <string name="messsage_moduls">A continuación seleccione una opción para continuar</string>
-    <string name="title_activity_scanner">ScannerActivity</string>
-    <string name="title_activity_terminos">TerminosActivity</string>
+    <string name="message_module">A continuación seleccione una opción para continuar</string>
 
-    <string name="terminos_title">Autorización</string>
-    <string name="terminos_info">A continuación usted aceptara los términos y condiciones del proceso.</string>
-    <string name="title_activity_final">¡Tu solicitud ha sido cargada satisfactoriamente!</string>
+
+    <string name="terms_title">Autorización</string>
+    <string name="terms_info">A continuación usted aceptará los términos y condiciones del proceso.</string>
+
     <string name="info_activity_final">En las próximas horas podrás consultar el estado de esta solicitud.</string>
 
     <string name="licenceKey">"3A7HL_561/8fJSb5nW5k"</string>
-    <string name="userkey">vivecreditos</string>
+    <string name="user_key">vivecreditos</string>
     <string name="local_storage_Key">"3A7HL_561/8fJSb5nW5k"</string>
 
-    <string-array name="spinner_destino_credito">
+    <string name="title_activity_upload_files"></string>
+    <string name="title_activity_process_completed">Te notificaremos cuando se hayan cargado los archivos.</string>
+    <string name="title_activity_scanner"></string>
+    <string name="title_activity_personal_information"></string>
+    <string name="title_activity_modulo"></string>
+    <string name="title_activity_login">Check</string>
+    <string name="title_activity_version_update"></string>
+
+    <!-- ModuleActivity _ViewFloating -->
+    <string name="alert_activity_module">Sí</string>
+    <string name="alert_activity_module_c">No</string>
+    <!-- ViewFloating -->
+    <string name="text_view">Vista previa</string>
+    <string name="text_upload">Tomar foto</string>
+    <string name="text_load_gallery">Elegir de galería</string>
+    <!-- Query_crediit -->
+    <string name="hint_search">Buscar</string>
+
+
+    <string-array name="spinner_credit_destination">
         <item id="1">Libre inversión</item>
         <item id="2">Compra cartera</item>
     </string-array>
 
-    <string-array name="spinner_codigos_destino_credito">
+    <string-array name="spinner_code_credit_destination">
         <item id="1">1</item>
         <item id="2">2</item>
     </string-array>
 
-    <string-array name="spinner_genero">
+    <string-array name="spinner_gender">
         <item id="2">Femenino</item>
         <item id="1">Masculino</item>
     </string-array>
 
-    <string-array name="spinner_tipo_empleado">
+    <string-array name="spinner_employee_type">
         <item id="1">Empleado</item>
         <item id="2">Pensionado</item>
     </string-array>
 
-    <string-array name="spinner_codigos_tipo_empleado">
+    <string-array name="spinner_code_employee_type">
         <item id="1">1</item>
         <item id="2">2</item>
     </string-array>
 
-    <string-array name="spinner_tipo_contrato_empleado">
+    <string-array name="spinner_type_contract_employee">
         <item id="1" idDep="1">CARRERA ADMINISTRATIVA</item>
         <item id="2" idDep="1">LIBRE NOMBRAMIENTO Y REMOCION</item>
         <item id="3" idDep="1">PROVISIONAL</item>
@@ -107,7 +129,7 @@
         <item id="14" idDep="1">FIJO</item>
     </string-array>
 
-    <string-array name="spinner_codigos_tipo_contrato_empleado">
+    <string-array name="spinner_code_type_contract_employee">
         <item id="1" idDep="1">1</item>
         <item id="2" idDep="1">2</item>
         <item id="3" idDep="1">3</item>
@@ -124,7 +146,7 @@
         <item id="14" idDep="1">14</item>
     </string-array>
 
-    <string-array name="spinner_tipo_contrato_empleado_Todos">
+    <string-array name="spinner_all_type_contract_employee">
         <item id="1" idDep="1">CARRERA ADMINISTRATIVA</item>
         <item id="2" idDep="1">LIBRE NOMBRAMIENTO Y REMOCION</item>
         <item id="3" idDep="1">PROVISIONAL</item>
@@ -142,7 +164,7 @@
         <item id="15" idDep="1">PENSIONADO</item>
     </string-array>
 
-    <string-array name="spinner_codigos_tipo_contrato_empleado_Todos">
+    <string-array name="spinner_code_all_type_contract_employee">
         <item id="1" idDep="1">1</item>
         <item id="2" idDep="1">2</item>
         <item id="3" idDep="1">3</item>
@@ -160,7 +182,7 @@
         <item id="15" idDep="1">15</item>
     </string-array>
 
-    <string-array name="spinner_tipo_documento">
+    <string-array name="spinner_document_type">
         <item id="1" idDep="1">SolicitudCreditoCara1</item>
         <item id="2" idDep="1">SolicitudCreditoCara2</item>
         <item id="3" idDep="1">CedulaCara1</item>
@@ -172,7 +194,7 @@
         <item id="12" idDep="1">TratamientoDatosPersonales</item>
     </string-array>
 
-    <string-array name="spinner_codigos_tipo_documento">
+    <string-array name="spinner_code_document_type">
         <item id="1" idDep="1">66</item>
         <item id="2" idDep="1">67</item>
         <item id="3" idDep="1">68</item>
@@ -185,18 +207,9 @@
     </string-array>
 
 
-    <string-array name="spinner_tipo_contrato_pensionado">
+    <string-array name="spinner_type_contract_retired">
         <item id="15" idDep="1">PENSIONADO</item>
     </string-array>
-    <string name="title_activity_upload_files">UploadFilesActivity</string>
-    <string name="title_activity_camara">CamaraActivity</string>
-    <string name="title_activity_archivos">ArchivosActivity</string>
-    <string name="title_activity_capturar">CapturarActivity</string>
-    <string name="title_activity_inicial">InicialActivity</string>
-    <string name="title_activity_archivos_v2">ArchivosV2Activity</string>
-    <string name="title_activity_actualizacion">ActualizacionActivity</string>
-    <string name="title_activity_captura_informacion">CapturaInformacionActivity</string>
-    <string name="title_activity_barcode_scanner">BarcodeScannerActivity</string>
 
-
+    <color name="white">#FFFFFF</color>
 </resources>

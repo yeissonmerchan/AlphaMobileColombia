@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1036926097203-57a765b8pkmlie95u44bq01hpf8nmk3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alphacredit.alphamobilecolombia",
+            "certificate_hash": "90616fee80b5bd58f36d92ed01d6bae7b2c19970"
+          }
+        },
+        {
           "client_id": "1036926097203-buaqo19esng4vnpcd6lb2co3d9visimb.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:layout_marginRight="20dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+
+        <TextView
+            android:id="@+id/textviewView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/text_view"
+            android:textColor="#000"
+            android:visibility="visible"
+            android:layout_toLeftOf="@+id/btnView1"/>
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnView11"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/logo_camara"
+            android:onClick="getIdElementView"
+            android:layout_margin="5dp"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+
+        <TextView
+            android:id="@+id/textviewUplod111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/text_upload"
+            android:textColor="#000"
+            android:visibility="visible"
+            android:layout_toLeftOf="@+id/btnView1"
+            android:clickable="true"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnView222"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@mipmap/logo_camara"
+            android:onClick="getIdElementView"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end">
+
+        <TextView
+            android:id="@+id/textviewLoadGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/text_load_gallery"
+            android:textColor="#000"
+            android:visibility="visible"
+            android:layout_toLeftOf="@+id/btnView1"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" />
+    </LinearLayout>
+</LinearLayout>

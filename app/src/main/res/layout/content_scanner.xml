@@ -4,361 +4,273 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="80dp"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mvp.activity.ScannerActivity"
     tools:showIn="@layout/activity_scanner">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical">
+            android:paddingRight="20dp">
 
             <TextView
+                android:id="@+id/txtInfoActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtNombres"
-                android:text="Información del cliente:"
-                android:longClickable="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="18dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Información del cliente"
                 android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <TextView
-                android:id="@+id/btn_some_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_add_contact"
-                android:textAllCaps="false"
-                android:textSize="18dp"
-                android:onClick="showPersonalInfo"
-                android:textColor="#57a0d4"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:typeface="serif" />
 
-            <!--
             <TextView
+                android:id="@+id/txtNombres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtNombres"
-                android:text="Nombres"
-                android:longClickable="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="18dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Primer nombre *"
                 android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
+                android:textSize="18dp"
+                android:typeface="serif" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/edt_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
                 android:hint="Primer nombre"
-                android:maxLength="50"
-                android:inputType="text"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_names2"
-                android:hint="Segundo nombre"
-                android:maxLength="50"
-                android:inputType="text"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtApellidos"
-                android:text="Apellidos"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_lastNames"
-                android:hint="Primer apellido"
-                android:maxLength="50"
-                android:inputType="text"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_lastNames2"
-                android:hint="Segundo apellido"
-                android:maxLength="50"
-                android:inputType="text"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtNumIdent"
-                android:text="Número de identificación"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_numberIdentification"
-                android:hint="Numero identificación"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|text"
                 android:maxLength="15"
+                android:tag="primer nombre"
+                android:textSize="@dimen/size_text"/>
+
+            <TextView
+                android:id="@+id/txtNombres2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Segundo nombre"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <EditText
+                android:id="@+id/edt_names2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+                android:hint="Segundo nombre"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|text"
+                android:maxLength="15"
+                android:tag="segundo nombre"
+                android:textSize="@dimen/size_text" />
+
+            <TextView
+                android:id="@+id/txtApellidos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Primer apellido *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <EditText
+                android:id="@+id/edt_lastNames"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+                android:hint="Primer apellido"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|text"
+                android:maxLength="15"
+                android:tag="primer apellido"
+                android:textSize="@dimen/size_text" />
+
+            <TextView
+                android:id="@+id/txtApellidos2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Segundo apellido"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <EditText
+                android:id="@+id/edt_lastNames2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:digits="abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
+                android:hint="Segundo apellido"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|text"
+                android:maxLength="15"
+                android:tag="segundo apellido"
+                android:textSize="@dimen/size_text" />
+
+            <TextView
+                android:id="@+id/txtNumIdent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Número de identificación *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <EditText
+                android:id="@+id/edt_numberIdentification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Número identificación"
                 android:inputType="number"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
+                android:maxLength="10"
+                android:tag="número de identificación"
+                android:textSize="@dimen/size_text" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
                 android:id="@+id/txtFechaNac"
-                android:text="Fecha de nacimiento"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:drawSelectorOnTop="true"
+                android:ems="20"
+                android:inputType="textMultiLine"
+                android:longClickable="true"
+                android:scrollbars="vertical"
+                android:text="Fecha de nacimiento *"
+                android:textColor="@color/colorHeader"
+                android:textSize="18dp"
+                android:typeface="serif" />
+
+            <EditText
                 android:id="@+id/edt_birthDate"
-                android:inputType="date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
                 android:focusable="false"
-                android:hint="Fecha nacimiento"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
+                android:hint="Seleccione una fecha"
+                android:inputType="date"
+                android:maxLines="1"
+                android:tag="fecha de nacimiento"
+                android:textSize="@dimen/size_text" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
                 android:id="@+id/txtGenero"
-                android:text="Género"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_genero"
-                android:inputType="text"
-                android:maxLength="50"
-                android:hint="Género"
-                android:textSize="@dimen/size_text"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtFactor"
-                android:text="Tipo de sangre"
-                android:longClickable="true"
                 android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edt_factor"
-                android:inputType="text"
-                android:maxLength="50"
-                android:hint="Factor"
-                android:textSize="@dimen/size_text"
+                android:layout_gravity="left"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-                -->
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
                 android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
                 android:ems="20"
-                android:id="@+id/txtPagaduria"
-                android:text="Pagaduría"
+                android:inputType="textMultiLine"
                 android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
+                android:scrollbars="vertical"
+                android:text="Género *"
                 android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
+                android:textSize="18dp"
+                android:typeface="serif" />
 
             <Spinner
-                android:id="@+id/spinner_pagaduria"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
+                android:id="@+id/spinner_genero"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
                 android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtDestino"
-                android:text="Destino del crédito"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-
-            <Spinner
-                android:id="@+id/spinner_destino_credito"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_height="wrap_content" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtTipoEmpleado"
-                android:text="Tipo de empleado"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <Spinner
-                android:id="@+id/spinner_tipo_empleado"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity= "left"
-                android:drawSelectorOnTop="true"
-                android:typeface="serif"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:ems="20"
-                android:id="@+id/txtTipoContrato"
-                android:text="Tipo de contrato"
-                android:longClickable="true"
-                android:layout_centerHorizontal="true"
-                android:textSize="18dp"
-                android:textColor="@color/colorHeader"
-                android:scrollbars = "vertical"/>
-            <Spinner
-                android:id="@+id/spinner_tipo_contrato"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:layout_height="wrap_content" />
-
+                android:tag="genero" />
 
             <Button
                 android:id="@+id/btn_new_request"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginBottom="30dp"
                 android:background="@color/colorHeader"
-                android:text="@string/btn_next"
                 android:onClick="onClickBtnNextTerms"
+                android:text="@string/btn_next"
                 android:textColor="@color/colorSubtext"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -368,6 +280,5 @@
 
         </LinearLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

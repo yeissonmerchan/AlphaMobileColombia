@@ -8,10 +8,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.alphacredit.alphamobilecolombia"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 22
-        versionName "1.1.7"
+        versionCode 23
+        versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -21,7 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    //Compile para soportar lilipopa
+    //Compile para soportar lilipop
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -82,10 +82,48 @@ dependencies {
     //Libreria de ecsaneo de códigos pdf47
     implementation 'com.github.bobekos:SimpleBarcodeScanner:1.0.23'
 
-    //Botones flotantes
+    //Botones flotantess
     //implementation 'com.github.JediBurrell:customFloatingActionButton:-SNAPSHOT'
-
     implementation 'commons-io:commons-io:2.4'
+    implementation 'com.github.clans:fab:1.6.4'
+    implementation 'com.github.fafaldo:fab-toolbar:1.2.0'
+
+    //Input money
+    implementation 'me.abhinay.input:currency-edittext:1.1'
+
+    //Firebase Database
+    implementation 'com.google.firebase:firebase-database:9.2.1'
+    //implementation 'com.google.firebase:firebase-analytics:17.0.1'
+    //implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+
+    //Firebase RemoteConfig
+
+    implementation 'com.google.firebase:firebase-config:19.0.1'
+
+    //Material Design
+    implementation "com.android.support:design:28.0.0-alpha1"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "com.android.support:support-compat:28.0.0"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
+
+    //Youtube
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    //Cards
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
+    //RecyclerView
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
+
+    //Youtube
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

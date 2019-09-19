@@ -1,13 +1,11 @@
 package com.example.alphamobilecolombia;
-import android.util.Xml;
 
-import com.example.alphamobilecolombia.utils.cryptography.providers.MD5Hashing;
+import com.example.alphamobilecolombia.utils.crashlytics.LogError;
+import com.example.alphamobilecolombia.utils.cryptography.implement.MD5Hashing;
 
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +27,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.*;
 
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.*;
 
 /**

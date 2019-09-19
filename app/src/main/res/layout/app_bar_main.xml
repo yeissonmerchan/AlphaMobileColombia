@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp.activity.MainActivity">
+    tools:context=".mvp.activity.ModuleActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                     <Button
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="15dp"
-                        android:id ="@+id/user"
+                        android:id ="@+id/postUserRequest"
                         android:layout_width="35dp"
                         android:onClick="onclickExit"
                         android:layout_height="35dp"

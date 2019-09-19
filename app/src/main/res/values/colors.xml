@@ -23,4 +23,9 @@
     <color name="colorConCreditDetailInfo">#5B5B5B</color>
     <color name="colorTransparente">#005B5B5B</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorGrayLithg">#D5D3D3</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorBlueLight">#0080c4</color>
+    <color name="ColorGray">#858383</color>
+    <color name="ColorGrayLight">#AFB7BB</color>
 </resources>

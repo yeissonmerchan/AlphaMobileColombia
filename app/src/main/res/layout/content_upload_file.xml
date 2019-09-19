@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="80dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alphamobilecolombia.mvp.activity.UploadFileActivity"
+    tools:showIn="@layout/activity_upload_file">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="80dp"
+            android:layout_marginBottom="100dp"
+            android:id="@+id/lyt_controls"
+            android:orientation="vertical">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:id="@+id/txtSolicitudCredito"
+                        android:text="Documento Prevalidación"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+                            <TextView
+                                android:id="@+id/txtCargue1"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:gravity="center_vertical"
+                                android:text="Cargar Hoja #1"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/size_text"
+                                android:typeface="serif" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/DocPrevalidacion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue1"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtCedulaCiudadania"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="10dp"
+                        android:drawSelectorOnTop="true"
+                        android:ems="20"
+                        android:inputType="textMultiLine"
+                        android:longClickable="true"
+                        android:scrollbars="vertical"
+                        android:text="Cédula de ciudadanía"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:typeface="serif"
+                        app:autoSizeTextType="uniform" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/txtCargue3"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:text="Cargar Cara #1"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/size_text"
+                                android:typeface="serif" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue3"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/txtCargue4"
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="20dp"
+                                android:drawSelectorOnTop="true"
+                                android:ems="20"
+                                android:inputType="textMultiLine"
+                                android:longClickable="true"
+                                android:paddingTop="5dp"
+                                android:scrollbars="vertical"
+                                android:text="Cargar Cara #2"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/size_text"
+                                android:typeface="serif" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:gravity="right"
+                            android:orientation="horizontal">
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue4"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        android:id="@+id/txtDesprendible"
+                        android:text="Desprendible de nómina"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue5"
+                                android:text="Cargar Desprendible #1"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/size_text"
+
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue5"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue6"
+                                android:text="Cargar Desprendible #2"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/size_text"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue6"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue7"
+                                android:text="Cargar Desprendible #3"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/size_text"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue7"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:paddingTop="5dp"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:id="@+id/txtCargue8"
+                                android:text="Cargar Desprendible #4"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/size_text"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue8"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity= "left"
+                        android:drawSelectorOnTop="true"
+                        android:typeface="serif"
+                        android:layout_marginTop="10dp"
+                        android:inputType="textMultiLine"
+                        android:ems="20"
+                        app:autoSizeTextType="uniform"
+                        android:textStyle="bold"
+                        android:id="@+id/txtDatospersonales"
+                        android:text="Solicitud de tratamiento de datos"
+                        android:longClickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="18dp"
+                        android:textColor="@color/colorHeader"
+                        android:scrollbars = "vertical"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/border_layout"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:drawSelectorOnTop="true"
+                                android:typeface="serif"
+                                android:inputType="textMultiLine"
+                                android:layout_marginLeft="20dp"
+                                android:ems="20"
+                                android:paddingTop="5dp"
+                                android:id="@+id/txtCargueAutorizacion"
+                                android:text="Cargar autorización"
+                                android:longClickable="true"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/size_text"
+                                android:textColor="@color/colorText"
+                                android:scrollbars = "vertical"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_marginRight="10dp"
+                            android:orientation="horizontal" >
+
+                            <com.github.clans.fab.FloatingActionButton
+                                android:id="@+id/btnPopup9"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|right"
+                                android:onClick="ShowDialog"
+                                android:src="@drawable/ic_add_white_24dp"
+                                app:fab_colorNormal="#1986C0"
+                                app:fab_colorPressed="#02A0E3"
+                                app:fab_colorRipple="#99FFFFFF"
+                                app:fab_label="Tomar Foto"
+                                app:fab_size="mini" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lyt_cargue9"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:orientation="horizontal" />
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorHeader"
+                android:layout_centerInParent="true"
+                android:onClick="finalizacion"
+                android:text="Enviar"
+                android:textColor="@color/colorSubtext"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

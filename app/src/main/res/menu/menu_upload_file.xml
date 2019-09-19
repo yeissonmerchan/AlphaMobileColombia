@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/btnUpload"
+        android:title="@string/text_upload"
+        android:icon="@mipmap/logo_camara" />
+
+    <item
+        android:id="@+id/btnLoadGallery"
+        android:title="@string/text_load_gallery"
+        android:icon="@drawable/ic_gallery" />
+
+    <item
+        android:id="@+id/btnView"
+        android:title="@string/text_view"
+        android:icon="@mipmap/logo_lupa"/>
+
+
+</menu>

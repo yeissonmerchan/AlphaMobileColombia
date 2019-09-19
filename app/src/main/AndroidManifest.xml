@@ -7,20 +7,33 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.DIAL" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--Permiso para el uso de la camara para capturar la cédula-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:remove="android:maxSdkVersion" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="android.permission.DIAL" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!--Permiso para los servicios en segundo plano desde API 26 (OREO)-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
     <application xmlns:tools="http://schemas.android.com/tools"
+        android:hardwareAccelerated="true" android:largeHeap="true"
         android:allowBackup="true"
         android:hasCode="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,29 +45,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:hasCode">
+        <activity android:name=".mvp.activity.YouTubeVideoActivity"></activity>
         <activity
-            android:name=".mvp.activity.BarcodeScannerActivity"
-            android:label="@string/title_activity_barcode_scanner"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".mvp.activity.CapturaInformacionActivity"
-            android:label="@string/title_activity_captura_informacion"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ActualizacionActivity"
-            android:label="@string/title_activity_actualizacion"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ArchivosV2Activity"
-            android:label="@string/title_activity_archivos_v2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.InicialActivity"
+            android:name=".mvp.activity.BrandingActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -64,40 +57,113 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".mvp.activity.ExtractDocument.CapturarActivity"
-            android:label="@string/title_activity_capturar"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ArchivosActivity"
-            android:label="@string/title_activity_archivos"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.ExtractDocument.CamaraActivity"
-            android:label="@string/title_activity_camara"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.UploadFilesActivity"
-            android:label="@string/title_activity_upload_files"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.FinalActivity"
-            android:label="@string/title_activity_final"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.TerminosActivity"
-            android:label="@string/title_activity_terminos"
-            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".mvp.activity.ImagesBackgroundService"
+            android:enabled="true"
+            />
+
+        <receiver
+            android:name=".mvp.activity.ImagesBackGroundReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+<!--        <receiver android:name=".services.implement.BootBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".mvp.activity.ImagesBackgroundJob"
+            android:enabled="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />-->
+
+        <!--*************************************************************************** MODULOS-->
+
+        <!--SCANNER-->
         <activity
             android:name=".mvp.activity.ScannerActivity"
+            android:alwaysRetainTaskState="true"
             android:label="@string/title_activity_scanner"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:launchMode="singleTask" -->
+        <!-- DATOS ADICIONALES -->
+        <activity
+            android:name=".mvp.activity.AdditionalDataActivity"
+            android:alwaysRetainTaskState="true"
+            android:label=""
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" /> <!-- PAGADURÍA -->
+        <activity
+            android:name=".mvp.activity.PaymentActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" /> <!-- TIPO CLIENTE -->
+        <activity
+            android:name=".mvp.activity.CustomerTypeActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" /> <!-- DATOS DESPRENDIBLES -->
+        <activity
+            android:name=".mvp.activity.VoucherDataActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- DESCUENTOS POR DESPRENDIBLE -->
+        <activity
+            android:name=".mvp.activity.VoucherDiscountActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" /> <!-- HACE QUE EL DISEÑO NO SE ENCOJA CUANDO EL TECLADO APARECE -->
+        <!-- OTROS DESCUENTOS -->
+        <activity
+            android:name=".mvp.activity.OtherDiscountsActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" /> <!-- HACE QUE EL CAMPO "OTROS" NO PIERDA EL FOCO CUANDO EL TECLADO APARECE -->
+        <!-- PAGOS A TERCEROS -->
+        <activity
+            android:name=".mvp.activity.PaymentsThirdPartiesActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- SIMULADOR DE CREDITO -->
+        <activity
+            android:name=".mvp.activity.CreditSimulatorActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- RESUMEN DE CONDICIONES -->
+        <activity
+            android:name=".mvp.activity.ConditionsSummaryActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- *************************************************************************** -->
+        <activity
+            android:name=".mvp.activity.VersionUpdateActivity"
+            android:label="@string/title_activity_version_update"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.activity.UploadFileActivity"
+            android:label="@string/title_activity_upload_files"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.ModuloActivity"
+            android:name=".mvp.activity.ProcessCompletedActivity"
+            android:label="@string/title_activity_process_completed"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mvp.activity.ModuleActivity"
             android:label="@string/title_activity_modulo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -107,21 +173,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mvp.activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.DemoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".mvp.activity.WebViewUpdFilesActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".mvp.activity.ConsultaCreditosActivity"
+            android:name=".mvp.activity.QueryCreditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".services.FileStorageService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+
     </application>
 
 </manifest>
