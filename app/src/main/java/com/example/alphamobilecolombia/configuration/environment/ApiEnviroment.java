@@ -13,13 +13,13 @@ public class ApiEnviroment {
         if(currentlyEnviroment.contains("PRO")){
             switch (ApiType){
                 case "autentication":
-                    ipAddress = context.getResources().getString(R.string.pro_ip_api_authentication);;
+                    ipAddress = context.getResources().getString(R.string.pro_ip_api_authentication);
                     break;
                 case "storage":
-                    ipAddress = context.getResources().getString(R.string.pro_ip_api_storage);;
+                    ipAddress = context.getResources().getString(R.string.pro_ip_api_storage);
                     break;
                 case "generic":
-                    ipAddress = context.getResources().getString(R.string.pro_ip_api_generic);;
+                    ipAddress = context.getResources().getString(R.string.pro_ip_api_generic);
                     break;
                 default:
                     ipAddress = "";
