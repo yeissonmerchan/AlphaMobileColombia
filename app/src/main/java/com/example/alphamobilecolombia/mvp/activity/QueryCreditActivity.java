@@ -9,12 +9,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -36,6 +39,7 @@ import com.example.alphamobilecolombia.mvp.presenter.IQueryCreditPresenter;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Adapter.RecyclerAdapterQueryCredit;
 import com.example.alphamobilecolombia.mvp.recycler.queryCreditActivity.Model.Client;
 import com.example.alphamobilecolombia.utils.DependencyInjectionContainer;
+import com.example.alphamobilecolombia.utils.dialog.DialogClass;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.ParseException;
@@ -70,7 +74,7 @@ public class QueryCreditActivity extends AppCompatActivity {
         _iQueryCreditPresenter = diContainer.injectDIIQueryCreditPresenter(this);
     }
 
-    Dialog myDialog;
+    DialogClass myDialog;
     RealmStorage storage = new RealmStorage();
     private TabLayout tabFilters;
     RecyclerView recyclerCredits;
@@ -81,9 +85,7 @@ public class QueryCreditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_credit);
-
-        myDialog = new Dialog(this);
-
+        myDialog = new DialogClass(QueryCreditActivity.this);
         Window window = this.getWindow();
         adapter = new RecyclerAdapterQueryCredit(new ArrayList<>(), recyclerCredits);
         TextView modulo = findViewById(R.id.txt_modulo);
@@ -100,6 +102,8 @@ public class QueryCreditActivity extends AppCompatActivity {
         //user = "1";
         typeQuery = "4";
 
+        myDialog.show();
+
         tabFilters = (TabLayout) findViewById(R.id.tabFilters);
         tabFilters.addTab(tabFilters.newTab().setText("3 DÍAS"));
         tabFilters.addTab(tabFilters.newTab().setText("2 SEMANAS"));
@@ -111,15 +115,21 @@ public class QueryCreditActivity extends AppCompatActivity {
                 tabSelect = tab.getPosition();
                 switch (tab.getPosition()) {
                     case 0:
+                        myDialog.show();
+                        Log.d("QueryCredit","show 1");
                         typeQuery = "4";
                         refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -3, 1)), dateFormat.format(date), pValor);
                         break;
                     case 1:
+                        myDialog.show();
+                        Log.d("QueryCredit","show 2");
                         typeQuery = "4";
                         refreshData(user, typeQuery, dateFormat.format(operarFecha(date, -14, 1)), dateFormat.format(date), pValor);
 
                         break;
                     case 2:
+                        myDialog.show();
+                        Log.d("QueryCredit","show 3");
                         typeQuery = "4";
                         try {
                             Date initDateMonth = dateFormat.parse("2019-01-01");
@@ -146,11 +156,6 @@ public class QueryCreditActivity extends AppCompatActivity {
 
         endDate = dateFormat.format(date);
         initDate = dateFormat.format(operarFecha(date, -3, 1));
-        myDialog.setContentView(R.layout.loading_page);
-        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myDialog.show();
-
-        //List<PostConsultarReporteCreditoResponse> ReporteCredito = new ArrayList<>();
 
         //Metodo para buscar con el boton del teclado
         searchEditext = findViewById(R.id.searchEditext);
@@ -248,7 +253,21 @@ public class QueryCreditActivity extends AppCompatActivity {
 
     private void refreshData(String user, String typeQuery, String initDate, String endDate, String documentNumber) {
         myDialog.show();
-        new Thread(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PostQueryCredit[] model = _iQueryCreditPresenter.GetQuery(typeQuery, documentNumber, "18", user, initDate, endDate);
+                        configurerView(model);
+                    }
+                });
+            }
+        }, 1000);
+
+       /* new Thread(new Runnable() {
             @Override
             public void run() {
                 QueryCreditActivity.this.runOnUiThread(new Runnable() {
@@ -258,13 +277,11 @@ public class QueryCreditActivity extends AppCompatActivity {
                         configurerView(model);
                     }
                 });
-
             }
-        }).start();
+        }).start();*/
     }
 
     public void configurerView(PostQueryCredit[] model) {
-
         //RecyclerView
         recyclerCredits = findViewById(R.id.recyclerCredits);
         recyclerCredits.setLayoutManager(new LinearLayoutManager(this));
@@ -289,16 +306,14 @@ public class QueryCreditActivity extends AppCompatActivity {
             adapter = new RecyclerAdapterQueryCredit(clients, recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", model.length));
-
-
         } else {
             adapter = new RecyclerAdapterQueryCredit(clients, recyclerCredits);
             recyclerCredits.setAdapter(adapter);
             count_rows.setText(String.format("%1s Solicitudes", clients.size()));
             showDialog("Atención!", "No se encontraron registros para el filtro aplicado.\n\n Aplica un nuevo filtro e intenta nuevamente");
         }
+        Log.d("QueryCredit","dismiss");
         myDialog.dismiss();
-
     }
 
 
